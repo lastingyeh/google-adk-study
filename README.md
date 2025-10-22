@@ -4,7 +4,7 @@
 
 此儲存庫包含學習 Google ADK（代理開發工具包）的完整路線圖。此路線圖旨在引導學習者掌握有效使用 Google ADK 構建智能代理所需的重要主題和技能。
 
-
+---
 ## [第一天]
 
 ### 學習重點
@@ -18,7 +18,17 @@
 #### 詳細說明：
   - [文件連結](./docs/google-adk-docs-community_summary.md)
 
-# [第二天]
+#### 參考資源
+
+- [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
+- [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)
+  ](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
+- [software-bug-assistant](https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant)
+- [Tools Make an Agent: From Zero to Assistant with ADK](https://cloud.google.com/blog/topics/developers-practitioners/tools-make-an-agent-from-zero-to-assistant-with-adk?e=48754805?utm_source%3Dtwitter?utm_source%3Dlinkedin)
+- [Tools for Agents: ADK Tools list](https://google.github.io/adk-docs/tools/)
+
+---
+## [第二天]
 
 ### 學習重點
 #### 分類：
@@ -30,15 +40,8 @@
 
 #### 詳細說明：
   - [文件連結](.github/chatmodes/repo-guiding-learning.chatmode.md)
-  - [專案相依連結](workspace/python/agents/software-bug-assistant/pyproject_explanation.md)
-  - [範例專案連結](workspace/samples/adk-samples/README.md)
 
 
 #### 參考資源
-
-- [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
-- [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)
-  ](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
-- [software-bug-assistant](https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant)
-- [Tools Make an Agent: From Zero to Assistant with ADK](https://cloud.google.com/blog/topics/developers-practitioners/tools-make-an-agent-from-zero-to-assistant-with-adk?e=48754805?utm_source%3Dtwitter?utm_source%3Dlinkedin)
-- [Tools for Agents: ADK Tools list](https://google.github.io/adk-docs/tools/)∑
+  - [專案相依連結](workspace/python/agents/software-bug-assistant/pyproject_explanation.md)
+  - [範例專案連結](workspace/samples/adk-samples/README.md)
