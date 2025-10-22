@@ -18,6 +18,22 @@
 #### 詳細說明：
   - [文件連結](./docs/google-adk-docs-community_summary.md)
 
+# [第二天]
+
+### 學習重點
+#### 分類：
+- 社群資源
+
+#### 內容摘要：
+
+設計 copilot 互動教學設計模式(未完成)，取得目標學習專案的相關資源，並設計互動式教學模式以協助學習者更有效地掌握專案內容。
+
+#### 詳細說明：
+  - [文件連結](.github/chatmodes/repo-guiding-learning.chatmode.md)
+  - [專案相依連結](workspace/python/agents/software-bug-assistant/pyproject_explanation.md)
+  - [範例專案連結](workspace/samples/adk-samples/README.md)
+
+
 #### 參考資源
 
 - [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
