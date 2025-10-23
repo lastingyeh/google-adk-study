@@ -2,34 +2,34 @@
 name = "software-bug-assistant"
 version = "0.1.0"
 description = "Software bug assistant using ADK"
-authors = [{ name = "Jack Wotherspoon", email = "jackwoth@google.com" }]
+authors = [{ name = "Chris", email = "lastingyeh@example.com" }]
 license = "Apache-2.0"
 readme = "README.md"
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "google-adk>=1.8.0",
-    "langchain>=0.3.0,<0.4.0",
     "google-cloud-aiplatform[agent-engines,evaluation]>=1.93.0",
+    "langchain>=0.3.0,<0.4.0",
     "langchain-community>=0.3.25",
     "python-dotenv>=1.1.0",
     "stackapi>=0.3.1",
     "toolbox-core>=0.1.0",
 ]
 
-[dependency-groups]
-dev = [
-    "pytest>=8.3.5",
-    "pytest-asyncio>=0.26.0",
-    "agent-starter-pack>=0.14.1",
-]
-
 [project.optional-dependencies]
 lint = [
-    "ruff>=0.4.6",
-    "mypy>=1.15.0",
     "codespell>=2.2.0",
+    "mypy>=1.15.0",
+    "ruff>=0.4.6",
     "types-pyyaml>=6.0.12.20240917",
     "types-requests>=2.32.0.20240914",
+]
+
+[dependency-groups]
+dev = [
+    "agent-starter-pack>=0.14.1",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
 ]
 
 [tool.ruff]
@@ -42,12 +42,12 @@ select = [
     "F",   # pyflakes
     "W",   # pycodestyle warnings
     "I",   # isort
-    "C",  # flake8-comprehensions
+    "C",   # flake8-comprehensions
     "B",   # flake8-bugbear
-    "UP", # pyupgrade
+    "UP",  # pyupgrade
     "RUF", # ruff specific rules
 ]
-ignore = ["E501", "C901"] # ignore line too long, too complex
+ignore = ["E501", "C901"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["software_bug_assistant"]
@@ -70,10 +70,6 @@ disable_error_code = ["misc", "no-untyped-call", "no-any-return"]
 
 exclude = [".venv"]
 
-[tool.codespell]
-ignore-words-list = "rouge"
-skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
-
 [tool.pytest.ini_options]
 pythonpath = "."
 asyncio_default_fixture_loop_scope = "function"
@@ -85,10 +81,9 @@ build-backend = "uv_build"
 [tool.uv.build-backend]
 module-root = ""
 
-# This configuration file is used by goo.gle/agent-starter-pack to power remote templating.
-# It defines the template's properties and settings.
 [tool.agent-starter-pack]
 example_question = "Can you help me debug a login page issue?"
 
 [tool.agent-starter-pack.settings]
 agent_directory = "software_bug_assistant"
+
