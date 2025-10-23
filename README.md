@@ -45,3 +45,20 @@
 #### 參考資源
   - [專案相依連結](workspace/python/agents/software-bug-assistant/pyproject_explanation.md)
   - [範例專案連結](workspace/samples/adk-samples/README.md)
+
+---
+## [第三天]
+
+### 學習重點
+#### 分類：
+- 社群資源
+
+#### 內容摘要：
+
+實做範例 software-bug-assistant 專案程式碼
+
+#### 詳細說明：
+  - [文件連結](./workspace/python/agents/software-bug-assistant/README.md)
+
+#### 參考資源
+  - [software-bug-assistant 專案程式碼](./workspace/python/agents/software-bug-assistant/)
