@@ -60,8 +60,10 @@
 
 - **詳細說明**：
   - [文件連結](./workspace/python/agents/youtube-shorts-assistant/README.md)
+  - [學習訓練指引筆記](./workspace/notes/google-adk-training-hub/README.md)
 
 - **參考資源**
   - [Getting started with Agent Development Kit](https://www.youtube.com/watch?v=44C8u0CDtSo)
   - [youtube-shorts-assistant 專案Repo](./workspace/python/agents/youtube-shorts-assistant/)
+  - [Google ADK Training Hub](https://raphaelmansuy.github.io/adk_training/)
 </details>
