@@ -67,3 +67,18 @@
   - [youtube-shorts-assistant 專案Repo](./workspace/python/agents/youtube-shorts-assistant/)
   - [Google ADK Training Hub](https://raphaelmansuy.github.io/adk_training/)
 </details>
+
+
+### 🕗 Day 5
+<details>
+<summary>
+實現範例 finance-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助管理和分析財務數據的智能代理。包含基本 ADK Tools 的應用，並透過 asyncio.gather(*tasks) 平行處理任務與完整 Agent 測試案例實現。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/python/agents/finance-assistant/README.md)
+
+- **參考資源**
+  - [Tutorial 02: Function Tools Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02)
+  - [finance-assistant 專案Repo](./workspace/python/agents/finance-assistant/)
+  - [Tutorial 02: Function Tools - Give Your Agent Superpowers](https://raphaelmansuy.github.io/adk_training/docs/function_tools)
