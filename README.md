@@ -34,8 +34,7 @@
   - [文件連結](.github/chatmodes/repo-guiding-learning.chatmode.md)
 
 - **參考資源**
-  - [專案相依連結](workspace/python/agents/software-bug-assistant/pyproject_explanation.md)
-  - [範例專案Repo連結](workspace/samples/adk-samples/README.md)
+  - [專案相依連結](./workspace/python/agents/software-bug-assistant/README.md)
 </details>
 
 ### 🕗 Day 3
@@ -49,7 +48,7 @@
   - [文件連結](./workspace/python/agents/software-bug-assistant/README.md)
 
 - **參考資源**
-  - [software-bug-assistant 專案Repo](./workspace/python/agents/software-bug-assistant/)
+  - [software-bug-assistant](./workspace/python/agents/software-bug-assistant/)
 </details>
 
 ### 🕗 Day 4
@@ -80,7 +79,7 @@
 
 - **參考資源**
   - [Tutorial 02: Function Tools Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02)
-  - [finance-assistant 專案Repo](./workspace/python/agents/finance-assistant/)
+  - [finance-assistant](./workspace/python/agents/finance-assistant/)
   - [Tutorial 02: Function Tools - Give Your Agent Superpowers](https://raphaelmansuy.github.io/adk_training/docs/function_tools)
 </details>
 
@@ -96,6 +95,6 @@
 - **參考資源**
   - [Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs](https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/)
   - [# 教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/openapi_tools.md)
-  - [chuck-norris-agent Repo](./workspace/python/agents/chuck-norris-agent/)
+  - [chuck-norris-agent](./workspace/python/agents/chuck-norris-agent/)
   - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
 </details>
