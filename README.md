@@ -82,3 +82,20 @@
   - [Tutorial 02: Function Tools Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02)
   - [finance-assistant 專案Repo](./workspace/python/agents/finance-assistant/)
   - [Tutorial 02: Function Tools - Give Your Agent Superpowers](https://raphaelmansuy.github.io/adk_training/docs/function_tools)
+</details>
+
+### 🕗 Day 6
+<details>
+<summary>
+實現範例 chuck-norris-agent 專案，學習如何從 OpenAPI 規範中自動產生工具，使您的代理程式能夠與 REST API 互動，而無需手動編寫工具函式。。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
+
+- **參考資源**
+  - [Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs](https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/)
+  - [# 教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/openapi_tools.md)
+  - [chuck-norris-agent Repo](./workspace/python/agents/chuck-norris-agent/)
+  - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
+</details>

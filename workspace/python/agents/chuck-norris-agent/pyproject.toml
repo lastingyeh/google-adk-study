@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "check-norris-api"
+version = "0.1.0"
+description = "Chuck Norris Open API Agent"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.15.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+    "pytest-sugar>=1.1.1",
+]
