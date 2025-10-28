@@ -98,3 +98,17 @@
   - [chuck-norris-agent](./workspace/python/agents/chuck-norris-agent/)
   - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
 </details>
+
+### 🕗 Day 7
+<details>
+<summary>
+本教學介紹 Gemini 2.0+ 的內建工具,包含網路搜尋、地圖定位和企業搜尋功能,讓 AI 代理程式存取即時資訊。核心內容涵蓋:google_search 網路基礎工具、google_maps_grounding 位置服務(需 VertexAI)、enterprise_web_search 企業搜尋、GoogleSearchAgentTool 混合工具解決方案。同時介紹記憶體管理、工作流程控制、上下文載入等進階工具。透過實作研究助理範例,展示如何整合多種工具建立生產級代理程式系統,包含最佳實踐與疑難排解指南。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
+
+- **參考資源**
+  [# 教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/built_in_tools_grounding.md)
+  [Grounding Agent](./workspace/python/agents/grounding-agent/)
+</details>

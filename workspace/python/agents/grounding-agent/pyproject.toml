@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "grounding-agent"
+version = "0.1.0"
+description = "Built-in Tools & Grounding - Grounding Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk>=1.17.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]

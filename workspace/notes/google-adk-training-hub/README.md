@@ -6,3 +6,4 @@
 - [02 代理架構詳解 (Agent Architecture)](./02_agent-architecture.md)
 - [03 工具與能力生態系統 (Tools & Capabilities)](./03_tools-capabilities.md)
   - [OpenAPI 工具詳解 (OpenAPI Tools)](./openapi_tools.md)
+  - [內建工具與基礎 (Built-in Tools & Grounding)](./built_in_tools_grounding.md)
