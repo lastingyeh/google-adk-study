@@ -112,3 +112,17 @@
   [# 教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/built_in_tools_grounding.md)
   [Grounding Agent](./workspace/python/agents/grounding-agent/)
 </details>
+
+### 🕗 Day 8
+<details>
+<summary>
+本教學介紹如何使用模型內容協議 (MCP) 將外部工具和服務整合到 AI 代理程式中。透過 MCPToolset 連接 MCP 伺服器，讓代理程式能夠存取檔案系統、資料庫、API 等外部資源，並支援 OAuth 驗證與人機迴圈審批等進階功能。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/python/agents/mcp-agent/README.md)
+
+- **參考資源**
+  [# 教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/mcp_integration.md)
+  [MCP Agent](./workspace/python/agents/mcp-agent/)
+</details>
