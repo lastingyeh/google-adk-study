@@ -94,7 +94,7 @@
 
 - **參考資源**
   - [Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs](https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/)
-  - [# 教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/openapi_tools.md)
+  - [# 教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/hands-on/openapi_tools.md)
   - [chuck-norris-agent](./workspace/python/agents/chuck-norris-agent/)
   - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
 </details>
@@ -109,7 +109,7 @@
   - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
 
 - **參考資源**
-  [# 教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/built_in_tools_grounding.md)
+  [# 教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/hands-on/built_in_tools_grounding.md)
   [Grounding Agent](./workspace/python/agents/grounding-agent/)
 </details>
 
@@ -123,6 +123,19 @@
   - [文件連結](./workspace/python/agents/mcp-agent/README.md)
 
 - **參考資源**
-  [# 教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/mcp_integration.md)
+  [# 教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/hands-on/mcp_integration.md)
   [MCP Agent](./workspace/python/agents/mcp-agent/)
+</details>
+
+### 🕗 Day 9
+<details>
+<summary>
+Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任務，並行流程提升執行效率，迴圈流程迭代優化品質。組合策略：透過巢狀工作流程實現複雜代理編排，解決真實世界多步驟問題。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/04_workflows-orchestration.md)
+
+- **參考資源**
+  - [Workflows & Orchestration]([./workspace/notes/google-adk-training-hub/hands-on/mcp_integration.md](https://raphaelmansuy.github.io/adk_training/docs/workflows-orchestration))
 </details>
