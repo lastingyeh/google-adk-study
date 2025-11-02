@@ -1,0 +1,102 @@
+# 教學 04: 循序工作流程 - 部落格文章建立管道
+# Makefile 用於開發、測試和部署
+
+.PHONY: help setup dev test clean demo
+
+# 預設目標 - 顯示說明訊息
+help:
+  @echo "教學 04: 循序工作流程 - 部落格文章建立管道"
+  @echo ""
+  @echo "可用指令："
+  @echo "  setup    安裝相依套件"
+  @echo "  dev      啟動開發伺服器"
+  @echo "  test     執行測試套件"
+  @echo "  demo     顯示示範指令說明"
+  @echo "  clean    清理產生的檔案"
+  @echo "  help     顯示此說明訊息"
+
+# 設定並安裝相依套件
+setup:
+  @echo "📦 正在安裝相依套件..."
+  # 從 requirements.txt 安裝所有必要的套件
+  pip install -r requirements.txt
+  # 以可編輯模式安裝當前專案
+  pip install -e .
+  @echo "✅ 設定完成！"
+
+# 啟動開發伺服器
+dev: check-env
+  @echo "🚀 正在啟動 ADK 開發伺服器..."
+  @echo "請在瀏覽器中開啟 http://localhost:8000"
+  @echo "從代理程式清單中選擇 'blog_pipeline'"
+  @echo ""
+  @echo "試試這些提示詞："
+  @echo "  • '撰寫一篇關於人工智慧的部落格文章'"
+  @echo "  • '建立一篇解釋太陽能板運作原理的部落格文章'"
+  @echo "  • '撰寫關於網際網路歷史的文章'"
+  @echo ""
+  # 啟動 ADK 網頁介面
+  adk web
+
+# 執行測試套件
+test:
+  @echo "🧪 正在執行測試..."
+  # 使用 pytest 執行所有測試，顯示詳細資訊和簡短的錯誤追蹤
+  pytest tests/ -v --tb=short
+  @echo "✅ 測試完成！"
+
+# 顯示示範說明
+demo:
+  @echo "💬 部落格文章建立管道示範"
+  @echo ""
+  @echo "此管道由 4 個循序執行的代理程式組成："
+  @echo "1. 研究代理程式 - 收集主題相關事實"
+  @echo "2. 寫作代理程式 - 建立部落格文章草稿"
+  @echo "3. 編輯代理程式 - 審閱並建議改進方向"
+  @echo "4. 格式化代理程式 - 套用編輯內容並格式化為 markdown"
+  @echo ""
+  @echo "在 ADK 網頁介面中試試這些提示詞："
+  @echo "   • '撰寫一篇關於量子計算的部落格文章'"
+  @echo "   • '建立一篇關於電動車的部落格文章'"
+  @echo "   • '撰寫一篇解釋機器學習的部落格文章'"
+  @echo ""
+  @echo "觀察事件（Events）頁籤，查看每個代理程式的循序執行過程！"
+  @echo ""
+  @echo "執行 'make dev' 以啟動開發伺服器"
+
+# 清理產生的檔案和快取
+clean:
+  @echo "🧹 正在清理..."
+  # 刪除所有 Python 快取目錄
+  find . -type d -name "__pycache__" -exec rm -rf {} +
+  # 刪除所有編譯過的 Python 檔案
+  find . -type f -name "*.pyc" -delete
+  # 刪除所有最佳化的 Python 檔案
+  find . -type f -name "*.pyo" -delete
+  # 刪除測試覆蓋率報告
+  find . -type f -name ".coverage" -delete
+  # 刪除 pytest 快取目錄
+  find . -type d -name ".pytest_cache" -exec rm -rf {} +
+  # 刪除套件安裝資訊目錄
+  find . -type d -name "*.egg-info" -exec rm -rf {} +
+  @echo "✅ 清理完成！"
+
+# 檢查環境變數設定（內部使用）
+check-env:
+  # 檢查是否至少設定了其中一種身份驗證方式
+  @if [ -z "$$GOOGLE_API_KEY" ] && [ -z "$$GOOGLE_APPLICATION_CREDENTIALS" ]; then \
+    echo "❌ 錯誤：尚未設定身份驗證"; \
+    echo ""; \
+    echo "請選擇以下其中一種身份驗證方式："; \
+    echo ""; \
+    echo "🔑 方法 1 - API 金鑰（Gemini API）："; \
+    echo "   export GOOGLE_API_KEY=你的_api_金鑰"; \
+    echo "   在此取得免費金鑰：https://aistudio.google.com/app/apikey"; \
+    echo ""; \
+    echo "🔐 方法 2 - 服務帳戶（VertexAI）："; \
+    echo "   export GOOGLE_APPLICATION_CREDENTIALS=/服務帳戶檔案路徑.json"; \
+    echo "   export GOOGLE_CLOUD_PROJECT=你的_專案_id"; \
+    echo "   在此建立憑證：https://console.cloud.google.com/iam-admin/serviceaccounts"; \
+    echo ""; \
+    exit 1; \
+  fi

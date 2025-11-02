@@ -16,12 +16,15 @@
 ## 執行步驟:
 1. 透過提供的 URL 取得網站內容與結構資訊。
 2. 根據頁面大綱建立結構化列表。
-3. 根據頁面內文產生完整內文說明文件。
-4. 將文件儲存在指定目錄`workspace/notes/google-adk-training-hub`，檔案名稱格式參考`## 輸出規格`。
+3. 根據內文產生重點筆記說明。
+   - 重點說明必須以大綱項目為主要內容結構產出。
+4. 將文件儲存在指定目錄，檔案名稱格式參考`## 輸出規格`
+   - 預設目錄：`workspace/notes/google-adk-training-hub`。
+   - 若標題為： `Tutorial` 則儲存目錄改為 `workspace/notes/google-adk-training-hub/hands-on`。
 
 ## 限制條件:
 - 以繁體中文撰寫。
-- 若遇到內容包含code block，需嚴格限制 block 絕對位置輸出。
+- 內容若包含流程圖，並須轉換為 mermaid 格式。
 - 遵循指定的輸出格式。
 - 保持內容的技術準確性與完整性。
 - 避免包含未經驗證的資訊。

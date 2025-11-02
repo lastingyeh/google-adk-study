@@ -139,3 +139,18 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - **參考資源**
   - [Workflows & Orchestration]([./workspace/notes/google-adk-training-hub/hands-on/mcp_integration.md](https://raphaelmansuy.github.io/adk_training/docs/workflows-orchestration))
 </details>
+
+### 🕗 Day 10
+<details>
+<summary>
+根據文件內容，這是一份關於 Google ADK 循序工作流程的教學，說明如何使用 `SequentialAgent` 連接多個 agents 建立部落格文章產生 pipeline。透過研究、寫作、編輯、格式化四個階段，展示如何使用 `output_key` 在 agents 間傳遞資料，適合需要按順序執行的任務流程。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/hands-on/sequential_workflows.md)
+
+- **參考資源**
+  - [教學 04：循序工作流程 - Agent Pipelines 重點說明](./workspace/notes/google-adk-training-hub/hands-on/sequential_workflows.md)
+  - [Blog Creation Pipeline](./workspace/python/agents/blog-pipeline/)
+  - [Tutorial 04: Sequential Workflows - Build Agent Pipelines](https://raphaelmansuy.github.io/adk_training/docs/sequential_workflows)
+</details>
