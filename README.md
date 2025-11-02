@@ -150,7 +150,22 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [文件連結](./workspace/notes/google-adk-training-hub/hands-on/sequential_workflows.md)
 
 - **參考資源**
-  - [教學 04：循序工作流程 - Agent Pipelines 重點說明](./workspace/notes/google-adk-training-hub/hands-on/sequential_workflows.md)
+  - [教學 04：循序工作流程 - Agent Pipelines 重點說明](./workspace/python/agents/blog-pipeline/README.md)
   - [Blog Creation Pipeline](./workspace/python/agents/blog-pipeline/)
   - [Tutorial 04: Sequential Workflows - Build Agent Pipelines](https://raphaelmansuy.github.io/adk_training/docs/sequential_workflows)
+</details>
+
+### 🕗 Day 11
+<details>
+<summary>
+本教學介紹 `ParallelAgent` 同時執行多個獨立代理以提升效率，並運用「扇出/收集」模式：先平行收集資料（航班、飯店、活動），再循序合併結果成完整行程。適用於 I/O 密集型任務與多源資料收集。
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/hands-on/parallel_processing.md)
+
+- **參考資源**
+  - [# 教學 05：平行處理 - 旅遊規劃系統](./workspace/python/agents/travel-planner/README.md)
+  - [Blog Creation Pipeline](./workspace/python/agents/travel-planner/)
+  - [Tutorial 05: Parallel Processing - Run Multiple Agents Simultaneously](https://raphaelmansuy.github.io/adk_training/docs/parallel_processing)
 </details>
