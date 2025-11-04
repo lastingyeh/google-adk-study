@@ -203,8 +203,25 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [文件連結](./workspace/notes/google-adk-training-hub/hands-on/multi_agent_systems.md)
 
 - **參考資源**
-  - [# 教學 06：多代理系統 - 內容發布系統](./workspace/python/agents/content-publisher/README.md)
+  - [教學 06：多代理系統 - 內容發布系統](./workspace/python/agents/content-publisher/README.md)
   - [Content Publisher](./workspace/python/agents/content-publisher/)
   - [Content Publisher Agent Architecture](./workspace/python/agents/content-publisher/agent_architecture.md)
   - [Tutorial 06: Multi-Agent Systems - Agents Working Together](https://raphaelmansuy.github.io/adk_training/docs/multi_agent_systems/)
+  </details>
+
+### 🕗 Day 13
+
+<details>
+<summary>
+教學 07：循環代理文章精煉系統 - 使用 LoopAgent 實現自我改進的代理系統，透過評論者-精煉者模式進行迭代品質提升，具備智慧終止機制和完整測試覆蓋（62個測試），展示循環代理的實際應用。
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/hands-on/loop_agents.md)
+
+- **參考資源**
+  - [教學 07：循環代理（Loop Agents）- 文章精煉系統](./workspace/python/agents/essay-refiner/README.md)
+  - [Essay Refiner](./workspace/python/agents/essay-refiner/)
+  - [Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns](https://raphaelmansuy.github.io/adk_training/docs/loop_agents)
   </details>
