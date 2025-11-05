@@ -225,3 +225,19 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [Essay Refiner](./workspace/python/agents/essay-refiner/)
   - [Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns](https://raphaelmansuy.github.io/adk_training/docs/loop_agents)
   </details>
+
+### 🕗 Day 14
+
+<details>
+<summary>
+LLM 整合篇涵蓋提示工程、接地技術（網路、資料、位置）、思維推理框架（內建思考、Plan-ReAct）及多輪對話管理。生產部署篇介紹多種部署環境（本地、Cloud Run、Vertex AI、GKE）、可觀測性監控（事件、追蹤、回呼、評估）、服務組態設定、安全最佳實踐與效能優化策略，提供完整的 Agent 開發到部署指南。
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/README.md)
+
+- **參考資源**
+  - [LLM Integration](https://raphaelmansuy.github.io/adk_training/docs/llm-integration)
+  - [Production & Deployment](https://raphaelmansuy.github.io/adk_training/docs/production-deployment)
+  </details>
