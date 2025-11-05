@@ -224,13 +224,13 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [教學 07：循環代理（Loop Agents）- 文章精煉系統](./workspace/python/agents/essay-refiner/README.md)
   - [Essay Refiner](./workspace/python/agents/essay-refiner/)
   - [Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns](https://raphaelmansuy.github.io/adk_training/docs/loop_agents)
-  </details>
+</details>
 
 ### 🕗 Day 14
 
 <details>
 <summary>
-LLM 整合篇涵蓋提示工程、接地技術（網路、資料、位置）、思維推理框架（內建思考、Plan-ReAct）及多輪對話管理。生產部署篇介紹多種部署環境（本地、Cloud Run、Vertex AI、GKE）、可觀測性監控（事件、追蹤、回呼、評估）、服務組態設定、安全最佳實踐與效能優化策略，提供完整的 Agent 開發到部署指南。
+本系列涵蓋 ADK 核心能力：LLM 整合篇教授提示工程、接地技術（網路/資料/位置）、思維推理框架（內建思考、Plan-ReAct）、多輪對話及性能優化；生產部署篇介紹四種部署環境、可觀測性監控、服務組態與安全實踐；進階模式篇探討即時串流、MCP 協定、A2A 通訊及多模態整合；決策框架篇提供代理類型、工具選擇、部署策略的完整決策矩陣與實施清單，助您從開發到生產全面掌握 Google ADK。
 </summary>
 
 - **詳細說明**：
@@ -240,4 +240,6 @@ LLM 整合篇涵蓋提示工程、接地技術（網路、資料、位置）、�
 - **參考資源**
   - [LLM Integration](https://raphaelmansuy.github.io/adk_training/docs/llm-integration)
   - [Production & Deployment](https://raphaelmansuy.github.io/adk_training/docs/production-deployment)
-  </details>
+  - [Advanced Patterns](https://raphaelmansuy.github.io/adk_training/docs/advanced-patterns)
+  - [Decision Frameworks](https://raphaelmansuy.github.io/adk_training/docs/decision-frameworks)
+</details>
