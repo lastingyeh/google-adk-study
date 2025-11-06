@@ -243,3 +243,19 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [Advanced Patterns](https://raphaelmansuy.github.io/adk_training/docs/advanced-patterns)
   - [Decision Frameworks](https://raphaelmansuy.github.io/adk_training/docs/decision-frameworks)
 </details>
+
+### 🕗 Day 15
+
+<details>
+<summary>
+本資料提供 Google Agent Development Kit (ADK) 完整學習路徑，涵蓋從初學者到專家的 8 階段進程（57+ 天），包括代理建立、工作流程模式（Sequential/Parallel/Loop）、工具整合、狀態管理、生產部署等核心技能。附有快速參考備忘單，提供代碼範例、CLI 指令、最佳實踐與疑難排解，適合 AI 應用開發者系統學習與實作。
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/README.md)
+
+- **參考資源**
+  - [Learning Paths](https://raphaelmansuy.github.io/adk_training/docs/learning-paths)
+  - [ADK Cheat Sheet - Complete Reference](https://raphaelmansuy.github.io/adk_training/docs/adk-cheat-sheet)
+</details>
