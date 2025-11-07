@@ -1,8 +1,6 @@
-這份指南（《Mental Models for Google ADK Mastery - Complete Guide 2025》）旨在提供一個全面的心智框架，用於理解 Google Agent Development Kit (ADK) 和生成式 AI 概念。所有模型都源自官方的 `google/adk-python` (ADK 1.15) 原始碼和 28 篇教學內容。
+# Overview of Google ADK Training Hub
 
-以下是 ADK 掌握的幾個核心重點：
-
----
+## Mental Models for Google ADK Mastery - Complete Guide 2025
 
 ### 壹、核心心理模型：代理即系統 (The Agent as a System)
 

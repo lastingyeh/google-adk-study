@@ -1,17 +1,4 @@
-# 網站/資源結構分析報告
-
-## 基本資訊
-- 網站名稱: Tools & Capabilities | Google ADK Training Hub
-- 主要領域: AI Agent Development Kit (ADK), 工具與能力
-- 資源總數: 1
-- 分析日期: 2025-10-24
-
-## 內容分布概況
-- **主要內容類型分布**: 本文件主要為技術文件，包含心智模型、程式碼範例、最佳實踐與決策指南。
-- **技術棧覆蓋範圍**: 涵蓋 Google ADK、Python、REST API (OpenAPI)、MCP (Model Context Protocol)、LangChain、CrewAI 等。
-- **難度層級分布**: 內容從基礎概念到進階模式，適合初學者到進階開發者。
-
----
+# Tools & Capabilities
 
 # 完整內容大綱
 

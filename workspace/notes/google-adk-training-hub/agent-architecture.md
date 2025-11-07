@@ -1,4 +1,4 @@
-這份文件深入探討了 **Google ADK (Agent Development Kit)** 中關於代理程式架構、層級模型和狀態管理策略的組成與最佳實踐。
+# Agent Architecture & State Management
 
 ---
 
