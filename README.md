@@ -270,3 +270,24 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [ADK Cheat Sheet - Complete Reference](https://raphaelmansuy.github.io/adk_training/docs/adk-cheat-sheet)
 
 </details>
+
+### 🕗 Day 16
+
+<details>
+<summary>
+涵蓋驗證與平台選擇、入門範例建置、代理模式(循序平行迴圈)、工具整合、狀態管理、部署、安全權限、測試監控及最佳實務，並含成本管理、事件追蹤、錯誤處理與常見問題。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/README.md#六資源與支援)
+- [00-setup_authentication](./workspace/notes/google-adk-training-hub/adk_training/00-setup_authentication.md)
+- [01-hello_world_agent](./workspace/notes/google-adk-training-hub/adk_training/01-hello_world_agent.md)
+- [hello-agent](./workspace/python/agents/hello-agent/)
+
+#### **參考資源**
+- [reference Guide](https://raphaelmansuy.github.io/adk_training/docs/reference-guide)
+- [Tutorial 00: Setup & Authentication - Getting Started with Google ADK](https://raphaelmansuy.github.io/adk_training/docs/setup_authentication)
+- [Tutorial 01: Hello World Agent - Build Your First AI Agent with Google ADK](https://raphaelmansuy.github.io/adk_training/docs/hello_world_agent)
+
+</details>
