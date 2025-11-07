@@ -272,6 +272,5 @@ make dev
 *   **多源研究**：學術、新聞、社群媒體。
 *   **比價購物**：從不同來源獲取價格、評論。
 
-## 下一步
-
-🚀 **教學 06：多代理系統** - 結合循序和平行模式，打造更複雜的工作流程。
+## 程式碼實現 (Code Implementation)
+- travel-planner：[程式碼連結](../../../python/agents/travel-planner/README.md)

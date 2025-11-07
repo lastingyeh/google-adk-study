@@ -106,7 +106,7 @@
 
 #### **參考資源**
 - [Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs](https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/)
-- [教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/adk_training/03_openapi_tools.md)
+- [教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md)
 - [chuck-norris-agent](./workspace/python/agents/chuck-norris-agent/)
 - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
 
@@ -124,7 +124,7 @@
 - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
 
 #### **參考資源**
-- [教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/adk_training/11_built_in_tools_grounding.md)
+- [教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md)
 - [Grounding Agent](./workspace/python/agents/grounding-agent/)
 
 </details>
@@ -141,7 +141,7 @@
 - [文件連結](./workspace/python/agents/mcp-agent/README.md)
 
 #### **參考資源**
-- [教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/adk_training/16_mcp_integration.md)
+- [教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md)
 - [MCP Agent](./workspace/python/agents/mcp-agent/)
 
 </details>
@@ -171,7 +171,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 #### **詳細說明**：
 
-- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/04_sequential_workflows.md)
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/04-sequential_workflows.md)
 
 #### **參考資源**
 - [教學 04：循序工作流程 - Agent Pipelines 重點說明](./workspace/python/agents/blog-pipeline/README.md)
@@ -189,7 +189,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 #### **詳細說明**：
 
-- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/05_parallel_processing.md)
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/05-parallel_processing.md)
 
 #### **參考資源**
 - [教學 05：平行處理 - 旅遊規劃系統](./workspace/python/agents/travel-planner/README.md)
@@ -207,7 +207,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 #### **詳細說明**：
 
-- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/06_multi_agent_systems.md)
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/06-multi_agent_systems.md)
 
 #### **參考資源**
 - [教學 06：多代理系統 - 內容發布系統](./workspace/python/agents/content-publisher/README.md)
@@ -226,7 +226,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 #### **詳細說明**：
 
-- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/07_loop_agents.md)
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/07-loop_agents.md)
 
 #### **參考資源**
 - [教學 07：循環代理（Loop Agents）- 文章精煉系統](./workspace/python/agents/essay-refiner/README.md)

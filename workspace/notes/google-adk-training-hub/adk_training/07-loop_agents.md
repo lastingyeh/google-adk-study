@@ -480,10 +480,6 @@ def exit_loop(tool_context: ToolContext):
 -   **重試邏輯**: 帶有驗證的 API 呼叫、帶有錯誤檢查的數據處理。
 -   **建立共識**: 多位審查者的批准系統。
 
-## 下一步
-
-🚀 **教學 08: 狀態與記憶體** - 學習會話管理和長期記憶。
-
 ## 練習 (自己動手試試!)
 
 1.  **不同的品質指標** - 增加文法分數、可讀性分數。
@@ -492,6 +488,5 @@ def exit_loop(tool_context: ToolContext):
 4.  **修訂歷史** - 儲存每次迭代以查看進展。
 5.  **使用者批准** - 增加人在迴路中的批准工具。
 
-## 完整程式碼參考
-
-**工作實現**: 請參閱 [`tutorial_implementation/tutorial07/`](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial07) 以獲取一個完整、經過測試並附有全面文件的版本。
+## 程式碼實現 (Code Implementation)
+- essay-refiner：[程式碼連結](../../../python/agents/essay-refiner/README.md)

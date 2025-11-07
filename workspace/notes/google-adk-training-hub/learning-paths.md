@@ -56,8 +56,8 @@ timeline
 ### Phase 1: Core Concepts (核心概念) (第 1-3 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [01_hello_world_agent.md](/adk_training/docs/hello_world_agent)
-- [ ] [02_function_tools.md](/adk_training/docs/function_tools)
+- [x] [01_hello_world_agent.md](./adk_training/01_hello_world_agent.md)
+- [x] [02_function_tools.md](./adk_training/02_function_tools.md)
 
 **🎯 Goals (目標)**:
 - 了解 Agent 的生命週期
@@ -74,9 +74,9 @@ timeline
 ### Phase 2: Workflow Patterns (工作流模式) (第 4-7 天)
 
 **📖 Tutorials (教學)**:
-- [x] [03_openapi_tools.md](./adk_training/openapi_tools)
-- [x] [04_sequential_workflows.md](./adk_training/sequential_workflows)
-- [x] [05_parallel_processing.md](./adk_training/parallel_processing)
+- [x] [03_openapi_tools.md](./adk_training/03_openapi_tools.md)
+- [x] [04_sequential_workflows.md](./adk_training/04_sequential_workflows.md)
+- [x] [05_parallel_processing.md](./adk_training/05_parallel_processing.md)
 
 **🎯 Goals (目標)**:
 - 整合外部 API
@@ -97,8 +97,8 @@ timeline
 ### Phase 3: Advanced Patterns (進階模式) (第 8-14 天)
 
 **📖 Tutorials (教學)**:
-- [x] [06_multi_agent_systems.md](./adk_training/multi_agent_systems)
-- [x] [07_loop_agents.md](./adk_training/loop_agents)
+- [x] [06_multi_agent_systems.md](./adk_training/06_multi_agent_systems.md)
+- [x] [07_loop_agents.md](./adk_training/07_loop_agents.md)
 - [ ] [08_state_memory.md](./adk_training/state_memory)
 
 **🎯 Goals (目標)**:
@@ -118,7 +118,7 @@ timeline
 **📖 Tutorials (教學)**:
 - [ ] [09_callbacks_guardrails.md](./adk_training/callbacks_guardrails)
 - [ ] [10_evaluation_testing.md](./adk_training/evaluation_testing)
-- [x] [11_built_in_tools_grounding.md](./adk_training/built_in_tools_grounding)
+- [x] [11_built_in_tools_grounding.md](./adk_training/11_built_in_tools_grounding.md)
 
 **🎯 Goals (目標)**:
 - 實作安全護欄
@@ -159,7 +159,7 @@ timeline
 ### Phase 6: Enterprise Integration (企業整合) (第 29-42 天)
 
 **📖 Tutorials (教學)**:
-- [x] [16_mcp_integration.md](./adk_training/mcp_integration)
+- [x] [16_mcp_integration.md](./adk_training/16_mcp_integration.md)
 - [ ] [17_agent_to_agent.md](./adk_training/agent_to_agent)
 - [ ] [18_events_observability.md](./adk_training/events_observability)
 - [ ] [19_artifacts_files.md](./adk_training/artifacts_files)

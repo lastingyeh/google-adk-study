@@ -280,6 +280,5 @@ sequenceDiagram
 - **資料處理**：提取 → 轉換 → 驗證 → 載入 (ETL)。
 - **品質控制**：建立 → 審查 → 修復 → 核准。
 
-## 後續步驟
-
-- 🚀 **教學 05：平行處理** - 學習如何同時執行 agents 以提高速度。
+## 程式碼實現 (Code Implementation)
+- blog-pipeline：[程式碼連結](../../../python/agents/blog-pipeline/README.md)

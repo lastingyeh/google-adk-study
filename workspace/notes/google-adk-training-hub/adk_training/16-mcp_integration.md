@@ -595,8 +595,5 @@ mcp_tools = MCPToolset(
 - ✅ **OAuth2 驗證** 用於安全的生產部署。
 - ✅ 可用超過 100 個社群 MCP 伺服器。
 
-**後續步驟**:
-
-- **教學 17**: 學習代理程式對代理程式 (A2A) 通訊。
-- **教學 18**: 掌握事件與可觀察性。
-- **教學 19**: 實作成品與檔案管理。
+## 程式碼實現 (Code Implementation)
+- mcp-agent：[程式碼連結](../../../python/agents/mcp-agent/README.md)

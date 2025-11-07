@@ -1062,3 +1062,6 @@ if __name__ == '__main__':
 - **錯誤："Maps grounding not available"**：請確保您使用的是 VertexAI API，而不是 AI Studio API。
 - **問題："Search results not appearing in response"**：確保您的提示需要最新資訊，並在代理程式的指令中明確指示使用搜尋。
 - **問題："Grounding metadata not accessible"**：元資料是暫時的，只能在執行期間或執行後立即存取。
+
+## 程式碼實現 (Code Implementation)
+- grounding-agent：[程式碼連結](../../../python/agents/grounding-agent/README.md)
