@@ -5,14 +5,12 @@
 根據輸入名稱 {{{package name}}} 建立以下目錄結構
 
 ## 執行步驟
-1. 從使用者提供檔案名稱建立根據範本建立目錄結構和相關檔案。
+1. 從使用者提供檔案名稱建立根據範本建立目錄結構和相關檔案 (不需包含內容實現)。
 檔案內容參考以下範本：
 - 命名規則：參考範例-{{{package name}}}是`travel-planner`，則{{{agent name}}}應為`travel_planner`。
 - 目錄結構：
   ```plaintext
   {{{package name}}}/
-  ├── .python-version
-  ├── main.py
   ├── Makefile
   ├── README.md
   ├── requirements.txt

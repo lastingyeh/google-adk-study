@@ -56,8 +56,8 @@ timeline
 ### Phase 1: Core Concepts (核心概念) (第 1-3 天)
 
 **📖 Tutorials (教學)**:
-- [x] [01_hello_world_agent.md](./adk_training/01_hello_world_agent.md)
-- [x] [02_function_tools.md](./adk_training/02_function_tools.md)
+- [x] [01-hello_world_agent.md](./adk_training/01-hello_world_agent.md)
+- [x] [02-function_tools.md](./adk_training/02-function_tools.md)
 
 **🎯 Goals (目標)**:
 - 了解 Agent 的生命週期
@@ -74,9 +74,9 @@ timeline
 ### Phase 2: Workflow Patterns (工作流模式) (第 4-7 天)
 
 **📖 Tutorials (教學)**:
-- [x] [03_openapi_tools.md](./adk_training/03_openapi_tools.md)
-- [x] [04_sequential_workflows.md](./adk_training/04_sequential_workflows.md)
-- [x] [05_parallel_processing.md](./adk_training/05_parallel_processing.md)
+- [x] [03-openapi_tools.md](./adk_training/03-openapi_tools.md)
+- [x] [04-sequential_workflows.md](./adk_training/04-sequential_workflows.md)
+- [x] [05-parallel_processing.md](./adk_training/05-parallel_processing.md)
 
 **🎯 Goals (目標)**:
 - 整合外部 API
@@ -97,9 +97,9 @@ timeline
 ### Phase 3: Advanced Patterns (進階模式) (第 8-14 天)
 
 **📖 Tutorials (教學)**:
-- [x] [06_multi_agent_systems.md](./adk_training/06_multi_agent_systems.md)
-- [x] [07_loop_agents.md](./adk_training/07_loop_agents.md)
-- [ ] [08_state_memory.md](./adk_training/state_memory)
+- [x] [06-multi_agent_systems.md](./adk_training/06-multi_agent_systems.md)
+- [x] [07-loop_agents.md](./adk_training/07-loop_agents.md)
+- [x] [08-state_memory.md](./adk_training/08-state_memory.md)
 
 **🎯 Goals (目標)**:
 - 設計多 Agent 系統
@@ -116,9 +116,9 @@ timeline
 ### Phase 4: Production Foundations (生產基礎) (第 15-21 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [09_callbacks_guardrails.md](./adk_training/callbacks_guardrails)
-- [ ] [10_evaluation_testing.md](./adk_training/evaluation_testing)
-- [x] [11_built_in_tools_grounding.md](./adk_training/11_built_in_tools_grounding.md)
+- [ ] [09-callbacks_guardrails.md](./adk_training/callbacks_guardrails)
+- [ ] [10-evaluation_testing.md](./adk_training/evaluation_testing)
+- [x] [11-built_in_tools_grounding.md](./adk_training/11-built_in_tools_grounding.md)
 
 **🎯 Goals (目標)**:
 - 實作安全護欄
@@ -139,10 +139,10 @@ timeline
 ### Phase 5: Real-Time & Streaming (即時與串流) (第 22-28 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [12_planners_thinking.md](./adk_training/planners_thinking)
-- [ ] [13_code_execution.md](./adk_training/code_execution)
-- [ ] [14_streaming_sse.md](./adk_training/streaming_sse)
-- [ ] [15_live_api_audio.md](./adk_training/live_api_audio)
+- [ ] [12-planners_thinking.md](./adk_training/planners_thinking)
+- [ ] [13-code_execution.md](./adk_training/code_execution)
+- [ ] [14-streaming_sse.md](./adk_training/streaming_sse)
+- [ ] [15-live_api_audio.md](./adk_training/live_api_audio)
 
 **🎯 Goals (目標)**:
 - 掌握進階推理
@@ -159,10 +159,10 @@ timeline
 ### Phase 6: Enterprise Integration (企業整合) (第 29-42 天)
 
 **📖 Tutorials (教學)**:
-- [x] [16_mcp_integration.md](./adk_training/16_mcp_integration.md)
-- [ ] [17_agent_to_agent.md](./adk_training/agent_to_agent)
-- [ ] [18_events_observability.md](./adk_training/events_observability)
-- [ ] [19_artifacts_files.md](./adk_training/artifacts_files)
+- [x] [16-mcp_integration.md](./adk_training/16-mcp_integration.md)
+- [ ] [17-agent_to_agent.md](./adk_training/agent_to_agent)
+- [ ] [18-events_observability.md](./adk_training/events_observability)
+- [ ] [19-artifacts_files.md](./adk_training/artifacts_files)
 
 **🎯 Goals (目標)**:
 - 整合 MCP 協定
@@ -183,10 +183,10 @@ timeline
 ### Phase 7: Production Mastery (生產精通) (第 43-56 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [20_yaml_configuration.md](./adk_training/yaml_configuration)
-- [ ] [21_multimodal_image.md](./adk_training/multimodal_image)
-- [ ] [22_model_selection.md](./adk_training/model_selection)
-- [ ] [23_production_deployment.md](./adk_training/production_deployment)
+- [ ] [20-yaml_configuration.md](./adk_training/yaml_configuration)
+- [ ] [21-multimodal_image.md](./adk_training/multimodal_image)
+- [ ] [22-model_selection.md](./adk_training/model_selection)
+- [ ] [23-production_deployment.md](./adk_training/production_deployment)
 
 **🎯 Goals (目標)**:
 - 掌握配置管理
@@ -203,8 +203,8 @@ timeline
 ### Phase 8: Advanced Topics (進階主題) (第 57+ 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [24_advanced_observability.md](./adk_training/advanced_observability)
-- [ ] [34_pubsub_adk_integration.md](./adk_training/pubsub_adk_integration)
+- [ ] [24-advanced_observability.md](./adk_training/advanced_observability)
+- [ ] [34-pubsub_adk_integration.md](./adk_training/pubsub_adk_integration)
 
 **🎯 Goals (目標)**:
 - 掌握 Pub/Sub 模式
@@ -226,36 +226,36 @@ timeline
 
 - **Focus (焦點)**: 外部服務整合、API 設計、身份驗證
 - **Key Tutorials (關鍵教學)**:
-  - `03_openapi_tools.md`
-  - `16_mcp_integration.md`
-  - `24-34_pubsub_integration.md`
+  - `03-openapi_tools.md`
+  - `16-mcp_integration.md`
+  - `24~34_pubsub_integration.md`
 - **Skills (技能)**: REST API 設計、OAuth 流程、Webhook 處理
 
 ### Performance Optimization Expert (性能優化專家)
 
 - **Focus (焦點)**: 速度、成本與品質優化
 - **Key Tutorials (關鍵教學)**:
-  - `05_parallel_processing.md`
-  - `12_planners_thinking.md`
-  - `22_model_selection.md`
+  - `05-parallel_processing.md`
+  - `12-planners_thinking.md`
+  - `22-model_selection.md`
 - **Skills (技能)**: 平行處理、模型調校、成本管理
 
 ### Enterprise Architect (企業架構師)
 
 - **Focus (焦點)**: 大規模系統、可觀測性、安全性
 - **Key Tutorials (關鍵教學)**:
-  - `17_agent_to_agent.md`
-  - `18_events_observability.md`
-  - `23_production_deployment.md`
+  - `17-agent_to_agent.md`
+  - `18-events_observability.md`
+  - `23-production_deployment.md`
 - **Skills (技能)**: 分散式系統、監控、合規性
 
 ### AI Product Builder (AI 產品建構者)
 
 - **Focus (焦點)**: 使用者體驗、多模態、即時互動
 - **Key Tutorials (關鍵教學)**:
-  - `14_streaming_sse.md`
-  - `15_live_api_audio.md`
-  - `21_multimodal_image.md`
+  - `14-streaming_sse.md`
+  - `15-live_api_audio.md`
+  - `21-multimodal_image.md`
 - **Skills (技能)**: UX 設計、即時系統、多模態 AI
 
 ---

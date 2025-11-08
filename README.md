@@ -291,3 +291,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 01: Hello World Agent - Build Your First AI Agent with Google ADK](https://raphaelmansuy.github.io/adk_training/docs/hello_world_agent)
 
 </details>
+
+### 🕗 Day 17
+
+<details>
+<summary>
+教學示範建構個人化導師：利用會話狀態與 user/app/temp 前綴記錄偏好、主題與測驗分數，搜尋過往會話支援進度回顧與自適應教學。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md)
+- [personal tutor](./workspace/python/agents/personal-tutor/)
+
+#### **參考資源**
+- [Tutorial 08: State Memory - Managing Conversation Context and Data](https://raphaelmansuy.github.io/adk_training/docs/state_memory)
+
+</details>
