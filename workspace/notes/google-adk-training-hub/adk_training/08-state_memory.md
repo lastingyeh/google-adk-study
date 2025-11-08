@@ -743,5 +743,4 @@ root_agent = Agent(
 ---
 
 ## 程式碼實現 (Code Implementation)
-- **Personal Learning Tutor**：[程式碼連結](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial08/README.md)
-
+- **Personal Tutor**：[程式碼連結](../../../python/agents/personal-tutor/)
