@@ -1,0 +1,4 @@
+google-adk>=1.15.1
+pytest
+flake8
+black

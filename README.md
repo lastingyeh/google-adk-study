@@ -308,3 +308,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 08: State Memory - Managing Conversation Context and Data](https://raphaelmansuy.github.io/adk_training/docs/state_memory)
 
 </details>
+
+### 🕗 Day 18
+
+<details>
+<summary>
+教學介紹ADK代理回呼：生命週期、模型、工具六鉤子；可阻擋不當內容、驗證參數、過濾PII、記錄與追蹤指標；示範內容審核助理實作護欄、安全指令、狀態管理與最佳實務。強化安全控制模式與錯誤處理測試範例涵蓋
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/09-callbacks_guardrails.md)
+- [content moderator](./workspace/python/agents/content-moderator/)
+
+#### **參考資源**
+- [Tutorial 09: Callbacks & Guardrails - Control Flow and Monitoring](https://raphaelmansuy.github.io/adk_training/docs/callbacks_guardrails)
+
+</details>

@@ -116,7 +116,7 @@ timeline
 ### Phase 4: Production Foundations (生產基礎) (第 15-21 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [09-callbacks_guardrails.md](./adk_training/callbacks_guardrails)
+- [x] [09-callbacks_guardrails.md](./adk_training/09-callbacks_guardrails.md)
 - [ ] [10-evaluation_testing.md](./adk_training/evaluation_testing)
 - [x] [11-built_in_tools_grounding.md](./adk_training/11-built_in_tools_grounding.md)
 
