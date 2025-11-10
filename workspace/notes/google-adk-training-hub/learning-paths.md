@@ -117,7 +117,7 @@ timeline
 
 **📖 Tutorials (教學)**:
 - [x] [09-callbacks_guardrails.md](./adk_training/09-callbacks_guardrails.md)
-- [ ] [10-evaluation_testing.md](./adk_training/evaluation_testing)
+- [x] [10-evaluation_testing.md](./adk_training/10-evaluation_testing.md)
 - [x] [11-built_in_tools_grounding.md](./adk_training/11-built_in_tools_grounding.md)
 
 **🎯 Goals (目標)**:

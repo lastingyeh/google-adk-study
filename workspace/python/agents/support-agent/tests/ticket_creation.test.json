@@ -1,0 +1,54 @@
+{
+  "eval_set_id": "ticket_creation_test",
+  "name": "工單建立測試",
+  "description": "測試工單建立流程與知識庫搜尋的整合",
+  "eval_cases": [
+    {
+      "eval_id": "urgent_account_lock_test",
+      "conversation": [
+        {
+          "invocation_id": "invocation_1",
+          "user_content": {
+            "role": "user",
+            "parts": [
+              {
+                "text": "My account is completely locked and I can't access anything. This is urgent!"
+              }
+            ]
+          },
+          "final_response": {
+            "role": "model",
+            "parts": [
+              {
+                "text": "I found an article about account management. It suggests going to example.com/account to manage your account settings. Since your account is locked and you can't access it, I can create an urgent support ticket to get this resolved as quickly as possible. Would you like me to do that?"
+              }
+            ]
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call_1",
+                "name": "search_knowledge_base",
+                "args": {
+                  "query": "account locked"
+                }
+              }
+            ],
+            "tool_responses": [
+              {
+                "id": "call_1",
+                "name": "search_knowledge_base",
+                "response": {
+                  "status": "success",
+                  "report": "Found article about account management",
+                  "data": "Go to example.com/account to manage your account settings."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "creation_timestamp": 1759974000.0
+}
