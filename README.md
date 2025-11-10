@@ -330,20 +330,6 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 <details>
 <summary>
-我來閱讀這份文件並建立摘要。
-
-讀取 [](file:///Users/cfh00543956/Desktop/Labs/google-adk-study/workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md#1-1)，1 至 100 行
-
-讓我繼續閱讀以了解完整內容。
-
-讀取 [](file:///Users/cfh00543956/Desktop/Labs/google-adk-study/workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md#100-100)，100 至 300 行
-
-根據文件內容,這是一份關於 Google ADK (Agent Development Kit) 評估與測試的教學文件。以下是 100 字內的摘要:
-
----
-
-**摘要:**
-
 本教學介紹如何使用 pytest 和 AgentEvaluator 系統性地測試 AI agents。涵蓋測試金字塔架構:單元測試(77%)驗證工具函式與設定、整合測試(9%)驗證工作流程協調、評估測試(14%)使用 AgentEvaluator 評估軌跡與回應品質。重點在於 AI agents 的非確定性特性需要質化評估而非傳統斷言測試。提供完整實作範例,包含 22 個綜合測試、EvalSet JSON 結構描述,以及生產環境最佳實踐。
 </summary>
 
