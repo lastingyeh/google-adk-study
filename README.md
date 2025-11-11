@@ -342,3 +342,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 10: Evaluation & Testing - Quality Assurance for Agents](https://raphaelmansuy.github.io/adk_training/docs/evaluation_testing)
 
 </details>
+
+### 🕗 Day 20
+
+<details>
+<summary>
+本教學介紹 ADK 進階推理能力，包含三種規劃器：BuiltInPlanner 利用 Gemini 2.0+ 原生思維能力進行透明推理；PlanReActPlanner 提供結構化的計畫→推理→行動→觀察→重新規劃流程；BasePlanner 可建立自訂規劃策略。透過 ThinkingConfig 控制思維過程的顯示。規劃器讓代理在行動前先思考，提升複雜問題的推理品質與準確性，適用於多步驟工作流程與策略性問題解決。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/12-planners_thinking.md)
+- [content moderator](./workspace/python/agents/strategic-solver/)
+
+#### **參考資源**
+- [Tutorial 12: Planners & Thinking Configuration](https://raphaelmansuy.github.io/adk_training/docs/planners_thinking)
+
+</details>

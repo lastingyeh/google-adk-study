@@ -139,7 +139,7 @@ timeline
 ### Phase 5: Real-Time & Streaming (即時與串流) (第 22-28 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [12-planners_thinking.md](./adk_training/planners_thinking)
+- [x] [12-planners_thinking.md](./adk_training/12-planners_thinking.md)
 - [ ] [13-code_execution.md](./adk_training/code_execution)
 - [ ] [14-streaming_sse.md](./adk_training/streaming_sse)
 - [ ] [15-live_api_audio.md](./adk_training/live_api_audio)
