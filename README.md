@@ -359,3 +359,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 12: Planners & Thinking Configuration](https://raphaelmansuy.github.io/adk_training/docs/planners_thinking)
 
 </details>
+
+### 🕗 Day 21
+
+<details>
+<summary>
+本教學介紹了如何利用 Gemini 2.0+ 的 BuiltInCodeExecutor 功能，讓 AI 代理能夠動態生成並執行 Python 程式碼。此功能使代理能夠在 Google 安全的沙箱環境中進行精確的數學計算、資料分析和複雜運算，解決了大型語言模型在精確度上的限制。內容涵蓋了基本用法、實際應用（如財務計算機），並強調了與傳統函式工具相比的靈活性與強大功能，同時也說明了其安全考量與最佳實踐。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/13-code_execution.md)
+- [code calculator](./workspace/python/agents/code-calculator/)
+
+#### **參考資源**
+- [Tutorial 13: Code Execution - Dynamic Python Code Generation](https://raphaelmansuy.github.io/adk_training/docs/code_execution/)
+
+</details>
