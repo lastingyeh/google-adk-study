@@ -21,6 +21,7 @@
    - 若包含連結，需以 Markdown 連結格式呈現。
 3. 新增章節「程式碼實現 (Code Implementation)」，產出規範如下：
    - 範例程式碼連結: 提供對應範例程式碼的相對路徑連結，格式為 `- {範例名稱}：[程式碼連結](../../../python/agents/{範例名稱}/README.md)`。
+4. 檔案產生後，檢視檔案內容根據`workspace/notes/google-adk-training-hub/adk_training/README.md`格式插入表格內
 
 ## 預期輸出
 
@@ -45,3 +46,4 @@
 - 檢查必要內容是否有完整呈現，包括標題、重點筆記、程式碼範例、流程圖與表格等。
 - 驗證所有標頭內容是否保留原文。
 - 確認必要內容是否正確翻譯繁體中文。
+- 確認檔案正確更新在`workspace/notes/google-adk-training-hub/adk_training/README.md`
