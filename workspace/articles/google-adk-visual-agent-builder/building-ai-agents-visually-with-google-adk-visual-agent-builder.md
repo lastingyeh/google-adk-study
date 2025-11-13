@@ -106,7 +106,23 @@ adk web
 
 您可以透過聊天介面與它互動——只需描述您想建構的內容。
 
-![AI 助理](https://miro.medium.com/v2/resize:fit:1400/format:webp/0*NueIwCxHFAD6yFCb)
+```mermaid
+flowchart LR
+
+    A["設定面板<br/>代理屬性<br/>工具與子代理<br/>回呼函式"]
+    B["視覺化畫布<br/>代理階層<br/>即時更新<br/>可互動節點"]
+    C["AI 助理<br/>自然語言<br/>架構生成<br/>問答支援"]
+
+    A --> B
+    B --> C
+    C --> A
+
+    %% 色彩設定
+    style A fill:#d8ecff,stroke:#2b75b8,stroke-width:2px
+    style B fill:#f3e2ff,stroke:#8a2be2,stroke-width:2px
+    style C fill:#e6ffe6,stroke:#3c8d3c,stroke-width:2px
+```
+
 *圖表：視覺化代理建構器的三個整合面板協同工作，提供無縫的開發體驗*
 
 ## 逐步教學：建構一個研究代理
