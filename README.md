@@ -376,3 +376,23 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 13: Code Execution - Dynamic Python Code Generation](https://raphaelmansuy.github.io/adk_training/docs/code_execution/)
 
 </details>
+
+### 🕗 Day 22
+
+<details>
+<summary>
+Google ADK v1.18.0 推出了視覺化代理建構器，一個無程式碼的網頁介面，用於設計、設定和測試複雜的多代理系統。使用者可以透過拖放方式建立工作流程，或利用 Gemini 驅動的 AI 助理，以自然語言描述需求來自動生成完整的代理架構。此工具會產生標準的 ADK YAML 設定檔，加速了原型設計和開發流程，但目前仍處於早期版本，可能存在一些小問題。
+</summary>
+
+#### **詳細說明**：
+
+- [Building AI Agents Visually with Google ADK Visual Agent Builder 完整內容整理](./workspace/articles/google-adk-visual-agent-builder/building-ai-agents-visually-with-google-adk-visual-agent-builder.md)
+- [ADK Course #8 - NEW Visual Agent Builder | Agent Development Kit (ADK) 影片重點整理](./workspace/articles/google-adk-visual-agent-builder/theailanguage-No-Code%20Visual%20Agent%20Builder%20(v6).md)
+
+#### **參考資源**
+- [Building AI Agents Visually with Google ADK Visual Agent Builder](https://medium.com/google-cloud/building-ai-agents-visually-with-google-adk-visual-agent-builder-bb441e59a78c)
+- [ADK Course #8 - NEW Visual Agent Builder | Agent Development Kit (ADK)](https://www.youtube.com/watch?v=NxjbtiSvCc0)
+- [google-adk-visual-agent-builder-demo](https://github.com/thomas-chong/google-adk-visual-agent-builder-demo)
+- [No-Code Visual Agent Builder (v6)](https://github.com/theailanguage/adk_samples/tree/main/version_6_adk_nocode)
+
+</details>
