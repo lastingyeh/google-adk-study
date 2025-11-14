@@ -1,0 +1,263 @@
+<!--
+串流聊天客戶端 - 教學 14
+
+用於連接 SSE 端點的客戶端 JavaScript。
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>串流聊天客戶端</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        #messages {
+            border: 1px solid #ccc;
+            padding: 15px;
+            height: 400px;
+            overflow-y: auto;
+            background: #fafafa;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background: #e3f2fd;
+            margin-left: 20%;
+        }
+        .agent-message {
+            background: #f3e5f5;
+            margin-right: 20%;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        #input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #1565c0;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        .typing {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>串流聊天客戶端</h1>
+        <div id="messages"></div>
+        <div class="input-area">
+            <input type="text" id="input" placeholder="問一個問題..." disabled>
+            <button id="sendBtn" onclick="sendMessage()" disabled>傳送</button>
+        </div>
+        <div class="status" id="status">連線中...</div>
+    </div>
+
+    <script>
+        const messages = document.getElementById('messages');
+        const input = document.getElementById('input');
+        const sendBtn = document.getElementById('sendBtn');
+        const status = document.getElementById('status');
+        let eventSource = null;
+        let currentAgentMessage = null;
+
+        // 頁面載入時初始化
+        window.onload = function() {
+            status.textContent = '準備好聊天了！';
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.focus();
+        };
+
+        function sendMessage() {
+            const query = input.value.trim();
+            if (!query) return;
+
+            // 關閉現有連線
+            if (eventSource) {
+                eventSource.close();
+            }
+
+            // 重設 UI
+            input.disabled = true;
+            sendBtn.disabled = true;
+            status.textContent = '傳送中...';
+
+            // 新增使用者訊息
+            addMessage('user', query);
+
+            // 清除輸入框
+            input.value = '';
+
+            // 開始新的 SSE 連線
+            const url = `/chat/stream?query=${encodeURIComponent(query)}`;
+            eventSource = new EventSource(url);
+
+            eventSource.onopen = function() {
+                status.textContent = '正在串流回應...';
+                // 開始 agent 訊息
+                currentAgentMessage = addMessage('agent', '');
+                showTypingIndicator();
+            };
+
+            eventSource.onmessage = function(event) {
+                try {
+                    const data = JSON.parse(event.data);
+
+                    if (data.type === 'chunk') {
+                        // 將字塊新增至目前的 agent 訊息
+                        hideTypingIndicator();
+                        appendToAgentMessage(data.text);
+                    } else if (data.type === 'done') {
+                        // 回應完成
+                        hideTypingIndicator();
+                        status.textContent = '回應完成！';
+                        eventSource.close();
+                        resetInput();
+                    } else if (data.type === 'error') {
+                        // 發生錯誤
+                        hideTypingIndicator();
+                        addMessage('error', `錯誤: ${data.message}`);
+                        status.textContent = '發生錯誤';
+                        eventSource.close();
+                        resetInput();
+                    }
+                } catch (e) {
+                    console.error('解析錯誤:', e, '原始資料:', event.data);
+                    hideTypingIndicator();
+                    addMessage('error', '解析回應失敗');
+                    status.textContent = '解析錯誤';
+                    eventSource.close();
+                    resetInput();
+                }
+            };
+
+            eventSource.onerror = function(error) {
+                console.error('SSE 錯誤:', error);
+                hideTypingIndicator();
+                addMessage('error', '連線失敗');
+                status.textContent = '連線失敗';
+                eventSource.close();
+                resetInput();
+            };
+        }
+
+        function addMessage(type, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+
+            let sender = '';
+            if (type === 'user') {
+                sender = '你';
+            } else if (type === 'agent') {
+                sender = 'Agent';
+            } else if (type === 'error') {
+                sender = '錯誤';
+            }
+
+            messageDiv.innerHTML = `<strong>${sender}:</strong> <span class="content">${text}</span>`;
+            messages.appendChild(messageDiv);
+            messages.scrollTop = messages.scrollHeight;
+
+            return messageDiv;
+        }
+
+        function appendToAgentMessage(text) {
+            if (currentAgentMessage) {
+                const content = currentAgentMessage.querySelector('.content');
+                content.textContent += text;
+                messages.scrollTop = messages.scrollHeight;
+            }
+        }
+
+        function showTypingIndicator() {
+            if (currentAgentMessage) {
+                const content = currentAgentMessage.querySelector('.content');
+                content.innerHTML = '<span class="typing">輸入中...</span>';
+            }
+        }
+
+        function hideTypingIndicator() {
+            if (currentAgentMessage) {
+                const typing = currentAgentMessage.querySelector('.typing');
+                if (typing) {
+                    typing.remove();
+                }
+            }
+        }
+
+        function resetInput() {
+            setTimeout(() => {
+                input.disabled = false;
+                sendBtn.disabled = false;
+                status.textContent = '準備好接收下一則訊息';
+                input.focus();
+            }, 1000);
+        }
+
+        // 按下 Enter 鍵傳送訊息
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !input.disabled) {
+                sendMessage();
+            }
+        });
+
+        // 處理頁面卸載
+        window.onbeforeunload = function() {
+            if (eventSource) {
+                eventSource.close();
+            }
+        };
+    </script>
+</body>
+</html>

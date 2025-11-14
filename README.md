@@ -401,3 +401,21 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [STOP Using MCP Like This, Use MCP 2.0 Instead (Save 98% More Tokens)](https://youtu.be/jJMbz-xziZI?si=H77UrCQDVGYqfHH-)
 - [Code execution with MCP: Building more efficient agents](https://www.anthropic.com/engineering/code-execution-with-mcp)
 </details>
+
+### 🕗 Day 23
+
+<details>
+<summary>
+本教學文件旨在說明如何透過伺服器發送事件（SSE）技術在 ADK 中實現串流回應，以優化使用者體驗。相較於傳統的阻塞式回應，串流技術能夠在 AI 模型生成內容的同時，逐步地將文字傳送給使用者，從而提供即時的進度反饋。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/14-streaming_sse.md)
+- [streaming agent](./workspace/python/agents/streaming-agent/)
+- [demos](./workspace/python/agents/streaming-agent/demos/README.md)
+
+#### **參考資源**
+- [Tutorial 14: Streaming and Server-Sent Events (SSE) - Real-Time Responses](https://raphaelmansuy.github.io/adk_training/docs/streaming_sse)
+
+</details>

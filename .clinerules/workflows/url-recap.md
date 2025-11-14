@@ -16,7 +16,7 @@
 2. 根據本文完整內容輸出(嚴格限制)：
    - 規格標題規範，例如：`Prompt Engineering Fundamentals`->`提示工程基礎 (Prompt Engineering Fundamentals)`
    - 若包含程式碼範例，需完整呈現程式碼區塊並插入註解說明 (以繁體中文輸出)。
-   - 若包含流程圖，需轉換為 mermaid 時序圖格式並完整呈現。
+   - 若包含程式碼區塊的流程圖內容，需分析後根據結果轉換為 `mermaid 時序圖` 格式。
    - 若包含表格，需轉換為 Markdown 表格格式並完整呈現。
    - 若包含連結，需以 Markdown 連結格式呈現。
 3. 新增章節「程式碼實現 (Code Implementation)」，產出規範如下：

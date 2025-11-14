@@ -210,3 +210,6 @@ __marimo__/
 # Others
 .DS_Store
 Thumbs.db
+
+# Refs
+refs/
