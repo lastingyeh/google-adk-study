@@ -8,11 +8,13 @@
 
 ## 輸入規格
 
-- <url>: (必須) 網站連結
+根據使用者提供的輸入來源，可接受以下兩種參數格式：
+- <url>: 網站連結
+- <file>: 指定參考 `md`。
 
 ## 執行步驟
 
-1. 取得 <url> 網址完整內容
+1. 取得 <url> 或 <file> 完整內容
 2. 根據本文完整內容輸出(嚴格限制)：
    - 規格標題規範，例如：`Prompt Engineering Fundamentals`->`提示工程基礎 (Prompt Engineering Fundamentals)`
    - 若包含程式碼範例，需完整呈現程式碼區塊並插入註解說明 (以繁體中文輸出)。
@@ -20,14 +22,16 @@
    - 若包含表格，需轉換為 Markdown 表格格式並完整呈現。
    - 若包含連結，需以 Markdown 連結格式呈現。
 3. 新增章節「程式碼實現 (Code Implementation)」，產出規範如下：
-   - 範例程式碼連結: 提供對應範例程式碼的相對路徑連結，格式為 `- {範例名稱}：[程式碼連結](../../../python/agents/{範例名稱}/README.md)`。
+   - 範例程式碼連結: 提供對應範例程式碼的相對路徑連結，格式為 `- {範例名稱}：[程式碼連結](../../../python/agents/{範例名稱}/)`。
 4. 檔案產生後，檢視檔案內容根據`workspace/notes/google-adk-training-hub/adk_training/README.md`格式插入表格內
 
 ## 預期輸出
 
-文件儲存在指定目錄，檔案名稱格式參考`## 輸出規格`(嚴格遵循以下格式)
+文件儲存在指定目錄，檔案名稱格式需嚴格遵循以下格式
 
-- 檔案命名: 以網站主要頁面的標題命名 (若輸入 url -> https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/ -> 則檔名為 `openapi_tools.md` )。
+- 檔案命名:
+  - 若為 <url> 輸入，命名規則範例： (若連結名稱為 `https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/` -> 檔名為 `openapi_tools.md` )。
+  - 若為 <file> 輸入，命名規則範例： (若檔案名稱為 `15_live_api_audio.md` -> 檔名為 `15-live_api_audio.md`)。
 - 預設目錄：`workspace/notes/google-adk-training-hub`。
 - 若網站主題為： `Tutorial`相關，儲存目錄為 `workspace/notes/google-adk-training-hub/adk_training`。
 

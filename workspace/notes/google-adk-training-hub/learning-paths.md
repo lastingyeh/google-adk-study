@@ -142,7 +142,7 @@ timeline
 - [x] [12-planners_thinking.md](./adk_training/12-planners_thinking.md)
 - [x] [13-code_execution.md](./adk_training/13-code_execution.md)
 - [x] [14-streaming_sse.md](./adk_training/14-streaming_sse.md)
-- [ ] [15-live_api_audio.md](./adk_training/live_api_audio)
+- [x] [15-live_api_audio.md](./adk_training/live_api_audio)
 
 **🎯 Goals (目標)**:
 - 掌握進階推理

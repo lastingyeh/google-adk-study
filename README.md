@@ -419,3 +419,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 14: Streaming and Server-Sent Events (SSE) - Real-Time Responses](https://raphaelmansuy.github.io/adk_training/docs/streaming_sse)
 
 </details>
+
+### 🕗 Day 23
+
+<details>
+<summary>
+本教學介紹如何使用 Google ADK 建立具備即時音訊串流能力的代理程式。內容涵蓋設定雙向串流 API、音訊處理、SSE 串流技術，以及將音訊輸入整合到代理工作流程中。透過實作語音助理範例，展示如何實現語音指令識別與回應，提升使用者互動體驗。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/15-live_api_audio.md)
+- [voice assistant](./workspace/python/agents/voice-assistant/)
+
+#### **參考資源**
+- [Tutorial 15: Live API & Bidirectional Streaming with Audio](https://raphaelmansuy.github.io/adk_training/docs/live_api_audio)
+
+</details>
