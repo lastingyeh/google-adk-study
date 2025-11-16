@@ -39,12 +39,12 @@
 
 ```mermaid
 graph TD
-    A[A2A<br>協調器<br>(ADK 代理)] -->|RemoteA2aAgent<br>(localhost:8001)| B[研究代理<br>(ADK 伺服器)]
-    subgraph A [ ]
-        C[RemoteA2a<br>代理類別]
+    subgraph A["A2A 協調器 (ADK 代理)"]
+        C[RemoteA2a 代理類別]
     end
-    A -->|RemoteA2aAgent<br>(localhost:8002)| D[分析代理<br>(ADK 伺服器)]
-    A -->|RemoteA2aAgent<br>(localhost:8003)| E[內容代理<br>(ADK 伺服器)]
+    C -->|RemoteA2aAgent localhost:8001| B[研究代理 ADK 伺服器]
+    C -->|RemoteA2aAgent localhost:8002| D[分析代理 ADK 伺服器]
+    C -->|RemoteA2aAgent localhost:8003| E[內容代理 ADK 伺服器]
 ```
 
 ## 快速入門
