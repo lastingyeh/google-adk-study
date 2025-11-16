@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google ADK 學習儀表板</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Inter 字體 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 設置字體 */
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+            background-color: #111827; /* 深灰色背景 */
+            color: #F3F4F6; /* 淺灰色文字 */
+        }
+        /* 滾動條樣式 (美化) */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2D3748; /* 滾動條軌道顏色 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4A5568; /* 滾動條滑塊顏色 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096; /* 滑塊懸停顏色 */
+        }
+        /* 隱藏的 modal 基礎樣式 */
+        .modal {
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+        /* 顯示 modal */
+        .modal.flex {
+            display: flex;
+        }
+        /* 卡片自定義陰影 */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        .card-shadow:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        /* 標記完成的卡片樣式 */
+        .day-card.completed {
+            background-color: #1f2937; /* 深一點的背景 */
+            opacity: 0.7;
+        }
+        .day-card.completed .day-title {
+            text-decoration: line-through;
+            color: #9CA3AF; /* 標題變灰 */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 主容器 -->
+    <div class="container mx-auto p-4 md:p-8">
+        <!-- 標題 -->
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-white">
+                Google ADK 互動學習儀表板
+            </h1>
+            <p class="text-lg text-gray-400 mt-2">
+                您的 24 天 Google 代理開發工具包學習夥伴
+            </p>
+        </header>
+
+        <!-- 學習卡片網格 -->
+        <div id="dashboard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            <!-- JavaScript 將在此處動態插入卡片 -->
+        </div>
+    </div>
+
+    <!-- 彈出式 Modal (預設隱藏) -->
+    <div id="detail-modal" class="modal fixed inset-0 z-50 items-center justify-center overflow-auto bg-black bg-opacity-75 p-4">
+        <div class="relative w-full max-w-3xl mx-auto bg-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-700">
+            <!-- Modal 頂部 -->
+            <div class="flex items-start justify-between p-5 border-b border-gray-700">
+                <h2 id="modal-title" class="text-2xl font-semibold text-white">
+                    <!-- Modal 標題將動態填入 -->
+                </h2>
+                <!-- 關閉按鈕 -->
+                <button onclick="closeModal()" class="text-gray-400 bg-transparent hover:bg-gray-700 hover:text-white rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">關閉視窗</span>
+                </button>
+            </div>
+
+            <!-- Modal 內容 (可滾動) -->
+            <div id="modal-body" class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+                <!-- 詳細說明 -->
+                <div>
+                    <h3 class="text-lg font-semibold text-blue-400 mb-2">詳細說明：</h3>
+                    <p id="modal-description" class="text-base leading-relaxed text-gray-300">
+                        <!-- Modal 詳細說明將動態填入 -->
+                    </p>
+                </div>
+
+                <!-- 文件連結 -->
+                <div id="modal-docs-links-container">
+                    <h3 class="text-lg font-semibold text-green-400 mb-2">文件連結：</h3>
+                    <ul id="modal-docs-links" class="list-disc list-inside space-y-1 text-gray-300">
+                        <!-- 文件連結將動態填入 -->
+                    </ul>
+                </div>
+
+                <!-- 參考資源 -->
+                <div id="modal-refs-links-container">
+                    <h3 class="text-lg font-semibold text-purple-400 mb-2">參考資源：</h3>
+                    <ul id="modal-refs-links" class="list-disc list-inside space-y-1 text-gray-300">
+                        <!-- 參考資源將動態填入 -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 邏輯 -->
+    <script>
+        // 學習路線圖數據
+        const learningData = [
+            // Day 1
+            {
+                day: 1,
+                title: "了解 Google ADK 核心定義",
+                description: "在社群資源中匯集了由 Agent Development Kit (ADK) 社群所建立和維護的各類資源。內容涵蓋了入門教學、深度課程、代理程式開發的教學與示範、Java 版本的 ADK 資源，以及多國語言的文件翻譯。此外，頁面也提供了如何貢獻自己資源的指南，鼓勵社群成員參與並豐富 ADK 的生態系。",
+                docs: [
+                    { text: "文件連結", url: "./docs/google-adk-docs-community_summary.md" }
+                ],
+                refs: [
+                    { text: "Google ADK Getting Started", url: "https://google.github.io/adk-docs/community/#getting-started" },
+                    { text: "Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)", url: "https://www.youtube.com/watch?v=5ZmaWY7UX6k" },
+                    { text: "software-bug-assistant", url: "https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant" },
+                    { text: "Tools Make an Agent: From Zero to Assistant with ADK", url: "https://cloud.google.com/blog/topics/developers-practitioners/tools-make-an-agent-from-zero-to-assistant-with-adk?e=48754805?utm_source%3Dtwitter?utm_source%3Dlinkedin" },
+                    { text: "Tools for Agents: ADK Tools list", url: "https://google.github.io/adk-docs/tools/" }
+                ]
+            },
+            // Day 2
+            {
+                day: 2,
+                title: "設計 copilot 互動教學設計模式",
+                description: "取得目標學習專案的相關資源，並設計互動式教學模式以協助學習者更有效地掌握專案內容。(未完成)",
+                docs: [
+                    { text: "文件連結", url: ".github/chatmodes/repo-guiding-learning.chatmode.md" }
+                ],
+                refs: [
+                    { text: "專案相依連結", url: "./workspace/python/agents/software-bug-assistant/README.md" }
+                ]
+            },
+            // Day 3
+            {
+                day: 3,
+                title: "實做範例 software-bug-assistant 專案",
+                description: "了解如何使用 Google ADK 建立一個能夠協助識別和修復軟體錯誤的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。",
+                docs: [
+                    { text: "環境初始化流程", url: "./workspace/python/agents/software-bug-assistant/docs/INSTALLATION_GUIDE.md" },
+                    { text: "文件連結", url: "./workspace/python/agents/software-bug-assistant/README.md" }
+                ],
+                refs: [
+                    { text: "software-bug-assistant", url: "./workspace/python/agents/software-bug-assistant/" }
+                ]
+            },
+            // Day 4
+            {
+                day: 4,
+                title: "實做範例 youtube-shorts-agent 專案",
+                description: "了解如何使用 Google ADK 建立一個能夠協助生成和管理 YouTube Shorts 內容的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/python/agents/youtube-shorts-assistant/README.md" },
+                    { text: "學習訓練指引筆記", url: "./workspace/notes/google-adk-training-hub/README.md" }
+                ],
+                refs: [
+                    { text: "Getting started with Agent Development Kit", url: "https://www.youtube.com/watch?v=44C8u0CDtSo" },
+                    { text: "youtube-shorts-assistant 專案 Repo", url: "./workspace/python/agents/youtube-shorts-assistant/" },
+                    { text: "Google ADK Training Hub", url: "https://raphaelmansuy.github.io/adk_training/" }
+                ]
+            },
+            // Day 5
+            {
+                day: 5,
+                title: "實現範例 finance-assistant 專案",
+                description: "了解如何使用 Google ADK 建立一個能夠協助管理和分析財務數據的智能代理。包含基本 ADK Tools 的應用，並透過 asyncio.gather(*tasks) 平行處理任務與完整 Agent 測試案例實現。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/python/agents/finance-assistant/README.md" }
+                ],
+                refs: [
+                    { text: "Tutorial 02: Function Tools Implementation", url: "https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02" },
+                    { text: "finance-assistant", url: "./workspace/python/agents/finance-assistant/" },
+                    { text: "Tutorial 02: Function Tools - Give Your Agent Superpowers", url: "https://raphaelmansuy.github.io/adk_training/docs/function_tools" }
+                ]
+            },
+            // Day 6
+            {
+                day: 6,
+                title: "實現範例 chuck-norris-agent 專案",
+                description: "學習如何從 OpenAPI 規範中自動產生工具，使您的代理程式能夠與 REST API 互動，而無需手動編寫工具函式。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/python/agents/chuck-norris-agent/README.md" }
+                ],
+                refs: [
+                    { text: "Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs", url: "https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/" },
+                    { text: "教學 03：OpenAPI 工具 - REST API 整合", url: "./workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md" },
+                    { text: "chuck-norris-agent", url: "./workspace/python/agents/chuck-norris-agent/" },
+                    { text: "Tutorial 03: Chuck Norris OpenAPI Tools Agent", url: "https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/" }
+                ]
+            },
+            // Day 7
+            {
+                day: 7,
+                title: "Gemini 2.0+ 內建工具介紹",
+                description: "本教學介紹 Gemini 2.0+ 的內建工具,包含網路搜尋、地圖定位和企業搜尋功能,讓 AI 代理程式存取即時資訊。核心內容涵蓋:google_search 網路基礎工具、google_maps_grounding 位置服務(需 VertexAI)、enterprise_web_search 企業搜尋、GoogleSearchAgentTool 混合工具解決方案。同時介紹記憶體管理、工作流程控制、上下文載入等進階工具。透過實作研究助理範例,展示如何整合多種工具建立生產級代理程式系統,包含最佳實踐與疑難排解指南。",
+                docs: [
+                    { text: "文件連結 (此處重複，指向 chuck-norris-agent，可能為原始資料錯誤，暫時保留)", url: "./workspace/python/agents/chuck-norris-agent/README.md" }
+                ],
+                refs: [
+                    { text: "教學 11：內建工具與基礎 (Built-in Tools & Grounding)", url: "./workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md" },
+                    { text: "Grounding Agent", url: "./workspace/python/agents/grounding-agent/" }
+                ]
+            },
+            // Day 8
+            {
+                day: 8,
+                title: "模型內容協議 (MCP) 整合",
+                description: "本教學介紹如何使用模型內容協議 (MCP) 將外部工具和服務整合到 AI 代理程式中。透過 MCPToolset 連接 MCP 伺服器，讓代理程式能夠存取檔案系統、資料庫、API 等外部資源，並支援 OAuth 驗證與人機迴圈審批等進階功能。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/python/agents/mcp-agent/README.md" }
+                ],
+                refs: [
+                    { text: "教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議", url: "./workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md" },
+                    { text: "MCP Agent", url: "./workspace/python/agents/mcp-agent/" }
+                ]
+            },
+            // Day 9
+            {
+                day: 9,
+                title: "Google ADK 工作流程編排核心",
+                description: "Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任務，並行流程提升執行效率，迴圈流程迭代優化品質。組合策略：透過巢狀工作流程實現複雜代理編排，解決真實世界多步驟問題。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/workflows-orchestration.md" }
+                ],
+                refs: [
+                    { text: "Workflows & Orchestration", url: "https://raphaelmansuy.github.io/adk_training/docs/workflows-orchestration" }
+                ]
+            },
+            // Day 10
+            {
+                day: 10,
+                title: "循序工作流程 (SequentialAgent)",
+                description: "根據文件內容，這是一份關於 Google ADK 循序工作流程的教學，說明如何使用 `SequentialAgent` 連接多個 agents 建立部落格文章產生 pipeline。透過研究、寫作、編輯、格式化四個階段，展示如何使用 `output_key` 在 agents 間傳遞資料，適合需要按順序執行的任務流程。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/04-sequential_workflows.md" }
+                ],
+                refs: [
+                    { text: "教學 04：循序工作流程 - Agent Pipelines 重點說明", url: "./workspace/python/agents/blog-pipeline/README.md" },
+                    { text: "Blog Creation Pipeline", url: "./workspace/python/agents/blog-pipeline/" },
+                    { text: "Tutorial 04: Sequential Workflows - Build Agent Pipelines", url: "https://raphaelmansuy.github.io/adk_training/docs/sequential_workflows" }
+                ]
+            },
+            // Day 11
+            {
+                day: 11,
+                title: "平行處理 (ParallelAgent)",
+                description: "本教學介紹 `ParallelAgent` 同時執行多個獨立代理以提升效率，並運用「扇出/收集」模式：先平行收集資料（航班、飯店、活動），再循序合併結果成完整行程。適用於 I/O 密集型任務與多源資料收集。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/05-parallel_processing.md" }
+                ],
+                refs: [
+                    { text: "教學 05：平行處理 - 旅遊規劃系統", url: "./workspace/python/agents/travel-planner/README.md" },
+                    { text: "Travel Planner", url: "./workspace/python/agents/travel-planner/" },
+                    { text: "Tutorial 05: Parallel Processing - Run Multiple Agents Simultaneously", url: "https://raphaelmansuy.github.io/adk_training/docs/parallel_processing" }
+                ]
+            },
+            // Day 12
+            {
+                day: 12,
+                title: "多代理協調流程",
+                description: "本教學示範建構複雜的多代理協調流程，結合並行與循序模式。以內容發布系統為例，採用扇出/收集架構：並行執行新聞、社群、專家三個研究管線，再循序進行內容創作、編輯、格式化，實現速度與品質兼顧的智能協作系統。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/06-multi_agent_systems.md" }
+                ],
+                refs: [
+                    { text: "教學 06：多代理系統 - 內容發布系統", url: "./workspace/python/agents/content-publisher/README.md" },
+                    { text: "Content Publisher", url: "./workspace/python/agents/content-publisher/" },
+                    { text: "Content Publisher Agent Architecture", url: "./workspace/python/agents/content-publisher/agent_architecture.md" },
+                    { text: "Tutorial 06: Multi-Agent Systems - Agents Working Together", url: "https://raphaelmansuy.github.io/adk_training/docs/multi_agent_systems/" }
+                ]
+            },
+            // Day 13
+            {
+                day: 13,
+                title: "循環代理 (LoopAgent) 文章精煉",
+                description: "教學 07：循環代理文章精煉系統 - 使用 LoopAgent 實現自我改進的代理系統，透過評論者-精煉者模式進行迭代品質提升，具備智慧終止機制和完整測試覆蓋（62個測試），展示循環代理的實際應用。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/07-loop_agents.md" }
+                ],
+                refs: [
+                    { text: "教學 07：循環代理（Loop Agents）- 文章精煉系統", url: "./workspace/python/agents/essay-refiner/README.md" },
+                    { text: "Essay Refiner", url: "./workspace/python/agents/essay-refiner/" },
+                    { text: "Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns", url: "https://raphaelmansuy.github.io/adk_training/docs/loop_agents" }
+                ]
+            },
+            // Day 14
+            {
+                day: 14,
+                title: "ADK 核心能力、生產部署與進階模式",
+                description: "本系列涵蓋 ADK 核心能力：LLM 整合篇教授提示工程、接地技術（網路/資料/位置）、思維推理框架（內建思考、Plan-ReAct）、多輪對話及性能優化；生產部署篇介紹四種部署環境、可觀測性監控、服務組態與安全實踐；進階模式篇探討即時串流、MCP 協定、A2A 通訊及多模態整合；決策框架篇提供代理類型、工具選擇、部署策略的完整決策矩陣與實施清單，助您從開發到生產全面掌握 Google ADK。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/README.md" }
+                ],
+                refs: [
+                    { text: "LLM Integration", url: "https://raphaelmansuy.github.io/adk_training/docs/llm-integration" },
+                    { text: "Production & Deployment", url: "https://raphaelmansuy.github.io/adk_training/docs/production-deployment" },
+                    { text: "Advanced Patterns", url: "https://raphaelmansuy.github.io/adk_training/docs/advanced-patterns" },
+                    { text: "Decision Frameworks", url: "https://raphaelmansuy.github.io/adk_training/docs/decision-frameworks" }
+                ]
+            },
+            // Day 15
+            {
+                day: 15,
+                title: "完整學習路徑與速查備忘單",
+                description: "本資料提供 Google Agent Development Kit (ADK) 完整學習路徑，涵蓋從初學者到專家的 8 階段進程（57+ 天），包括代理建立、工作流程模式（Sequential/Parallel/Loop）、工具整合、狀態管理、生產部署等核心技能。附有快速參考備忘單，提供代碼範例、CLI 指令、最佳實踐與疑難排解，適合 AI 應用開發者系統學習與實作。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/README.md" }
+                ],
+                refs: [
+                    { text: "Learning Paths", url: "https://raphaelmansuy.github.io/adk_training/docs/learning-paths" },
+                    { text: "ADK Cheat Sheet - Complete Reference", url: "https://raphaelmansuy.github.io/adk_training/docs/adk-cheat-sheet" }
+                ]
+            },
+            // Day 16
+            {
+                day: 16,
+                title: "入門：驗證、Hello World 與參考指南",
+                description: "涵蓋驗證與平台選擇、入門範例建置、代理模式(循序平行迴圈)、工具整合、狀態管理、部署、安全權限、測試監控及最佳實務，並含成本管理、事件追蹤、錯誤處理與常見問題。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/README.md#六資源與支援" },
+                    { text: "00-setup_authentication", url: "./workspace/notes/google-adk-training-hub/adk_training/00-setup_authentication.md" },
+                    { text: "01-hello_world_agent", url: "./workspace/notes/google-adk-training-hub/adk_training/01-hello_world_agent.md" },
+                    { text: "hello-agent", url: "./workspace/python/agents/hello-agent/" }
+                ],
+                refs: [
+                    { text: "reference Guide", url: "https://raphaelmansuy.github.io/adk_training/docs/reference-guide" },
+                    { text: "Tutorial 00: Setup & Authentication", url: "https://raphaelmansuy.github.io/adk_training/docs/setup_authentication" },
+                    { text: "Tutorial 01: Hello World Agent", url: "https://raphaelmansuy.github.io/adk_training/docs/hello_world_agent" }
+                ]
+            },
+            // Day 17
+            {
+                day: 17,
+                title: "狀態與記憶體 (State Memory)",
+                description: "教學示範建構個人化導師：利用會話狀態與 user/app/temp 前綴記錄偏好、主題與測驗分數，搜尋過往會話支援進度回顧與自適應教學。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md" },
+                    { text: "personal tutor", url: "./workspace/python/agents/personal-tutor/" }
+                ],
+                refs: [
+                    { text: "Tutorial 08: State Memory - Managing Conversation Context and Data", url: "https://raphaelmansuy.github.io/adk_training/docs/state_memory" }
+                ]
+            },
+            // Day 18
+            {
+                day: 18,
+                title: "回呼與護欄 (Callbacks & Guardrails)",
+                description: "教學介紹ADK代理回呼：生命週期、模型、工具六鉤子；可阻擋不當內容、驗證參數、過濾PII、記錄與追蹤指標；示範內容審核助理實作護欄、安全指令、狀態管理與最佳實務。強化安全控制模式與錯誤處理測試範例涵蓋",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/09-callbacks_guardrails.md" },
+                    { text: "content moderator", url: "./workspace/python/agents/content-moderator/" }
+                ],
+                refs: [
+                    { text: "Tutorial 09: Callbacks & Guardrails - Control Flow and Monitoring", url: "https://raphaelmansuy.github.io/adk_training/docs/callbacks_guardrails" }
+                ]
+            },
+            // Day 19
+            {
+                day: 19,
+                title: "評估與測試 (Evaluation & Testing)",
+                description: "本教學介紹如何使用 pytest 和 AgentEvaluator 系統性地測試 AI agents。涵蓋測試金字塔架構:單元測試(77%)驗證工具函式與設定、整合測試(9%)驗證工作流程協調、評估測試(14%)使用 AgentEvaluator 評估軌跡與回應品質。重點在於 AI agents 的非確定性特性需要質化評估而非傳統斷言測試。提供完整實作範例,包含 22 個綜合測試、EvalSet JSON 結構描述,以及生產環境最佳實踐。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md" },
+                    { text: "support-agent (原始資料為 content moderator，修正為 support-agent)", url: "./workspace/python/agents/support-agent/" }
+                ],
+                refs: [
+                    { text: "Tutorial 10: Evaluation & Testing - Quality Assurance for Agents", url: "https://raphaelmansuy.github.io/adk_training/docs/evaluation_testing" }
+                ]
+            },
+            // Day 20
+            {
+                day: 20,
+                title: "規劃器與思維 (Planners & Thinking)",
+                description: "本教學介紹 ADK 進階推理能力，包含三種規劃器：BuiltInPlanner 利用 Gemini 2.0+ 原生思維能力進行透明推理；PlanReActPlanner 提供結構化的計畫→推理→行動→觀察→重新規劃流程；BasePlanner 可建立自訂規劃策略。透過 ThinkingConfig 控制思維過程的顯示。規劃器讓代理在行動前先思考，提升複雜問題的推理品質與準確性，適用於多步驟工作流程與策略性問題解決。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/12-planners_thinking.md" },
+                    { text: "strategic-solver (原始資料為 content moderator，修正為 strategic-solver)", url: "./workspace/python/agents/strategic-solver/" }
+                ],
+                refs: [
+                    { text: "Tutorial 12: Planners & Thinking Configuration", url: "https://raphaelmansuy.github.io/adk_training/docs/planners_thinking" }
+                ]
+            },
+            // Day 21
+            {
+                day: 21,
+                title: "程式碼執行 (Code Execution)",
+                description: "本教學介紹了如何利用 Gemini 2.0+ 的 BuiltInCodeExecutor 功能，讓 AI 代理能夠動態生成並執行 Python 程式碼。此功能使代理能夠在 Google 安全的沙箱環境中進行精確的數學計算、資料分析和複雜運算，解決了大型語言模型在精確度上的限制。內容涵蓋了基本用法、實際應用（如財務計算機），並強調了與傳統函式工具相比的靈活性與強大功能，同時也說明了其安全考量與最佳實踐。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/13-code_execution.md" },
+                    { text: "code calculator", url: "./workspace/python/agents/code-calculator/" }
+                ],
+                refs: [
+                    { text: "Tutorial 13: Code Execution - Dynamic Python Code Generation", url: "https://raphaelmansuy.github.io/adk_training/docs/code_execution/" }
+                ]
+            },
+            // Day 22
+            {
+                day: 22,
+                title: "視覺化代理建構器 & MCP 2.0",
+                description: "Google ADK v1.18.0 推出了視覺化代理建構器，一個無程式碼的網頁介面，用於設計、設定和測試複雜的多代理系統。使用者可以透過拖放方式建立工作流程，或利用 Gemini 驅動的 AI 助理，以自然語言描述需求來自動生成完整的代理架構。此工具會產生標準的 ADK YAML 設定檔，加速了原型設計和開發流程。同時介紹 MCP 2.0 (程式碼執行)，相較傳統 MCP 透過讓 AI 撰寫程式碼僅處理必要工具與資料，能節省 98% Token，大幅提升效率、可靠性與隱私。",
+                docs: [
+                    { text: "Building AI Agents Visually 完整內容整理", url: "./workspace/articles/google-adk-visual-agent-builder/building-ai-agents-visually-with-google-adk-visual-agent-builder.md" },
+                    { text: "Visual Agent Builder 影片重點整理", url: "./workspace/articles/google-adk-visual-agent-builder/theailanguage-No-Code%20Visual%20Agent%20Builder%20(v6).md" },
+                    { text: "Code execution with MCP (MCP 2.0)", url: "./workspace/articles/mcp/1-STOP%20Using%20MCP%20Like%20This,%20Use%20MCP%202.0%20Instead%20(Save%2098%25%20More%20Tokens).md" }
+                ],
+                refs: [
+                    { text: "Building AI Agents Visually with Google ADK Visual Agent Builder (Medium)", url: "https://medium.com/google-cloud/building-ai-agents-visually-with-google-adk-visual-agent-builder-bb441e59a78c" },
+                    { text: "ADK Course #8 - NEW Visual Agent Builder (YouTube)", url: "https://www.youtube.com/watch?v=NxjbtiSvCc0" },
+                    { text: "visual-agent-builder-demo (GitHub)", url: "https://github.com/thomas-chong/google-adk-visual-agent-builder-demo" },
+                    { text: "No-Code Visual Agent Builder (v6) Sample", url: "https://github.com/theailanguage/adk_samples/tree/main/version_6_adk_nocode" },
+                    { text: "STOP Using MCP Like This, Use MCP 2.0 Instead (YouTube)", url: "https://youtu.be/jJMbz-xziZI?si=H77UrCQDVGYqfHH-" },
+                    { text: "Code execution with MCP (Anthropic Blog)", url: "https://www.anthropic.com/engineering/code-execution-with-mcp" }
+                ]
+            },
+            // Day 23 (合併了兩個 Day 23)
+            {
+                day: 23,
+                title: "串流 (SSE) 與即時音訊",
+                description: "本教學文件旨在說明如何透過伺服器發送事件（SSE）技術在 ADK 中實現串流回應，以優化使用者體驗。並介紹如何使用 Google ADK 建立具備即時音訊串流能力的代理程式。內容涵蓋設定雙向串流 API、音訊處理、SSE 串流技術，以及將音訊輸入整合到代理工作流程中。透過實作語音助理範例，展示如何實現語音指令識別與回應，提升使用者互動體驗。",
+                docs: [
+                    { text: "串流(SSE)文件", url: "./workspace/notes/google-adk-training-hub/adk_training/14-streaming_sse.md" },
+                    { text: "streaming agent", url: "./workspace/python/agents/streaming-agent/" },
+                    { text: "demos", url: "./workspace/python/agents/streaming-agent/demos/README.md" },
+                    { text: "即時音訊文件", url: "./workspace/notes/google-adk-training-hub/adk_training/15-live_api_audio.md" },
+                    { text: "voice assistant", url: "./workspace/python/agents/voice-assistant/" }
+                ],
+                refs: [
+                    { text: "Tutorial 14: Streaming and Server-Sent Events (SSE)", url: "https://raphaelmansuy.github.io/adk_training/docs/streaming_sse" },
+                    { text: "Tutorial 15: Live API & Bidirectional Streaming with Audio", url: "https://raphaelmansuy.github.io/adk_training/docs/live_api_audio" }
+                ]
+            },
+            // Day 24
+            {
+                day: 24,
+                title: "多代理通訊 (A2A)",
+                description: "本教學介紹如何使用 Google ADK 建立多代理通訊系統，實現代理之間的協同工作。內容涵蓋 A2A 通訊架構、訊息傳遞機制、同步與非同步通訊模式，以及錯誤處理與重試策略。透過實作 A2A Orchestrator 範例，展示如何協調多個代理共同完成複雜任務，提升系統的靈活性與擴展性。",
+                docs: [
+                    { text: "文件連結", url: "./workspace/notes/google-adk-training-hub/adk_training/17-agent_to_agent.md" },
+                    { text: "a2a orchestrator", url: "./workspace/python/agents/a2a-orchestrator/" }
+                ],
+                refs: [
+                    { text: "Tutorial 17: Agent-to-Agent (A2A) Communication", url: "https://raphaelmansuy.github.io/adk_training/docs/agent_to_agent" }
+                ]
+            }
+        ];
+
+        // 獲取 DOM 元素
+        const grid = document.getElementById('dashboard-grid');
+        const modal = document.getElementById('detail-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDescription = document.getElementById('modal-description');
+        const modalDocsLinks = document.getElementById('modal-docs-links');
+        const modalRefsLinks = document.getElementById('modal-refs-links');
+        const modalDocsContainer = document.getElementById('modal-docs-links-container');
+        const modalRefsContainer = document.getElementById('modal-refs-links-container');
+
+        // 從 localStorage 加載已完成的狀態
+        let completedStatus = JSON.parse(localStorage.getItem('adkLearningProgress')) || {};
+
+        // 動態生成卡片
+        learningData.forEach(day => {
+            const isCompleted = completedStatus[day.day] || false;
+
+            const card = document.createElement('div');
+            card.className = `day-card bg-gray-800 p-5 rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 card-shadow cursor-pointer flex flex-col justify-between ${isCompleted ? 'completed' : ''}`;
+            card.dataset.day = day.day;
+
+            // 卡片主要內容 (可點擊以打開 modal)
+            const cardContent = document.createElement('div');
+            cardContent.onclick = () => openModal(day.day);
+
+            // 卡片頂部 (天數)
+            const cardHeader = document.createElement('div');
+            cardHeader.className = 'flex justify-between items-center mb-3';
+            const dayBadge = document.createElement('span');
+            dayBadge.className = 'bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            dayBadge.textContent = `Day ${day.day}`;
+            cardHeader.appendChild(dayBadge);
+
+            // 卡片標題
+            const title = document.createElement('h2');
+            title.className = 'day-title text-lg font-semibold text-white mb-2';
+            title.textContent = day.title;
+
+            // 卡片描述 (簡短)
+            const description = document.createElement('p');
+            description.className = 'text-sm text-gray-400 line-clamp-3'; // 最多顯示 3 行
+            description.textContent = day.description;
+
+            cardContent.appendChild(cardHeader);
+            cardContent.appendChild(title);
+            cardContent.appendChild(description);
+
+            // 卡片底部 (標記完成)
+            const cardFooter = document.createElement('div');
+            cardFooter.className = 'mt-4 pt-4 border-t border-gray-700 flex items-center justify-end';
+
+            const checkboxLabel = document.createElement('label');
+            checkboxLabel.className = 'flex items-center text-sm text-gray-400 cursor-pointer';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = isCompleted;
+            checkbox.className = 'w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2';
+            checkbox.onchange = (e) => {
+                e.stopPropagation(); // 防止觸發 openModal
+                toggleComplete(day.day, e.target.checked);
+            };
+
+            checkboxLabel.appendChild(checkbox);
+            checkboxLabel.appendChild(document.createTextNode(' 標記為已完成'));
+
+            cardFooter.appendChild(checkboxLabel);
+
+            card.appendChild(cardContent);
+            card.appendChild(cardFooter);
+            grid.appendChild(card);
+        });
+
+        // 打開 Modal
+        function openModal(dayNum) {
+            const dayData = learningData.find(d => d.day === dayNum);
+            if (!dayData) return;
+
+            // 設置標題和描述
+            modalTitle.textContent = `Day ${dayData.day}: ${dayData.title}`;
+            modalDescription.textContent = dayData.description;
+
+            // 清空舊的連結
+            modalDocsLinks.innerHTML = '';
+            modalRefsLinks.innerHTML = '';
+
+            // 生成文件連結
+            if (dayData.docs && dayData.docs.length > 0) {
+                modalDocsContainer.style.display = 'block';
+                dayData.docs.forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.textContent = link.text;
+                    a.target = "_blank"; // 在新分頁中打開
+                    a.rel = "noopener noreferrer";
+                    a.className = "text-blue-400 hover:text-blue-300 hover:underline";
+                    li.appendChild(a);
+                    modalDocsLinks.appendChild(li);
+                });
+            } else {
+                modalDocsContainer.style.display = 'none'; // 如果沒有文件連結則隱藏
+            }
+
+            // 生成參考資源
+            if (dayData.refs && dayData.refs.length > 0) {
+                modalRefsContainer.style.display = 'block';
+                dayData.refs.forEach(link => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.url;
+                    a.textContent = link.text;
+                    a.target = "_blank"; // 在新分頁中打開
+                    a.rel = "noopener noreferrer";
+                    a.className = "text-purple-400 hover:text-purple-300 hover:underline";
+                    li.appendChild(a);
+                    modalRefsLinks.appendChild(li);
+                });
+            } else {
+                modalRefsContainer.style.display = 'none'; // 如果沒有參考資源則隱藏
+            }
+
+            // 顯示 Modal
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // 禁止背景滾動
+        }
+
+        // 關閉 Modal
+        function closeModal() {
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto'; // 恢復背景滾動
+        }
+
+        // 標記完成/未完成
+        function toggleComplete(dayNum, isCompleted) {
+            const card = document.querySelector(`.day-card[data-day='${dayNum}']`);
+            if (isCompleted) {
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
+            }
+            // 保存狀態到 localStorage
+            completedStatus[dayNum] = isCompleted;
+            localStorage.setItem('adkLearningProgress', JSON.stringify(completedStatus));
+        }
+
+        // 點擊 Modal 背景時關閉
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // 按 ESC 鍵關閉 Modal
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+    </script>
+</body>
+</html>
