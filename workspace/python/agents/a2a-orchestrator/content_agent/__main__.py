@@ -1,0 +1,107 @@
+"""
+內容代理 - A2A 伺服器 (舊版)
+
+一個專門用於內容創作、寫作與摘要的代理。
+作為一個 A2A 伺服器運行於 localhost:9003。
+注意：此檔案代表一種較舊的、手動設定 A2A 伺服器的方式，已被官方 ADK 的 `to_a2a()` 函式取代。
+保留此檔案僅供參考。
+
+### 程式碼流程註解
+
+#### 核心功能
+本腳本的主要功能是手動設定並啟動一個用於內容創作代理的 A2A (Agent-to-Agent) 伺服器。
+其結構與 `analysis_agent` 的 `__main__.py` 非常相似，但專為內容代理的技能和執行器而設定。
+
+#### 運作流程
+1.  **技能定義 (`AgentSkill`)**：定義了代理的核心能力，即 `content_skill`，
+    包括其 ID、名稱、描述、標籤和使用範例。
+2.  **代理卡片建立 (`AgentCard`)**：建立 `agent_card` 物件，詳細說明代理的元數據，
+    如名稱、描述、URL、版本、能力和技能。
+3.  **請求處理器設定 (`DefaultRequestHandler`)**：
+    -   建立一個請求處理器，將 `ContentAgentExecutor` (包含內容創作邏輯) 與 `InMemoryTaskStore` 連結起來。
+4.  **A2A 應用程式建立 (`A2AStarletteApplication`)**：
+    -   使用 `agent_card` 和 `request_handler` 建立 ASGI 應用程式實例。
+5.  **伺服器啟動 (`uvicorn.run`)**：
+    -   使用 `uvicorn` 在 `0.0.0.0:9003` 上運行 ASGI 應用程式，
+    -   使其可以接收來自協調器或其他服務的網路請求。
+
+### Mermaid 流程圖
+
+```mermaid
+graph TD
+    A[main() 函式] --> B(定義 AgentSkill);
+    B --> C(建立 AgentCard);
+    C --> D{建立 DefaultRequestHandler};
+    D -- 包含 --> E[ContentAgentExecutor];
+    D -- 包含 --> F[InMemoryTaskStore];
+    D --> G(建立 A2AStarletteApplication);
+    G --> H[uvicorn.run];
+
+    subgraph "伺服器啟動"
+        H
+    end
+```
+"""
+
+import uvicorn
+from a2a.server.apps import A2AStarletteApplication
+from a2a.server.request_handlers import DefaultRequestHandler
+from a2a.server.tasks import InMemoryTaskStore
+from a2a.types import (
+    AgentCapabilities,
+    AgentCard,
+    AgentSkill,
+)
+from .agent_executor import ContentAgentExecutor
+
+
+def main():
+    """啟動內容代理 A2A 伺服器。"""
+
+    # 定義內容創作技能
+    content_skill = AgentSkill(
+        id='content_creation',
+        name='內容創作與寫作',
+        description='創作書面內容、文章、摘要與文件',
+        tags=['內容', '寫作', '摘要', '文章'],
+        examples=[
+            '撰寫一份執行摘要',
+            '創建一篇關於技術趨勢的部落格文章',
+            '為研究發現生成一份內容摘要'
+        ],
+    )
+
+    # 建立代理卡片
+    agent_card = AgentCard(
+        name='內容創作代理',
+        description='專門用於創作書面內容、文章、摘要與文件的代理',
+        url='http://localhost:9003/',
+        version='1.0.0',
+        default_input_modes=['text'],
+        default_output_modes=['text'],
+        capabilities=AgentCapabilities(streaming=True),
+        skills=[content_skill],
+        supports_authenticated_extended_card=False,
+    )
+
+    # 建立請求處理器
+    request_handler = DefaultRequestHandler(
+        agent_executor=ContentAgentExecutor(),
+        task_store=InMemoryTaskStore(),
+    )
+
+    # 建立並啟動 A2A 伺服器
+    server = A2AStarletteApplication(
+        agent_card=agent_card,
+        http_handler=request_handler,
+    )
+
+    print("🚀 正在於 http://localhost:9003 啟動內容代理 A2A 伺服器")
+    print("✍️  代理專門從事內容創作與寫作")
+    print("🔗 代理卡片位於：http://localhost:9003/.well-known/agent.json")
+
+    uvicorn.run(server.build(), host='0.0.0.0', port=9003)
+
+
+if __name__ == '__main__':
+    main()

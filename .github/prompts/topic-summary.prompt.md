@@ -1,5 +1,6 @@
 ---
-mode: agent
+agent: agent
+description: 根據提供的網站連結，使用 Chrome DevTools MCP 工具分析網頁內容，並生成結構化的總結大綱。
 ---
 # 網站內容總結大綱生成器
 

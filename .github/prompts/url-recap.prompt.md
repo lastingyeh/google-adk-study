@@ -1,5 +1,6 @@
 ---
-mode: agent
+agent: agent
+description: 協助使用者從指定網站獲取 sitemap，解析並以 Markdown 儲存到對應資料夾
 ---
 ## 角色:
 

@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "a2a-orchestrator"
+version = "0.1.0"
+description = "教學 17：代理對代理（Agent-to-Agent）通訊 - A2A 協調器"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.15.1",
+]
+
+[tool.setuptools.packages.find]
+include = ["a2a_orchestrator*"]

@@ -21,3 +21,4 @@
 | 串流與伺服器發送事件 (Streaming and SSE) | [14-streaming_sse.md](./14-streaming_sse.md) | 實作使用伺服器發送事件 (SSE) 的串流回應，以提供即時、漸進式的輸出，改善使用者體驗。 | `streaming`, `sse`, `real-time`, `progressive-output`, `ux` |
 | Live API 與音訊 - 即時語音互動 | [15-live_api_audio.md](./15-live_api_audio.md) | 使用 Gemini 的 Live API 建立支援語音的代理程式，以進行即時音訊串流和語音對話。 | `live-api`, `audio`, `voice`, `real-time`, `streaming` |
 | 模型內容協議 (MCP) 整合 | [16-mcp_integration.md](./16-mcp_integration.md) | 使用模型內容協議 (MCP) 將外部工具和服務 (如檔案系統) 整合到代理程式中，擴展代理程式的功能。 | `mcp`, `integration`, `standard-protocol`, `toolset`, `filesystem` |
+| 代理人對代理人通訊 - 分散式系統 | [17-agent_to_agent.md](./17-agent_to_agent.md) | 透過代理人對代理人（agent-to-agent）的通訊、委派和協調，建構分散式代理人系統，以實現複雜的多代理人協同作業。 | `agent-to-agent`, `distributed-systems`, `delegation`, `coordination`, `multi-agent` |

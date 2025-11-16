@@ -1,0 +1,5 @@
+# 專案依賴套件
+# google-adk[a2a]：Google Agent Development Kit，包含 A2A (Agent-to-Agent) 通訊功能
+google-adk[a2a]>=1.15.1
+# requests：用於發送 HTTP 請求
+requests>=2.31.0

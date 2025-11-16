@@ -1,9 +1,7 @@
 ---
-mode: agent
+agent: agent
 name: 互動式學習專案建立器
 description: 根據指定的 GitHub repository，引導使用者逐步建立一個完整的學習專案，並提供 CLI 指令和檔案編輯建議。
-version: 1.0
-tags: [learning, project-based, cli, code-generation]
 ---
 
 # 互動式學習專案建立器

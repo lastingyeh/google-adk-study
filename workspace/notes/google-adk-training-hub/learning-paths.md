@@ -160,7 +160,7 @@ timeline
 
 **📖 Tutorials (教學)**:
 - [x] [16-mcp_integration.md](./adk_training/16-mcp_integration.md)
-- [ ] [17-agent_to_agent.md](./adk_training/agent_to_agent)
+- [x] [17-agent_to_agent.md](./adk_training/17-agent_to_agent.md)
 - [ ] [18-events_observability.md](./adk_training/events_observability)
 - [ ] [19-artifacts_files.md](./adk_training/artifacts_files)
 

@@ -1,0 +1,43 @@
+# pyproject.toml - Python 專案設定檔
+# 此檔案遵循 PEP 621 標準，用於定義專案的元數據和建置依賴。
+
+[build-system]
+# 定義建置此專案所需的套件。
+requires = ["setuptools>=61.0", "wheel"]
+# 指定用於建置專案的後端。
+build-backend = "setuptools.build_meta"
+
+[project]
+# 專案名稱，用於 PyPI 和套件管理。
+name = "research_agent"
+# 專案版本。
+version = "0.1.0"
+# 專案的簡短描述。
+description = "用於收集與分析資訊的 A2A 研究代理"
+# 專案作者。
+authors = [{name = "ADK Training"}]
+# 專案的運行時依賴。
+dependencies = [
+    # a2a-sdk 是舊版 A2A 實作所需的套件。
+    "a2a-sdk[http-server]>=0.3.0",
+    # httpx 用於發送非同步 HTTP 請求。
+    "httpx>=0.25.0",
+    # google-adk 是 Google Agent Development Kit 的核心套件。
+    "google-adk>=1.15.1"
+]
+# 專案所需的最低 Python 版本。
+requires-python = ">=3.10"
+
+[tool.setuptools]
+# 告訴 setuptools 要包含哪些套件。
+packages = ["research_agent"]
+
+[tool.setuptools.package-dir]
+# 將 research_agent 套件對應到當前目錄。
+research_agent = "."
+
+[project.scripts]
+# 定義一個命令列腳本入口點。
+# 當使用者安裝此套件並在終端執行 `research_agent` 時，
+# 將會執行 `research_agent.__main__` 模組中的 `main` 函式。
+research_agent = "research_agent.__main__:main"

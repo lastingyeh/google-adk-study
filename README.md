@@ -436,3 +436,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 15: Live API & Bidirectional Streaming with Audio](https://raphaelmansuy.github.io/adk_training/docs/live_api_audio)
 
 </details>
+
+### 🕗 Day 24
+
+<details>
+<summary>
+本教學介紹如何使用 Google ADK 建立多代理通訊系統，實現代理之間的協同工作。內容涵蓋 A2A 通訊架構、訊息傳遞機制、同步與非同步通訊模式，以及錯誤處理與重試策略。透過實作 A2A Orchestrator 範例，展示如何協調多個代理共同完成複雜任務，提升系統的靈活性與擴展性。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/17-agent_to_agent.md)
+- [a2a orchestrator](./workspace/python/agents/a2a-orchestrator/)
+
+#### **參考資源**
+- [Tutorial 17: Agent-to-Agent (A2A) Communication](https://raphaelmansuy.github.io/adk_training/docs/agent_to_agent)
+
+</details>

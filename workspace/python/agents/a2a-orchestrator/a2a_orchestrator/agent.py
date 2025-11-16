@@ -1,0 +1,196 @@
+"""
+官方 ADK A2A 協調器代理 - 代理對代理（Agent-to-Agent）通訊
+
+本範例展示了使用 RemoteA2aAgent 的官方 ADK 方法來進行分散式代理協調，
+以消費透過 'adk api_server --a2a' 公開的遠端代理。
+
+### 程式碼流程註解
+
+#### 核心功能
+本腳本定義了一個名為 `a2a_orchestrator` 的中央協調代理。
+此代理負責管理並委派任務給三個遠端的特化子代理：
+1.  `research_specialist`：負責網路研究與事實查核。
+2.  `data_analyst`：負責資料分析與洞察生成。
+3.  `content_writer`：負責內容創作與摘要撰寫。
+
+#### 運作流程
+1.  **初始化**：腳本首先匯入必要的 ADK 模組，並為三個遠端代理建立 `RemoteA2aAgent` 實例。每個遠端代理都透過其 `agent_card` URL 進行識別，該 URL 指向一個描述代理能力的 JSON 檔案。
+2.  **工具定義**：定義了兩個輔助工具：
+    - `check_agent_availability`：用於檢查遠端代理是否在線上且可正常通訊。
+    - `log_coordination_step`：用於在協調過程中記錄每個步驟，方便追蹤與除錯。
+3.  **協調器設定**：
+    - `root_agent` (協調器) 被設定為使用 `gemini-2.0-flash` 模型。
+    - `instruction` 參數提供了詳細的提示，指導協調器如何根據任務類型將工作委派給正確的子代理。
+    - `sub_agents` 參數將三個遠端代理註冊為協調器的子代理，使其能夠直接呼叫它們。
+    - `tools` 參數將上述定義的輔助工具提供給協調器使用。
+4.  **執行**：當協調器收到一個查詢時，它會根據其指示分析查詢內容，決定需要哪個（或哪些）子代理的技能，然後將相應的子任務委派出去。例如，一個需要研究和寫作的查詢會先被送到 `research_specialist`，其結果再交給 `content_writer` 進行處理。
+
+### Mermaid 流程圖
+
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant Orchestrator as 協調器 (root_agent)
+    participant Research as 研究代理
+    participant Analysis as 分析代理
+    participant Content as 內容代理
+
+    User->>Orchestrator: 提交查詢 (例如：「研究 AI 趨勢並撰寫摘要」)
+    Orchestrator->>Research: 委派研究任務
+    Research-->>Orchestrator: 回傳研究結果
+    Orchestrator->>Content: 根據研究結果委派撰寫任務
+    Content-->>Orchestrator: 回傳最終內容
+    Orchestrator-->>User: 回傳整合後的回應
+```
+"""
+
+# 匯入 ADK 核心模組
+from google.adk.agents import Agent
+from google.adk.agents.remote_a2a_agent import RemoteA2aAgent, AGENT_CARD_WELL_KNOWN_PATH
+from google.adk.tools import FunctionTool
+from google.genai import types
+
+
+def check_agent_availability(agent_name: str, base_url: str) -> dict:
+    """
+    檢查遠端 A2A 代理是否可用。
+
+    此函式會向遠端代理的 agent-card URL 發送一個 HTTP GET 請求，
+    以確認代理伺服器是否正在運行且可存取。
+
+    Args:
+        agent_name: 要檢查的代理名稱。
+        base_url: 遠端代理的基礎 URL (例如 http://localhost:8001)。
+
+    Returns:
+        一個包含檢查狀態、可用性與詳細報告的字典。
+    """
+    try:
+        # 匯入 requests 函式庫以發送 HTTP 請求
+        import requests
+        # 組合代理卡片的完整 URL
+        card_url = f"{base_url}{AGENT_CARD_WELL_KNOWN_PATH}"
+        # 發送 GET 請求，並設定 5 秒超時以避免無限等待
+        response = requests.get(card_url, timeout=5)
+
+        # 如果回應狀態碼為 200 (OK)，表示代理可用
+        if response.status_code == 200:
+            return {
+                "status": "success",
+                "available": True,
+                "report": f"代理 {agent_name} 可用",
+                "agent_card": response.json()  # 回傳代理的能力描述檔
+            }
+        else:
+            # 如果狀態碼不是 200，表示代理有問題
+            return {
+                "status": "error",
+                "available": False,
+                "report": f"代理 {agent_name} 回傳狀態 {response.status_code}"
+            }
+    except Exception as e:
+        # 捕捉請求過程中的任何例外狀況 (例如網路錯誤、超時)
+        return {
+            "status": "error",
+            "available": False,
+            "report": f"檢查 {agent_name} 失敗：{str(e)}"
+        }
+
+
+def log_coordination_step(step: str, agent_name: str = "") -> dict:
+    """
+    記錄協調步驟以供追蹤。
+
+    在複雜的多代理工作流程中，此函式提供了一個簡單的方法來記錄
+    協調器在每個階段的行為，方便開發者追蹤流程。
+
+    Args:
+        step: 描述目前步驟的字串。
+        agent_name: (可選) 此步驟涉及的代理名稱。
+
+    Returns:
+        一個包含成功狀態與日誌訊息的字典。
+    """
+    message = f"🎯 {step}"
+    if agent_name:
+        message += f" 與 {agent_name}"
+    print(message)  # 在伺服器控制台中印出日誌
+
+    # 回傳一個包含成功狀態與日誌訊息的字典，讓代理知道操作已完成
+    return {
+        "status": "success",
+        "report": message,
+        "step": step,
+        "agent": agent_name
+    }
+
+
+# --- 遠端代理定義 ---
+# 使用官方 ADK RemoteA2aAgent 類別來實例化遠端代理。
+# 每個實例都代表一個獨立運行的遠端服務。
+# `agent_card` URL 指向遠端代理伺服器自動產生的 .well-known/agent-card.json，
+# ADK 會使用這個檔案來了解遠端代理的能力。
+
+research_agent = RemoteA2aAgent(
+    name="research_specialist",
+    description="進行網路研究與事實查核",
+    # 指定研究代理的 agent-card 位置
+    agent_card=f"http://localhost:8001{AGENT_CARD_WELL_KNOWN_PATH}"
+)
+
+analysis_agent = RemoteA2aAgent(
+    name="data_analyst",
+    description="分析資料並產生洞察",
+    # 指定分析代理的 agent-card 位置
+    agent_card=f"http://localhost:8002{AGENT_CARD_WELL_KNOWN_PATH}"
+)
+
+content_agent = RemoteA2aAgent(
+    name="content_writer",
+    description="建立書面內容與摘要",
+    # 指定內容代理的 agent-card 位置
+    agent_card=f"http://localhost:8003{AGENT_CARD_WELL_KNOWN_PATH}"
+)
+
+# --- 主要協調器代理 ---
+# 使用官方 ADK 模式定義主要協調器代理 (root_agent)。
+# 這個代理是整個系統的核心，負責接收使用者請求並協調子代理完成任務。
+root_agent = Agent(
+    model="gemini-2.0-flash",
+    name="a2a_orchestrator",
+    description="使用官方 ADK A2A 協調多個遠端特化代理",
+    instruction="""
+        您是一個協調代理，使用官方的代理對代理（A2A）協定來協調特化的遠端代理。
+
+        **可用的遠端代理 (子代理):**
+
+        1. **research_specialist**: 用於網路研究、事實查核、時事。
+        2. **data_analyst**: 用於資料分析、統計、洞察。
+        3. **content_writer**: 用於內容創作、摘要、寫作。
+
+        **官方 ADK A2A 工作流程:**
+        1. 根據使用者請求的性質，分析並決定需要哪個子代理。
+        2. 將研究任務委派給 research_specialist 子代理。
+        3. 將分析任務委派給 data_analyst 子代理。
+        4. 將內容創作任務委派給 content_writer 子代理。
+        5. 使用 log_coordination_step 工具來追蹤協調過程的每一步。
+        6. (可選) 使用 check_agent_availability 工具來驗證代理在委派前的狀態。
+
+        遠端代理是使用 uvicorn + to_a2a() 公開的，並在您的協調工作流程中作為子代理無縫地運作。
+
+        在您的回應中，務必清楚地解釋您要將任務委派給哪個遠端代理以及這麼做的原因。
+    """,
+    # 將上面定義的遠端代理實例註冊為協調器的子代理。
+    # 這使得協調器可以直接呼叫它們，就像呼叫本地函式一樣。
+    sub_agents=[research_agent, analysis_agent, content_agent],
+    # 提供協調器在運作時可以使用的輔助工具。
+    tools=[
+        FunctionTool(check_agent_availability),
+        FunctionTool(log_coordination_step)
+    ],
+    # 設定內容生成參數，以控制模型的輸出行為
+    generate_content_config=types.GenerateContentConfig(
+        temperature=0.5,  # 較低的溫度產生更具決定性的回應
+        max_output_tokens=2048  # 設定最大輸出 token 數量
+    )
+)
