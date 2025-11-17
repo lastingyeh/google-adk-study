@@ -457,3 +457,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 17: Agent-to-Agent (A2A) Communication](https://raphaelmansuy.github.io/adk_training/docs/agent_to_agent)
 
 </details>
+
+### 🕗 Day 25
+
+<details>
+<summary>
+本教學介紹如何在 Google ADK 中實現事件追蹤與可觀測性，涵蓋設定觀察代理、事件日誌記錄、指標收集與監控儀表板建立。透過實作觀察代理範例，展示如何監控代理的運行狀態與性能，並進行故障排除與優化，提升系統的可靠性與可維護性。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/18-events_observability.md)
+- [observability agent](./workspace/python/agents/observability-agent/)
+
+#### **參考資源**
+- [Tutorial 18: Events and Observability - Agent Monitoring](https://raphaelmansuy.github.io/adk_training/docs/events_observability)
+
+</details>
