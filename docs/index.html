@@ -74,6 +74,25 @@
             </p>
         </header>
 
+        <!-- 搜尋與重設控制項 -->
+        <div class="mb-6 md:mb-8 flex flex-col sm:flex-row items-center gap-4">
+            <!-- Google 風格搜尋框 -->
+            <div class="relative w-full sm:flex-grow">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input type="text" id="search-input" placeholder="搜尋標題或內容..." class="block w-full p-3 pl-10 text-sm text-white border border-gray-500 rounded-full bg-gray-800 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400">
+                <button id="reset-button" class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-white">
+                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">清除搜尋</span>
+                </button>
+            </div>
+        </div>
+
         <!-- 學習卡片網格 -->
         <div id="dashboard-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             <!-- JavaScript 將在此處動態插入卡片 -->
@@ -518,6 +537,8 @@
         const modalRefsLinks = document.getElementById('modal-refs-links');
         const modalDocsContainer = document.getElementById('modal-docs-links-container');
         const modalRefsContainer = document.getElementById('modal-refs-links-container');
+        const searchInput = document.getElementById('search-input');
+        const resetButton = document.getElementById('reset-button');
 
         // 從 localStorage 加載已完成的狀態
         let completedStatus = JSON.parse(localStorage.getItem('adkLearningProgress')) || {};
@@ -680,6 +701,48 @@
             if (event.key === 'Escape') {
                 closeModal();
             }
+        });
+
+        // 顯示所有卡片
+        function showAllCards() {
+            const cards = document.querySelectorAll('.day-card');
+            cards.forEach(card => {
+                card.style.display = 'flex';
+            });
+        }
+
+        // 篩選卡片
+        function filterCards(searchTerm) {
+            const cards = document.querySelectorAll('.day-card');
+            const lowerCaseSearchTerm = searchTerm.toLowerCase();
+
+            cards.forEach(card => {
+                const title = card.querySelector('.day-title').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                const labels = Array.from(card.querySelectorAll('.bg-gray-700')).map(label => label.textContent.toLowerCase());
+
+                if (title.includes(lowerCaseSearchTerm) || description.includes(lowerCaseSearchTerm) || labels.some(label => label.includes(lowerCaseSearchTerm))) {
+                    card.style.display = 'flex'; // 顯示符合條件的卡片
+                } else {
+                    card.style.display = 'none'; // 隱藏不符合條件的卡片
+                }
+            });
+        }
+
+        // 搜尋輸入事件監聽
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm.length >= 2) {
+                filterCards(searchTerm);
+            } else {
+                showAllCards();
+            }
+        });
+
+        // 重設按鈕事件監聽
+        resetButton.addEventListener('click', () => {
+            searchInput.value = '';
+            showAllCards();
         });
 
     </script>
