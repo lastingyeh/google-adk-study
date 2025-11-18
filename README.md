@@ -38,7 +38,7 @@
 
 #### **詳細說明**：
 
-- [文件連結](.github/chatmodes/repo-guiding-learning.chatmode.md)
+- [文件連結](.github/agents/repo-guiding-learning.chatmode.agent.md)
 
 #### **參考資源**
 - [專案相依連結](./workspace/python/agents/software-bug-assistant/README.md)

@@ -123,7 +123,7 @@
         <!-- 標題 -->
         <header class="text-center mb-8 md:mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-white">
-                Google ADK Study Roadmap
+                Google ADK 學習路線圖 (Roadmap)
             </h1>
             <p class="text-lg text-gray-400 mt-2">
                 Google AI Agent Development Kit (ADK) Study Dashboard
@@ -229,7 +229,7 @@
                 title: "設計 copilot 互動教學設計模式",
                 description: "設計 copilot 互動教學設計模式，取得目標學習專案的相關資源，並設計互動式教學模式以協助學習者更有效地掌握專案內容。",
                 docs: [
-                    { text: "文件連結", url: ".github/chatmodes/repo-guiding-learning.chatmode.md" }
+                    { text: "文件連結", url: "https://github.com/lastingyeh/google-adk-study/blob/master/.github/agents/repo-guiding-learning.chatmode.agent.md" }
                 ],
                 refs: [
                     { text: "專案相依連結", url: "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/software-bug-assistant/README.md" }
@@ -635,6 +635,12 @@
         const modalRefsContainer = document.getElementById('modal-refs-links-container');
         const searchInput = document.getElementById('search-input');
         const resetButton = document.getElementById('reset-button');
+
+        // 動態顯示學習總天數
+        const dashboardSubtitle = document.querySelector('header p.text-lg.text-gray-400.mt-2');
+        if (dashboardSubtitle) {
+            dashboardSubtitle.textContent = `Google AI Agent Development Kit (ADK) 學習 Dashboard（累積 ${learningData.length} 天）`;
+        }
 
         // 從 localStorage 加載已完成的狀態並更新 learningData
         const savedProgress = JSON.parse(localStorage.getItem('adkLearningProgress')) || {};
