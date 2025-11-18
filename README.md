@@ -474,3 +474,20 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 18: Events and Observability - Agent Monitoring](https://raphaelmansuy.github.io/adk_training/docs/events_observability)
 
 </details>
+
+### 🕗 Day 26
+
+<details>
+<summary>
+本教學介紹如何使用 Google ADK 的 Artifact Tool 管理代理程式所需的檔案與資源。內容涵蓋檔案上傳與下載、版本控制、存取權限設定，以及在代理工作流程中整合 Artifact Tool。透過實作 Artifact Agent 範例，展示如何有效地管理和使用檔案，提升代理的功能與靈活性。
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/19-artifacts_files.md)
+- [artifact agent](./workspace/python/agents/artifact-agent/)
+
+#### **參考資源**
+- [Tutorial 19: Artifacts & File Management](https://raphaelmansuy.github.io/adk_training/docs/artifacts_files)
+
+</details>

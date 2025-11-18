@@ -162,7 +162,7 @@ timeline
 - [x] [16-mcp_integration.md](./adk_training/16-mcp_integration.md)
 - [x] [17-agent_to_agent.md](./adk_training/17-agent_to_agent.md)
 - [x] [18-events_observability.md](./adk_training/18-events_observability.md)
-- [ ] [19-artifacts_files.md](./adk_training/artifacts_files)
+- [x] [19-artifacts_files.md](./adk_training/19-artifacts_files.md)
 
 **🎯 Goals (目標)**:
 - 整合 MCP 協定
