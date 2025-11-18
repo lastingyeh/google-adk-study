@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tutorial20"
+version = "0.1.0"
+description = "教學 20：YAML 設定 - 宣告式代理人設定"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.15.1",
+]
+
+# 重點摘要
+# - **核心概念**：定義 Python 專案的元數據和建置系統需求。
+# - **關鍵技術**：TOML, Setuptools, Python Packaging。
+# - **重要結論**：此檔案配置了專案名稱、版本、描述以及對 `google-adk` 的依賴。
+# - **行動項目**：無。

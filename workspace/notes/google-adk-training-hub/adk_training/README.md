@@ -24,3 +24,4 @@
 | 代理人對代理人通訊 - 分散式系統 | [17-agent_to_agent.md](./17-agent_to_agent.md) | 透過代理人對代理人（agent-to-agent）的通訊、委派和協調，建構分散式代理人系統，以實現複雜的多代理人協同作業。 | `agent-to-agent`, `distributed-systems`, `delegation`, `coordination`, `multi-agent` |
 | 事件與可觀察性 - Agent 監控 | [18-events_observability.md](./18-events_observability.md) | 為 Agent 實作全面的可觀察性，包括事件追蹤、指標收集和用於生產系統的監控儀表板。 | `advanced`, `observability`, `monitoring`, `events`, `metrics` |
 | Artifacts與檔案 - 內容生成與管理 | [19-artifacts_files.md](./19-artifacts_files.md) | 使用代理程式生成和管理檔案、文件和Artifacts，以應用於內容創建、程式碼生成和檔案處理工作流程。 | `advanced`, `artifacts`, `files`, `content-generation`, `file-management` |
+| YAML 代理配置 - 宣告式設定 | [20-yaml_configuration.md](./20-yaml_configuration.md) | 掌握使用 YAML 檔案進行宣告式代理配置，無需編寫 Python 程式碼即可定義代理、工具和行為，實現快速原型設計和配置管理。 | `yaml`, `configuration`, `declarative`, `setup`, `rapid-prototyping` |

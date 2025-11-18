@@ -429,10 +429,11 @@ research_agent_demo/
 -   [代理建構器助理系統提示](https://github.com/google/adk-python/blob/main/contributing/samples/adk_agent_builder_assistant/instruction_embedded.template)
 -   [ADK 開發網頁 UI 文件](https://github.com/google/adk-python/wiki/Development-Web-UI)
 -   [多代理組合指南](https://github.com/google/adk-python/wiki/Multi-Agent-Composition)
+- [教學 20：YAML 代理配置 (Tutorial 20: Agent Configuration with YAML)](../../notes/google-adk-training-hub/adk_training/20-yaml_configuration.md)
 
 ### 教學程式碼
-
 -   [研究代理 YAML 設定](https://github.com/thomas-chong/google-adk-visual-agent-builder-demo)
+-   [customer support agent 範例](../../python/agents/customer-support/)
 
 ### 社群
 

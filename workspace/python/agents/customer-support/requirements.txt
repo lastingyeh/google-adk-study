@@ -1,0 +1,22 @@
+# 教學 20：YAML 設定 - Python 依賴項
+
+# 核心 ADK 框架
+google-adk>=1.15.1
+
+# 開發與測試
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# 程式碼品質
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0
+
+# YAML 驗證
+pyyaml>=6.0.0
+
+# 重點摘要
+# - **核心概念**：列出專案執行和開發所需的 Python 套件。
+# - **關鍵技術**：pip, requirements.txt。
+# - **重要結論**：定義了核心 ADK 依賴 (`google-adk`)、測試工具 (`pytest`)、程式碼品質工具 (`black`, `isort`, `flake8`) 和 YAML 處理工具 (`pyyaml`)。
+# - **行動項目**：使用 `pip install -r requirements.txt` 安裝依賴。

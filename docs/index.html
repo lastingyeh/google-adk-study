@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google ADK 學習儀表板</title>
     <!-- 引入 Tailwind CSS -->
-    <link href="tailwind.v2.2.19.min.css" rel="stylesheet">
+    <link href="tailwind.v2.2.19.min.css" rel="stylesheet" />
     <!-- 引入 Inter 字體 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -332,7 +332,6 @@
     <script>
       // 學習路線圖數據
       const learningData = [
-        // Day 1
         {
           day: 1,
           title: '了解 Google ADK 核心定義',
@@ -369,7 +368,6 @@
           labels: ['adk-basics', 'community', 'getting-started'],
           completed: false,
         },
-        // Day 2
         {
           day: 2,
           title: '設計 copilot 互動教學設計模式',
@@ -390,7 +388,6 @@
           labels: ['copilot', 'learning-design', 'interactive-tutorial'],
           completed: false,
         },
-        // Day 3
         {
           day: 3,
           title: '實做範例 software-bug-assistant 專案',
@@ -415,7 +412,6 @@
           labels: ['sample-project', 'bug-assistant', 'implementation'],
           completed: false,
         },
-        // Day 4
         {
           day: 4,
           title: '實做範例 youtube-shorts-agent 專案',
@@ -448,7 +444,6 @@
           labels: ['sample-project', 'youtube-shorts', 'implementation'],
           completed: false,
         },
-        // Day 5
         {
           day: 5,
           title: '實現範例 finance-assistant 專案',
@@ -483,7 +478,6 @@
           ],
           completed: false,
         },
-        // Day 6
         {
           day: 6,
           title: '實現範例 chuck-norris-agent 專案',
@@ -522,7 +516,6 @@
           ],
           completed: false,
         },
-        // Day 7
         {
           day: 7,
           title: 'Gemini 2.0+ 內建工具介紹',
@@ -553,7 +546,6 @@
           ],
           completed: false,
         },
-        // Day 8
         {
           day: 8,
           title: '模型內容協議 (MCP) 整合',
@@ -584,7 +576,6 @@
           ],
           completed: false,
         },
-        // Day 9
         {
           day: 9,
           title: 'Google ADK 工作流程編排核心',
@@ -611,7 +602,6 @@
           ],
           completed: false,
         },
-        // Day 10
         {
           day: 10,
           title: '循序工作流程 (SequentialAgent)',
@@ -646,7 +636,6 @@
           ],
           completed: false,
         },
-        // Day 11
         {
           day: 11,
           title: '平行處理 (ParallelAgent)',
@@ -681,7 +670,6 @@
           ],
           completed: false,
         },
-        // Day 12
         {
           day: 12,
           title: '多代理協調流程',
@@ -719,7 +707,6 @@
           ],
           completed: false,
         },
-        // Day 13
         {
           day: 13,
           title: '循環代理 (LoopAgent) 文章精煉',
@@ -753,7 +740,6 @@
           ],
           completed: false,
         },
-        // Day 14
         {
           day: 14,
           title: 'ADK 核心能力、生產部署與進階模式',
@@ -786,7 +772,6 @@
           labels: ['core-concepts', 'deployment', 'advanced-patterns'],
           completed: false,
         },
-        // Day 15
         {
           day: 15,
           title: '完整學習路徑與速查備忘單',
@@ -811,7 +796,6 @@
           labels: ['learning-path', 'cheat-sheet', 'reference'],
           completed: false,
         },
-        // Day 16
         {
           day: 16,
           title: '入門：驗證、Hello World 與參考指南',
@@ -858,7 +842,6 @@
           ],
           completed: false,
         },
-        // Day 17
         {
           day: 17,
           title: '狀態與記憶體 (State Memory)',
@@ -889,7 +872,6 @@
           ],
           completed: false,
         },
-        // Day 18
         {
           day: 18,
           title: '回呼與護欄 (Callbacks & Guardrails)',
@@ -921,7 +903,6 @@
           ],
           completed: false,
         },
-        // Day 19
         {
           day: 19,
           title: '評估與測試 (Evaluation & Testing)',
@@ -952,7 +933,6 @@
           ],
           completed: false,
         },
-        // Day 20
         {
           day: 20,
           title: '規劃器與思維 (Planners & Thinking)',
@@ -983,7 +963,6 @@
           ],
           completed: false,
         },
-        // Day 21
         {
           day: 21,
           title: '程式碼執行 (Code Execution)',
@@ -1014,7 +993,6 @@
           ],
           completed: false,
         },
-        // Day 22
         {
           day: 22,
           title: '視覺化代理建構器 & MCP 2.0',
@@ -1063,7 +1041,6 @@
           labels: ['visual-builder', 'no-code', 'mcp'],
           completed: false,
         },
-        // Day 23
         {
           day: 23,
           title: '串流 (SSE) 與即時音訊',
@@ -1104,7 +1081,6 @@
           labels: ['streaming', 'sse', 'live-api', 'audio', 'voice'],
           completed: false,
         },
-        // Day 24
         {
           day: 24,
           title: '多代理通訊 (A2A)',
@@ -1135,7 +1111,6 @@
           ],
           completed: false,
         },
-        // Day 25
         {
           day: 25,
           title: '事件追蹤與可觀測性',
@@ -1166,7 +1141,6 @@
           ],
           completed: false,
         },
-        // Day 26
         {
           day: 26,
           title: '成品與檔案 - 內容生成與管理',
@@ -1189,11 +1163,41 @@
             },
           ],
           labels: [
-            `advanced`,
-            `artifacts`,
-            `files`,
-            `content-generation`,
-            `file-management`,
+            'advanced',
+            'artifacts',
+            'files',
+            'content-generation',
+            'file-management',
+          ],
+          completed: false,
+        },
+        {
+          day: 27,
+          title: '代理程式配置與管理 (YAML)',
+          description:
+            '本教學介紹如何使用 YAML 配置文件來定義和管理 Google ADK 代理程式的設定。內容涵蓋 YAML 語法基礎、配置結構、常用設定選項，以及如何在代理工作流程中載入和應用 YAML 配置。透過實作 Customer Support 範例，展示如何利用 YAML 配置快速調整代理行為，提升開發效率與靈活性。',
+          docs: [
+            {
+              text: '文件連結',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/20-yaml_configuration.md',
+            },
+            {
+              text: 'customer support',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/customer-support/',
+            },
+          ],
+          refs: [
+            {
+              text: 'Tutorial 20: Agent Configuration with YAML',
+              url: 'https://raphaelmansuy.github.io/adk_training/docs/yaml_configuration',
+            },
+          ],
+          labels: [
+            'yaml',
+            'configuration',
+            'declarative',
+            'setup',
+            'rapid-prototyping',
           ],
           completed: false,
         },

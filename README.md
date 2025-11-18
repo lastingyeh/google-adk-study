@@ -543,3 +543,22 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 19: Artifacts & File Management](https://raphaelmansuy.github.io/adk_training/docs/artifacts_files)
 
 </details>
+
+### 🕗 Day 27
+
+<details>
+<summary>
+本教學介紹如何使用 YAML 配置文件來定義和管理 Google ADK 代理程式的設定。內容涵蓋 YAML 語法基礎、配置結構、常用設定選項，以及如何在代理工作流程中載入和應用 YAML 配置。透過實作 Customer Support 範例，展示如何利用 YAML 配置快速調整代理行為，提升開發效率與靈活性。
+
+🏷️ `yaml`, `configuration`, `declarative`, `setup`, `rapid-prototyping`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/20-yaml_configuration.md)
+- [customer support](./workspace/python/agents/customer-support/)
+
+#### **參考資源**
+- [Tutorial 20: Agent Configuration with YAML](https://raphaelmansuy.github.io/adk_training/docs/yaml_configuration)
+
+</details>
