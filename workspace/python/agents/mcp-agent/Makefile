@@ -11,7 +11,7 @@ help:
 	@echo "  make about             - 顯示詳細的代理程式功能"
 	@echo "  make create-sample-files - 建立測試用的範例檔案"
 	@echo "  make clean-samples     - 移除範例檔案目錄"
-	@echo "  make clean             - 移除快取檔案和建置工件"
+	@echo "  make clean             - 移除快取檔案和建置Artifacts"
 	@echo "  make check-node        - 驗證 Node.js 和 npx 是否已安裝"
 
 # 設定環境，依賴於 check-node 目標
@@ -212,7 +212,7 @@ about:
 	@echo "  • 檔案組織和清理"
 	@echo "  • 文件產生"
 	@echo "  • 設定檔管理"
-	@echo "  • 建置工件組織"
+	@echo "  • 建置Artifacts組織"
 	@echo "  • 日誌檔案分析"
 	@echo ""
 	@echo "🔒 安全功能："
@@ -289,9 +289,9 @@ clean-samples:
 	@rm -rf sample_files  # 遞迴刪除整個 sample_files 目錄
 	@echo "✅ 範例檔案已移除！"
 
-# 清理建置工件和快取
+# 清理建置Artifacts和快取
 clean:
-	@echo "清理建置工件和快取..."
+	@echo "清理建置Artifacts和快取..."
 	# 尋找並刪除 Python 快取目錄
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 	# 尋找並刪除 Python 套件資訊目錄

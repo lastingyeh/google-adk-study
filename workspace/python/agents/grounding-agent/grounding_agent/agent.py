@@ -117,7 +117,7 @@ def save_research_findings(
     topic: str, findings: str, tool_context: ToolContext
 ) -> Dict[str, Any]:
     """
-    將研究發現儲存為工件(artifact)。
+    將研究發現儲存為Artifacts(artifact)。
 
     Args:
       topic: 研究主題
@@ -131,7 +131,7 @@ def save_research_findings(
         # 將主題轉換為檔案名稱(空格替換為底線,轉為小寫)
         filename = f"research_{topic.replace(' ', '_').lower()}.md"
 
-        # 注意:在實際實作中,這會儲存到工件服務
+        # 注意:在實際實作中,這會儲存到Artifacts服務
         # 為了展示目的,我們只返回成功訊息
         version = "1.0"
 

@@ -86,7 +86,7 @@ event = Event(
     content=types.Content(...),         # 事件內容/訊息
     actions=EventActions(               # 要執行的動作
         state_delta={'key': 'value'},   # 狀態變更
-        artifact_delta={'file': 1},     # 工件變更
+        artifact_delta={'file': 1},     # Artifacts變更
         escalate=False,                 # 升級給人類處理
         transfer_to_agent='other_agent' # 轉移給另一個 Agent
     )
@@ -132,9 +132,9 @@ actions = EventActions(
 # 可在後續的 Agent 呼叫中存取
 ```
 
-### 工件差異 (Artifact Delta)
+### Artifacts差異 (Artifact Delta)
 
-追蹤工件變更：
+追蹤Artifacts變更：
 
 ```python
 actions = EventActions(
@@ -145,7 +145,7 @@ actions = EventActions(
     }
 )
 
-# 追蹤哪些工件被創建/修改
+# 追蹤哪些Artifacts被創建/修改
 # 對於審計和來源追蹤很有用
 ```
 

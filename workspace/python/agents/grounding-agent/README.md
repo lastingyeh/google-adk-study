@@ -122,7 +122,7 @@ flowchart TD
 ### 自訂工具
 
 - **`analyze_search_results`**：處理和分析搜尋內容
-- **`save_research_findings`**：將研究儲存為工件
+- **`save_research_findings`**：將研究儲存為Artifacts
 
 ### 條件式工具載入
 
@@ -287,7 +287,7 @@ graph TD
 
     subgraph "自訂工具"
         H[analyze_search_results<br/>內容分析]
-        I[save_research_findings<br/>工件儲存]
+        I[save_research_findings<br/>Artifacts儲存]
     end
 
     A --> D
@@ -375,7 +375,7 @@ def analyze_search_results(query: str, content: str) -> Dict[str, Any]:
     }
 
 def save_research_findings(topic: str, findings: str) -> Dict[str, Any]:
-    """將研究儲存為工件。"""
+    """將研究儲存為Artifacts。"""
     # 建立文件並儲存
     return {
         'status': 'success',
@@ -413,7 +413,7 @@ sequenceDiagram
     A->>T1: 分析搜尋結果
     T1-->>A: 分析見解
     A->>T2: 儲存研究發現
-    T2-->>A: 儲存工件確認
+    T2-->>A: 儲存Artifacts確認
     A-->>U: 全面的研究回應
 
 ```

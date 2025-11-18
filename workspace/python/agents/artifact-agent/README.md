@@ -1,17 +1,17 @@
-# 教學 19：成品與檔案管理
+# 教學 19：Artifacts與檔案管理
 
-此實作展示了使用 Google ADK 進行文件處理工作流程的全面成品儲存、版本控制和檢索功能。
+此實作展示了使用 Google ADK 進行文件處理工作流程的全面Artifacts儲存、版本控制和檢索功能。
 
 ## 總覽
 
-**artifact_agent** 展示了如何建構文件處理流程，利用 ADK 的成品系統在不同會話（Session）之間進行持久性檔案儲存。主要功能包括：
+**artifact_agent** 展示了如何建構文件處理流程，利用 ADK 的Artifacts系統在不同會話（Session）之間進行持久性檔案儲存。主要功能包括：
 
-- **文件文字提取**：提取文件內容並將其儲存為成品。
+- **文件文字提取**：提取文件內容並將其儲存為Artifacts。
 - **智慧摘要**：生成摘要並自動進行版本控制。
-- **多語言翻譯**：翻譯內容並將翻譯結果儲存為成品。
-- **最終報告生成**：結合所有成品，創建綜合報告。
-- **成品管理**：列出、載入和管理已儲存的成品。
-- **內建成品工具**：使用 ADK 內建的 `load_artifacts_tool` 進行對話式存取。
+- **多語言翻譯**：翻譯內容並將翻譯結果儲存為Artifacts。
+- **最終報告生成**：結合所有Artifacts，創建綜合報告。
+- **Artifacts管理**：列出、載入和管理已儲存的Artifacts。
+- **內建Artifacts工具**：使用 ADK 內建的 `load_artifacts_tool` 進行對話式存取。
 
 ## 架構
 
@@ -24,16 +24,16 @@ sequenceDiagram
     participant CR as create_report
 
     User->>ET: 輸入文件
-    ET-->>User: extracted.txt（成品）
+    ET-->>User: extracted.txt（Artifacts）
 
     User->>SD: 使用 extracted.txt 進行摘要
-    SD-->>User: summary.txt（成品）
+    SD-->>User: summary.txt（Artifacts）
 
     User->>TD: 翻譯 summary.txt
-    TD-->>User: spanish.txt（成品）
+    TD-->>User: spanish.txt（Artifacts）
 
     User->>CR: 產生最終報告
-    CR-->>User: FINAL_REPORT.md（成品）
+    CR-->>User: FINAL_REPORT.md（Artifacts）
 ```
 
 ## 關鍵元件
@@ -42,24 +42,24 @@ sequenceDiagram
 
 `root_agent` 的設定如下：
 - **模型**：`gemini-1.5-flash` 以獲得最佳效能。
-- **工具**：7 個用於文件處理和成品管理的專用工具。
-- **指令**：針對基於成品的工作流程提供全面的指引。
+- **工具**：7 個用於文件處理和Artifacts管理的專用工具。
+- **指令**：針對基於Artifacts的工作流程提供全面的指引。
 
 ### 工具函式
 
 1.  **`extract_text_tool`**：提取並儲存文件文字。
 2.  **`summarize_document_tool`**：生成摘要並進行版本控制。
 3.  **`translate_document_tool`**：將內容翻譯成目標語言。
-4.  **`create_final_report_tool`**：將所有成品結合成最終報告。
-5.  **`list_artifacts_tool`**：列出所有可用的成品。
-6.  **`load_artifact_tool`**：按檔名/版本載入特定的成品。
-7.  **`load_artifacts_tool`**：ADK 內建工具，用於對話式成品存取。
+4.  **`create_final_report_tool`**：將所有Artifacts結合成最終報告。
+5.  **`list_artifacts_tool`**：列出所有可用的Artifacts。
+6.  **`load_artifact_tool`**：按檔名/版本載入特定的Artifacts。
+7.  **`load_artifacts_tool`**：ADK 內建工具，用於對話式Artifacts存取。
 
-### 成品儲存
+### Artifacts儲存
 
 - **記憶體內服務 (In-Memory Service)**：用於開發和測試。
 - **版本控制**：每次儲存時自動進行版本控制（0, 1, 2, ...）。
-- **會話範圍 (Session Scoping)**：成品的作用範圍限定於使用者會話。
+- **會話範圍 (Session Scoping)**：Artifacts的作用範圍限定於使用者會話。
 - **元資料追蹤**：自動追蹤時間戳和上下文。
 
 ## 快速入門
@@ -94,13 +94,13 @@ make dev
 ```
 處理此文件：The quick brown fox jumps over the lazy dog. This is a sample document for testing artifact storage and retrieval capabilities.
 
-顯示所有已儲存的成品
+顯示所有已儲存的Artifacts
 
 總結我剛處理的文件
 
 將摘要翻譯成西班牙文
 
-創建一份結合所有成品的最終報告
+創建一份結合所有Artifacts的最終報告
 ```
 
 ## 工具詳情
@@ -122,7 +122,7 @@ result = extract_text_tool("範例文件文字...")
 
 ```python
 result = summarize_document_tool("長篇文件文字...")
-# 創建帶有摘要的版本化成品
+# 創建帶有摘要的版本化Artifacts
 ```
 
 #### `translate_document_tool(text: str, target_language: str)`
@@ -134,11 +134,11 @@ result = translate_document_tool("Hello world", "Spanish")
 # 儲存: document_spanish.txt
 ```
 
-### 成品管理工具
+### Artifacts管理工具
 
 #### `list_artifacts_tool()`
 
-列出當前會話中的所有成品：
+列出當前會話中的所有Artifacts：
 
 ```python
 result = list_artifacts_tool()
@@ -147,7 +147,7 @@ result = list_artifacts_tool()
 
 #### `load_artifact_tool(filename: str, version: Optional[int])`
 
-載入特定的成品：
+載入特定的Artifacts：
 
 ```python
 result = load_artifact_tool('document_summary.txt', version=0)
@@ -156,7 +156,7 @@ result = load_artifact_tool('document_summary.txt', version=0)
 
 #### `load_artifacts_tool` (內建)
 
-ADK 的內建工具，用於對話式成品存取。當使用者詢問時，會自動載入成品。
+ADK 的內建工具，用於對話式Artifacts存取。當使用者詢問時，會自動載入Artifacts。
 
 ## 設定
 
@@ -169,7 +169,7 @@ cp .env.example .env
 # 編輯 .env 並填入您的 GOOGLE_API_KEY
 ```
 
-### 成品服務
+### Artifacts服務
 
 此代理程式在開發時使用 `InMemoryArtifactService`。對於生產環境：
 
@@ -204,9 +204,9 @@ pytest tests/ -v --cov=artifact_agent --cov-report=html
 
 ### 代理程式方法
 
-- `save_artifact(filename, artifact)`：儲存成品，返回版本號。
-- `load_artifact(filename, version=None)`：載入成品（若無指定版本，則為最新版）。
-- `list_artifacts()`：列出所有成品檔名。
+- `save_artifact(filename, artifact)`：儲存Artifacts，返回版本號。
+- `load_artifact(filename, version=None)`：載入Artifacts（若無指定版本，則為最新版）。
+- `list_artifacts()`：列出所有Artifacts檔名。
 
 ### 工具返回格式
 
@@ -218,7 +218,7 @@ pytest tests/ -v --cov=artifact_agent --cov-report=html
     'report': '人類可讀的訊息',
     'data': {  # 僅在成功時出現
         'filename': 'artifact_name.txt',
-        'content': '成品內容',
+        'content': 'Artifacts內容',
         # ... 其他元資料
     }
 }
@@ -226,7 +226,7 @@ pytest tests/ -v --cov=artifact_agent --cov-report=html
 
 ## 進階用法
 
-### 自訂成品工作流程
+### 自訂Artifacts工作流程
 
 ```python
 # 範例：多步驟文件處理
@@ -260,21 +260,21 @@ version1 = await context.load_artifact('report.txt', 1)  # v1
 
 ### 常見問題
 
-1.  **"成品分頁是空的" (UI 顯示問題)**
+1.  **"Artifacts分頁是空的" (UI 顯示問題)**
     -   **這是 `InMemoryArtifactService` 的預期行為**。
-    -   成品 **有** 被正確儲存（請檢查伺服器日誌中的 HTTP 200 回應）。
-    -   成品可透過聊天中的藍色按鈕存取（點擊 "display document_xxx.txt"）。
-    -   **解決方法**：使用聊天回應中出現的藍色成品按鈕。
-    -   **替代方案**：詢問代理程式 "顯示所有已儲存的成品" 以在聊天中列出它們。
+    -   Artifacts **有** 被正確儲存（請檢查伺服器日誌中的 HTTP 200 回應）。
+    -   Artifacts可透過聊天中的藍色按鈕存取（點擊 "display document_xxx.txt"）。
+    -   **解決方法**：使用聊天回應中出現的藍色Artifacts按鈕。
+    -   **替代方案**：詢問代理程式 "顯示所有已儲存的Artifacts" 以在聊天中列出它們。
     -   **根本原因**：ADK Web UI 的側邊欄需要 `InMemoryArtifactService` 未提供的元資料。
     -   **生產環境**：在生產環境中使用 `GcsArtifactService` 不存在此限制。
 
-2.  **"成品服務未初始化"**
-    -   確保在 Runner 中已設定成品服務。
+2.  **"Artifacts服務未初始化"**
+    -   確保在 Runner 中已設定Artifacts服務。
     -   檢查 `artifact_service` 參數是否已傳遞。
 
-3.  **"找不到成品"**
-    -   確認成品是在同一個會話中儲存的。
+3.  **"找不到Artifacts"**
+    -   確認Artifacts是在同一個會話中儲存的。
     -   檢查檔名拼寫和大小寫。
 
 4.  **導入錯誤**
@@ -290,13 +290,13 @@ export PYTHONPATH=/path/to/adk-python/src:$PYTHONPATH
 # 執行並啟用詳細日誌
 ```
 
-### 驗證成品是否正常運作
+### 驗證Artifacts是否正常運作
 
-即使成品側邊欄是空的，您仍可透過以下方式驗證成品是否正常運作：
+即使Artifacts側邊欄是空的，您仍可透過以下方式驗證Artifacts是否正常運作：
 
-1.  **檢查伺服器日誌** 中儲存/載入成品時的 `HTTP/1.1" 200 OK` 回應。
+1.  **檢查伺服器日誌** 中儲存/載入Artifacts時的 `HTTP/1.1" 200 OK` 回應。
 2.  **點擊聊天中** 的藍色按鈕 "display document_xxx.txt"。
-3.  **詢問代理程式**："顯示所有已儲存的成品" - 它會在聊天中列出它們。
+3.  **詢問代理程式**："顯示所有已儲存的Artifacts" - 它會在聊天中列出它們。
 4.  **詢問代理程式**："載入 document_extracted.txt" - 它會顯示內容。
 
 ## 檔案結構
@@ -325,7 +325,7 @@ tutorial19/
 
 1.  遵循返回格式模式，新增工具。
 2.  為新功能更新測試。
-3.  維持成品命名慣例。
+3.  維持Artifacts命名慣例。
 4.  在此 README 中記錄新功能。
 
 ## 授權
@@ -335,13 +335,13 @@ tutorial19/
 ---
 
 ### 重點摘要
-- **核心概念**：此專案 (`artifact_agent`) 展示如何使用 Google ADK 建立一個具備成品（Artifact）儲存、版本控制與檢索功能的文件處理代理程式。它能在不同會話間持久化儲存檔案，實現如文字提取、摘要、翻譯和報告生成等功能。
+- **核心概念**：此專案 (`artifact_agent`) 展示如何使用 Google ADK 建立一個具備Artifact儲存、版本控制與檢索功能的文件處理代理程式。它能在不同會話間持久化儲存檔案，實現如文字提取、摘要、翻譯和報告生成等功能。
 - **關鍵技術**：
-    - **ADK 成品系統**：利用 `InMemoryArtifactService` (開發用) 或 `GcsArtifactService` (生產用) 進行檔案的儲存與管理。
-    - **版本控制**：系統會自動為每次儲存的成品進行版本編號 (v0, v1, ...)。
-    - **專用工具集**：提供了 7 個工具，涵蓋文件處理（提取、摘要、翻譯）與成品管理（列出、載入）。
-    - **對話式存取**：透過 ADK 內建的 `load_artifacts_tool`，使用者能以自然語言查詢並載入成品。
+    - **ADK Artifacts系統**：利用 `InMemoryArtifactService` (開發用) 或 `GcsArtifactService` (生產用) 進行檔案的儲存與管理。
+    - **版本控制**：系統會自動為每次儲存的Artifacts進行版本編號 (v0, v1, ...)。
+    - **專用工具集**：提供了 7 個工具，涵蓋文件處理（提取、摘要、翻譯）與Artifacts管理（列出、載入）。
+    - **對話式存取**：透過 ADK 內建的 `load_artifacts_tool`，使用者能以自然語言查詢並載入Artifacts。
 - **重要結論**：
-    - ADK 的成品系統為需要處理和保存多版本檔案的 AI 代理程式提供了強大的後端支援。
-    - 雖然開發時使用的 `InMemoryArtifactService` 在 UI 上有顯示限制（成品分頁為空），但功能本身是正常的，可透過聊天介面或直接查詢來驗證。
+    - ADK 的Artifacts系統為需要處理和保存多版本檔案的 AI 代理程式提供了強大的後端支援。
+    - 雖然開發時使用的 `InMemoryArtifactService` 在 UI 上有顯示限制（Artifacts分頁為空），但功能本身是正常的，可透過聊天介面或直接查詢來驗證。
     - 專案結構清晰，包含代理程式邏輯、測試、設定檔和說明文件，是學習 ADK 進階功能的良好範例。

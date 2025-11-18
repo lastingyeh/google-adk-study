@@ -1,6 +1,6 @@
-# 教學 19：成品與檔案管理 (Tutorial 19: Artifacts & File Management)
+# 教學 19：Artifacts與檔案管理 (Tutorial 19: Artifacts & File Management)
 
-**目標**：掌握成品的儲存、版本控制和擷取，使代理程式能夠跨會話創建、管理和追蹤檔案，提供持久狀態和稽核追蹤。
+**目標**：掌握Artifacts的儲存、版本控制和擷取，使代理程式能夠跨會話創建、管理和追蹤檔案，提供持久狀態和稽核追蹤。
 
 **先決條件**：
 
@@ -12,28 +12,28 @@
 **您將學到**：
 
 - 使用 `save_artifact()` 儲存帶有版本控制的檔案
-- 使用 `load_artifact()` 擷取成品
-- 使用 `list_artifacts()` 列出所有成品
+- 使用 `load_artifact()` 擷取Artifacts
+- 使用 `list_artifacts()` 列出所有Artifacts
 - 使用 `save_credential()` 和 `load_credential()` 管理憑證
-- 使用成品追蹤建構文件處理器
+- 使用Artifacts追蹤建構文件處理器
 - 實作檔案來源和稽核追蹤
-- 生產環境中成品管理的最佳實踐
+- 生產環境中Artifacts管理的最佳實踐
 
 **完成時間**：45-60 分鐘
 
 ---
 
-## 為何成品如此重要 (Why Artifacts Matter)
+## 為何Artifacts如此重要 (Why Artifacts Matter)
 
 **問題**：代理程式需要在不同會話之間創建並持久化檔案（報告、資料、圖片），並具備版本控制和稽核追蹤功能。
 
-**解決方案**：**成品 (Artifacts)** 提供結構化的檔案儲存，具備自動版本控制和元資料追蹤功能。
+**解決方案**：**Artifacts (Artifacts)** 提供結構化的檔案儲存，具備自動版本控制和元資料追蹤功能。
 
 **優點**：
 
 - 💾 **持久性 (Persistence)**：檔案在代理程式會話之間持續存在
 - 📝 **版本控制 (Versioning)**：每次儲存都會自動追蹤版本
-- 🔍 **可發現性 (Discoverability)**：可列出並搜尋所有成品
+- 🔍 **可發現性 (Discoverability)**：可列出並搜尋所有Artifacts
 - 📊 **稽核追蹤 (Audit Trail)**：追蹤誰在何時創建了什麼
 - 🔐 **憑證 (Credentials)**：安全儲存 API 金鑰和權杖
 - 🎯 **上下文 (Context)**：代理程式可以引用先前創建的檔案
@@ -48,15 +48,15 @@
 
 ---
 
-## 1. 成品基礎 (Artifact Basics)
+## 1. Artifacts基礎 (Artifact Basics)
 
-### 什麼是成品？ (What is an Artifact?)
+### 什麼是Artifacts？ (What is an Artifact?)
 
-**成品 (artifact)** 是由代理程式系統儲存的帶有版本的檔案。每次儲存都會創建一個新版本，所有版本都會被保留。
+**Artifacts (artifact)** 是由代理程式系統儲存的帶有版本的檔案。每次儲存都會創建一個新版本，所有版本都會被保留。
 
 **來源**：`google/adk/agents/callback_context.py`, `google/adk/tools/tool_context.py`
 
-**成品屬性**：
+**Artifacts屬性**：
 
 - **檔案名稱 (Filename)**：唯一識別碼
 - **版本 (Version)**：從 0 開始自動遞增的整數 (0, 1, 2, ...)
@@ -65,7 +65,7 @@
 
 ```mermaid
 graph TD
-    A["成品系統 (ARTIFACT SYSTEM)"] --> B["檔案名稱 (Filename)<br/>\"report.txt\""]
+    A["Artifacts系統 (ARTIFACT SYSTEM)"] --> B["檔案名稱 (Filename)<br/>\"report.txt\""]
 
     B --> C["版本歷史 (Version History)<br/>v0, v1, v2, ..."]
     B --> D["內容 (Content)<br/>types.Part<br/>(文字/二進位)"]
@@ -74,12 +74,12 @@ graph TD
 
 ```
 ℹ️ 版本編號
-成品版本是**從 0 開始索引**的。第一次儲存返回版本 0，第二次返回版本 1，依此類推。
+Artifacts版本是**從 0 開始索引**的。第一次儲存返回版本 0，第二次返回版本 1，依此類推。
 ```
 
 ### 實作說明：使用 ToolContext 的非同步工具 (Implementation Note: Async Tools with ToolContext)
 
-**所有成品操作都是非同步的。** 在建構使用成品的工具時，它們必須是接受 `ToolContext` 的非同步函式：
+**所有Artifacts操作都是非同步的。** 在建構使用Artifacts的工具時，它們必須是接受 `ToolContext` 的非同步函式：
 
 ```python
 # 匯入必要的模組
@@ -87,13 +87,13 @@ from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 
 async def my_tool(param: str, tool_context: ToolContext) -> dict:
-    """一個儲存成品的工具。"""
+    """一個儲存Artifacts的工具。"""
 
-    # 創建成品內容
+    # 創建Artifacts內容
     content = f"已處理: {param}"
     artifact_part = types.Part.from_text(text=content)
 
-    # 儲存成品（注意：參數是 'artifact'，不是 'part'）
+    # 儲存Artifacts（注意：參數是 'artifact'，不是 'part'）
     version = await tool_context.save_artifact(
         filename='output.txt',
         artifact=artifact_part  # 正確的參數名稱
@@ -115,19 +115,19 @@ async def my_tool(param: str, tool_context: ToolContext) -> dict:
 - ✅ 在 ADK 1.16.0+ 中使用 `artifact=` 參數（而非 `part=`）
 - ✅ 返回包含 `status`、`report` 和 `data` 欄位的結構化字典
 
-### 成品的可用位置 (Where Artifacts are Available)
+### Artifacts的可用位置 (Where Artifacts are Available)
 
-成品可以在以下位置存取：
+Artifacts可以在以下位置存取：
 
 ```mermaid
 graph TD
-    subgraph "成品 API 存取 (ARTIFACT API ACCESS)"
+    subgraph "Artifacts API 存取 (ARTIFACT API ACCESS)"
         A["CallbackContext<br/>(代理程式回呼)"]
         B["ToolContext<br/>(函式工具)"]
     end
 
     subgraph "儲存後端 (Storage Backend)"
-        C["成品服務 (Artifact Service)"]
+        C["Artifacts服務 (Artifact Service)"]
     end
 
     A -- "save_artifact()<br/>load_artifact()<br/>list_artifacts()" --> C
@@ -139,7 +139,7 @@ graph TD
 from google.adk.agents import CallbackContext
 
 async def my_callback(context: CallbackContext):
-    # 儲存、載入、列出成品
+    # 儲存、載入、列出Artifacts
     version = await context.save_artifact('file.txt', part)
     artifact = await context.load_artifact('file.txt')
     files = await context.list_artifacts()
@@ -148,21 +148,21 @@ async def my_callback(context: CallbackContext):
 from google.adk.tools.tool_context import ToolContext
 
 async def my_tool(query: str, tool_context: ToolContext):
-    # 儲存、載入、列出成品
+    # 儲存、載入、列出Artifacts
     version = await tool_context.save_artifact('data.json', part)
     artifact = await tool_context.load_artifact('data.json')
     files = await tool_context.list_artifacts()
 ```
 
-### 設定成品儲存 (Configuring Artifact Storage)
+### 設定Artifacts儲存 (Configuring Artifact Storage)
 
-在使用成品之前，請在您的 Runner 中設定成品服務：
+在使用Artifacts之前，請在您的 Runner 中設定Artifacts服務：
 
 ```mermaid
 graph TD
     subgraph "執行器 (RUNNER)"
-        A["代理程式 (Agent)<br/>(使用成品)"] --> B["會話服務 (Session Service)<br/>(狀態管理)"]
-        A --> C["成品服務 (Artifact Service)<br/>(檔案儲存)"]
+        A["代理程式 (Agent)<br/>(使用Artifacts)"] --> B["會話服務 (Session Service)<br/>(狀態管理)"]
+        A --> C["Artifacts服務 (Artifact Service)<br/>(檔案儲存)"]
     end
 
     subgraph "儲存選項"
@@ -194,23 +194,23 @@ agent = Agent(
     # ... 其他設定
 )
 
-# 使用成品服務設定執行器
+# 使用Artifacts服務設定執行器
 runner = Runner(
     agent=agent,
     app_name='my_app',
     session_service=InMemorySessionService(),
-    artifact_service=artifact_service  # 啟用成品儲存
+    artifact_service=artifact_service  # 啟用Artifacts儲存
 )
 ```
 
 ```
 ⚠️ warning 必要設定
-如果未設定 `artifact_service`，呼叫成品方法將引發 `ValueError`。在使用成品前，請務必設定成品服務。
+如果未設定 `artifact_service`，呼叫Artifacts方法將引發 `ValueError`。在使用Artifacts前，請務必設定Artifacts服務。
 ```
 
 ---
 
-## 2. 儲存成品 (Saving Artifacts)
+## 2. 儲存Artifacts (Saving Artifacts)
 
 ### 基本儲存 (Basic Save)
 
@@ -220,7 +220,7 @@ from google.adk.agents import CallbackContext
 from google.genai import types
 
 async def create_report(context: CallbackContext):
-    """創建並儲存報告成品。"""
+    """創建並儲存報告Artifacts。"""
 
     # 創建報告內容
     report_text = """
@@ -238,7 +238,7 @@ async def create_report(context: CallbackContext):
     # 從文字創建 Part
     report_part = types.Part.from_text(report_text)
 
-    # 儲存為成品
+    # 儲存為Artifacts
     version = await context.save_artifact(
         filename='sales_report_q3_2025.md',
         part=report_part
@@ -252,7 +252,7 @@ async def create_report(context: CallbackContext):
 
 ```python
 async def save_image(context: CallbackContext, image_bytes: bytes):
-    """儲存圖片成品。"""
+    """儲存圖片Artifacts。"""
 
     # 從位元組創建 Part
     image_part = types.Part(
@@ -276,7 +276,7 @@ async def save_image(context: CallbackContext, image_bytes: bytes):
 ```mermaid
 sequenceDiagram
     participant Client as 客戶端
-    participant System as 成品系統
+    participant System as Artifacts系統
     Client->>System: 第一次儲存 (Save 1) - "草稿"
     System-->>Client: 返回版本 0 (Version 0)
     Client->>System: 第二次儲存 (Save 2) - "修訂版"
@@ -306,16 +306,16 @@ print(v3)  # 輸出: 2
 
 ---
 
-## 3. 載入成品 (Loading Artifacts)
+## 3. 載入Artifacts (Loading Artifacts)
 
 ```mermaid
 graph TD
-    subgraph "成品操作 (ARTIFACT OPERATIONS)"
-        A["save_artifact<br/>(檔名, 內容)"] --> B{"成品儲存<br/>(所有版本)"}
+    subgraph "Artifacts操作 (ARTIFACT OPERATIONS)"
+        A["save_artifact<br/>(檔名, 內容)"] --> B{"Artifacts儲存<br/>(所有版本)"}
         B --> C["返回<br/>版本號"]
 
         D["load_artifact<br/>(檔名, 版本?)"] --> B
-        B --> E["返回<br/>成品內容"]
+        B --> E["返回<br/>Artifacts內容"]
 
         F["list_artifacts<br/>()"] --> B
     end
@@ -342,7 +342,7 @@ async def load_report(context: CallbackContext):
 
 ```python
 async def load_version(context: CallbackContext, filename: str, version: int):
-    """載入特定的成品版本。"""
+    """載入特定的Artifacts版本。"""
 
     # 載入檔案的版本 1 (第二次儲存)
     # 請記住：版本是從 0 開始索引的 (0=第一次, 1=第二次, 2=第三次)
@@ -359,17 +359,17 @@ async def load_version(context: CallbackContext, filename: str, version: int):
         return None
 ```
 
-### 處理遺失的成品 (Handle Missing Artifacts)
+### 處理遺失的Artifacts (Handle Missing Artifacts)
 
 ```python
 async def safe_load(context: CallbackContext, filename: str):
-    """安全地載入成品並處理錯誤。"""
+    """安全地載入Artifacts並處理錯誤。"""
 
     try:
         artifact = await context.load_artifact(filename)
 
         if artifact is None:
-            print(f"成品 {filename} 不存在")
+            print(f"Artifacts {filename} 不存在")
             return None
 
         return artifact.text
@@ -381,30 +381,30 @@ async def safe_load(context: CallbackContext, filename: str):
 
 ---
 
-## 4. 列出成品 (Listing Artifacts)
+## 4. 列出Artifacts (Listing Artifacts)
 
-### 列出所有成品 (List All Artifacts)
+### 列出所有Artifacts (List All Artifacts)
 
 ```python
 async def show_all_artifacts(context: CallbackContext):
-    """列出所有可用的成品。"""
+    """列出所有可用的Artifacts。"""
 
     artifacts = await context.list_artifacts()
 
-    print("可用的成品：")
+    print("可用的Artifacts：")
     print("="*60)
 
     for filename in artifacts:
         print(f"  - {filename}")
 
-    print(f"\n總計：{len(artifacts)} 個成品")
+    print(f"\n總計：{len(artifacts)} 個Artifacts")
 ```
 
-### 依類型篩選成品 (Filter Artifacts by Type)
+### 依類型篩選Artifacts (Filter Artifacts by Type)
 
 ```python
 async def list_by_extension(context: CallbackContext, extension: str):
-    """依副檔名列出成品。"""
+    """依副檔名列出Artifacts。"""
 
     all_artifacts = await context.list_artifacts()
 
@@ -413,16 +413,16 @@ async def list_by_extension(context: CallbackContext, extension: str):
         if f.endswith(extension)
     ]
 
-    print(f"副檔名為 {extension} 的成品：")
+    print(f"副檔名為 {extension} 的Artifacts：")
     for f in filtered:
         print(f"  - {f}")
 
     return filtered
 ```
 
-### 內建成品載入工具 (Built-in Artifact Loading Tool)
+### 內建Artifacts載入工具 (Built-in Artifact Loading Tool)
 
-ADK 提供了一個內建工具，可自動將成品載入到 LLM 上下文中：
+ADK 提供了一個內建工具，可自動將Artifacts載入到 LLM 上下文中：
 
 ```python
 # 匯入必要的模組
@@ -434,7 +434,7 @@ agent = Agent(
     name='artifact_agent',
     model='gemini-2.0-flash',
     tools=[
-        load_artifacts_tool,  # 內建成品載入器
+        load_artifacts_tool,  # 內建Artifacts載入器
         # ... 您的其他工具
     ]
 )
@@ -442,14 +442,14 @@ agent = Agent(
 
 **它的作用**：
 
-- 自動為代理程式列出可用的成品
-- 當 LLM 請求時載入成品內容
-- 處理會話範圍和使用者範圍的成品
-- 在對話上下文中提供成品內容
+- 自動為代理程式列出可用的Artifacts
+- 當 LLM 請求時載入Artifacts內容
+- 處理會話範圍和使用者範圍的Artifacts
+- 在對話上下文中提供Artifacts內容
 
 **何時使用**：
 
-- 當您希望 LLM 自動發現並使用成品時
+- 當您希望 LLM 自動發現並使用Artifacts時
 - 用於對儲存的檔案進行對話式存取
 - 在建構文件問答或分析代理程式時
 
@@ -457,18 +457,18 @@ agent = Agent(
 
 ## 5. 真實世界範例：文件處理器 (Real-World Example: Document Processor)
 
-讓我們建構一個具有完整成品管理的文件處理管道。
+讓我們建構一個具有完整Artifacts管理的文件處理管道。
 
 ```mermaid
 graph TD
     subgraph "文件處理工作流程 (DOCUMENT PROCESSING WORKFLOW)"
         A["輸入文件"] --> B["1. 提取文字"]
-        B --> |"成品: document_extracted.txt (v0)"|D["2. 摘要"]
-        D --> |"成品: document_summary.txt (v0)"|F["3. 翻譯<br/>(西班牙文)<br/>(法文)"]
-        F --> |"成品: document_Spanish.txt (v0)"|I["4. 創建報告"]
-        F --> |"成品: document_French.txt (v0)"|I["4. 創建報告"]
+        B --> |"Artifacts: document_extracted.txt (v0)"|D["2. 摘要"]
+        D --> |"Artifacts: document_summary.txt (v0)"|F["3. 翻譯<br/>(西班牙文)<br/>(法文)"]
+        F --> |"Artifacts: document_Spanish.txt (v0)"|I["4. 創建報告"]
+        F --> |"Artifacts: document_French.txt (v0)"|I["4. 創建報告"]
 
-        I --> |"成品: document_FINAL_REPORT.md<br/>(結合所有成品)"|K["最終輸出：包含所有處理階段的完整報告"]
+        I --> |"Artifacts: document_FINAL_REPORT.md<br/>(結合所有Artifacts)"|K["最終輸出：包含所有處理階段的完整報告"]
     end
 ```
 
@@ -476,7 +476,7 @@ graph TD
 
 ````python
 """
-帶有成品管理的文件處理器
+帶有Artifacts管理的文件處理器
 透過多個階段處理文件，並具備版本控制和稽核追蹤。
 """
 
@@ -497,7 +497,7 @@ os.environ['GOOGLE_CLOUD_LOCATION'] = 'us-central1'
 
 
 class DocumentProcessor:
-    """具有成品追蹤的文件處理管道。"""
+    """具有Artifacts追蹤的文件處理管道。"""
 
     def __init__(self):
         """初始化文件處理器。"""
@@ -578,11 +578,11 @@ class DocumentProcessor:
             return f"到 {language} 的翻譯已儲存為版本 {version}"
 
         async def create_report(document: str, tool_context: ToolContext) -> str:
-            """從所有成品創建綜合報告。"""
+            """從所有Artifacts創建綜合報告。"""
 
             self._log_step('create_report', document)
 
-            # 列出此文件的所有成品
+            # 列出此文件的所有Artifacts
             all_artifacts = await tool_context.list_artifacts()
             doc_artifacts = [a for a in all_artifacts if a.startswith(document)]
 
@@ -596,15 +596,15 @@ class DocumentProcessor:
 
             """
 
-            # 載入並包含每個成品
+            # 載入並包含每個Artifacts
             for artifact_name in doc_artifacts:
                 artifact = await tool_context.load_artifact(artifact_name)
                 if artifact:
                     report += f"\n### {artifact_name}\n\n"
                     report += f"```\n{artifact.text[:200]}...\n```\n"
 
-            report += f"\n## 已創建的成品\n\n"
-            report += f"總成品數：{len(doc_artifacts)}\n"
+            report += f"\n## 已創建的Artifacts\n\n"
+            report += f"總Artifacts數：{len(doc_artifacts)}\n"
             for name in doc_artifacts:
                 report += f"- {name}\n"
 
@@ -656,7 +656,7 @@ class DocumentProcessor:
             2. 創建摘要
             3. 如果請求，則進行翻譯
             4. 生成最終報告
-            5. 報告所有已創建的成品
+            5. 報告所有已創建的Artifacts
 
             在每一步都要解釋您正在做什麼。
             """.strip(),
@@ -754,7 +754,7 @@ async def main():
 
     # 列出所有文件
     result = await processor.runner.run_async(
-        "列出所有已處理的文件及其成品",
+        "列出所有已處理的文件及其Artifacts",
         agent=processor.agent,
         session=processor.session
     )
@@ -799,7 +799,7 @@ if __name__ == '__main__':
 
 **處理完成！**
 
-已創建的成品：
+已創建的Artifacts：
 - contract_2025_Q3_extracted.txt (v0)
 - contract_2025_Q3_summary.txt (v0)
 - contract_2025_Q3_Spanish.txt (v0)
@@ -828,7 +828,7 @@ if __name__ == '__main__':
 **步驟 3：最終報告**
 最終報告已創建為版本 0
 
-**已創建的成品：**
+**已創建的Artifacts：**
 - technical_spec_v2_extracted.txt (v0)
 - technical_spec_v2_summary.txt (v0)
 - technical_spec_v2_FINAL_REPORT.md (v0)
@@ -852,7 +852,7 @@ if __name__ == '__main__':
   * technical_spec_v2_summary.txt
   * technical_spec_v2_FINAL_REPORT.md
 
-總計：2 個文件，8 個成品
+總計：2 個文件，8 個Artifacts
 
 
 處理日誌
@@ -1024,7 +1024,7 @@ await context.save_artifact('data.csv', part)
 await context.save_artifact('image.png', part)
 ```
 
-### ✅ 要：處理遺失的成品 (DO: Handle Missing Artifacts)
+### ✅ 要：處理遺失的Artifacts (DO: Handle Missing Artifacts)
 
 ```python
 # ✅ 良好 - 檢查是否存在
@@ -1033,15 +1033,15 @@ artifact = await context.load_artifact('report.txt')
 if artifact:
     process(artifact.text)
 else:
-    print("找不到成品，正在創建新的")
-    # 創建新成品
+    print("找不到Artifacts，正在創建新的")
+    # 創建新Artifacts
 
 # ❌ 不良 - 沒有錯誤處理
 artifact = await context.load_artifact('report.txt')
-process(artifact.text)  # 如果成品為 None，將會崩潰
+process(artifact.text)  # 如果Artifacts為 None，將會崩潰
 ```
 
-### ✅ 要：追蹤成品來源 (DO: Track Artifact Provenance)
+### ✅ 要：追蹤Artifacts來源 (DO: Track Artifact Provenance)
 
 ```python
 # ✅ 良好 - 在內容中包含元資料
@@ -1083,14 +1083,14 @@ for i in range(1000):
 ### ✅ 要：清理敏感資料 (DO: Clean Up Sensitive Data)
 
 ```python
-# ✅ 良好 - 不要在成品中儲存敏感資料
+# ✅ 良好 - 不要在Artifacts中儲存敏感資料
 sanitized_data = remove_pii(raw_data)
 await context.save_artifact('data.csv', types.Part.from_text(sanitized_data))
 
 # 單獨儲存憑證
 await context.save_credential('api_key', secret_key)
 
-# ❌ 不良 - 成品中包含敏感資料
+# ❌ 不良 - Artifacts中包含敏感資料
 await context.save_artifact('data.csv', types.Part.from_text(raw_data_with_pii))
 ```
 
@@ -1100,12 +1100,12 @@ await context.save_artifact('data.csv', types.Part.from_text(raw_data_with_pii))
 
 ```mermaid
 graph TD
-    subgraph "進階成品模(ADVANCED PATTERNS)"
+    subgraph "進階Artifacts模(ADVANCED PATTERNS)"
         subgraph "模式 3：元資料嵌入"
-            I["成品內容<br/>---<br/>元資料: {作者, 時間戳, ...}<br/>---<br/>實際內容: {...}"]
+            I["Artifacts內容<br/>---<br/>元資料: {作者, 時間戳, ...}<br/>---<br/>實際內容: {...}"]
         end
         subgraph "模式 2：管道處理"
-            E["輸入成品"] --> F["階段 1 成品"] --> G["階段 2 成品"] --> H["輸出成品"]
+            E["輸入Artifacts"] --> F["階段 1 Artifacts"] --> G["階段 2 Artifacts"] --> H["輸出Artifacts"]
         end
         subgraph "模式 1：差異追蹤"
             A["版本 N-1"] --> C{"比較版本"}
@@ -1115,17 +1115,17 @@ graph TD
     end
 ```
 
-### 模式 1：成品差異追蹤 (Pattern 1: Artifact Diff Tracking)
+### 模式 1：Artifacts差異追蹤 (Pattern 1: Artifact Diff Tracking)
 
 ```python
 async def track_changes(context: CallbackContext, filename: str):
-    """追蹤成品版本之間的變更。"""
+    """追蹤Artifacts版本之間的變更。"""
 
     # 載入當前和前一個版本
     current = await context.load_artifact(filename)
 
     if not current:
-        return "找不到成品"
+        return "找不到Artifacts"
 
     # 假設當前版本是 3，載入版本 2
     current_version = 3  # 在生產中，追蹤此版本
@@ -1139,7 +1139,7 @@ async def track_changes(context: CallbackContext, filename: str):
         return "第一個版本"
 ```
 
-### 模式 2：成品管道 (Pattern 2: Artifact Pipeline)
+### 模式 2：Artifacts管道 (Pattern 2: Artifact Pipeline)
 
 ```python
 async def process_pipeline(context: CallbackContext, input_file: str):
@@ -1166,7 +1166,7 @@ async def process_pipeline(context: CallbackContext, input_file: str):
     return f"管道完成：{v1}, {v2}, {v3}"
 ```
 
-### 模式 3：成品元資料 (Pattern 3: Artifact Metadata)
+### 模式 3：Artifacts元資料 (Pattern 3: Artifact Metadata)
 
 ```python
 # 匯入 json 模組
@@ -1174,7 +1174,7 @@ import json
 
 async def save_with_metadata(context: CallbackContext, filename: str,
                             content: str, metadata: dict):
-    """儲存帶有嵌入元資料的成品。"""
+    """儲存帶有嵌入元資料的Artifacts。"""
 
     # 在內容中嵌入元資料
     wrapped = {
@@ -1191,7 +1191,7 @@ async def save_with_metadata(context: CallbackContext, filename: str,
 
 
 async def load_with_metadata(context: CallbackContext, filename: str):
-    """載入成品並提取元資料。"""
+    """載入Artifacts並提取元資料。"""
 
     artifact = await context.load_artifact(filename)
 
@@ -1207,23 +1207,23 @@ async def load_with_metadata(context: CallbackContext, filename: str):
 
 ## 9. 疑難排解 (Troubleshooting)
 
-### 問題：「成品分頁是空的」(UI 顯示問題) (Issue: "Artifacts Tab is Empty" (UI Display Issue))
+### 問題：「Artifacts分頁是空的」(UI 顯示問題) (Issue: "Artifacts Tab is Empty" (UI Display Issue))
 
 ```
 ℹ️ 預期行為
 **這是最常見的「問題」——但實際上不是問題！**
 
-使用 `InMemoryArtifactService` 時，成品分頁會顯示為空，但您的成品**已正確儲存**。這是 UI 顯示的限制，不是功能問題。
+使用 `InMemoryArtifactService` 時，Artifacts分頁會顯示為空，但您的Artifacts**已正確儲存**。這是 UI 顯示的限制，不是功能問題。
 ```
 
 **發生了什麼**：
 
-- ✅ 成品正在儲存（檢查伺服器日誌中的 HTTP 200 回應）
-- ✅ 成品正在正確擷取
+- ✅ Artifacts正在儲存（檢查伺服器日誌中的 HTTP 200 回應）
+- ✅ Artifacts正在正確擷取
 - ✅ REST API 運作正常
-- ❌ 成品側邊欄未填入（僅為 UI 限制）
+- ❌ Artifacts側邊欄未填入（僅為 UI 限制）
 
-**如何驗證成品是否正常運作**：
+**如何驗證Artifacts是否正常運作**：
 
 1.  **檢查伺服器日誌** - 查看成功的儲存記錄：
 
@@ -1235,19 +1235,19 @@ async def load_with_metadata(context: CallbackContext, filename: str):
 2.  **在聊天中尋找藍色按鈕** - 代理程式會創建類似「顯示 document_extracted.txt」的按鈕
 
     - 這些按鈕運作正常
-    - 點擊它們以查看成品內容
-    - 這是開發中存取成品的**主要方式**
+    - 點擊它們以查看Artifacts內容
+    - 這是開發中存取Artifacts的**主要方式**
 
 3.  **詢問代理程式** - 使用對話式存取：
     ```
-    "顯示所有已儲存的成品"
+    "顯示所有已儲存的Artifacts"
     "載入 document_extracted.txt"
-    "已創建了哪些成品？"
+    "已創建了哪些Artifacts？"
     ```
 
 **為什麼會這樣？**
 
-ADK Web UI 的成品側邊欄需要 `InMemoryArtifactService` 未提供的特定元資料掛鉤。成品存在於記憶體中，並可透過以下方式完全運作：
+ADK Web UI 的Artifacts側邊欄需要 `InMemoryArtifactService` 未提供的特定元資料掛鉤。Artifacts存在於記憶體中，並可透過以下方式完全運作：
 
 - ✅ REST API 端點（由日誌確認）
 - ✅ 藍色按鈕顯示（由 UI 確認）
@@ -1256,7 +1256,7 @@ ADK Web UI 的成品側邊欄需要 `InMemoryArtifactService` 未提供的特定
 
 **生產部署**：
 
-在生產環境中使用 `GcsArtifactService` 時，成品側邊欄**將會正確填入**，因為雲端後端提供了必要的元資料索引。
+在生產環境中使用 `GcsArtifactService` 時，Artifacts側邊欄**將會正確填入**，因為雲端後端提供了必要的元資料索引。
 
 ```python
 # 匯入 GcsArtifactService
@@ -1266,29 +1266,28 @@ from google.adk.artifacts import GcsArtifactService
 artifact_service = GcsArtifactService(bucket_name='your-bucket')
 ```
 
-:::tip 解決方法摘要
+ℹ️ 解決方法摘要
 
-1.  **主要**：點擊聊天中的藍色成品按鈕
-2.  **次要**：詢問代理程式「顯示所有已儲存的成品」
+1.  **主要**：點擊聊天中的藍色Artifacts按鈕
+2.  **次要**：詢問代理程式「顯示所有已儲存的Artifacts」
 3.  **再次**：檢查伺服器日誌以確認
 4.  **生產**：使用 GcsArtifactService 以獲得完整的 UI 支援
-    :::
 
 ---
 
-### 問題：「找不到成品」 (Issue: "Artifact not found")
+### 問題：「找不到Artifacts」 (Issue: "Artifact not found")
 
 **解決方案**：
 
 1.  **檢查檔名拼寫**：
 
     ```python
-    # 列出所有成品以驗證名稱
+    # 列出所有Artifacts以驗證名稱
     artifacts = await context.list_artifacts()
     print("可用的：", artifacts)
     ```
 
-2.  **驗證成品是否已儲存**：
+2.  **驗證Artifacts是否已儲存**：
 
     ```python
     # 檢查儲存的返回值
@@ -1301,7 +1300,7 @@ artifact_service = GcsArtifactService(bucket_name='your-bucket')
 
 3.  **檢查會話範圍**：
     ```python
-    # 成品的作用域是會話
+    # Artifacts的作用域是會話
     # 確保您在同一個會話中
     print(f"當前會話：{context.session.id}")
     ```
@@ -1344,29 +1343,29 @@ await tool_context.save_artifact(
 
 ---
 
-### 問題：「未設定成品服務」 (Issue: "Artifact service not configured")
+### 問題：「未設定Artifacts服務」 (Issue: "Artifact service not configured")
 
-**解決方案**：確保將成品服務傳遞給 Runner：
+**解決方案**：確保將Artifacts服務傳遞給 Runner：
 
 ```python
 # 匯入 InMemoryArtifactService
 from google.adk.artifacts import InMemoryArtifactService
 
-# ✅ 良好 - 已設定成品服務
+# ✅ 良好 - 已設定Artifacts服務
 runner = Runner(
     agent=agent,
     artifact_service=InMemoryArtifactService()
 )
 
-# ❌ 不良 - 沒有成品服務
-runner = Runner(agent=agent)  # 呼叫成品方法時將會失敗
+# ❌ 不良 - 沒有Artifacts服務
+runner = Runner(agent=agent)  # 呼叫Artifacts方法時將會失敗
 ```
 
 ---
 
 ## 摘要 (Summary)
 
-您已掌握成品和檔案管理：
+您已掌握Artifacts和檔案管理：
 
 **重點回顧**：
 
@@ -1381,17 +1380,17 @@ runner = Runner(agent=agent)  # 呼叫成品方法時將會失敗
 **生產檢查清單**：
 
 - [ ] 使用描述性、唯一的檔名
-- [ ] 處理遺失成品的錯誤
+- [ ] 處理遺失Artifacts的錯誤
 - [ ] 包含來源元資料
 - [ ] 單獨處理敏感資料（憑證）
 - [ ] 定義版本追蹤策略
-- [ ] 建立成品保留政策
+- [ ] 建立Artifacts保留政策
 - [ ] 定期清理過時的版本
-- [ ] 監控成品儲存使用情況
+- [ ] 監控Artifacts儲存使用情況
 
 **資源**：
 
-- [ADK 成品文件](https://google.github.io/adk-docs/artifacts/)
+- [ADK Artifacts文件](https://google.github.io/adk-docs/artifacts/)
 - [回呼上下文 API](https://google.github.io/adk-docs/api/callback-context/)
 - [工具上下文 API](https://google.github.io/adk-docs/api/tool-context/)
 
