@@ -9,11 +9,11 @@
 
 
 ### 🕗 Day 1
-
 <details>
-
 <summary>
 了解 Google ADK 核心定義，在社群資源中匯集了由 Agent Development Kit (ADK) 社群所建立和維護的各類資源。內容涵蓋了入門教學、深度課程、代理程式開發的教學與示範、Java 版本的 ADK 資源，以及多國語言的文件翻譯。此外，頁面也提供了如何貢獻自己資源的指南，鼓勵社群成員參與並豐富 ADK 的生態系。
+
+🏷️ `adk-basics`, `community`, `getting-started`
 </summary>
 
 #### **詳細說明**：
@@ -32,6 +32,8 @@
 <details>
 <summary>
 設計 copilot 互動教學設計模式，取得目標學習專案的相關資源，並設計互動式教學模式以協助學習者更有效地掌握專案內容。
+
+🏷️ `copilot`, `learning-design`, `interactive-tutorial`
 </summary>
 
 #### **詳細說明**：
@@ -48,6 +50,8 @@
 <details>
 <summary>
 實做範例 software-bug-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助識別和修復軟體錯誤的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。
+
+🏷️ `sample-project`, `bug-assistant`, `implementation`
 </summary>
 
 #### **詳細說明**：
@@ -65,6 +69,8 @@
 <details>
 <summary>
 實做範例 youtube-shorts-agent 專案，了解如何使用 Google ADK 建立一個能夠協助生成和管理 YouTube Shorts 內容的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。
+
+🏷️ `sample-project`, `youtube-shorts`, `implementation`
 </summary>
 
 #### **詳細說明**：
@@ -84,6 +90,8 @@
 <details>
 <summary>
 實現範例 finance-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助管理和分析財務數據的智能代理。包含基本 ADK Tools 的應用，並透過 asyncio.gather(*tasks) 平行處理任務與完整 Agent 測試案例實現。
+
+🏷️ `function-tools`, `python`, `tools`, `custom-abilities`, `parallel-execution`
 </summary>
 
 #### **詳細說明**：
@@ -102,6 +110,8 @@
 <details>
 <summary>
 實現範例 chuck-norris-agent 專案，學習如何從 OpenAPI 規範中自動產生工具，使您的代理程式能夠與 REST API 互動，而無需手動編寫工具函式。
+
+🏷️ `openapi`, `rest-api`, `integration`, `toolset`, `api-automation`
 </summary>
 
 #### **詳細說明**：
@@ -121,6 +131,8 @@
 <details>
 <summary>
 本教學介紹 Gemini 2.0+ 的內建工具,包含網路搜尋、地圖定位和企業搜尋功能,讓 AI 代理程式存取即時資訊。核心內容涵蓋:google_search 網路基礎工具、google_maps_grounding 位置服務(需 VertexAI)、enterprise_web_search 企業搜尋、GoogleSearchAgentTool 混合工具解決方案。同時介紹記憶體管理、工作流程控制、上下文載入等進階工具。透過實作研究助理範例,展示如何整合多種工具建立生產級代理程式系統,包含最佳實踐與疑難排解指南。
+
+🏷️ `built-in-tools`, `grounding`, `google-search`, `google-maps`, `real-time-data`
 </summary>
 
 #### **詳細說明**：
@@ -138,6 +150,8 @@
 <details>
 <summary>
 本教學介紹如何使用模型內容協議 (MCP) 將外部工具和服務整合到 AI 代理程式中。透過 MCPToolset 連接 MCP 伺服器，讓代理程式能夠存取檔案系統、資料庫、API 等外部資源，並支援 OAuth 驗證與人機迴圈審批等進階功能。
+
+🏷️ `mcp`, `integration`, `standard-protocol`, `toolset`, `filesystem`
 </summary>
 
 #### **詳細說明**：
@@ -155,6 +169,8 @@
 <details>
 <summary>
 Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任務，並行流程提升執行效率，迴圈流程迭代優化品質。組合策略：透過巢狀工作流程實現複雜代理編排，解決真實世界多步驟問題。
+
+🏷️ `workflow`, `orchestration`, `sequential-agent`, `parallel-agent`, `loop-agent`
 </summary>
 
 #### **詳細說明**：
@@ -171,6 +187,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 根據文件內容，這是一份關於 Google ADK 循序工作流程的教學，說明如何使用 `SequentialAgent` 連接多個 agents 建立部落格文章產生 pipeline。透過研究、寫作、編輯、格式化四個階段，展示如何使用 `output_key` 在 agents 間傳遞資料，適合需要按順序執行的任務流程。
+
+🏷️ `sequential-agent`, `workflow`, `pipeline`, `multi-agent`, `state-management`
 </summary>
 
 #### **詳細說明**：
@@ -189,6 +207,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹 `ParallelAgent` 同時執行多個獨立代理以提升效率，並運用「扇出/收集」模式：先平行收集資料（航班、飯店、活動），再循序合併結果成完整行程。適用於 I/O 密集型任務與多源資料收集。
+
+🏷️ `parallel-agent`, `workflow`, `fan-out-gather`, `multi-agent`, `performance`
 </summary>
 
 #### **詳細說明**：
@@ -207,6 +227,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學示範建構複雜的多代理協調流程，結合並行與循序模式。以內容發布系統為例，採用扇出/收集架構：並行執行新聞、社群、專家三個研究管線，再循序進行內容創作、編輯、格式化，實現速度與品質兼顧的智能協作系統。
+
+🏷️ `multi-agent-systems`, `orchestration`, `nested-workflows`, `google-search`
 </summary>
 
 #### **詳細說明**：
@@ -226,6 +248,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 教學 07：循環代理文章精煉系統 - 使用 LoopAgent 實現自我改進的代理系統，透過評論者-精煉者模式進行迭代品質提升，具備智慧終止機制和完整測試覆蓋（62個測試），展示循環代理的實際應用。
+
+🏷️ `loop-agent`, `iterative-optimization`, `self-correction`, `critic-refiner`
 </summary>
 
 #### **詳細說明**：
@@ -244,6 +268,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本系列涵蓋 ADK 核心能力：LLM 整合篇教授提示工程、接地技術（網路/資料/位置）、思維推理框架（內建思考、Plan-ReAct）、多輪對話及性能優化；生產部署篇介紹四種部署環境、可觀測性監控、服務組態與安全實踐；進階模式篇探討即時串流、MCP 協定、A2A 通訊及多模態整合；決策框架篇提供代理類型、工具選擇、部署策略的完整決策矩陣與實施清單，助您從開發到生產全面掌握 Google ADK。
+
+🏷️ `core-concepts`, `deployment`, `advanced-patterns`
 </summary>
 
 #### **詳細說明**：
@@ -263,6 +289,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本資料提供 Google Agent Development Kit (ADK) 完整學習路徑，涵蓋從初學者到專家的 8 階段進程（57+ 天），包括代理建立、工作流程模式（Sequential/Parallel/Loop）、工具整合、狀態管理、生產部署等核心技能。附有快速參考備忘單，提供代碼範例、CLI 指令、最佳實踐與疑難排解，適合 AI 應用開發者系統學習與實作。
+
+🏷️ `learning-path`, `cheat-sheet`, `reference`
 </summary>
 
 #### **詳細說明**：
@@ -280,6 +308,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 涵蓋驗證與平台選擇、入門範例建置、代理模式(循序平行迴圈)、工具整合、狀態管理、部署、安全權限、測試監控及最佳實務，並含成本管理、事件追蹤、錯誤處理與常見問題。
+
+🏷️ `setup`, `authentication`, `hello-world`, `agent`, `adk-basics`
 </summary>
 
 #### **詳細說明**：
@@ -301,6 +331,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 教學示範建構個人化導師：利用會話狀態與 user/app/temp 前綴記錄偏好、主題與測驗分數，搜尋過往會話支援進度回顧與自適應教學。
+
+🏷️ `state-management`, `memory`, `persistence`, `session-state`, `user-context`
 </summary>
 
 #### **詳細說明**：
@@ -318,6 +350,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 教學介紹ADK代理回呼：生命週期、模型、工具六鉤子；可阻擋不當內容、驗證參數、過濾PII、記錄與追蹤指標；示範內容審核助理實作護欄、安全指令、狀態管理與最佳實務。強化安全控制模式與錯誤處理測試範例涵蓋
+
+🏷️ `callbacks`, `guardrails`, `safety`, `monitoring`, `observability`, `security`
 </summary>
 
 #### **詳細說明**：
@@ -335,6 +369,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹如何使用 pytest 和 AgentEvaluator 系統性地測試 AI agents。涵蓋測試金字塔架構:單元測試(77%)驗證工具函式與設定、整合測試(9%)驗證工作流程協調、評估測試(14%)使用 AgentEvaluator 評估軌跡與回應品質。重點在於 AI agents 的非確定性特性需要質化評估而非傳統斷言測試。提供完整實作範例,包含 22 個綜合測試、EvalSet JSON 結構描述,以及生產環境最佳實踐。
+
+🏷️ `evaluation`, `testing`, `pytest`, `agent-evaluator`, `quality-assurance`
 </summary>
 
 #### **詳細說明**：
@@ -352,6 +388,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹 ADK 進階推理能力，包含三種規劃器：BuiltInPlanner 利用 Gemini 2.0+ 原生思維能力進行透明推理；PlanReActPlanner 提供結構化的計畫→推理→行動→觀察→重新規劃流程；BasePlanner 可建立自訂規劃策略。透過 ThinkingConfig 控制思維過程的顯示。規劃器讓代理在行動前先思考，提升複雜問題的推理品質與準確性，適用於多步驟工作流程與策略性問題解決。
+
+🏷️ `planners`, `thinking`, `reasoning`, `plan-react`, `strategic-planning`
 </summary>
 
 #### **詳細說明**：
@@ -369,6 +407,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹了如何利用 Gemini 2.0+ 的 BuiltInCodeExecutor 功能，讓 AI 代理能夠動態生成並執行 Python 程式碼。此功能使代理能夠在 Google 安全的沙箱環境中進行精確的數學計算、資料分析和複雜運算，解決了大型語言模型在精確度上的限制。內容涵蓋了基本用法、實際應用（如財務計算機），並強調了與傳統函式工具相比的靈活性與強大功能，同時也說明了其安全考量與最佳實踐。
+
+🏷️ `code-execution`, `python`, `dynamic-code`, `computation`, `data-analysis`
 </summary>
 
 #### **詳細說明**：
@@ -389,6 +429,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - Google ADK v1.18.0 推出了視覺化代理建構器，一個無程式碼的網頁介面，用於設計、設定和測試複雜的多代理系統。使用者可以透過拖放方式建立工作流程，或利用 Gemini 驅動的 AI 助理，以自然語言描述需求來自動生成完整的代理架構。此工具會產生標準的 ADK YAML 設定檔，加速了原型設計和開發流程，但目前仍處於早期版本，可能存在一些小問題。
 - 傳統MCP因載入全部工具定義與原始資料而浪費Token，導致成本高昂且易出錯。新範式「程式碼執行」(MCP 2.0)讓AI撰寫程式碼，僅處理必要工具與資料，最終結果才返回上下文，能節省98% Token，大幅提升效率、可靠性與隱私。
+
+🏷️ `visual-builder`, `no-code`, `mcp`
 </summary>
 
 #### **詳細說明**：
@@ -411,6 +453,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學文件旨在說明如何透過伺服器發送事件（SSE）技術在 ADK 中實現串流回應，以優化使用者體驗。相較於傳統的阻塞式回應，串流技術能夠在 AI 模型生成內容的同時，逐步地將文字傳送給使用者，從而提供即時的進度反饋。
+
+🏷️ `streaming`, `sse`, `live-api`, `audio`, `voice`
 </summary>
 
 #### **詳細說明**：
@@ -429,6 +473,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹如何使用 Google ADK 建立具備即時音訊串流能力的代理程式。內容涵蓋設定雙向串流 API、音訊處理、SSE 串流技術，以及將音訊輸入整合到代理工作流程中。透過實作語音助理範例，展示如何實現語音指令識別與回應，提升使用者互動體驗。
+
+🏷️ `streaming`, `sse`, `live-api`, `audio`, `voice`
 </summary>
 
 #### **詳細說明**：
@@ -446,6 +492,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹如何使用 Google ADK 建立多代理通訊系統，實現代理之間的協同工作。內容涵蓋 A2A 通訊架構、訊息傳遞機制、同步與非同步通訊模式，以及錯誤處理與重試策略。透過實作 A2A Orchestrator 範例，展示如何協調多個代理共同完成複雜任務，提升系統的靈活性與擴展性。
+
+🏷️ `agent-to-agent`, `distributed-systems`, `delegation`, `coordination`, `multi-agent`
 </summary>
 
 #### **詳細說明**：
@@ -463,6 +511,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹如何在 Google ADK 中實現事件追蹤與可觀測性，涵蓋設定觀察代理、事件日誌記錄、指標收集與監控儀表板建立。透過實作觀察代理範例，展示如何監控代理的運行狀態與性能，並進行故障排除與優化，提升系統的可靠性與可維護性。
+
+🏷️ `advanced`, `observability`, `monitoring`, `events`, `metrics`
 </summary>
 
 #### **詳細說明**：
@@ -480,6 +530,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 <details>
 <summary>
 本教學介紹如何使用 Google ADK 的 Artifact Tool 管理代理程式所需的檔案與資源。內容涵蓋檔案上傳與下載、版本控制、存取權限設定，以及在代理工作流程中整合 Artifact Tool。透過實作 Artifact Agent 範例，展示如何有效地管理和使用檔案，提升代理的功能與靈活性。
+
+🏷️ `advanced`, `artifacts`, `files`, `content-generation`, `file-management`
 </summary>
 
 #### **詳細說明**：
