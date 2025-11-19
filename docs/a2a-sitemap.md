@@ -34,35 +34,6 @@
 |              | 合作夥伴 (Partners)                                    | [https://a2a-protocol.org/latest/partners/](https://a2a-protocol.org/latest/partners/)                                                                     |
 |              | 路線圖 (Roadmap)                                       | [https://a2a-protocol.org/latest/roadmap/](https://a2a-protocol.org/latest/roadmap/)                                                                       |
 
-## CSV 格式
-```csv
-分類,頁面名稱,URL
-主要頁面,首頁 (Home),https://a2a-protocol.org/latest/
-核心概念,什麼是 A2A？(What is A2A?),https://a2a-protocol.org/latest/topics/what-is-a2a/
-核心概念,核心概念 (Core Concepts),https://a2a-protocol.org/latest/topics/key-concepts/
-核心概念,代理發現 (Agent Discovery),https://a2a-protocol.org/latest/topics/agent-discovery/
-核心概念,企業功能 (Enterprise Features),https://a2a-protocol.org/latest/topics/enterprise-ready/
-核心概念,任務生命週期 (Life of a Task),https://a2a-protocol.org/latest/topics/life-of-a-task/
-核心概念,擴展功能 (Extensions),https://a2a-protocol.org/latest/topics/extensions/
-核心概念,串流與非同步操作 (Streaming & Asynchronous Operations),https://a2a-protocol.org/latest/topics/streaming-and-async/
-核心概念,A2A 與 MCP (A2A and MCP),https://a2a-protocol.org/latest/topics/a2a-and-mcp/
-教學課程,教學與範例 (Tutorials and Samples),https://a2a-protocol.org/latest/tutorials/
-教學課程,Python - 簡介 (Introduction),https://a2a-protocol.org/latest/tutorials/python/1-introduction/
-教學課程,Python - 設定 (Setup),https://a2a-protocol.org/latest/tutorials/python/2-setup/
-教學課程,Python - 代理技能與代理卡 (Agent Skills & Agent Card),https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
-教學課程,Python - 代理執行器 (Agent Executor),https://a2a-protocol.org/latest/tutorials/python/4-agent-executor/
-教學課程,Python - 啟動伺服器 (Start Server),https://a2a-protocol.org/latest/tutorials/python/5-start-server/
-教學課程,Python - 與伺服器互動 (Interact with Server),https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/
-教學課程,Python - 串流與多輪互動 (Streaming & Multiturn),https://a2a-protocol.org/latest/tutorials/python/7-streaming-and-multiturn/
-教學課程,Python - 下一步 (Next Steps),https://a2a-protocol.org/latest/tutorials/python/8-next-steps/
-規範文件,協議規範 (Specification),https://a2a-protocol.org/latest/specification/
-SDK 參考,SDK 參考 (SDK Reference),https://a2a-protocol.org/latest/sdk/
-SDK 參考,Python SDK API,https://a2a-protocol.org/latest/sdk/python/api/
-社群資源,社群 (Community),https://a2a-protocol.org/latest/community/
-社群資源,合作夥伴 (Partners),https://a2a-protocol.org/latest/partners/
-社群資源,路線圖 (Roadmap),https://a2a-protocol.org/latest/roadmap/
-```
-
 ## 摘要
 
 - **總計頁面數**: `24`
