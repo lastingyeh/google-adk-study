@@ -148,7 +148,8 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 100%;
+        width: auto;
+        flex: 1;
       }
 
       #dashboard-grid.list-view .day-card .flex.justify-between.items-center.mb-3 {
@@ -162,7 +163,16 @@
       }
 
       #dashboard-grid.list-view .day-card > div:last-child {
-        display: none; /* 隱藏底部完成開關 */
+        display: flex; /* 在列表模式中顯示底部完成開關 */
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        border-top: none !important;
+        margin-left: 1rem;
+      }
+
+      /* 在列表模式下隱藏「已完成」文字 */
+      #dashboard-grid.list-view .day-card > div:last-child > div > span {
+        display: none;
       }
     </style>
   </head>
@@ -206,26 +216,51 @@
           </a>
 
           <div
-            class="group inline-flex items-center gap-2 px-5 py-2 rounded-full border border-gray-600 bg-gray-800/70 text-sm font-medium text-gray-200 shadow-sm ring-1 ring-white/10"
+            class="group inline-flex items-center gap-4 px-5 py-2 rounded-full border border-gray-600 bg-gray-800/70 text-sm font-medium text-gray-200 shadow-sm ring-1 ring-white/10 w-full justify-center sm:w-auto"
           >
-            <svg
-              class="w-4 h-4 text-purple-300 group-hover:text-blue-400 transition-colors"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M8 2v2M16 2v2M3 8h18M5 12h14M7 16h10M9 20h6" />
-            </svg>
-            <span
-              id="days"
-              class="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent font-semibold tracking-wide"
-            >
-              累積天數
-            </span>
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-4 h-4 text-purple-300 group-hover:text-blue-400 transition-colors"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M8 2v2M16 2v2M3 8h18M5 12h14M7 16h10M9 20h6" />
+              </svg>
+              <span
+                id="days"
+                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold tracking-wide"
+              >
+                累積天數
+              </span>
+            </div>
+
+            <div class="w-px h-4 bg-gray-600"></div>
+
+            <div class="flex items-center gap-2">
+              <svg
+                class="w-4 h-4 text-green-400 group-hover:text-emerald-300 transition-colors"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span
+                id="completed-count"
+                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold tracking-wide"
+              >
+                已完成：0
+              </span>
+            </div>
           </div>
         </div>
       </header>
@@ -1287,11 +1322,20 @@
       );
       const searchInput = document.getElementById('search-input');
       const resetButton = document.getElementById('reset-button');
+      const completedCountElement = document.getElementById('completed-count');
 
       // 動態顯示學習總天數
       const daysElement = document.getElementById('days');
       if (daysElement) {
         daysElement.textContent = `累積天數：${learningData.length} 天`;
+      }
+
+      // 更新已完成計數
+      function updateCompletedCount() {
+        const completedCount = learningData.filter((d) => d.completed).length;
+        if (completedCountElement) {
+          completedCountElement.textContent = `已完成：${completedCount} 天`;
+        }
       }
 
       // 從 localStorage 加載已完成的狀態並更新 learningData
@@ -1303,6 +1347,9 @@
           day.completed = savedProgress[day.day];
         }
       });
+
+      // 初始更新計數
+      updateCompletedCount();
 
       // 動態生成卡片
       learningData.forEach((day) => {
@@ -1469,6 +1516,9 @@
         if (dayData) {
           dayData.completed = isCompleted;
         }
+
+        // 更新計數
+        updateCompletedCount();
 
         // 建立要保存到 localStorage 的狀態物件
         const progressToSave = {};
