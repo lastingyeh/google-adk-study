@@ -119,6 +119,51 @@
         -ms-transform: translateX(16px);
         transform: translateX(16px);
       }
+
+      /* 列表模式樣式 */
+      #dashboard-grid.list-view {
+        grid-template-columns: 1fr !important;
+        gap: 0.75rem;
+      }
+
+      #dashboard-grid.list-view .day-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem 1.5rem;
+      }
+
+      #dashboard-grid.list-view .day-card .day-title {
+        margin-bottom: 0;
+        font-size: 1rem;
+        flex-grow: 1;
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+
+      #dashboard-grid.list-view .day-card p {
+        display: none; /* 隱藏描述 */
+      }
+
+      #dashboard-grid.list-view .day-card > div:first-child {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+      }
+
+      #dashboard-grid.list-view .day-card .flex.justify-between.items-center.mb-3 {
+        margin-bottom: 0;
+        min-width: 60px;
+      }
+
+      #dashboard-grid.list-view .day-card .mt-4.flex.flex-wrap.gap-2 {
+        margin-top: 0;
+        justify-content: flex-end;
+      }
+
+      #dashboard-grid.list-view .day-card > div:last-child {
+        display: none; /* 隱藏底部完成開關 */
+      }
     </style>
   </head>
   <body>
@@ -234,6 +279,30 @@
               />
             </svg>
             <span class="sr-only">清除搜尋</span>
+          </button>
+        </div>
+
+        <!-- 視圖切換按鈕 -->
+        <div class="flex items-center gap-2 bg-gray-800 rounded-lg p-1 border border-gray-600">
+          <button
+            id="card-view-btn"
+            class="p-2 rounded-md text-blue-400 bg-gray-700 hover:text-white transition-colors"
+            aria-label="卡片模式"
+            title="卡片模式"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+            </svg>
+          </button>
+          <button
+            id="list-view-btn"
+            class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            aria-label="列表模式"
+            title="列表模式"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
           </button>
         </div>
       </div>
@@ -1475,6 +1544,47 @@
         searchInput.value = '';
         showAllCards();
       });
+
+      // 視圖切換邏輯
+      const cardViewBtn = document.getElementById('card-view-btn');
+      const listViewBtn = document.getElementById('list-view-btn');
+
+      function setView(mode) {
+        if (mode === 'list') {
+          grid.classList.add('list-view');
+
+          // 更新按鈕樣式
+          listViewBtn.classList.add('text-blue-400', 'bg-gray-700');
+          listViewBtn.classList.remove('text-gray-400');
+
+          cardViewBtn.classList.remove('text-blue-400', 'bg-gray-700');
+          cardViewBtn.classList.add('text-gray-400');
+
+          // 保存偏好
+          localStorage.setItem('adkViewMode', 'list');
+        } else {
+          grid.classList.remove('list-view');
+
+          // 更新按鈕樣式
+          cardViewBtn.classList.add('text-blue-400', 'bg-gray-700');
+          cardViewBtn.classList.remove('text-gray-400');
+
+          listViewBtn.classList.remove('text-blue-400', 'bg-gray-700');
+          listViewBtn.classList.add('text-gray-400');
+
+          // 保存偏好
+          localStorage.setItem('adkViewMode', 'card');
+        }
+      }
+
+      cardViewBtn.addEventListener('click', () => setView('card'));
+      listViewBtn.addEventListener('click', () => setView('list'));
+
+      // 初始載入偏好
+      const savedViewMode = localStorage.getItem('adkViewMode');
+      if (savedViewMode === 'list') {
+        setView('list');
+      }
     </script>
   </body>
 </html>
