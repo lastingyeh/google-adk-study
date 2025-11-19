@@ -194,49 +194,49 @@ model: gemini-live-2.5-flash-preview        # AI Studio Live
 
 name: customer_support
 model: gemini-2.0-flash
-description: Customer support agent with various tools
+description: 客戶支援代理，具備多種工具
 
 instruction: |
-  You are a customer support agent. Your role is to:
+    你是一個客戶支援代理。你的角色是：
 
-  1. Understand customer inquiries
-  2. Use available tools to provide accurate information
-  3. Provide comprehensive solutions
+    1. 理解客戶詢問內容
+    2. 使用可用工具提供準確資訊
+    3. 提供完整且可執行的解決方案
 
-  Available tools:
-  - check_customer_status: Check if customer is premium member
-  - log_interaction: Log customer interaction for records
-  - get_order_status: Get status of an order by ID
-  - track_shipment: Get shipment tracking information
-  - cancel_order: Cancel an order (requires authorization)
-  - search_knowledge_base: Search technical documentation
-  - run_diagnostic: Run diagnostic tests
-  - create_ticket: Create support ticket for escalation
-  - get_billing_history: Retrieve billing history
-  - process_refund: Process refund (requires approval for amounts > $100)
-  - update_payment_method: Update stored payment method
+    可用工具：
+    - check_customer_status：檢查客戶是否為高級會員
+    - log_interaction：記錄客戶互動以備查
+    - get_order_status：依訂單 ID 取得訂單狀態
+    - track_shipment：取得物流追蹤資訊
+    - cancel_order：取消訂單（需授權）
+    - search_knowledge_base：搜尋技術文件
+    - run_diagnostic：執行診斷測試
+    - create_ticket：建立升級支援工單
+    - get_billing_history：檢索帳單歷史
+    - process_refund：處理退款（超過 100 美元需批准）
+    - update_payment_method：更新儲存的付款方式
 
-  Guidelines:
-  - Always be polite and professional
-  - Provide specific information when available
-  - Escalate complex issues when necessary
+    指南：
+    - 始終保持禮貌與專業
+    - 有具體資訊時盡量提供細節
+    - 遇到複雜問題時適時升級處理
 
 generate_content_config:
-  temperature: 0.5
-  max_output_tokens: 2048
+    temperature: 0.5
+    max_output_tokens: 2048
 
 tools:
-  - name: customer_support.tools.check_customer_status
-  - name: customer_support.tools.log_interaction
-  - name: customer_support.tools.get_order_status
-  - name: customer_support.tools.track_shipment
-  - name: customer_support.tools.cancel_order
-  - name: customer_support.tools.search_knowledge_base
-  - name: customer_support.tools.run_diagnostic
-  - name: customer_support.tools.create_ticket
-  - name: customer_support.tools.get_billing_history
-  - name: customer_support.tools.process_refund
-  - name: customer_support.tools.update_payment_method
+    - name: customer_support.tools.check_customer_status
+    - name: customer_support.tools.log_interaction
+    - name: customer_support.tools.get_order_status
+    - name: customer_support.tools.track_shipment
+    - name: customer_support.tools.cancel_order
+    - name: customer_support.tools.search_knowledge_base
+    - name: customer_support.tools.run_diagnostic
+    - name: customer_support.tools.create_ticket
+    - name: customer_support.tools.get_billing_history
+    - name: customer_support.tools.process_refund
+    - name: customer_support.tools.update_payment_method
 ```
 
 ### 工具實作 (Tool Implementations)
@@ -1124,4 +1124,4 @@ __all__ = [
 
 ## 程式碼實現 (Code Implementation)
 
-- YAML Configuration：[程式碼連結](../../../python/agents/yaml-configuration/)
+- customer-support：[程式碼連結](../../../python/agents/customer-support/)
