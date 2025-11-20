@@ -562,3 +562,22 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 20: Agent Configuration with YAML](https://raphaelmansuy.github.io/adk_training/docs/yaml_configuration)
 
 </details>
+
+### 🕗 Day 28
+
+<details>
+<summary>
+本教學介紹如何使用 Google ADK 建立多模態圖像處理代理程式。內容涵蓋圖像輸入與輸出處理、圖像分析與生成技術，以及將圖像處理功能整合到代理工作流程中。透過實作 Vision Catalog 代理範例，展示如何利用多模態能力進行圖像分類、標註和生成，提升代理的視覺理解與互動能力。
+
+🏷️ `multimodal`, `image-processing`, `vision`, `visual-ai`, `gemini`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/21-multimodal_image.md)
+- [vision catalog agent](./workspace/python/agents/vision-catalog-agent/)
+
+#### **參考資源**
+- [Tutorial 21: Multimodal & Image Generation](https://raphaelmansuy.github.io/adk_training/docs/multimodal_image)
+
+</details>
