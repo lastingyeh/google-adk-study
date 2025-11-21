@@ -1769,6 +1769,32 @@
         document.body.style.overflow = 'auto'; // 恢復背景滾動
       }
 
+      // 更新群組進度條
+      function updateGroupProgress(groupIndex) {
+        const startIdx = groupIndex * GROUP_SIZE;
+        const endIdx = Math.min(startIdx + GROUP_SIZE, learningData.length);
+        const groupItems = learningData.slice(startIdx, endIdx);
+
+        const completedInGroup = groupItems.filter(d => d.completed).length;
+        const totalInGroup = groupItems.length;
+        if (totalInGroup === 0) return;
+
+        const progressPercent = Math.round((completedInGroup / totalInGroup) * 100);
+
+        const groups = document.querySelectorAll('.group-section');
+        const groupElement = groups[groupIndex];
+        if (groupElement) {
+             const header = groupElement.querySelector('.group-header');
+             if (header) {
+                 const progressBar = header.querySelector('.h-full.bg-gradient-to-r');
+                 const progressText = header.querySelector('.text-xs.text-gray-400.font-medium');
+
+                 if (progressBar) progressBar.style.width = `${progressPercent}%`;
+                 if (progressText) progressText.textContent = `${progressPercent}% 完成`;
+             }
+        }
+      }
+
       // 標記完成/未完成
       function toggleComplete(dayNum, isCompleted) {
         const card = document.querySelector(`.day-card[data-day='${dayNum}']`);
@@ -1779,9 +1805,16 @@
         }
 
         // 更新 learningData 中的狀態
-        const dayData = learningData.find((d) => d.day === dayNum);
-        if (dayData) {
-          dayData.completed = isCompleted;
+        const dataIndex = learningData.findIndex((d) => d.day === dayNum);
+        if (dataIndex !== -1) {
+          learningData[dataIndex].completed = isCompleted;
+
+          // 更新計數
+          updateCompletedCount();
+
+          // 更新群組進度
+          const groupIndex = Math.floor(dataIndex / GROUP_SIZE);
+          updateGroupProgress(groupIndex);
         }
 
         // 更新計數
