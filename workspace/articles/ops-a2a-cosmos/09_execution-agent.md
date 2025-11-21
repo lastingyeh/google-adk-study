@@ -1,6 +1,6 @@
-# ** Execution / Automation Agent 模組設計**
+# Execution / Automation Agent 模組設計
 
-## **1 模組定位與職責（Role & Responsibility）**
+## **1. 模組定位與職責（Role & Responsibility）**
 
 Execution Agent 是「會真的動手」的維運代理人，負責**將決策變成實際動作**，但本身**不做事件分級／判斷事故嚴重性**。
 
@@ -43,7 +43,7 @@ Execution Agent 是「會真的動手」的維運代理人，負責**將決策�
 
 ---
 
-## **2 架構互動圖（Architecture Interaction）**
+## **2. 架構互動圖（Architecture Interaction）**
 
 ```mermaid
 sequenceDiagram
@@ -71,7 +71,7 @@ sequenceDiagram
 
 ---
 
-## **3 功能清單（Functional Requirements）**
+## **3. 功能清單（Functional Requirements）**
 
 | 編號    | 功能               | 說明                                      |
 | ----- | ---------------- | --------------------------------------- |
@@ -86,7 +86,7 @@ sequenceDiagram
 
 ---
 
-## **4 技術棧 Mapping**
+## **4. 技術棧 Mapping**
 
 | 類別             | 使用技術                                                   |
 | -------------- | ------------------------------------------------------ |
@@ -98,7 +98,7 @@ sequenceDiagram
 
 ---
 
-## **5 MCP Tools 設計（Tool Contract）**
+## **5. MCP Tools 設計（Tool Contract）**
 
 ### 🛠 控制類工具（Write / Action Tools）
 
@@ -121,7 +121,7 @@ sequenceDiagram
 
 ---
 
-## **6 A2A 介面規格**
+## **6. A2A 介面規格**
 
 ### 📥 Input：`ActionRequest`
 
@@ -179,7 +179,7 @@ sequenceDiagram
 
 ---
 
-## **7 狀態機設計（State Machine）**
+## **7. 狀態機設計（State Machine）**
 
 ```mermaid
 stateDiagram-v2
@@ -206,7 +206,7 @@ stateDiagram-v2
 
 ---
 
-## **8 動作白名單與風險分級（Action Whitelist & Risk Level）**
+## **8. 動作白名單與風險分級（Action Whitelist & Risk Level）**
 
 | 動作類型                   | 典型工具                       | 風險等級 | 是否允許自動執行    | 備註                 |
 | ---------------------- | -------------------------- | ---- | ----------- | ------------------ |
@@ -220,7 +220,7 @@ stateDiagram-v2
 
 ---
 
-## **9 審計與紀錄（Audit & Logging）**
+## **9. 審計與紀錄（Audit & Logging）**
 
 每一次 ActionRequest 處理需紀錄：
 
@@ -257,7 +257,7 @@ stateDiagram-v2
 
 ---
 
-## **10 安全控制與 Kill Switch**
+## **10. 安全控制與 Kill Switch**
 
 * **Policy-based Control**：
 

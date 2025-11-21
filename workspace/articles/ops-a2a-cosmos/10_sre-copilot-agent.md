@@ -1,6 +1,6 @@
-# ** SRE Copilot Agent 模組設計**
+# SRE Copilot Agent 模組設計
 
-## **1 模組定位與職責（Role & Responsibility）**
+## **1. 模組定位與職責（Role & Responsibility）**
 
 SRE Copilot Agent 是整個「AI 維運多 Agent 平台」中 **唯一面向人類工程師的入口 Agent**，負責：
 
@@ -31,9 +31,8 @@ SRE Copilot Agent 是整個「AI 維運多 Agent 平台」中 **唯一面向人�
 
 > 簡單講：**其他 Agent 面向「系統」，SRE Copilot 面向「人」**，是人機協作的關鍵樞紐。
 
----
 
-## **2 架構互動圖（Architecture Interaction）**
+## **2. 架構互動圖（Architecture Interaction）**
 
 ```mermaid
 sequenceDiagram
@@ -59,9 +58,8 @@ sequenceDiagram
     S->>C: MCP: 更新 ITSM / 加註備註 / 產出 Postmortem 草稿連結
 ```
 
----
 
-## **3 功能清單（Functional Requirements）**
+## **3. 功能清單（Functional Requirements）**
 
 | 編號    | 功能            | 說明                                             |
 | ----- | ------------- | ---------------------------------------------- |
@@ -77,7 +75,7 @@ sequenceDiagram
 
 ---
 
-## **4 技術棧 Mapping**
+## **4. 技術棧 Mapping**
 
 | 類別                       | 使用技術                                                                                          |
 | ------------------------ | --------------------------------------------------------------------------------------------- |
@@ -88,7 +86,7 @@ sequenceDiagram
 
 ---
 
-## **5 MCP Tools 設計（Tool Contract）**
+## **5. MCP Tools 設計（Tool Contract）**
 
 ### 🎯 ChatOps / 通知相關
 
@@ -108,7 +106,7 @@ sequenceDiagram
 
 ---
 
-## **6 A2A 介面規格（與其他 Agent）**
+## **6. A2A 介面規格（與其他 Agent）**
 
 ### 1️⃣ 從 Triage Agent 接收事件摘要
 
@@ -205,7 +203,7 @@ SRE Copilot 解析後：
 
 ---
 
-## **7 狀態機設計（State Machine）**
+## **7. 狀態機設計（State Machine）**
 
 ```mermaid
 stateDiagram-v2
@@ -221,7 +219,7 @@ stateDiagram-v2
 
 ---
 
-## **8 人機互動流程（UX / ChatOps Flow）**
+## **8. 人機互動流程（UX / ChatOps Flow）**
 
 **典型對話腳本示例：**
 
@@ -246,7 +244,7 @@ stateDiagram-v2
 
 ---
 
-## **9 審計與合規考量**
+## **9. 審計與合規考量**
 
 SRE Copilot Agent 的所有互動需**完整留痕**，特別是：
 
@@ -263,7 +261,7 @@ SRE Copilot Agent 的所有互動需**完整留痕**，特別是：
 
 ---
 
-## **10 風險控管與防呆**
+## **10. 風險控管與防呆**
 
 * 對於高風險指令（例如：大量刪除、停服務），即使人類下指令，也須再二次確認（例如要求附加 `CONFIRM` 字樣）
 * 不允許 SRE Copilot 自行捏造不曾執行的動作或結果（嚴禁「幻想」）

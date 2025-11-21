@@ -1,6 +1,6 @@
-# ** Incident Triage Agent 模組設計**
+# Incident Triage Agent 模組設計
 
-## **1 模組定位與職責（Role & Responsibility）**
+## **1. 模組定位與職責（Role & Responsibility）**
 
 Incident Triage Agent 是整個「AI 驅動維運平台」的核心決策代理人，負責：
 
@@ -38,7 +38,7 @@ Incident Triage Agent 是整個「AI 驅動維運平台」的核心決策代理�
    * 向 SRE Copilot 傳遞摘要、建議和風險提示
    * 與 Runbook Agent 保持資訊流
 
-## **2 架構互動圖（Architecture Interaction）**
+## **2. 架構互動圖（Architecture Interaction）**
 
 ```mermaid
 sequenceDiagram
@@ -65,7 +65,7 @@ sequenceDiagram
     S-->>T: A2A: 人類指示（同意/否決/延後/加強分析）
 ```
 
-## **3 功能清單（Functional Requirements）**
+## **3. 功能清單（Functional Requirements）**
 
 | 編號    | 功能                    | 說明                                           |
 | ----- | --------------------- | -------------------------------------------- |
@@ -78,7 +78,7 @@ sequenceDiagram
 | FR-07 | 通報人類                  | 交由 SRE Copilot（Slack/PagerDuty）              |
 | FR-08 | 審計紀錄                  | 儲存 decision log / reasoning summary（合規）      |
 
-## **4 技術棧 Mapping（依本系統架構）**
+## **4. 技術棧 Mapping（依本系統架構）**
 
 | 類別                      | 使用技術                                                   |
 | ----------------------- | ------------------------------------------------------ |
@@ -89,7 +89,7 @@ sequenceDiagram
 | Infra（資訊參考，不操作）         | CMDB、Deploy History                                    |
 | Collaboration（下游）       | SRE Copilot（Slack、PagerDuty）                           |
 
-## **5 MCP Tools 設計（Tool Contract）**
+## **5. MCP Tools 設計（Tool Contract）**
 
 ### 🎯 用於資料查詢（Read Tools）
 
@@ -103,7 +103,7 @@ sequenceDiagram
 
 > Triage Agent **不需**直接理解 PromQL / Elasticsearch DSL → MCP 工具做抽象化。
 
-## **6 A2A 介面規格（Task ↔ Response Schema）**
+## **6. A2A 介面規格（Task ↔ Response Schema）**
 
 ### 📥 Input：`IncidentCandidate`（來自 Monitoring Agent）
 
@@ -163,7 +163,7 @@ sequenceDiagram
 }
 ```
 
-## **7 狀態機設計（State Machine）**
+## **7. 狀態機設計（State Machine）**
 
 ```mermaid
 stateDiagram-v2
@@ -186,7 +186,7 @@ stateDiagram-v2
     COMPLETED --> [*]
 ```
 
-## **8 Decision Logic（Decision Matrix）**
+## **8. Decision Logic（Decision Matrix）**
 
 | 條件                                 | 自動化     | 人工     | 升級    |
 | ---------------------------------- | ------- | ------ | ----- |
@@ -196,7 +196,7 @@ stateDiagram-v2
 | DB connection saturation           | ⚠️（視風險） | ✔      | ❌     |
 | 核心服務 + 依賴服務異常                      | ❌       | ✔      | ✔（P1） |
 
-## **9 審計（Audit Log）定義**
+## **9. 審計（Audit Log）定義**
 
 每次決策要輸出：
 
@@ -221,7 +221,7 @@ stateDiagram-v2
 }
 ```
 
-## **10 風險與防呆機制**
+## **10. 風險與防呆機制**
 
 * 自動化需嚴格白名單
 * 自動 rollback 必須檢查 `previous_version` 存在

@@ -1,6 +1,6 @@
-# ** Runbook / Knowledge Agent 模組設計**
+# Runbook / Knowledge Agent 模組設計
 
-## **1 模組定位與職責（Role & Responsibility）**
+## **1. 模組定位與職責（Role & Responsibility）**
 
 Runbook / Knowledge Agent（以下簡稱 Runbook Agent）
 是整個維運多 Agent Mesh 中的「知識中樞」，負責把：
@@ -25,7 +25,7 @@ Runbook / Knowledge Agent（以下簡稱 Runbook Agent）
 
 ---
 
-## **2 架構互動圖（Architecture Interaction）**
+## **2. 架構互動圖（Architecture Interaction）**
 
 ```mermaid
 sequenceDiagram
@@ -51,7 +51,7 @@ sequenceDiagram
 
 ---
 
-## **3 功能清單（Functional Requirements）**
+## **3. 功能清單（Functional Requirements）**
 
 | 編號    | 功能              | 說明                                            |
 | ----- | --------------- | --------------------------------------------- |
@@ -65,7 +65,7 @@ sequenceDiagram
 
 ---
 
-## **4 技術棧 Mapping**
+## **4. 技術棧 Mapping**
 
 | 類別                | 使用技術                                                                              |
 | ----------------- | --------------------------------------------------------------------------------- |
@@ -78,7 +78,7 @@ sequenceDiagram
 
 ---
 
-## **5 MCP Tools 設計（Tool Spec）**
+## **5. MCP Tools 設計（Tool Spec）**
 
 ### 🧭 1. `confluence_search_tool`
 
@@ -197,7 +197,7 @@ sequenceDiagram
 
 ---
 
-## **6 A2A 訊息規格（與 Triage Agent 的互動）**
+## **6. A2A 訊息規格（與 Triage Agent 的互動）**
 
 ### 📥 Input：`RunbookQuery`（來自 Triage Agent）
 
@@ -258,7 +258,7 @@ sequenceDiagram
 
 ---
 
-## **7 檢索與生成流程（Retrieval & Generation Flow）**
+## **7. 檢索與生成流程（Retrieval & Generation Flow）**
 
 ```mermaid
 flowchart TD
@@ -280,7 +280,7 @@ flowchart TD
 
 ---
 
-## **8 狀態機設計（State Machine）**
+## **8. 狀態機設計（State Machine）**
 
 ```mermaid
 stateDiagram-v2
@@ -294,7 +294,7 @@ stateDiagram-v2
 
 ---
 
-## **9 品質與風險控制（Quality & Risks）**
+## **9. 品質與風險控制（Quality & Risks）**
 
 * **避免「亂猜」**：
 
@@ -315,7 +315,7 @@ stateDiagram-v2
 
 ---
 
-## **10 Audit Log 設計**
+## **10. Audit Log 設計**
 
 每次 Runbook 查詢需紀錄：
 

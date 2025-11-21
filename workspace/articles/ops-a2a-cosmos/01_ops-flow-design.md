@@ -21,11 +21,10 @@
     *   **A2A** 則專責 Agent 之間的「語意層協作」，處理任務的委派與狀態回報。
     透過此劃分，建立一個穩定、清晰且可擴展的底層架構。
 
----
 
 ## 二、Multi Agent 設計角色說明
 
-### 1️⃣ Monitoring Agent（監控代理人）
+### 1. Monitoring Agent（監控代理人）
 
 **角色：**
 
@@ -43,7 +42,7 @@
 
 > 「這裡有一組候選事件，請幫我判斷嚴重程度與影響範圍。」
 
-### 2️⃣ Incident Triage Agent（事件分級代理人）
+### 2. Incident Triage Agent（事件分級代理人）
 
 **角色：**
 
@@ -61,7 +60,7 @@
   * 接收 `Monitoring Agent` 的 A2A 任務
   * 再透過 A2A 向 `Runbook / Knowledge Agent` 請求「過去類似事件＆建議處置」
 
-### 3️⃣ 📚 Runbook / Knowledge Agent（知識 / Runbook 代理人）
+### 3. Runbook / Knowledge Agent（知識 / Runbook 代理人）
 
 * 專門負責「跟各種內部知識系統打交道」，藉由 **MCP tools** 存取：
 
@@ -102,7 +101,7 @@
 `-> 重點：其他 Agent 不用自己直接碰 Confluence / ITSM，
 而是「問 Runbook Agent 就好」，把知識存取集中管理。`
 
-### 4️⃣ Execution / Automation Agent（執行 / 自動化代理人）
+### 4. Execution / Automation Agent（執行 / 自動化代理人）
 
 **角色：**
 
@@ -121,7 +120,7 @@
   * 從 Triage Agent 收到：「建議執行 X, Y 操作」的任務
   * 執行完成後再用 A2A 回報狀態（成功 / 失敗 / log）。
 
-### 5️⃣ SRE Copilot Agent（人類溝通代理人）
+### 5. SRE Copilot Agent（人類溝通代理人）
 
 **角色：**
 

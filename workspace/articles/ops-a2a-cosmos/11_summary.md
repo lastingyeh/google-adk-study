@@ -1,7 +1,4 @@
-[<< 上一篇：SRE Copilot Agent 設計](./10_sre-copilot-agent.md) | [返回目錄](./README.md)
-***
-
-## 1️⃣ 架構全圖
+# 1️⃣ 架構全圖
 
 ```mermaid
 flowchart LR
@@ -125,3 +122,6 @@ flowchart LR
    * 同時把結果與建議送到 **SRE Copilot Agent**。
 
 6. **SRE Copilot Agent** 最後透過 **ChatOps / On-call 系統** 把事件摘要與決策建議呈現給 **SRE 值班工程師**，形成完整的人機協作閉環。
+
+***
+[<< 上一篇：SRE Copilot Agent 設計](./10_sre-copilot-agent.md) | [返回目錄](./README.md)

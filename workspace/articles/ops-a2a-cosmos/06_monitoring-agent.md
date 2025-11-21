@@ -1,6 +1,6 @@
-# ** Monitoring Agent 模組設計**
+# Monitoring Agent 模組設計
 
-## **1 模組定位與職責（Role & Responsibility）**
+## **1. 模組定位與職責（Role & Responsibility）**
 
 Monitoring Agent 是整個多 Agent 維運架構中的「**前線偵測與降噪者**」，負責：
 
@@ -35,7 +35,7 @@ Monitoring Agent 是整個多 Agent 維運架構中的「**前線偵測與降噪
 
 ---
 
-## **2 架構互動圖（Architecture Interaction）**
+## **2. 架構互動圖（Architecture Interaction）**
 
 ```mermaid
 sequenceDiagram
@@ -58,7 +58,7 @@ sequenceDiagram
 
 ---
 
-## **3 功能清單（Functional Requirements）**
+## **3. 功能清單（Functional Requirements）**
 
 | 編號    | 功能                   | 說明                                                |
 | ----- | -------------------- | ------------------------------------------------- |
@@ -72,7 +72,7 @@ sequenceDiagram
 
 ---
 
-## **4 技術棧 Mapping**
+## **4. 技術棧 Mapping**
 
 | 類別              | 使用技術                                            |
 | --------------- | ----------------------------------------------- |
@@ -85,7 +85,7 @@ sequenceDiagram
 
 ---
 
-## **5 事件來源與 Topic 規劃**
+## **5. 事件來源與 Topic 規劃**
 
 ### 📡 事件來源
 
@@ -126,7 +126,7 @@ Monitoring Agent 自己可以用 Kafka Streams 做：
 
 ---
 
-## **6 降噪 / 聚合邏輯（Noise Reduction & Aggregation）**
+## **6. 降噪 / 聚合邏輯（Noise Reduction & Aggregation）**
 
 ### 降噪情境例子
 
@@ -164,7 +164,7 @@ Monitoring Agent 自己可以用 Kafka Streams 做：
 
 ---
 
-## **7 A2A 介面規格（對 Incident Triage Agent）**
+## **7. A2A 介面規格（對 Incident Triage Agent）**
 
 ### 發送任務：`IncidentCandidate`
 
@@ -201,7 +201,7 @@ Monitoring Agent 自己可以用 Kafka Streams 做：
 
 ---
 
-## **8 Monitoring Agent 內部流程（Flow & State）**
+## **8. Monitoring Agent 內部流程（Flow & State）**
 
 ```mermaid
 stateDiagram-v2
@@ -223,7 +223,7 @@ stateDiagram-v2
 
 ---
 
-## **9 Metrics & 健康監控設計**
+## **9. Metrics & 健康監控設計**
 
 Monitoring Agent 自己也要被監控（很 meta 😄），建議輸出：
 
@@ -237,7 +237,7 @@ Monitoring Agent 自己也要被監控（很 meta 😄），建議輸出：
 
 ---
 
-## **10 錯誤處理與退場策略**
+## **10. 錯誤處理與退場策略**
 
 * Kafka 事件格式解析失敗 → 丟到 `ops.monitoringagent.deadletter` topic
 * 若下游（Triage Agent）暫時不可用 → A2A 不可阻塞，需重試 / fallback / queue
@@ -246,7 +246,7 @@ Monitoring Agent 自己也要被監控（很 meta 😄），建議輸出：
 
 ---
 
-## **11 安全與權限考量**
+## **11. 安全與權限考量**
 
 * Monitoring Agent **應只具備「讀取」事件與「發送 A2A 任務」的能力**
 * 不可直接：
