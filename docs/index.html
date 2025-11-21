@@ -120,19 +120,19 @@
         transform: translateX(16px);
       }
 
-      /* 列表模式樣式 */
-      #dashboard-grid.list-view {
+      /* 列表模式樣式 - 改為 class 選擇器以支援多個 grid */
+      .dashboard-grid.list-view {
         grid-template-columns: 1fr !important;
         gap: 0.75rem;
       }
 
-      #dashboard-grid.list-view .day-card {
+      .dashboard-grid.list-view .day-card {
         flex-direction: row;
         align-items: center;
         padding: 1rem 1.5rem;
       }
 
-      #dashboard-grid.list-view .day-card .day-title {
+      .dashboard-grid.list-view .day-card .day-title {
         margin-bottom: 0;
         font-size: 1rem;
         flex-grow: 1;
@@ -140,11 +140,11 @@
         margin-right: 1rem;
       }
 
-      #dashboard-grid.list-view .day-card p {
+      .dashboard-grid.list-view .day-card p {
         display: none; /* 隱藏描述 */
       }
 
-      #dashboard-grid.list-view .day-card > div:first-child {
+      .dashboard-grid.list-view .day-card > div:first-child {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -152,17 +152,17 @@
         flex: 1;
       }
 
-      #dashboard-grid.list-view .day-card .flex.justify-between.items-center.mb-3 {
+      .dashboard-grid.list-view .day-card .flex.justify-between.items-center.mb-3 {
         margin-bottom: 0;
         min-width: 60px;
       }
 
-      #dashboard-grid.list-view .day-card .mt-4.flex.flex-wrap.gap-2 {
+      .dashboard-grid.list-view .day-card .mt-4.flex.flex-wrap.gap-2 {
         margin-top: 0;
         justify-content: flex-end;
       }
 
-      #dashboard-grid.list-view .day-card > div:last-child {
+      .dashboard-grid.list-view .day-card > div:last-child {
         display: flex; /* 在列表模式中顯示底部完成開關 */
         margin-top: 0 !important;
         padding-top: 0 !important;
@@ -171,7 +171,7 @@
       }
 
       /* 在列表模式下隱藏「已完成」文字 */
-      #dashboard-grid.list-view .day-card > div:last-child > div > span {
+      .dashboard-grid.list-view .day-card > div:last-child > div > span {
         display: none;
       }
     </style>
@@ -370,12 +370,9 @@
         </div>
       </div>
 
-      <!-- 學習卡片網格 -->
-      <div
-        id="dashboard-grid"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
-      >
-        <!-- JavaScript 將在此處動態插入卡片 -->
+      <!-- 學習卡片容器 (包含分組) -->
+      <div id="dashboard-container" class="space-y-6">
+        <!-- JavaScript 將在此處動態插入群組與卡片 -->
       </div>
     </div>
 
@@ -462,6 +459,9 @@
 
     <!-- JavaScript 邏輯 -->
     <script>
+      // 設定每個群組的天數 (可在此調整)
+      const GROUP_SIZE = 10;
+
       // 學習路線圖數據
       const learningData = [
         {
@@ -1428,7 +1428,7 @@
       ];
 
       // 獲取 DOM 元素
-      const grid = document.getElementById('dashboard-grid');
+      const container = document.getElementById('dashboard-container');
       const modal = document.getElementById('detail-modal');
       const modalTitle = document.getElementById('modal-title');
       const modalDescription = document.getElementById('modal-description');
@@ -1471,95 +1471,180 @@
       // 初始更新計數
       updateCompletedCount();
 
-      // 動態生成卡片
-      learningData.forEach((day) => {
-        const isCompleted = day.completed;
+      // 創建卡片元素
+      function createCard(day) {
+          const isCompleted = day.completed;
 
-        const card = document.createElement('div');
-        card.className = `day-card bg-gray-800 p-5 rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 card-shadow cursor-pointer flex flex-col justify-between ${
-          isCompleted ? 'completed' : ''
-        }`;
-        card.dataset.day = day.day;
+          const card = document.createElement('div');
+          card.className = `day-card bg-gray-800 p-5 rounded-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1 card-shadow cursor-pointer flex flex-col justify-between ${
+            isCompleted ? 'completed' : ''
+          }`;
+          card.dataset.day = day.day;
 
-        // 卡片主要內容 (可點擊以打開 modal)
-        const cardContent = document.createElement('div');
-        cardContent.onclick = () => openModal(day.day);
+          // 卡片主要內容 (可點擊以打開 modal)
+          const cardContent = document.createElement('div');
+          cardContent.onclick = () => openModal(day.day);
 
-        // 卡片頂部 (天數)
-        const cardHeader = document.createElement('div');
-        cardHeader.className = 'flex justify-between items-center mb-3';
-        const dayBadge = document.createElement('span');
-        dayBadge.className =
-          'bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full';
-        dayBadge.textContent = `Day ${day.day}`;
-        cardHeader.appendChild(dayBadge);
+          // 卡片頂部 (天數)
+          const cardHeader = document.createElement('div');
+          cardHeader.className = 'flex justify-between items-center mb-3';
+          const dayBadge = document.createElement('span');
+          dayBadge.className =
+            'bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+          dayBadge.textContent = `Day ${day.day}`;
+          cardHeader.appendChild(dayBadge);
 
-        // 卡片標題
-        const title = document.createElement('h2');
-        title.className = 'day-title text-lg font-semibold text-white mb-2';
-        title.textContent = day.title;
+          // 卡片標題
+          const title = document.createElement('h2');
+          title.className = 'day-title text-lg font-semibold text-white mb-2';
+          title.textContent = day.title;
 
-        // 卡片描述 (簡短)
-        const description = document.createElement('p');
-        description.className = 'text-sm text-gray-400 line-clamp-3'; // 最多顯示 3 行
-        description.textContent = day.description;
+          // 卡片描述 (簡短)
+          const description = document.createElement('p');
+          description.className = 'text-sm text-gray-400 line-clamp-3'; // 最多顯示 3 行
+          description.textContent = day.description;
 
-        cardContent.appendChild(cardHeader);
-        cardContent.appendChild(title);
-        cardContent.appendChild(description);
+          cardContent.appendChild(cardHeader);
+          cardContent.appendChild(title);
+          cardContent.appendChild(description);
 
-        // 卡片標籤
-        const labelsContainer = document.createElement('div');
-        labelsContainer.className = 'mt-4 flex flex-wrap gap-2';
-        if (day.labels && day.labels.length > 0) {
-          day.labels.forEach((label) => {
-            const labelBadge = document.createElement('span');
-            labelBadge.className =
-              'bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded-full';
-            labelBadge.textContent = label;
-            labelsContainer.appendChild(labelBadge);
-          });
+          // 卡片標籤
+          const labelsContainer = document.createElement('div');
+          labelsContainer.className = 'mt-4 flex flex-wrap gap-2';
+          if (day.labels && day.labels.length > 0) {
+            day.labels.forEach((label) => {
+              const labelBadge = document.createElement('span');
+              labelBadge.className =
+                'bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded-full';
+              labelBadge.textContent = label;
+              labelsContainer.appendChild(labelBadge);
+            });
+          }
+          cardContent.appendChild(labelsContainer);
+
+          // 卡片底部 (標記完成)
+          const cardFooter = document.createElement('div');
+          cardFooter.className =
+            'mt-4 pt-4 border-t border-gray-700 flex items-center justify-end';
+
+          const completionContainer = document.createElement('div');
+          completionContainer.className = 'flex items-center gap-2';
+
+          const completionText = document.createElement('span');
+          completionText.className = 'text-sm text-gray-400';
+          completionText.textContent = '已完成';
+
+          const checkboxLabel = document.createElement('label');
+          checkboxLabel.className = 'google-switch';
+
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = isCompleted;
+          checkbox.onchange = (e) => {
+            e.stopPropagation(); // 防止觸發 openModal
+            toggleComplete(day.day, e.target.checked);
+          };
+
+          const slider = document.createElement('span');
+          slider.className = 'slider';
+
+          checkboxLabel.appendChild(checkbox);
+          checkboxLabel.appendChild(slider);
+
+          completionContainer.appendChild(completionText);
+          completionContainer.appendChild(checkboxLabel);
+
+          cardFooter.appendChild(completionContainer);
+
+          card.appendChild(cardContent);
+          card.appendChild(cardFooter);
+
+          return card;
+      }
+
+      // 創建網格容器元素
+      function createGridElement() {
+        const el = document.createElement('div');
+        el.className = 'dashboard-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6';
+
+        // 檢查當前視圖模式
+        if (localStorage.getItem('adkViewMode') === 'list') {
+          el.classList.add('list-view');
         }
-        cardContent.appendChild(labelsContainer);
+        return el;
+      }
 
-        // 卡片底部 (標記完成)
-        const cardFooter = document.createElement('div');
-        cardFooter.className =
-          'mt-4 pt-4 border-t border-gray-700 flex items-center justify-end';
+      // 渲染群組與卡片
+      function renderGroups() {
+        container.innerHTML = ''; // 清空容器
 
-        const completionContainer = document.createElement('div');
-        completionContainer.className = 'flex items-center gap-2';
+        const groups = [];
+        for (let i = 0; i < learningData.length; i += GROUP_SIZE) {
+          groups.push(learningData.slice(i, i + GROUP_SIZE));
+        }
 
-        const completionText = document.createElement('span');
-        completionText.className = 'text-sm text-gray-400';
-        completionText.textContent = '已完成';
+        groups.forEach((groupItems, index) => {
+            const groupStart = index * GROUP_SIZE + 1;
+            const groupEnd = Math.min((index + 1) * GROUP_SIZE, learningData.length);
 
-        const checkboxLabel = document.createElement('label');
-        checkboxLabel.className = 'google-switch';
+            // 創建群組容器
+            const groupContainer = document.createElement('div');
+            groupContainer.className = 'group-section bg-gray-800/30 rounded-xl border border-gray-700/50 overflow-hidden';
 
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.checked = isCompleted;
-        checkbox.onchange = (e) => {
-          e.stopPropagation(); // 防止觸發 openModal
-          toggleComplete(day.day, e.target.checked);
-        };
+            // 創建 Header (Toggle)
+            const header = document.createElement('button');
+            header.className = 'w-full flex items-center justify-between p-4 md:px-6 md:py-5 bg-gray-800 hover:bg-gray-700 transition-colors border-b border-gray-700 group-header focus:outline-none';
+            header.innerHTML = `
+                <div class="flex items-center gap-3">
+                    <span class="bg-blue-600/20 text-blue-400 text-sm font-mono px-2 py-1 rounded">✏️</span>
+                    <h3 class="text-xl font-bold text-white">Day ${groupStart} - ${groupEnd}</h3>
+                </div>
+                <svg class="w-6 h-6 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            `;
 
-        const slider = document.createElement('span');
-        slider.className = 'slider';
+            // 創建內容包裹器 (用於收合動畫)
+            const contentWrapper = document.createElement('div');
+            contentWrapper.className = 'group-content transition-all duration-300 ease-in-out';
 
-        checkboxLabel.appendChild(checkbox);
-        checkboxLabel.appendChild(slider);
+            // 預設展開
+            let isOpen = true;
 
-        completionContainer.appendChild(completionText);
-        completionContainer.appendChild(checkboxLabel);
+            // Toggle Logic
+            header.onclick = () => {
+                isOpen = !isOpen;
+                const icon = header.querySelector('svg');
+                if (isOpen) {
+                     contentWrapper.classList.remove('hidden');
+                     icon.classList.remove('-rotate-180');
+                } else {
+                     contentWrapper.classList.add('hidden');
+                     icon.classList.add('-rotate-180');
+                }
+            };
 
-        cardFooter.appendChild(completionContainer);
+            // 創建網格
+            const grid = createGridElement();
 
-        card.appendChild(cardContent);
-        card.appendChild(cardFooter);
-        grid.appendChild(card);
-      });
+            // 渲染卡片到網格
+            groupItems.forEach(day => {
+                const card = createCard(day);
+                grid.appendChild(card);
+            });
+
+            // 增加 padding 給網格內容
+            const gridPadding = document.createElement('div');
+            gridPadding.className = 'p-4 md:p-6';
+            gridPadding.appendChild(grid);
+
+            contentWrapper.appendChild(gridPadding);
+            groupContainer.appendChild(header);
+            groupContainer.appendChild(contentWrapper);
+            container.appendChild(groupContainer);
+        });
+      }
+
+      // 初始渲染
+      renderGroups();
 
       // 打開 Modal
       function openModal(dayNum) {
@@ -1665,37 +1750,65 @@
         }
       });
 
-      // 顯示所有卡片
+      // 顯示所有卡片 (重置搜尋)
       function showAllCards() {
         const cards = document.querySelectorAll('.day-card');
         cards.forEach((card) => {
           card.style.display = 'flex';
         });
+
+        // 顯示所有群組
+        const groups = document.querySelectorAll('.group-section');
+        groups.forEach(group => {
+             group.style.display = 'block';
+             // 保持群組原本的展開/收合狀態，或重置為展開？這裡選擇不干涉展開狀態，只處理 display
+        });
       }
 
-      // 篩選卡片
+      // 篩選卡片與群組
       function filterCards(searchTerm) {
-        const cards = document.querySelectorAll('.day-card');
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
+        const isSearching = searchTerm.length >= 2;
 
-        cards.forEach((card) => {
-          const title = card
-            .querySelector('.day-title')
-            .textContent.toLowerCase();
-          const description = card.querySelector('p').textContent.toLowerCase();
-          const labels = Array.from(card.querySelectorAll('.bg-gray-700')).map(
-            (label) => label.textContent.toLowerCase()
-          );
+        const groups = document.querySelectorAll('.group-section');
 
-          if (
-            title.includes(lowerCaseSearchTerm) ||
-            description.includes(lowerCaseSearchTerm) ||
-            labels.some((label) => label.includes(lowerCaseSearchTerm))
-          ) {
-            card.style.display = 'flex'; // 顯示符合條件的卡片
-          } else {
-            card.style.display = 'none'; // 隱藏不符合條件的卡片
-          }
+        groups.forEach(group => {
+            let hasVisibleCards = false;
+            const cards = group.querySelectorAll('.day-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('.day-title').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                const labels = Array.from(card.querySelectorAll('.bg-gray-700')).map(
+                    (label) => label.textContent.toLowerCase()
+                );
+
+                if (
+                    title.includes(lowerCaseSearchTerm) ||
+                    description.includes(lowerCaseSearchTerm) ||
+                    labels.some((label) => label.includes(lowerCaseSearchTerm))
+                ) {
+                    card.style.display = 'flex'; // 顯示符合條件的卡片
+                    hasVisibleCards = true;
+                } else {
+                    card.style.display = 'none'; // 隱藏不符合條件的卡片
+                }
+            });
+
+            // 如果正在搜尋，自動展開有結果的群組，隱藏無結果的群組
+            if (isSearching) {
+                 group.style.display = hasVisibleCards ? 'block' : 'none';
+                 if (hasVisibleCards) {
+                     const content = group.querySelector('.group-content');
+                     const icon = group.querySelector('.group-header svg');
+                     content.classList.remove('hidden');
+                     icon.classList.remove('-rotate-180');
+                 }
+            } else {
+                // 非搜尋狀態 (但字數 >=2 才會進這裡的邏輯，如果 < 2 是 showAllCards)
+                // 這裡主要是處理字數減少但仍 >= 2 的情況
+                group.style.display = hasVisibleCards ? 'block' : 'none';
+            }
         });
       }
 
@@ -1720,8 +1833,11 @@
       const listViewBtn = document.getElementById('list-view-btn');
 
       function setView(mode) {
+        // 獲取所有網格容器
+        const grids = document.querySelectorAll('.dashboard-grid');
+
         if (mode === 'list') {
-          grid.classList.add('list-view');
+          grids.forEach(grid => grid.classList.add('list-view'));
 
           // 更新按鈕樣式
           listViewBtn.classList.add('text-blue-400', 'bg-gray-700');
@@ -1733,7 +1849,7 @@
           // 保存偏好
           localStorage.setItem('adkViewMode', 'list');
         } else {
-          grid.classList.remove('list-view');
+          grids.forEach(grid => grid.classList.remove('list-view'));
 
           // 更新按鈕樣式
           cardViewBtn.classList.add('text-blue-400', 'bg-gray-700');
