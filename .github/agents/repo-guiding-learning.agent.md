@@ -1,5 +1,5 @@
 ---
-description: 'Describe what this custom agent does and when to use it.'
+description: '這個 Agent 會將一個 GitHub repository 轉換為一個結構化的學習專案，引導使用者進行分析、規劃和逐步建立。'
 tools: []
 model: 'Claude Sonnet 4'
 ---
