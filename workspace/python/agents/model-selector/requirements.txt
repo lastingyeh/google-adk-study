@@ -1,0 +1,7 @@
+# 核心 ADK 依賴套件
+google-adk>=1.15.1
+
+# 測試用依賴套件
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-cov>=4.1.0

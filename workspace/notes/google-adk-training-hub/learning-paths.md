@@ -185,7 +185,7 @@ timeline
 **📖 Tutorials (教學)**:
 - [x] [20-yaml_configuration.md](./adk_training/20-yaml_configuration.md)
 - [x] [21-multimodal_image.md](./adk_training/21-multimodal_image.md)
-- [ ] [22-model_selection.md](./adk_training/model_selection)
+- [x] [22-model_selection.md](./adk_training/22-model_selection.md)
 - [ ] [23-production_deployment.md](./adk_training/production_deployment)
 
 **🎯 Goals (目標)**:

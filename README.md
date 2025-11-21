@@ -603,3 +603,23 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Shaping the Future of AI: A2A + Data Streaming ft. Sean Falconer | Life Is But A Stream Podcast](https://www.youtube.com/watch?v=LCGck5sUqqw)
 
 </details>
+
+### 🕗 Day 30
+
+<details>
+<summary>
+本教學介紹如何在 Google ADK 中進行模型選擇與優化，涵蓋不同模型的特性比較、選擇策略，以及如何根據任務需求調整模型參數以提升性能。透過實作 Model Selector 範例，展示如何根據輸入資料和預期結果動態選擇最適合的模型，實現高效且精確的代理行為。
+
+🏷️ `model`, `gemini`, `selection`, `optimization`, `recommendation`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/22-model_selection.md)
+- [Model Selector](./workspace/python/agents/model-selector/)
+
+#### **參考資源**
+
+- [Tutorial 22: Model Selection & Optimization](https://raphaelmansuy.github.io/adk_training/docs/model_selection)
+
+</details>
