@@ -581,3 +581,25 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 21: Multimodal & Image Generation](https://raphaelmansuy.github.io/adk_training/docs/multimodal_image)
 
 </details>
+
+### 🕗 Day 29
+
+<details>
+<summary>
+本系列文章深入探討如何設計一個由多個智慧代理人（Agent）協同工作的 AI 維運平台。此架構整合了 Google ADK、A2A（Agent-to-Agent）通訊協定、MCP（Model Context Protocol）以及 Kafka 資料串流技術，旨在實現從事件監控、分析、知識查詢到自動化修復的端到端智慧維運流程。
+
+🏷️ `aiops`,`a2a`,`streaming`,`adk`,`mcp`,`kafka`,`sre`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/articles/ops-a2a-cosmos/README.md)
+
+#### **參考資源**
+
+- [A2A, MCP, Kafka and Flink: The New Stack for AI Agents](https://thenewstack.io/a2a-mcp-kafka-and-flink-the-new-stack-for-ai-agents/)
+- [Announcing the Agent2Agent Protocol (A2A)](https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/)
+- [How to Build a Multi-Agent Orchestrator Using Apache Flink® and Apache Kafka®](https://www.confluent.io/blog/multi-agent-orchestrator-using-flink-and-kafka/)
+- [Shaping the Future of AI: A2A + Data Streaming ft. Sean Falconer | Life Is But A Stream Podcast](https://www.youtube.com/watch?v=LCGck5sUqqw)
+
+</details>
