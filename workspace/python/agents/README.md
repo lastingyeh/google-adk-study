@@ -1,0 +1,28 @@
+# 範例程式資源表
+
+| 編號 | 分類 | 名稱 | 描述 | 包含項目 | 關鍵字 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 01 | 基礎 | [hello-agent](./hello-agent) | 第一個 ADK 代理，使用 Gemini 2.0 Flash 驅動的友善互動型對話助理。 | 基礎對話、自我介紹、分享趣聞 | Hello World, Gemini 2.0 Flash, Basic Agent |
+| 02 | 工具 | [finance-assistant](./finance-assistant) | 個人財務助理，可計算複利、貸款支付和儲蓄目標。 | Function Tools, 並行執行, 財務計算 (複利, 貸款, 儲蓄) | Function Tools, Parallel Execution, Finance |
+| 03 | 工具 | [chuck-norris-agent](./chuck-norris-agent) | 展示 OpenAPI 工具整合的幽默代理，提供笑話與搜索功能。 | OpenAPIToolset, 自動生成工具, 笑話搜索/分類 | OpenAPI, API Integration, Chuck Norris |
+| 04 | 工作流 | [blog-pipeline](./blog-pipeline) | 循序工作流程的部落格文章創建管線，按嚴格順序串連多個代理。 | SequentialAgent, 狀態共享, 多階段 (研究 -> 寫作 -> 編輯 -> 格式化) | Sequential Workflow, Pipeline, Content Creation |
+| 05 | 工作流 | [travel-planner](./travel-planner) | 平行處理旅遊規劃系統，同時搜尋航班、飯店和活動並整合行程。 | ParallelAgent, 扇出/聚合模式 (Fan-out/Gather), 行程整合 | Parallel Processing, Travel, Aggregation |
+| 06 | 工作流 | [content-publisher](./content-publisher) | 結合平行研究與順序創作的多代理內容發布系統。 | 巢狀代理 (Nested Agents), 複雜編排, 多階段工作流 (並行研究 -> 順序創作) | Multi-Agent, Nested Orchestration, Publishing |
+| 07 | 工作流 | [essay-refiner](./essay-refiner) | 具備自我批判與迭代精煉能力的循環代理系統，用於提升文章品質。 | LoopAgent, 自我批判 (Critic), 迭代改進, 智慧終止 | Loop Agent, Iterative Refinement, Self-Correction |
+| 08 | 狀態與記憶 | [personal-tutor](./personal-tutor) | 個人學習導師，展示多層次狀態與記憶管理能力。 | 狀態管理 (User/Session/Temp), 學習追蹤, 記憶搜尋 | State Management, Memory, Education |
+| 09 | 控制與測試 | [content-moderator](./content-moderator) | 內容審核系統，展示回呼機制與防護措施以過濾不當內容。 | Callbacks (Before/After), 封鎖詞過濾, PII 偵測, 速率限制 | Callbacks, Content Moderation, Safety |
+| 10 | 控制與測試 | [support-agent](./support-agent) | 客戶支援代理，展示 ADK 代理的全面測試模式與評估框架。 | 評估框架 (Evaluation), 知識庫搜尋, 工單管理, 整合測試 | Evaluation, Testing, Customer Support |
+| 11 | 工具 | [grounding-agent](./grounding-agent) | 使用 Google 搜尋與地圖功能的 Grounding 代理，提供即時資訊。 | Google Search Grounding, Google Maps Grounding, 條件式工具載入 | Grounding, Google Search, Google Maps, VertexAI |
+| 12 | 規劃與推理 | [strategic-solver](./strategic-solver) | 策略規劃代理，展示不同類型的規劃器以解決複雜商業問題。 | Planners (BuiltIn, PlanReAct, Strategic), 思維過程 (Thinking) | Planners, Strategic Planning, Reasoning |
+| 13 | 工具 | [code-calculator](./code-calculator) | 金融計算器，具備編寫並執行 Python 程式碼以進行精確計算的能力。 | BuiltInCodeExecutor, Python 執行, 金融分析, 演算法實作 | Code Execution, Calculator, Python |
+| 14 | 進階互動 | [streaming-agent](./streaming-agent) | 展示即時串流回應與 SSE 技術的聊天代理，模擬即時互動體驗。 | Streaming API, Server-Sent Events (SSE), 進度指示, 回應聚合 | Streaming, SSE, Real-time |
+| 15 | 多模態 | [voice-assistant](./voice-assistant) | 即時語音互動助理，使用 Live API 進行雙向語音串流。 | Live API, 雙向串流, 語音辨識/合成, 多種語音設定 | Voice, Live API, Audio, Multimodal |
+| 16 | 整合 | [mcp-agent](./mcp-agent) | 整合 Model Context Protocol (MCP) 的代理，可操作檔案系統與外部資源。 | MCP Client, Filesystem Server, 標準化工具整合, OAuth2 支援 | MCP, Model Context Protocol, Integration |
+| 17 | 整合 | [a2a-orchestrator](./a2a-orchestrator) | 代理對代理 (Agent-to-Agent) 通訊協調器，協調遠端特化代理。 | RemoteA2aAgent, 分散式系統, 服務探索, 子代理模式 | A2A, Agent-to-Agent, Orchestration, Distributed |
+| 18 | 控制與測試 | [observability-agent](./observability-agent) | 具備全面可觀測性、事件追蹤與監控的客戶服務系統。 | Events, Metrics, 自訂監控器, 警報機制, 儀表板 | Observability, Monitoring, Events |
+| 19 | 狀態與記憶 | [artifact-agent](./artifact-agent) | 文件處理代理，展示 Artifacts 的儲存、版本控制與檢索功能。 | Artifacts 系統, 版本控制, 文件處理 (提取/摘要/翻譯) | Artifacts, File Management, Document Processing |
+| 20 | 核心架構 | [customer-support](./customer-support) | 使用 YAML 進行宣告式設定的客戶支援代理，無需撰寫 Python 程式碼。 | YAML Configuration, Declarative Setup, AgentConfig, 多環境配置 | YAML, Configuration, Declarative |
+| 21 | 多模態 | [vision-catalog-agent](./vision-catalog-agent) | 多模態視覺代理，用於產品目錄分析與行銷內容生成。 | Multimodal (Vision), 圖片分析, 結構化資料提取, 內容生成 | Vision, Multimodal, Image Analysis |
+| 22 | 核心架構 | [model-selector](./model-selector) | 模型選擇與最佳化代理，協助比較與推薦適合的使用情境模型。 | Model Benchmarking, 成本/效能分析, 智慧路由, 品質評分 | Model Selection, Optimization, Benchmarking |
+| 23 | 應用 | [software-bug-assistant](./software-bug-assistant) | 軟體錯誤追蹤與管理助手，整合企業級資料庫與向量搜尋。 | Cloud SQL, Vector Search, MCP Toolbox, Cloud Run 部署 | Cloud SQL, Vector Search, Bug Tracking, Enterprise |
+| 24 | 應用 | [youtube-shorts-assistant](./youtube-shorts-assistant) | 自動化 YouTube Shorts 短影音內容創作的多代理系統。 | 腳本撰寫, 視覺化設計, 格式化, 循環/協調工作流 | Content Creation, Video, YouTube Shorts, Multi-Agent |
