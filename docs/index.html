@@ -14,57 +14,138 @@
       rel="stylesheet"
     />
     <style>
-      /* 設置字體 */
-      body {
-        font-family: 'Inter', 'Noto Sans TC', sans-serif;
-        background-color: #111827; /* 深灰色背景 */
-        color: #f3f4f6; /* 淺灰色文字 */
-      }
-      /* 滾動條樣式 (美化) */
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #2d3748; /* 滾動條軌道顏色 */
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #4a5568; /* 滾動條滑塊顏色 */
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #718096; /* 滑塊懸停顏色 */
-      }
-      /* 隱藏的 modal 基礎樣式 */
-      .modal {
-        display: none;
-        transition: opacity 0.3s ease;
-      }
-      /* 顯示 modal */
-      .modal.flex {
-        display: flex;
-      }
-      /* 卡片自定義陰影 */
-      .card-shadow {
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-          0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      }
-      .card-shadow:hover {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-          0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
-      }
-      /* 標記完成的卡片樣式 */
-      .day-card.completed {
-        background-color: #1f2937; /* 深一點的背景 */
-        opacity: 0.7;
+      /* Google ADK Tech Theme Variables */
+      :root {
+        --bg-primary: #0b0f19;
+        --bg-secondary: #131620;
+        --bg-card: rgba(22, 27, 34, 0.7);
+        --bg-card-hover: rgba(30, 36, 46, 0.8);
+        --text-primary: #e8eaed;
+        --text-secondary: #9aa0a6;
+        --accent-blue: #4285f4;
+        --accent-purple: #a142f4;
+        --google-red: #ea4335;
+        --google-yellow: #fbbc04;
+        --google-green: #34a853;
+        --google-blue: #4285f4;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
-      /* Google Tech Style Collapse Animation */
+      /* Base Styles */
+      body {
+        font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        background-image:
+          radial-gradient(circle at 15% 50%, rgba(66, 133, 244, 0.08) 0%, transparent 25%),
+          radial-gradient(circle at 85% 30%, rgba(161, 66, 244, 0.08) 0%, transparent 25%);
+        min-height: 100vh;
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-primary);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #3c4043;
+        border-radius: 5px;
+        border: 2px solid var(--bg-primary);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #5f6368;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        transition: opacity 0.2s ease-in-out;
+        backdrop-filter: blur(8px);
+      }
+      .modal.flex {
+        display: flex;
+        animation: fadeIn 0.2s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      /* Enhanced Card Styling */
+      .day-card {
+        background: var(--bg-card) !important;
+        border: var(--glass-border);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Top gradient line for cards */
+      .day-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, var(--google-blue), var(--accent-purple));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .day-card:hover {
+        transform: translateY(-4px);
+        background: var(--bg-card-hover) !important;
+        box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3);
+        border-color: rgba(66, 133, 244, 0.3);
+      }
+
+      .day-card:hover::before {
+        opacity: 1;
+      }
+
+      .day-card.completed {
+        background: rgba(11, 15, 25, 0.6) !important;
+        opacity: 0.6;
+        border-color: rgba(255, 255, 255, 0.05);
+      }
+
+      .day-card.completed:hover {
+        opacity: 0.9;
+      }
+
+      .day-card.completed .day-title {
+        text-decoration: line-through;
+        color: var(--text-secondary);
+      }
+
+      /* Group Section */
+      .group-section {
+        background: rgba(19, 22, 32, 0.6) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(10px);
+      }
+
+      .group-header {
+        background: transparent !important;
+      }
+
+      .group-header:hover {
+        background: rgba(255, 255, 255, 0.03) !important;
+      }
+
+      /* Tech Collapse Animation */
       .group-content {
         display: grid;
         grid-template-rows: 1fr;
-        transition: grid-template-rows 0.3s ease-out, opacity 0.3s ease-out;
+        transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         opacity: 1;
       }
 
@@ -77,40 +158,12 @@
         overflow: hidden;
       }
 
-      /* Google Tech Style Group Header */
-      .group-header {
-        position: relative;
-        overflow: hidden;
-      }
-
-      .group-header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(66, 133, 244, 0.5), transparent);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .group-header:hover::after {
-        opacity: 1;
-      }
-
-      .day-card.completed .day-title {
-        text-decoration: line-through;
-        color: #9ca3af; /* 標題變灰 */
-      }
-
-      /* Google-style toggle switch */
+      /* Google Switch */
       .google-switch {
         position: relative;
         display: inline-block;
-        width: 36px;
-        height: 20px;
-        vertical-align: middle;
+        width: 40px;
+        height: 22px;
       }
 
       .google-switch input {
@@ -126,93 +179,96 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: #4a5568; /* Slider off color */
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
-        border-radius: 20px;
+        background-color: #3c4043;
+        transition: .3s;
+        border-radius: 34px;
+        border: 1px solid #5f6368;
       }
 
       .slider:before {
         position: absolute;
-        content: '';
+        content: "";
         height: 14px;
         width: 14px;
         left: 3px;
         bottom: 3px;
-        background-color: white;
-        -webkit-transition: 0.4s;
-        transition: 0.4s;
+        background-color: #9aa0a6;
+        transition: .3s;
         border-radius: 50%;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
       }
 
       input:checked + .slider {
-        background-color: #81c784; /* Google green */
-      }
-
-      input:focus + .slider {
-        box-shadow: 0 0 1px #81c784;
+        background-color: rgba(52, 168, 83, 0.2);
+        border-color: var(--google-green);
       }
 
       input:checked + .slider:before {
-        -webkit-transform: translateX(16px);
-        -ms-transform: translateX(16px);
-        transform: translateX(16px);
+        transform: translateX(18px);
+        background-color: var(--google-green);
+        box-shadow: 0 0 8px rgba(52, 168, 83, 0.4);
       }
 
-      /* 列表模式樣式 - 改為 class 選擇器以支援多個 grid */
+      /* List View Override */
       .dashboard-grid.list-view {
         grid-template-columns: 1fr !important;
-        gap: 0.75rem;
+        gap: 0.5rem;
       }
 
       .dashboard-grid.list-view .day-card {
         flex-direction: row;
         align-items: center;
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background: rgba(19, 22, 32, 0.8) !important;
+      }
+
+      .dashboard-grid.list-view .day-card:hover {
+        transform: translateX(4px);
       }
 
       .dashboard-grid.list-view .day-card .day-title {
-        margin-bottom: 0;
-        font-size: 1rem;
+        margin: 0 1.5rem;
+        font-size: 0.95rem;
         flex-grow: 1;
-        margin-left: 1rem;
-        margin-right: 1rem;
       }
 
-      .dashboard-grid.list-view .day-card p {
-        display: none; /* 隱藏描述 */
+      .dashboard-grid.list-view .day-card p,
+      .dashboard-grid.list-view .day-card .mt-4.flex.flex-wrap.gap-2 {
+        display: none;
       }
 
       .dashboard-grid.list-view .day-card > div:first-child {
         display: flex;
-        flex-direction: row;
         align-items: center;
-        width: auto;
         flex: 1;
+        margin-bottom: 0;
       }
 
       .dashboard-grid.list-view .day-card .flex.justify-between.items-center.mb-3 {
-        margin-bottom: 0;
-        min-width: 60px;
-      }
-
-      .dashboard-grid.list-view .day-card .mt-4.flex.flex-wrap.gap-2 {
-        margin-top: 0;
-        justify-content: flex-end;
+        margin-bottom: 0 !important;
       }
 
       .dashboard-grid.list-view .day-card > div:last-child {
-        display: flex; /* 在列表模式中顯示底部完成開關 */
         margin-top: 0 !important;
         padding-top: 0 !important;
         border-top: none !important;
-        margin-left: 1rem;
+        width: auto;
       }
 
-      /* 在列表模式下隱藏「已完成」文字 */
-      .dashboard-grid.list-view .day-card > div:last-child > div > span {
-        display: none;
+      /* Utilities */
+      .text-gradient-gemini {
+        background: linear-gradient(to right, #4285f4, #9b72cb, #d96570);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Fix Search Input Visibility */
+      #search-input {
+        color: #ffffff !important;
+        background-color: #131620 !important;
+      }
+      #search-input::placeholder {
+        color: #9ca3af !important; /* gray-400 */
       }
     </style>
   </head>
@@ -220,14 +276,27 @@
     <!-- 主容器 -->
     <div class="container mx-auto p-4 md:p-8">
       <!-- 標題 -->
-      <header class="text-center mb-8 md:mb-12">
-        <h1 class="text-3xl md:text-4xl font-bold text-white">
-          Google AI Agent 學習開發設計
+      <header class="text-center mb-10 md:mb-16 relative">
+        <!-- Glow Effect -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-medium mb-4">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+          </span>
+          Google ADK v1.18.0+
+        </div>
+
+        <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight">
+          <span class="text-gradient-gemini">Google ADK</span> <br class="md:hidden" />
+          <span class="text-gray-100">AI Agent Design</span>
         </h1>
-        <p class="text-lg text-gray-400 mt-2">
-          Agent Development Kit (ADK) ✚ A2A 社群資源與學習整合
+        <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto leading-relaxed">
+          Agent Development Kit (ADK) ✚ A2A 社群資源與學習整合<br>
+          <span class="text-sm text-gray-500">打造下一代智慧代理系統的完整學習路徑</span>
         </p>
-        <div class="mt-4 flex flex-col items-center gap-3 justify-center">
+        <div class="mt-8 flex flex-col items-center gap-4 justify-center">
           <div class="flex flex-col sm:flex-row gap-3">
             <a
               href="https://github.com/lastingyeh/google-adk-study/blob/master/docs/adk-sitemap.md"
@@ -249,9 +318,7 @@
                   d="M3 3h7v7H3V3zM14 3h7v7h-7V3zM14 14h7v7h-7v-7zM3 14h7v7H3v-7zM10 7h4M10 17h4M17 10v4M7 10v4"
                 />
               </svg>
-              <span
-                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold tracking-wide"
-              >
+              <span class="text-gray-200 group-hover:text-white font-medium tracking-wide">
                 Google ADK 官方學習地圖
               </span>
             </a>
@@ -275,9 +342,7 @@
                   d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                 />
               </svg>
-              <span
-                class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent font-semibold tracking-wide"
-              >
+              <span class="text-gray-200 group-hover:text-white font-medium tracking-wide">
                 A2A 官方學習地圖
               </span>
             </a>
@@ -359,8 +424,8 @@
           <input
             type="text"
             id="search-input"
-            placeholder="搜尋標題或內容..."
-            class="block w-full p-3 pl-10 text-sm text-white border border-gray-500 rounded-full bg-gray-800 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400"
+            placeholder="搜尋標題、內容或標籤..."
+            class="block w-full p-4 pl-12 text-sm text-white border border-gray-700 rounded-full bg-[#131620] focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 placeholder-gray-500 transition-all shadow-lg"
           />
           <button
             id="reset-button"
@@ -386,10 +451,10 @@
         </div>
 
         <!-- 視圖切換按鈕 -->
-        <div class="flex items-center gap-2 bg-gray-800 rounded-lg p-1 border border-gray-600">
+        <div class="flex items-center gap-1 bg-[#131620] rounded-lg p-1 border border-gray-700/50 shadow-lg">
           <button
             id="card-view-btn"
-            class="p-2 rounded-md text-blue-400 bg-gray-700 hover:text-white transition-colors"
+            class="p-2.5 rounded-md text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 transition-all duration-200"
             aria-label="卡片模式"
             title="卡片模式"
           >
@@ -399,7 +464,7 @@
           </button>
           <button
             id="list-view-btn"
-            class="p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 transition-colors"
+            class="p-2.5 rounded-md text-gray-500 hover:text-gray-300 hover:bg-gray-800/50 transition-all duration-200"
             aria-label="列表模式"
             title="列表模式"
           >
@@ -419,16 +484,19 @@
     <!-- 彈出式 Modal (預設隱藏) -->
     <div
       id="detail-modal"
-      class="modal fixed inset-0 z-50 items-center justify-center overflow-auto bg-black bg-opacity-75 p-4"
+      class="modal fixed inset-0 z-50 items-center justify-center overflow-hidden bg-black/80 p-4 backdrop-blur-sm"
     >
       <div
-        class="relative w-full max-w-3xl mx-auto bg-gray-900 rounded-lg shadow-2xl overflow-hidden border border-gray-700"
+        class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50 transform transition-all"
       >
+        <!-- Decorative gradient top -->
+        <div class="h-1 w-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"></div>
+
         <!-- Modal 頂部 -->
         <div
-          class="flex items-start justify-between p-5 border-b border-gray-700"
+          class="flex items-center justify-between p-6 border-b border-gray-800/50"
         >
-          <h2 id="modal-title" class="text-2xl font-semibold text-white">
+          <h2 id="modal-title" class="text-2xl font-bold text-white tracking-tight">
             <!-- Modal 標題將動態填入 -->
           </h2>
           <!-- 關閉按鈕 -->
@@ -1562,7 +1630,7 @@
           cardHeader.className = 'flex justify-between items-center mb-3';
           const dayBadge = document.createElement('span');
           dayBadge.className =
-            'bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full';
+            'bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm';
           dayBadge.textContent = `Day ${day.day}`;
           cardHeader.appendChild(dayBadge);
 
@@ -1587,7 +1655,7 @@
             day.labels.forEach((label) => {
               const labelBadge = document.createElement('span');
               labelBadge.className =
-                'bg-gray-700 text-gray-300 text-xs font-medium px-2.5 py-0.5 rounded-full';
+                'bg-gray-800/80 border border-gray-700 text-gray-400 text-xs font-medium px-2.5 py-1 rounded-full hover:border-gray-500 hover:text-gray-200 transition-colors';
               labelBadge.textContent = label;
               labelsContainer.appendChild(labelBadge);
             });
@@ -1967,11 +2035,11 @@
           grids.forEach(grid => grid.classList.add('list-view'));
 
           // 更新按鈕樣式
-          listViewBtn.classList.add('text-blue-400', 'bg-gray-700');
-          listViewBtn.classList.remove('text-gray-400');
+          listViewBtn.classList.add('text-blue-400', 'bg-blue-500/10');
+          listViewBtn.classList.remove('text-gray-500');
 
-          cardViewBtn.classList.remove('text-blue-400', 'bg-gray-700');
-          cardViewBtn.classList.add('text-gray-400');
+          cardViewBtn.classList.remove('text-blue-400', 'bg-blue-500/10');
+          cardViewBtn.classList.add('text-gray-500');
 
           // 保存偏好
           localStorage.setItem('adkViewMode', 'list');
@@ -1979,11 +2047,11 @@
           grids.forEach(grid => grid.classList.remove('list-view'));
 
           // 更新按鈕樣式
-          cardViewBtn.classList.add('text-blue-400', 'bg-gray-700');
-          cardViewBtn.classList.remove('text-gray-400');
+          cardViewBtn.classList.add('text-blue-400', 'bg-blue-500/10');
+          cardViewBtn.classList.remove('text-gray-500');
 
-          listViewBtn.classList.remove('text-blue-400', 'bg-gray-700');
-          listViewBtn.classList.add('text-gray-400');
+          listViewBtn.classList.remove('text-blue-400', 'bg-blue-500/10');
+          listViewBtn.classList.add('text-gray-500');
 
           // 保存偏好
           localStorage.setItem('adkViewMode', 'card');
