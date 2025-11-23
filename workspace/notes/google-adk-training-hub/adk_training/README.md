@@ -27,3 +27,4 @@
 | YAML 代理配置 - 宣告式設定 | [20-yaml_configuration.md](./20-yaml_configuration.md) | 掌握使用 YAML 檔案進行宣告式代理配置，無需編寫 Python 程式碼即可定義代理、工具和行為，實現快速原型設計和配置管理。 | `yaml`, `configuration`, `declarative`, `setup`, `rapid-prototyping` |
 | 多模態與影像處理 - 視覺 AI 代理 | [21-multimodal_image.md](./21-multimodal_image.md) | 掌握多模態功能，包括影像輸入/輸出、視覺理解，以及使用 Gemini 模型和 Vertex AI Imagen 進行影像生成。 | `multimodal`, `image-processing`, `vision`, `visual-ai`, `gemini` |
 | 模型選擇 - 選擇正確的 AI 模型 | [22-model_selection.md](./22-model_selection.md) | 學習選擇和設定不同的 AI 模型，包括 Gemini 變體、最佳化策略和模型特定設定。 |  `model`, `gemini`, `selection`, `optimization`, `recommendation` |
+| 生產部署策略 - 規模化與安全性 | [23-production_deployment.md](./23-production_deployment.md) | 了解 ADK 部署選項，並實作具有自訂驗證、監控和可靠性模式的生產級 Agent。 | `production`, `deployment`, `cloud-run`, `agent-engine`, `gke`, `security`, `monitoring` |

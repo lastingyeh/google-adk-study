@@ -186,7 +186,7 @@ timeline
 - [x] [20-yaml_configuration.md](./adk_training/20-yaml_configuration.md)
 - [x] [21-multimodal_image.md](./adk_training/21-multimodal_image.md)
 - [x] [22-model_selection.md](./adk_training/22-model_selection.md)
-- [ ] [23-production_deployment.md](./adk_training/production_deployment)
+- [x] [23-production_deployment.md](./adk_training/production_deployment)
 
 **🎯 Goals (目標)**:
 - 掌握配置管理

@@ -623,3 +623,23 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 22: Model Selection & Optimization](https://raphaelmansuy.github.io/adk_training/docs/model_selection)
 
 </details>
+
+### 🕗 Day 31
+
+<details>
+<summary>
+本教學介紹如何將 Google ADK 代理程式部署到生產環境，涵蓋四種主要部署選項：Cloud Run、Agent Engine、GKE 以及本地部署。內容包括部署架構設計、可觀測性與監控實踐、安全性與權限管理，以及最佳實踐與常見挑戰的解決方案。透過實作 Production Agent 範例，展示如何在不同環境中有效部署和管理代理程式，確保其穩定運行與高效性能。
+
+🏷️ `production`, `deployment`, `cloud-run`, `agent-engine`, `gke`, `security`, `monitoring`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/23-production_deployment.md
+- [Production Agent](./workspace/python/agents/production-agent/)
+
+#### **參考資源**
+
+- [23. Production Deployment Strategies](https://raphaelmansuy.github.io/adk_training/docs/production_deployment)
+
+</details>
