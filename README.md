@@ -635,7 +635,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 #### **詳細說明**：
 
-- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/23-production_deployment.md
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/23-production_deployment.md)
 - [Production Agent](./workspace/python/agents/production-agent/)
 
 #### **參考資源**
