@@ -1,0 +1,35 @@
+[project]
+name = "observability-plugins-agent"
+version = "0.1.0"
+description = "使用 Google ADK 的進階可觀測性和監控 Agent"
+authors = [
+    {name = "Google ADK Team", email = "adk-team@google.com"},
+]
+dependencies = [
+    "google-adk>=0.1.0",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+    "opentelemetry-exporter-gcp-trace>=1.6.0",
+    "opentelemetry-instrumentation-requests>=0.40.0",
+    "google-cloud-logging>=3.8.0",
+    "google-cloud-monitoring>=2.16.0",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "--verbose --cov=observability_plugins_agent"
+
+# 重點摘要
+# - **核心概念**: Python 專案配置檔
+# - **關鍵技術**: setuptools, pytest, Google ADK, OpenTelemetry
+# - **行動項目**: 定義專案依賴與建置系統，確保相容性與測試環境設定

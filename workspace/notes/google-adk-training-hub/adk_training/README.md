@@ -28,3 +28,4 @@
 | 多模態與影像處理 - 視覺 AI 代理 | [21-multimodal_image.md](./21-multimodal_image.md) | 掌握多模態功能，包括影像輸入/輸出、視覺理解，以及使用 Gemini 模型和 Vertex AI Imagen 進行影像生成。 | `multimodal`, `image-processing`, `vision`, `visual-ai`, `gemini` |
 | 模型選擇 - 選擇正確的 AI 模型 | [22-model_selection.md](./22-model_selection.md) | 學習選擇和設定不同的 AI 模型，包括 Gemini 變體、最佳化策略和模型特定設定。 |  `model`, `gemini`, `selection`, `optimization`, `recommendation` |
 | 生產部署策略 - 規模化與安全性 | [23-production_deployment.md](./23-production_deployment.md) | 了解 ADK 部署選項，並實作具有自訂驗證、監控和可靠性模式的生產級 Agent。 | `production`, `deployment`, `cloud-run`, `agent-engine`, `gke`, `security`, `monitoring` |
+| 進階可觀測性 - 企業級監控 | [24-advanced_observability.md](./24-advanced_observability.md) | 掌握進階可觀測性模式，包括外掛系統、Cloud Trace 整合、自訂指標、分散式追蹤以及生產環境監控儀表板。 | `plugins`, `observability`, `monitoring`, `dashboard`, `tracing` |

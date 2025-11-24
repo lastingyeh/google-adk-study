@@ -643,3 +643,23 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [23. Production Deployment Strategies](https://raphaelmansuy.github.io/adk_training/docs/production_deployment)
 
 </details>
+
+### 🕗 Day 32
+
+<details>
+<summary>
+本教學介紹如何在 Google ADK 中實現進階的可觀測性與監控功能，涵蓋設定監控代理、收集與分析指標、建立監控儀表板，以及追蹤分散式追蹤系統。透過實作 Observability Plugins 代理範例，展示如何有效監控代理的運行狀態、性能指標和事件日誌，並利用這些數據進行故障排除與系統優化，提升整體可靠性與維護效率。
+
+🏷️ `plugins`, `observability`, `monitoring`, `dashboard`, `tracing`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/24-advanced_observability.md)
+- [Observability Plugins Agent](./workspace/python/agents/observability-plugins-agent/)
+
+#### **參考資源**
+
+- [Tutorial 24: Advanced Observability - Enterprise Monitoring](https://raphaelmansuy.github.io/adk_training/docs/advanced_observability/)
+
+</details>

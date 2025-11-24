@@ -203,7 +203,7 @@ timeline
 ### Phase 8: Advanced Topics (進階主題) (第 57+ 天)
 
 **📖 Tutorials (教學)**:
-- [ ] [24-advanced_observability.md](./adk_training/advanced_observability)
+- [x] [24-advanced_observability.md](./adk_training/24-advanced_observability.md)
 - [ ] [34-pubsub_adk_integration.md](./adk_training/pubsub_adk_integration)
 
 **🎯 Goals (目標)**:
