@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "best_practices_agent"
+version = "0.1.0"
+description = "ADK 教學 25：最佳實踐 - 展示安全性、效能、測試與維護策略的生產就緒代理"
+authors = [
+    {name = "ADK Training", email = "training@example.com"},
+]
+dependencies = [
+    "google-genai>=1.15.0",
+    "google-adk>=1.16.0",
+    "pydantic>=2.0.0",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+
+[project.scripts]
+best_practices_agent = "best_practices_agent.agent:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["best_practices_agent*"]
+
+[tool.setuptools.package-dir]
+"" = "."
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+# 重點摘要
+# - **核心概念**：Python 專案設定檔。
+# - **關鍵技術**：setuptools, pytest 配置, 專案元資料。
+# - **重要結論**：定義了專案的建置系統、依賴、腳本入口點及測試設定。
+# - **行動項目**：無。

@@ -29,3 +29,4 @@
 | 模型選擇 - 選擇正確的 AI 模型 | [22-model_selection.md](./22-model_selection.md) | 學習選擇和設定不同的 AI 模型，包括 Gemini 變體、最佳化策略和模型特定設定。 |  `model`, `gemini`, `selection`, `optimization`, `recommendation` |
 | 生產部署策略 - 規模化與安全性 | [23-production_deployment.md](./23-production_deployment.md) | 了解 ADK 部署選項，並實作具有自訂驗證、監控和可靠性模式的生產級 Agent。 | `production`, `deployment`, `cloud-run`, `agent-engine`, `gke`, `security`, `monitoring` |
 | 進階可觀測性 - 企業級監控 | [24-advanced_observability.md](./24-advanced_observability.md) | 掌握進階可觀測性模式，包括外掛系統、Cloud Trace 整合、自訂指標、分散式追蹤以及生產環境監控儀表板。 | `plugins`, `observability`, `monitoring`, `dashboard`, `tracing` |
+| 最佳實務 - 生產級代理開發 | [25-best_practices.md](./25-best_practices.md) | 掌握生產級模式、架構決策、最佳化策略、安全性最佳實務，以及建構強大代理系統的綜合指南。 | `advanced`, `best-practices`, `production`, `security`, `performance` |

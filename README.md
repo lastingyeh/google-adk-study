@@ -663,3 +663,23 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 - [Tutorial 24: Advanced Observability - Enterprise Monitoring](https://raphaelmansuy.github.io/adk_training/docs/advanced_observability/)
 
 </details>
+
+### 🕗 Day 33
+
+<details>
+<summary>
+本教學介紹 Google ADK 的最佳實踐與生產模式，涵蓋代理設計原則、工具與工作流程選擇、性能優化、安全性強化，以及生產環境部署策略。透過實作 Best Practices 代理範例，展示如何應用這些最佳實踐來構建高效、可靠且安全的 AI 代理系統，確保其在生產環境中的穩定運行與持續改進。
+
+🏷️ `advanced`, `best-practices`, `production`, `security`, `performance`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/25-best_practices.md)
+- [Best Practices Agent](./workspace/python/agents/best-practices-agent/)
+
+#### **參考資源**
+
+- [Tutorial 25: Best Practices & Production Patterns](https://raphaelmansuy.github.io/adk_training/docs/best_practices/)
+
+</details>
