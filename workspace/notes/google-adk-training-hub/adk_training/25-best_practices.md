@@ -27,9 +27,9 @@
 
 儲存庫中提供了此教學的完整、經過測試的實作：
 
- **[查看教學 25 (best-practices-agent) 實作 →](../../../python/agents/best-practices-agent/)**
+**[→ 查看教學 25 (best-practices-agent) 實作 ](../../../python/agents/best-practices-agent/)**
 
-**參考 GitHub 儲存庫**: [Tutorial 25 Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial25)
+**參考來源**: [Tutorial 25 Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial25)
 
 實作包含：
 
