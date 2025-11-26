@@ -1245,3 +1245,6 @@ runner = InMemoryRunner(
 - [ADK GitHub Repository](https://github.com/google/adk)
 
 ---
+## 程式碼實現 (Code Implementation)
+
+- best-practices-agent：[程式碼連結](../../../python/agents/best-practices-agent/)
