@@ -704,3 +704,23 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 - [Tutorial 27: Third-Party Framework Tools Integration](https://raphaelmansuy.github.io/adk_training/docs/third_party_tools/)
 
 </details>
+
+### 🕗 Day 36
+
+<details>
+<summary>
+本教學介紹如何透過 LiteLLM 在 Google ADK 中整合與使用多種大型語言模型 (LLM)。內容涵蓋設定多模型提供者、配置與管理不同模型的 API 金鑰，以及在代理工作流程中動態切換和使用不同的 LLM。透過實作 Multi-LLM 代理範例，展示如何擴展代理的能力，使其能夠利用不同模型的優勢，提升靈活性與性能。
+
+🏷️ `advanced`, `llms`, `multi-model`, `providers`, `configuration`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/28-using_other_llms.md)
+- [Third Party Agent](./workspace/python/agents/multi-llm-agent/)
+
+#### **參考資源**
+
+- [Tutorial 28: Using Other LLMs with LiteLLM](https://raphaelmansuy.github.io/adk_training/docs/using_other_llms)
+
+</details>

@@ -31,3 +31,4 @@
 | 27 | 核心架構 | [best-practices-agent](./best-practices-agent) | 展示建置生產就緒代理的完整最佳實踐，包含安全性與可靠性模式。 | Security Validation, Reliability Patterns, Performance Optimization | Best Practices, Security, Reliability, Performance |
 | 28 | 整合 | [enterprise-agent](./enterprise-agent) | 使用 Gemini Enterprise 在企業規模部署和管理的 ADK 代理。 | Gemini Enterprise, Vertex AI Agent Builder, Lead Qualification | Enterprise, Gemini, Vertex AI, CRM |
 | 29 | 整合 | [third-party-agent](./third-party-agent) | 展示如何將第三方框架工具 (LangChain, CrewAI) 整合到 ADK 代理中。 | LangChain Integration, CrewAI Integration, Wikipedia Tool | Integration, LangChain, CrewAI, Third-party Tools |
+| 30 | 整合 | [multi-llm-agent](./multi-llm-agent) | 透過 LiteLLM 整合多種 LLM (OpenAI, Claude, Ollama) 的代理。 | LiteLLM, Multi-LLM, OpenAI, Anthropic Claude, Ollama | Integration, LiteLLM, Multi-LLM, OpenAI, Claude, Ollama |
