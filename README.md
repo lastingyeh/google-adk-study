@@ -684,3 +684,23 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 - [Tutorial 26: Gemini Enterprise - Enterprise Agent Management](https://raphaelmansuy.github.io/adk_training/docs/google_agentspace)
 
 </details>
+
+### 🕗 Day 35
+
+<details>
+<summary>
+本教學展示如何整合 LangChain 與 CrewAI 工具至 Google ADK。利用包裝器可直接使用搜尋等百種現成工具，無需 API 金鑰即可快速增強代理能力，並支援多框架協作開發。
+
+🏷️ `third-party`, `integration`, `langchain`, `crewai`, `external-services`
+</summary>
+
+#### **詳細說明**：
+
+- [文件連結](./workspace/notes/google-adk-training-hub/adk_training/27-third_party_tools.md)
+- [Third Party Agent](./workspace/python/agents/third-party-agent/)
+
+#### **參考資源**
+
+- [Tutorial 27: Third-Party Framework Tools Integration](https://raphaelmansuy.github.io/adk_training/docs/third_party_tools/)
+
+</details>

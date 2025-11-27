@@ -31,3 +31,4 @@
 | 進階可觀測性 - 企業級監控 | [24-advanced_observability.md](./24-advanced_observability.md) | 掌握進階可觀測性模式，包括外掛系統、Cloud Trace 整合、自訂指標、分散式追蹤以及生產環境監控儀表板。 | `plugins`, `observability`, `monitoring`, `dashboard`, `tracing` |
 | 最佳實務 - 生產級代理開發 | [25-best_practices.md](./25-best_practices.md) | 掌握生產級模式、架構決策、最佳化策略、安全性最佳實務，以及建構強大代理系統的綜合指南。 | `advanced`, `best-practices`, `production`, `security`, `performance` |
 | Gemini Enterprise - 企業級代理管理 | [26-google_agentspace.md](./26-google_agentspace.md) | 了解如何使用 Google Cloud 的 Gemini Enterprise (前身為 AgentSpace) 平台來大規模部署、管理和治理企業級 AI 代理。 | `gemini-enterprise`, `agentspace`, `deployment`, `governance`, `enterprise`, `management` |
+| 第三方工具 - 外部服務整合 | [27-third_party_tools.md](./27-third_party_tools.md) | 使用 REST API、SDK 和自訂工具集將第三方服務和工具整合到代理中，以擴充功能。 | `third-party`, `integration`, `langchain`, `crewai`, `external-services` |

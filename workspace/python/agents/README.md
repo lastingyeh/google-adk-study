@@ -26,3 +26,8 @@
 | 22 | 核心架構 | [model-selector](./model-selector) | 模型選擇與最佳化代理，協助比較與推薦適合的使用情境模型。 | Model Benchmarking, 成本/效能分析, 智慧路由, 品質評分 | Model Selection, Optimization, Benchmarking |
 | 23 | 應用 | [software-bug-assistant](./software-bug-assistant) | 軟體錯誤追蹤與管理助手，整合企業級資料庫與向量搜尋。 | Cloud SQL, Vector Search, MCP Toolbox, Cloud Run 部署 | Cloud SQL, Vector Search, Bug Tracking, Enterprise |
 | 24 | 應用 | [youtube-shorts-assistant](./youtube-shorts-assistant) | 自動化 YouTube Shorts 短影音內容創作的多代理系統。 | 腳本撰寫, 視覺化設計, 格式化, 循環/協調工作流 | Content Creation, Video, YouTube Shorts, Multi-Agent |
+| 25 | 核心架構 | [production-agent](./production-agent) | 展示 ADK 代理部署策略和最佳實務的生產部署代理。 | FastAPI Server, Cloud Run, Agent Engine, GKE, Security | Production, Deployment, FastAPI, Cloud Run, Kubernetes |
+| 26 | 控制與測試 | [observability-plugins-agent](./observability-plugins-agent) | 企業級可觀測性系統，展示 ADK 的外掛程式架構。 | Plugin System, Cloud Trace, Metrics Collector, Alerting | Observability, Plugins, Cloud Trace, Metrics |
+| 27 | 核心架構 | [best-practices-agent](./best-practices-agent) | 展示建置生產就緒代理的完整最佳實踐，包含安全性與可靠性模式。 | Security Validation, Reliability Patterns, Performance Optimization | Best Practices, Security, Reliability, Performance |
+| 28 | 整合 | [enterprise-agent](./enterprise-agent) | 使用 Gemini Enterprise 在企業規模部署和管理的 ADK 代理。 | Gemini Enterprise, Vertex AI Agent Builder, Lead Qualification | Enterprise, Gemini, Vertex AI, CRM |
+| 29 | 整合 | [third-party-agent](./third-party-agent) | 展示如何將第三方框架工具 (LangChain, CrewAI) 整合到 ADK 代理中。 | LangChain Integration, CrewAI Integration, Wikipedia Tool | Integration, LangChain, CrewAI, Third-party Tools |
