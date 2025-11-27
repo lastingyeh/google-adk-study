@@ -717,7 +717,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 #### **詳細說明**：
 
 - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/28-using_other_llms.md)
-- [Third Party Agent](./workspace/python/agents/multi-llm-agent/)
+- [Multi LLM Agent](./workspace/python/agents/multi-llm-agent/)
 
 #### **參考資源**
 
