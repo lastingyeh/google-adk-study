@@ -33,3 +33,4 @@
 | Gemini Enterprise - 企業級代理管理 | [26-google_agentspace.md](./26-google_agentspace.md) | 了解如何使用 Google Cloud 的 Gemini Enterprise (前身為 AgentSpace) 平台來大規模部署、管理和治理企業級 AI 代理。 | `gemini-enterprise`, `agentspace`, `deployment`, `governance`, `enterprise`, `management` |
 | 第三方工具 - 外部服務整合 | [27-third_party_tools.md](./27-third_party_tools.md) | 使用 REST API、SDK 和自訂工具集將第三方服務和工具整合到代理中，以擴充功能。 | `third-party`, `integration`, `langchain`, `crewai`, `external-services` |
 | 使用其他大型語言模型 - 多模型支援 | [28-using_other_llms.md](./28-using_other_llms.md) | 設定代理程式以使用不同的 LLM 供應商，包括 OpenAI、Anthropic 和本地模型，以實現多樣化的 AI 功能。 | `advanced`, `llms`, `multi-model`, `providers`, `configuration` |
+| 進階 01. GEPA 優化 | [36-gepa_optimization_advanced.md](./36-gepa_optimization_advanced.md) | 學習使用基因演化提示詞增強（GEPA）技術，透過遺傳演算法、反思和評估來自動優化大型語言模型的提示詞。 | `advanced`, `gepa`, `prompt-engineering`, `optimization`, `genetic-algorithms` |

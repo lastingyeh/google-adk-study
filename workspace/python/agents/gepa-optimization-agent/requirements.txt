@@ -1,0 +1,23 @@
+# GEPA 最佳化教學需求
+# 本教學使用模擬的客服代理來展示 GEPA 的概念
+
+# Google ADK 及其依賴套件
+google-genai>=1.15.0
+google-adk>=0.1.4
+
+# GEPA 框架 (選用 - 用於實際最佳化)
+# gepa>=0.1.0
+
+# 測試與開發
+pytest>=7.0.0
+pytest-asyncio>=0.24.0
+pytest-cov>=5.0.0
+
+# 程式碼品質
+ruff>=0.5.0
+black>=24.0.0
+mypy>=1.11.0
+
+# 工具程式
+python-dotenv>=1.0.0
+pydantic>=2.0.0
