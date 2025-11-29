@@ -128,12 +128,17 @@ body {
 /* Smoother Collapse Animation */
 .group-content {
   max-height: 1500px; /* Set a sufficiently large max-height */
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), overflow 0.5s;
   overflow: hidden;
+}
+
+.group-content:not(.collapsed) {
+  overflow-y: auto;
 }
 
 .group-content.collapsed {
   max-height: 0;
+  overflow: hidden;
 }
 
 /* Google Switch */
