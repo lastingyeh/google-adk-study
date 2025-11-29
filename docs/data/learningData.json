@@ -1,0 +1,1139 @@
+[
+  {
+    "day": 1,
+    "title": "了解 Google ADK 核心定義",
+    "description": "了解 Google ADK 核心定義，在社群資源中匯集了由 Agent Development Kit (ADK) 社群所建立和維護的各類資源。內容涵蓋了入門教學、深度課程、代理程式開發的教學與示範、Java 版本的 ADK 資源，以及多國語言的文件翻譯。此外，頁面也提供了如何貢獻自己資源的指南，鼓勵社群成員參與並豐富 ADK 的生態系。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/docs/google-adk-docs-community_summary.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Google ADK Getting Started",
+        "url": "https://google.github.io/adk-docs/community/#getting-started"
+      },
+      {
+        "text": "Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)",
+        "url": "https://www.youtube.com/watch?v=5ZmaWY7UX6k"
+      },
+      {
+        "text": "software-bug-assistant",
+        "url": "https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant"
+      },
+      {
+        "text": "Tools Make an Agent: From Zero to Assistant with ADK",
+        "url": "https://cloud.google.com/blog/topics/developers-practitioners/tools-make-an-agent-from-zero-to-assistant-with-adk?e=48754805?utm_source%3Dtwitter?utm_source%3Dlinkedin"
+      },
+      {
+        "text": "Tools for Agents: ADK Tools list",
+        "url": "https://google.github.io/adk-docs/tools/"
+      }
+    ],
+    "labels": ["adk-basics", "community", "getting-started"],
+    "completed": false
+  },
+  {
+    "day": 2,
+    "title": "設計 copilot 互動教學設計模式",
+    "description": "設計 copilot 互動教學設計模式，取得目標學習專案的相關資源，並設計互動式教學模式以協助學習者更有效地掌握專案內容。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/.github/agents/repo-guiding-learning.chatmode.agent.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "專案相依連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/software-bug-assistant/README.md"
+      }
+    ],
+    "labels": ["copilot", "learning-design", "interactive-tutorial"],
+    "completed": false
+  },
+  {
+    "day": 3,
+    "title": "實做範例 software-bug-assistant 專案",
+    "description": "實做範例 software-bug-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助識別和修復軟體錯誤的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。",
+    "docs": [
+      {
+        "text": "環境初始化流程",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/software-bug-assistant/docs/INSTALLATION_GUIDE.md"
+      },
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/software-bug-assistant/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "software-bug-assistant",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/software-bug-assistant/"
+      }
+    ],
+    "labels": ["sample-project", "bug-assistant", "implementation"],
+    "completed": false
+  },
+  {
+    "day": 4,
+    "title": "實做範例 youtube-shorts-agent 專案",
+    "description": "實做範例 youtube-shorts-agent 專案，了解如何使用 Google ADK 建立一個能夠協助生成和管理 YouTube Shorts 內容的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/youtube-shorts-assistant/README.md"
+      },
+      {
+        "text": "學習訓練指引筆記",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Getting started with Agent Development Kit",
+        "url": "https://www.youtube.com/watch?v=44C8u0CDtSo"
+      },
+      {
+        "text": "youtube-shorts-assistant 專案 Repo",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/youtube-shorts-assistant/"
+      },
+      {
+        "text": "Google ADK Training Hub",
+        "url": "https://raphaelmansuy.github.io/adk_training/"
+      }
+    ],
+    "labels": ["sample-project", "youtube-shorts", "implementation"],
+    "completed": false
+  },
+  {
+    "day": 5,
+    "title": "實現範例 finance-assistant 專案",
+    "description": "實現範例 finance-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助管理和分析財務數據的智能代理。包含基本 ADK Tools 的應用，並透過 asyncio.gather(*tasks) 平行處理任務與完整 Agent 測試案例實現。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/finance-assistant/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 02: Function Tools Implementation",
+        "url": "https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02"
+      },
+      {
+        "text": "finance-assistant",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/finance-assistant/"
+      },
+      {
+        "text": "Tutorial 02: Function Tools - Give Your Agent Superpowers",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/function_tools"
+      }
+    ],
+    "labels": [
+      "function-tools",
+      "python",
+      "tools",
+      "custom-abilities",
+      "parallel-execution"
+    ],
+    "completed": false
+  },
+  {
+    "day": 6,
+    "title": "實現範例 chuck-norris-agent 專案",
+    "description": "學習如何從 OpenAPI 規範中自動產生工具，使您的代理程式能夠與 REST API 互動，而無需手動編寫工具函式。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/chuck-norris-agent/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/"
+      },
+      {
+        "text": "教學 03：OpenAPI 工具 - REST API 整合",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md"
+      },
+      {
+        "text": "chuck-norris-agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/chuck-norris-agent/"
+      },
+      {
+        "text": "Tutorial 03: Chuck Norris OpenAPI Tools Agent",
+        "url": "https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/"
+      }
+    ],
+    "labels": [
+      "openapi",
+      "rest-api",
+      "integration",
+      "toolset",
+      "api-automation"
+    ],
+    "completed": false
+  },
+  {
+    "day": 7,
+    "title": "Gemini 2.0+ 內建工具介紹",
+    "description": "本教學介紹 Gemini 2.0+ 的內建工具,包含網路搜尋、地圖定位和企業搜尋功能,讓 AI 代理程式存取即時資訊。核心內容涵蓋:google_search 網路基礎工具、google_maps_grounding 位置服務(需 VertexAI)、enterprise_web_search 企業搜尋、GoogleSearchAgentTool 混合工具解決方案。同時介紹記憶體管理、工作流程控制、上下文載入等進階工具。透過實作研究助理範例,展示如何整合多種工具建立生產級代理程式系統,包含最佳實踐與疑難排解指南。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/chuck-norris-agent/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 11：內建工具與基礎 (Built-in Tools & Grounding)",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md"
+      },
+      {
+        "text": "Grounding Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/grounding-agent/"
+      }
+    ],
+    "labels": [
+      "built-in-tools",
+      "grounding",
+      "google-search",
+      "google-maps",
+      "real-time-data"
+    ],
+    "completed": false
+  },
+  {
+    "day": 8,
+    "title": "模型內容協議 (MCP) 整合",
+    "description": "本教學介紹如何使用模型內容協議 (MCP) 將外部工具和服務整合到 AI 代理程式中。透過 MCPToolset 連接 MCP 伺服器，讓代理程式能夠存取檔案系統、資料庫、API 等外部資源，並支援 OAuth 驗證與人機迴圈審批等進階功能。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/mcp-agent/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md"
+      },
+      {
+        "text": "MCP Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/mcp-agent/"
+      }
+    ],
+    "labels": [
+      "mcp",
+      "integration",
+      "standard-protocol",
+      "toolset",
+      "filesystem"
+    ],
+    "completed": false
+  },
+  {
+    "day": 9,
+    "title": "Google ADK 工作流程編排核心",
+    "description": "Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任務，並行流程提升執行效率，迴圈流程迭代優化品質。組合策略：透過巢狀工作流程實現複雜代理編排，解決真實世界多步驟問題。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/workflows-orchestration.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Workflows & Orchestration",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/workflows-orchestration"
+      }
+    ],
+    "labels": [
+      "workflow",
+      "orchestration",
+      "sequential-agent",
+      "parallel-agent",
+      "loop-agent"
+    ],
+    "completed": false
+  },
+  {
+    "day": 10,
+    "title": "循序工作流程 (SequentialAgent)",
+    "description": "根據文件內容，這是一份關於 Google ADK 循序工作流程的教學，說明如何使用 `SequentialAgent` 連接多個 agents 建立部落格文章產生 pipeline。透過研究、寫作、編輯、格式化四個階段，展示如何使用 `output_key` 在 agents 間傳遞資料，適合需要按順序執行的任務流程。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/04-sequential_workflows.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 04：循序工作流程 - Agent Pipelines 重點說明",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/blog-pipeline/README.md"
+      },
+      {
+        "text": "Blog Creation Pipeline",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/blog-pipeline/"
+      },
+      {
+        "text": "Tutorial 04: Sequential Workflows - Build Agent Pipelines",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/sequential_workflows"
+      }
+    ],
+    "labels": [
+      "sequential-agent",
+      "workflow",
+      "pipeline",
+      "multi-agent",
+      "state-management"
+    ],
+    "completed": false
+  },
+  {
+    "day": 11,
+    "title": "平行處理 (ParallelAgent)",
+    "description": "本教學介紹 `ParallelAgent` 同時執行多個獨立代理以提升效率，並運用「扇出/收集」模式：先平行收集資料（航班、飯店、活動），再循序合併結果成完整行程。適用於 I/O 密集型任務與多源資料收集。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/05-parallel_processing.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 05：平行處理 - 旅遊規劃系統",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/travel-planner/README.md"
+      },
+      {
+        "text": "Travel Planner",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/travel-planner/"
+      },
+      {
+        "text": "Tutorial 05: Parallel Processing - Run Multiple Agents Simultaneously",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/parallel_processing"
+      }
+    ],
+    "labels": [
+      "parallel-agent",
+      "workflow",
+      "fan-out-gather",
+      "multi-agent",
+      "performance"
+    ],
+    "completed": false
+  },
+  {
+    "day": 12,
+    "title": "多代理協調流程",
+    "description": "本教學示範建構複雜的多代理協調流程，結合並行與循序模式。以內容發布系統為例，採用扇出/收集架構：並行執行新聞、社群、專家三個研究管線，再循序進行內容創作、編輯、格式化，實現速度與品質兼顧的智能協作系統。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/06-multi_agent_systems.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 06：多代理系統 - 內容發布系統",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/content-publisher/README.md"
+      },
+      {
+        "text": "Content Publisher",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/content-publisher/"
+      },
+      {
+        "text": "Content Publisher Agent Architecture",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/content-publisher/agent_architecture.md"
+      },
+      {
+        "text": "Tutorial 06: Multi-Agent Systems - Agents Working Together",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/multi_agent_systems/"
+      }
+    ],
+    "labels": [
+      "multi-agent-systems",
+      "orchestration",
+      "nested-workflows",
+      "google-search"
+    ],
+    "completed": false
+  },
+  {
+    "day": 13,
+    "title": "循環代理 (LoopAgent) 文章精煉",
+    "description": "教學 07：循環代理文章精煉系統 - 使用 LoopAgent 實現自我改進的代理系統，透過評論者-精煉者模式進行迭代品質提升，具備智慧終止機制和完整測試覆蓋（62個測試），展示循環代理的實際應用。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/07-loop_agents.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "教學 07：循環代理（Loop Agents）- 文章精煉系統",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/essay-refiner/README.md"
+      },
+      {
+        "text": "Essay Refiner",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/essay-refiner/"
+      },
+      {
+        "text": "Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/loop_agents"
+      }
+    ],
+    "labels": [
+      "loop-agent",
+      "iterative-optimization",
+      "self-correction",
+      "critic-refiner"
+    ],
+    "completed": false
+  },
+  {
+    "day": 14,
+    "title": "ADK 核心能力、生產部署與進階模式",
+    "description": "本系列涵蓋 ADK 核心能力：LLM 整合篇教授提示工程、接地技術（網路/資料/位置）、思維推理框架（內建思考、Plan-ReAct）、多輪對話及性能優化；生產部署篇介紹四種部署環境、可觀測性監控、服務組態與安全實踐；進階模式篇探討即時串流、MCP 協定、A2A 通訊及多模態整合；決策框架篇提供代理類型、工具選擇、部署策略的完整決策矩陣與實施清單，助您從開發到生產全面掌握 Google ADK。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "LLM Integration",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/llm-integration"
+      },
+      {
+        "text": "Production & Deployment",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/production-deployment"
+      },
+      {
+        "text": "Advanced Patterns",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/advanced-patterns"
+      },
+      {
+        "text": "Decision Frameworks",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/decision-frameworks"
+      }
+    ],
+    "labels": ["core-concepts", "deployment", "advanced-patterns"],
+    "completed": false
+  },
+  {
+    "day": 15,
+    "title": "完整學習路徑與速查備忘單",
+    "description": "本資料提供 Google Agent Development Kit (ADK) 完整學習路徑，涵蓋從初學者到專家的 8 階段進程（57+ 天），包括代理建立、工作流程模式（Sequential/Parallel/Loop）、工具整合、狀態管理、生產部署等核心技能。附有快速參考備忘單，提供代碼範例、CLI 指令、最佳實踐與疑難排解，適合 AI 應用開發者系統學習與實作。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Learning Paths",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/learning-paths"
+      },
+      {
+        "text": "ADK Cheat Sheet - Complete Reference",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/adk-cheat-sheet"
+      }
+    ],
+    "labels": ["learning-path", "cheat-sheet", "reference"],
+    "completed": false
+  },
+  {
+    "day": 16,
+    "title": "入門：驗證、Hello World 與參考指南",
+    "description": "涵蓋驗證與平台選擇、入門範例建置、代理模式(循序平行迴圈)、工具整合、狀態管理、部署、安全權限、測試監控及最佳實務，並含成本管理、事件追蹤、錯誤處理與常見問題。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/README.md#六資源與支援"
+      },
+      {
+        "text": "00-setup_authentication",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/00-setup_authentication.md"
+      },
+      {
+        "text": "01-hello_world_agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/01-hello_world_agent.md"
+      },
+      {
+        "text": "hello-agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/hello-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "reference Guide",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/reference-guide"
+      },
+      {
+        "text": "Tutorial 00: Setup & Authentication - Getting Started with Google ADK",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/setup_authentication"
+      },
+      {
+        "text": "Tutorial 01: Hello World Agent - Build Your First AI Agent with Google ADK",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/hello_world_agent"
+      }
+    ],
+    "labels": [
+      "setup",
+      "authentication",
+      "hello-world",
+      "agent",
+      "adk-basics"
+    ],
+    "completed": false
+  },
+  {
+    "day": 17,
+    "title": "狀態與記憶體 (State Memory)",
+    "description": "教學示範建構個人化導師：利用會話狀態與 user/app/temp 前綴記錄偏好、主題與測驗分數，搜尋過往會話支援進度回顧與自適應教學。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md"
+      },
+      {
+        "text": "personal tutor",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/personal-tutor/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 08: State Memory - Managing Conversation Context and Data",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/state_memory"
+      }
+    ],
+    "labels": [
+      "state-management",
+      "memory",
+      "persistence",
+      "session-state",
+      "user-context"
+    ],
+    "completed": false
+  },
+  {
+    "day": 18,
+    "title": "回呼與護欄 (Callbacks & Guardrails)",
+    "description": "教學介紹ADK代理回呼：生命週期、模型、工具六鉤子；可阻擋不當內容、驗證參數、過濾PII、記錄與追蹤指標；示範內容審核助理實作護欄、安全指令、狀態管理與最佳實務。強化安全控制模式與錯誤處理測試範例涵蓋",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/09-callbacks_guardrails.md"
+      },
+      {
+        "text": "content moderator",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/content-moderator/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 09: Callbacks & Guardrails - Control Flow and Monitoring",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/callbacks_guardrails"
+      }
+    ],
+    "labels": [
+      "callbacks",
+      "guardrails",
+      "safety",
+      "monitoring",
+      "observability",
+      "security"
+    ],
+    "completed": false
+  },
+  {
+    "day": 19,
+    "title": "評估與測試 (Evaluation & Testing)",
+    "description": "本教學介紹如何使用 pytest 和 AgentEvaluator 系統性地測試 AI agents。涵蓋測試金字塔架構:單元測試(77%)驗證工具函式與設定、整合測試(9%)驗證工作流程協調、評估測試(14%)使用 AgentEvaluator 評估軌跡與回應品質。重點在於 AI agents 的非確定性特性需要質化評估而非傳統斷言測試。提供完整實作範例,包含 22 個綜合測試、EvalSet JSON 結構描述,以及生產環境最佳實踐。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md"
+      },
+      {
+        "text": "content moderator",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/support-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 10: Evaluation & Testing - Quality Assurance for Agents",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/evaluation_testing"
+      }
+    ],
+    "labels": [
+      "evaluation",
+      "testing",
+      "pytest",
+      "agent-evaluator",
+      "quality-assurance"
+    ],
+    "completed": false
+  },
+  {
+    "day": 20,
+    "title": "規劃器與思維 (Planners & Thinking)",
+    "description": "本教學介紹 ADK 進階推理能力，包含三種規劃器：BuiltInPlanner 利用 Gemini 2.0+ 原生思維能力進行透明推理；PlanReActPlanner 提供結構化的計畫→推理→行動→觀察→重新規劃流程；BasePlanner 可建立自訂規劃策略。透過 ThinkingConfig 控制思維過程的顯示。規劃器讓代理在行動前先思考，提升複雜問題的推理品質與準確性，適用於多步驟工作流程與策略性問題解決。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/12-planners_thinking.md"
+      },
+      {
+        "text": "content moderator",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/strategic-solver/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 12: Planners & Thinking Configuration",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/planners_thinking"
+      }
+    ],
+    "labels": [
+      "planners",
+      "thinking",
+      "reasoning",
+      "plan-react",
+      "strategic-planning"
+    ],
+    "completed": false
+  },
+  {
+    "day": 21,
+    "title": "程式碼執行 (Code Execution)",
+    "description": "本教學介紹了如何利用 Gemini 2.0+ 的 BuiltInCodeExecutor 功能，讓 AI 代理能夠動態生成並執行 Python 程式碼。此功能使代理能夠在 Google 安全的沙箱環境中進行精確的數學計算、資料分析和複雜運算，解決了大型語言模型在精確度上的限制。內容涵蓋了基本用法、實際應用（如財務計算機），並強調了與傳統函式工具相比的靈活性與強大功能，同時也說明了其安全考量與最佳實踐。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/13-code_execution.md"
+      },
+      {
+        "text": "code calculator",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/code-calculator/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 13: Code Execution - Dynamic Python Code Generation",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/code_execution/"
+      }
+    ],
+    "labels": [
+      "code-execution",
+      "python",
+      "dynamic-code",
+      "computation",
+      "data-analysis"
+    ],
+    "completed": false
+  },
+  {
+    "day": 22,
+    "title": "視覺化代理建構器 & MCP 2.0",
+    "description": "兩大主題說明：\n\n- Google ADK v1.18.0 推出了視覺化代理建構器，一個無程式碼的網頁介面，用於設計、設定和測試複雜的多代理系統。使用者可以透過拖放方式建立工作流程，或利用 Gemini 驅動的 AI 助理，以自然語言描述需求來自動生成完整的代理架構。此工具會產生標準的 ADK YAML 設定檔，加速了原型設計和開發流程，但目前仍處於早期版本，可能存在一些小問題。\n- 傳統MCP因載入全部工具定義與原始資料而浪費Token，導致成本高昂且易出錯。新範式「程式碼執行」(MCP 2.0)讓AI撰寫程式碼，僅處理必要工具與資料，最終結果才返回上下文，能節省98% Token，大幅提升效率、可靠性與隱私。",
+    "docs": [
+      {
+        "text": "Building AI Agents Visually with Google ADK Visual Agent Builder 完整內容整理",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/articles/google-adk-visual-agent-builder/building-ai-agents-visually-with-google-adk-visual-agent-builder.md"
+      },
+      {
+        "text": "ADK Course #8 - NEW Visual Agent Builder | Agent Development Kit (ADK) 影片重點整理",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/articles/google-adk-visual-agent-builder/theailanguage-No-Code%20Visual%20Agent%20Builder%20(v6).md"
+      },
+      {
+        "text": "Code execution with MCP",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/articles/mcp/1-STOP%20Using%20MCP%20Like%20This,%20Use%20MCP%202.0%20Instead%20(Save%2098%25%20More%20Tokens).md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Building AI Agents Visually with Google ADK Visual Agent Builder",
+        "url": "https://medium.com/google-cloud/building-ai-agents-visually-with-google-adk-visual-agent-builder-bb441e59a78c"
+      },
+      {
+        "text": "ADK Course #8 - NEW Visual Agent Builder | Agent Development Kit (ADK)",
+        "url": "https://www.youtube.com/watch?v=NxjbtiSvCc0"
+      },
+      {
+        "text": "google-adk-visual-agent-builder-demo",
+        "url": "https://github.com/thomas-chong/google-adk-visual-agent-builder-demo"
+      },
+      {
+        "text": "No-Code Visual Agent Builder (v6)",
+        "url": "https://github.com/theailanguage/adk_samples/tree/main/version_6_adk_nocode"
+      },
+      {
+        "text": "STOP Using MCP Like This, Use MCP 2.0 Instead (Save 98% More Tokens)",
+        "url": "https://youtu.be/jJMbz-xziZI?si=H77UrCQDVGYqfHH-"
+      },
+      {
+        "text": "Code execution with MCP: Building more efficient agents",
+        "url": "https://www.anthropic.com/engineering/code-execution-with-mcp"
+      }
+    ],
+    "labels": ["visual-builder", "no-code", "mcp"],
+    "completed": false
+  },
+  {
+    "day": 23,
+    "title": "串流 (SSE) 與即時音訊",
+    "description": "本教學文件旨在說明如何透過伺服器發送事件（SSE）技術在 ADK 中實現串流回應，以優化使用者體驗。相較於傳統的阻塞式回應，串流技術能夠在 AI 模型生成內容的同時，逐步地將文字傳送給使用者，從而提供即時的進度反饋。\n本教學介紹如何使用 Google ADK 建立具備即時音訊串流能力的代理程式。內容涵蓋設定雙向串流 API、音訊處理、SSE 串流技術，以及將音訊輸入整合到代理工作流程中。透過實作語音助理範例，展示如何實現語音指令識別與回應，提升使用者互動體驗。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/14-streaming_sse.md"
+      },
+      {
+        "text": "streaming agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/streaming-agent/"
+      },
+      {
+        "text": "demos",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/streaming-agent/demos/README.md"
+      },
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/15-live_api_audio.md"
+      },
+      {
+        "text": "voice assistant",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/voice-assistant/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 14: Streaming and Server-Sent Events (SSE) - Real-Time Responses",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/streaming_sse"
+      },
+      {
+        "text": "Tutorial 15: Live API & Bidirectional Streaming with Audio",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/live_api_audio"
+      }
+    ],
+    "labels": ["streaming", "sse", "live-api", "audio", "voice"],
+    "completed": false
+  },
+  {
+    "day": 24,
+    "title": "多代理通訊 (A2A)",
+    "description": "本教學介紹如何使用 Google ADK 建立多代理通訊系統，實現代理之間的協同工作。內容涵蓋 A2A 通訊架構、訊息傳遞機制、同步與非同步通訊模式，以及錯誤處理與重試策略。透過實作 A2A Orchestrator 範例，展示如何協調多個代理共同完成複雜任務，提升系統的靈活性與擴展性。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/17-agent_to_agent.md"
+      },
+      {
+        "text": "a2a orchestrator",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/a2a-orchestrator/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 17: Agent-to-Agent (A2A) Communication",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/agent_to_agent"
+      }
+    ],
+    "labels": [
+      "agent-to-agent",
+      "distributed-systems",
+      "delegation",
+      "coordination",
+      "multi-agent"
+    ],
+    "completed": false
+  },
+  {
+    "day": 25,
+    "title": "事件追蹤與可觀測性",
+    "description": "本教學介紹如何在 Google ADK 中實現事件追蹤與可觀測性，涵蓋設定觀察代理、事件日誌記錄、指標收集與監控儀表板建立。透過實作觀察代理範例，展示如何監控代理的運行狀態與性能，並進行故障排除與優化，提升系統的可靠性與可維護性。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/18-events_observability.md"
+      },
+      {
+        "text": "observability agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/observability-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 18: Events and Observability - Agent Monitoring",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/events_observability"
+      }
+    ],
+    "labels": [
+      "advanced",
+      "observability",
+      "monitoring",
+      "events",
+      "metrics"
+    ],
+    "completed": false
+  },
+  {
+    "day": 26,
+    "title": "成品與檔案 - 內容生成與管理",
+    "description": "本教學介紹如何使用 Google ADK 的 Artifact Tool 管理代理程式所需的檔案與資源。內容涵蓋檔案上傳與下載、版本控制、存取權限設定，以及在代理工作流程中整合 Artifact Tool。透過實作 Artifact Agent 範例，展示如何有效地管理和使用檔案，提升代理的功能與靈活性。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/19-artifacts_files.md"
+      },
+      {
+        "text": "artifact agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/artifact-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 19: Artifacts & File Management",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/artifacts_files"
+      }
+    ],
+    "labels": [
+      "advanced",
+      "artifacts",
+      "files",
+      "content-generation",
+      "file-management"
+    ],
+    "completed": false
+  },
+  {
+    "day": 27,
+    "title": "代理程式配置與管理 (YAML)",
+    "description": "本教學介紹如何使用 YAML 配置文件來定義和管理 Google ADK 代理程式的設定。內容涵蓋 YAML 語法基礎、配置結構、常用設定選項，以及如何在代理工作流程中載入和應用 YAML 配置。透過實作 Customer Support 範例，展示如何利用 YAML 配置快速調整代理行為，提升開發效率與靈活性。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/20-yaml_configuration.md"
+      },
+      {
+        "text": "customer support",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/customer-support/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 20: Agent Configuration with YAML",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/yaml_configuration"
+      }
+    ],
+    "labels": [
+      "yaml",
+      "configuration",
+      "declarative",
+      "setup",
+      "rapid-prototyping"
+    ],
+    "completed": false
+  },
+  {
+    "day": 28,
+    "title": "多模態圖像處理",
+    "description": "本教學介紹如何使用 Google ADK 建立多模態圖像處理代理程式。內容涵蓋圖像輸入與輸出處理、圖像分析與生成技術，以及將圖像處理功能整合到代理工作流程中。透過實作 Vision Catalog 代理範例，展示如何利用多模態能力進行圖像分類、標註和生成，提升代理的視覺理解與互動能力。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/21-multimodal_image.md"
+      },
+      {
+        "text": "vision catalog agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/vision-catalog-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 21: Multimodal & Image Generation",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/multimodal_image"
+      }
+    ],
+    "labels": [
+      "multimodal",
+      "image-processing",
+      "vision",
+      "visual-ai",
+      "gemini"
+    ],
+    "completed": false
+  },
+  {
+    "day": 29,
+    "title": "設計 AI 維運平台 (AIOps)",
+    "description": "本系列文章深入探討如何設計一個由多個智慧代理人（Agent）協同工作的 AI 維運平台。此架構整合了 Google ADK、A2A（Agent-to-Agent）通訊協定、MCP（Model Context Protocol）以及 Kafka 資料串流技術，旨在實現從事件監控、分析、知識查詢到自動化修復的端到端智慧維運流程。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/articles/ops-a2a-cosmos/README.md"
+      }
+    ],
+    "refs": [
+      {
+        "text": "A2A, MCP, Kafka and Flink: The New Stack for AI Agents",
+        "url": "https://thenewstack.io/a2a-mcp-kafka-and-flink-the-new-stack-for-ai-agents/"
+      },
+      {
+        "text": "Announcing the Agent2Agent Protocol (A2A)",
+        "url": "https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/"
+      },
+      {
+        "text": "How to Build a Multi-Agent Orchestrator Using Apache Flink® and Apache Kafka®",
+        "url": "https://www.confluent.io/blog/multi-agent-orchestrator-using-flink-and-kafka/"
+      },
+      {
+        "text": "Shaping the Future of AI: A2A + Data Streaming ft. Sean Falconer | Life Is But A Stream Podcast",
+        "url": "https://www.youtube.com/watch?v=LCGck5sUqqw"
+      }
+    ],
+    "labels": ["aiops", "a2a", "streaming", "adk", "mcp", "kafka", "sre"],
+    "completed": false
+  },
+  {
+    "day": 30,
+    "title": "模型選擇與優化",
+    "description": "本教學介紹如何在 Google ADK 中進行模型選擇與優化，涵蓋不同模型的特性比較、選擇策略，以及如何根據任務需求調整模型參數以提升性能。透過實作 Model Selector 範例，展示如何根據輸入資料和預期結果動態選擇最適合的模型，實現高效且精確的代理行為。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/22-model_selection.md"
+      },
+      {
+        "text": "Model Selector",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/model-selector/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 22: Model Selection & Optimization",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/model_selection"
+      }
+    ],
+    "labels": [
+      "model",
+      "gemini",
+      "selection",
+      "optimization",
+      "recommendation"
+    ],
+    "completed": false
+  },
+  {
+    "day": 31,
+    "title": "生產環境部署策略",
+    "description": "本教學介紹如何將 Google ADK 代理程式部署到生產環境，涵蓋四種主要部署選項：Cloud Run、Agent Engine、GKE 以及本地部署。內容包括部署架構設計、可觀測性與監控實踐、安全性與權限管理，以及最佳實踐與常見挑戰的解決方案。透過實作 Production Agent 範例，展示如何在不同環境中有效部署和管理代理程式，確保其穩定運行與高效性能。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/23-production_deployment.md"
+      },
+      {
+        "text": "Production Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/production-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "23. Production Deployment Strategies",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/production_deployment"
+      }
+    ],
+    "labels": [
+      "production",
+      "deployment",
+      "cloud-run",
+      "agent-engine",
+      "gke",
+      "security",
+      "monitoring"
+    ],
+    "completed": false
+  },
+  {
+    "day": 32,
+    "title": "進階可觀測性與監控",
+    "description": "本教學介紹如何在 Google ADK 中實現進階的可觀測性與監控功能，涵蓋設定監控代理、收集與分析指標、建立監控儀表板，以及追蹤分散式追蹤系統。透過實作 Observability Plugins 代理範例，展示如何有效監控代理的運行狀態、性能指標和事件日誌，並利用這些數據進行故障排除與系統優化，提升整體可靠性與維護效率。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/24-advanced_observability.md"
+      },
+      {
+        "text": "Observability Plugins Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/observability-plugins-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 24: Advanced Observability - Enterprise Monitoring",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/advanced_observability/"
+      }
+    ],
+    "labels": [
+      "plugins",
+      "observability",
+      "monitoring",
+      "dashboard",
+      "tracing"
+    ],
+    "completed": false
+  },
+  {
+    "day": 33,
+    "title": "最佳實踐與生產模式",
+    "description": "本教學介紹 Google ADK 的最佳實踐與生產模式，涵蓋代理設計原則、工具與工作流程選擇、性能優化、安全性強化，以及生產環境部署策略。透過實作 Best Practices 代理範例，展示如何應用這些最佳實踐來構建高效、可靠且安全的 AI 代理系統，確保其在生產環境中的穩定運行與持續改進。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/25-best_practices.md"
+      },
+      {
+        "text": "Best Practices Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/best-practices-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 25: Best Practices & Production Patterns",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/best_practices/"
+      }
+    ],
+    "labels": [
+      "advanced",
+      "best-practices",
+      "production",
+      "security",
+      "performance"
+    ],
+    "completed": false
+  },
+  {
+    "day": 34,
+    "title": "Gemini Enterprise (原 AgentSpace)",
+    "description": "Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK 與無程式碼開發。具備預建代理、數據連接與安全治理功能，協助企業大規模運營 AI 代理生態系統。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/26-google_agentspace.md"
+      },
+      {
+        "text": "Enterprise Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/enterprise-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 26: Gemini Enterprise - Enterprise Agent Management",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/google_agentspace"
+      }
+    ],
+    "labels": [
+      "gemini-enterprise",
+      "agentspace",
+      "deployment",
+      "governance",
+      "enterprise",
+      "management"
+    ],
+    "completed": false
+  },
+  {
+    "day": 35,
+    "title": "第三方工具整合 (LangChain & CrewAI)",
+    "description": "本教學展示如何整合 LangChain 與 CrewAI 工具至 Google ADK。利用包裝器可直接使用搜尋等百種現成工具，無需 API 金鑰即可快速增強代理能力，並支援多框架協作開發。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/27-third_party_tools.md"
+      },
+      {
+        "text": "Third Party Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/third-party-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 27: Third-Party Framework Tools Integration",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/third_party_tools/"
+      }
+    ],
+    "labels": [
+      "third-party",
+      "integration",
+      "langchain",
+      "crewai",
+      "external-services"
+    ],
+    "completed": false
+  },
+  {
+    "day": 36,
+    "title": "整合與使用其他大型語言模型 (LiteLLM)",
+    "description": "本教學介紹如何透過 LiteLLM 在 Google ADK 中整合與使用多種大型語言模型 (LLM)。內容涵蓋設定多模型提供者、配置與管理不同模型的 API 金鑰，以及在代理工作流程中動態切換和使用不同的 LLM。透過實作 Multi-LLM 代理範例，展示如何擴展代理的能力，使其能夠利用不同模型的優勢，提升靈活性與性能。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/28-using_other_llms.md"
+      },
+      {
+        "text": "Multi-LLM Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/multi-llm-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Tutorial 28: Using Other LLMs with LiteLLM",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/using_other_llms"
+      }
+    ],
+    "labels": [
+      "advanced",
+      "llms",
+      "multi-model",
+      "providers",
+      "configuration"
+    ],
+    "completed": false
+  },
+  {
+    "day": 37,
+    "title": "GEPA 提示詞優化 (GEPA)",
+    "description": "本文件介紹 GEPA 技術，透過「測試、分析、改進」的演化循環，自動優化 AI 代理人提示詞，解決了手動調整的繁瑣與不確定性。",
+    "docs": [
+      {
+        "text": "文件連結",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/36-gepa_optimization_advanced.md"
+      },
+      {
+        "text": "GEPA Optimization Agent",
+        "url": "https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/gepa-optimization-agent/"
+      }
+    ],
+    "refs": [
+      {
+        "text": "Advanced Tutorial: GEPA-Based Prompt Optimization for Customer Support Agents",
+        "url": "https://raphaelmansuy.github.io/adk_training/docs/gepa_optimization_advanced"
+      }
+    ],
+    "labels": [
+      "advanced",
+      "gepa",
+      "prompt-engineering",
+      "optimization",
+      "genetic-algorithms"
+    ],
+    "completed": false
+  }
+]
