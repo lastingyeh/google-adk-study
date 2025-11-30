@@ -1,0 +1,59 @@
+### 翻譯內容
+```toml
+[build-system]
+# 定義建置專案所需的套件
+requires = ["setuptools>=64", "wheel"]
+# 指定用於建置專案的後端
+build-backend = "setuptools.build_meta"
+
+[project]
+# 專案名稱
+name = "ui-integration"
+# 專案版本
+version = "0.1.0"
+# 專案描述
+description = "教學 29：UI 整合介紹 - 快速入門範例"
+# 要求的 Python 最低版本
+requires-python = ">=3.9"
+# 專案的主要依賴項
+dependencies = [
+    "google-adk>=1.16.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "ag-ui-adk>=0.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+# 開發環境下的額外依賴項 (例如，用於測試)
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+# 指定在哪個目錄下尋找套件
+where = ["."]
+# 包含名稱以 "agent" 開頭的套件
+include = ["agent*"]
+# 排除名稱以 "frontend" 或 "tests" 開頭的套件
+exclude = ["frontend*", "tests*"]
+```
+
+### 重點摘要
+- **核心概念**：此檔案是 Python 專案的設定檔，遵循 PEP 621 標準。它定義了專案的中繼資料、建置需求、依賴項以及套件結構。
+- **關鍵技術**：
+    - **TOML (Tom's Obvious, Minimal Language)**：一種易於閱讀的設定檔格式。
+    - **setuptools**：用於建置與分發 Python 套件的工具。
+    - **PEP 621**：一個 Python 增強提案，標準化了 `pyproject.toml` 檔案中專案中繼資料的寫法。
+- **專案設定**：
+    - **名稱**: `ui-integration`
+    - **版本**: `0.1.0`
+    - **描述**: 一個關於 UI 整合的快速入門範例。
+    - **Python 版本要求**: `3.9` 或更高。
+- **依賴項**：
+    - **主要依賴項**: `google-adk`, `fastapi`, `uvicorn`, `ag-ui-adk`, `python-dotenv`。
+    - **開發依賴項**: `pytest`, `pytest-cov`, `pytest-asyncio`，這些套件僅在開發與測試時需要。
+- **套件發現**：設定 `setuptools` 自動尋找位於專案根目錄下，名稱以 `agent` 開頭的 Python 套件，同時排除 `frontend` 和 `tests` 目錄。
+- **行動項目**：開發者可以使用 `pip install .` 來安裝專案及其主要依賴項，或使用 `pip install .[dev]` 來安裝包含開發工具在內的所有依賴項。

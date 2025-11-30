@@ -623,4 +623,21 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 </details>
 
 
+#### 🕗 Day 38
+<details>
+<summary>
+本教學指南說明如何整合 Google ADK 代理與使用者介面。內容探討了五種整合方法，重點介紹為 React/Next.js 應用設計的官方 AG-UI 協議，並提供決策框架與最佳實踐，以建構生產級 AI 應用。
+
+🏷️  `ui-integration`, `ag-ui`, `copilotkit`, `react`, `nextjs`, `frontend`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/29-ui_integration_intro.md)
+  - [GEPA Optimization Agent](./workspace/python/agents/ui-integration/)
+- **參考資源**
+  - [Tutorial 29: Introduction to UI Integration & AG-UI Protocol](https://raphaelmansuy.github.io/adk_training/docs/ui_integration_intro)
+
+</details>
+
+
 </details>

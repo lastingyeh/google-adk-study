@@ -1,0 +1,37 @@
+### 翻譯內容
+```
+# Google ADK (Agent Development Kit) 及其依賴項
+google-adk>=1.16.0
+
+# 網站框架
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+
+# AG-UI 協定整合
+ag-ui-adk>=0.1.0
+
+# 環境設定
+python-dotenv>=1.0.0
+
+# 測試依賴項
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-asyncio>=0.21.0
+```
+
+
+# ### 重點摘要
+# - **核心概念**：此檔案列出了專案運作所需的所有 Python 套件及其版本限制。`pip install -r requirements.txt` 指令會讀取此檔案並自動安裝所有列出的依賴項。
+# - **關鍵技術**：
+#     - **pip**：Python 的套件管理系統，用於安裝與管理函式庫。
+# - **依賴項分類**：
+#     - **核心框架**：
+#         - `google-adk`：建構 AI 代理的核心函式庫。
+#         - `fastapi` & `uvicorn`：用於建立高效能非同步網站 API 的後端框架。
+#     - **整合工具**：
+#         - `ag-ui-adk`：實現 ADK 代理與前端 UI 之間通訊的協定工具。
+#     - **環境管理**：
+#         - `python-dotenv`：用於從 `.env` 檔案載入環境變數，方便管理金鑰等敏感資訊。
+#     - **測試工具**：
+#         - `pytest`, `pytest-cov`, `pytest-asyncio`：用於執行單元測試、計算測試覆蓋率，並支援非同步程式碼的測試。
+# - **版本控制**：使用 `>=` 符號來指定套件的最低相容版本，確保專案在新版的函式庫下也能正常運作，同時避免因版本過舊而產生的問題。

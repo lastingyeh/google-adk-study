@@ -21,9 +21,16 @@ body {
   font-family: 'Inter', 'Noto Sans TC', sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  background-image:
-    radial-gradient(circle at 15% 50%, rgba(66, 133, 244, 0.08) 0%, transparent 25%),
-    radial-gradient(circle at 85% 30%, rgba(161, 66, 244, 0.08) 0%, transparent 25%);
+  background-image: radial-gradient(
+      circle at 15% 50%,
+      rgba(66, 133, 244, 0.08) 0%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 30%,
+      rgba(161, 66, 244, 0.08) 0%,
+      transparent 25%
+    );
   min-height: 100vh;
 }
 
@@ -56,8 +63,12 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Enhanced Card Styling */
@@ -110,35 +121,163 @@ body {
   color: var(--text-secondary);
 }
 
-/* Group Section */
-.group-section {
-  background: rgba(19, 22, 32, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(10px);
-}
+/* ========================================
+   Carousel Styles (輪播樣式)
+   ======================================== */
 
-.group-header {
-  background: transparent !important;
-}
-
-.group-header:hover, .group-header.is-open {
-  background: rgba(255, 255, 255, 0.03) !important;
-}
-
-/* Smoother Collapse Animation */
-.group-content {
-  max-height: 1500px; /* Set a sufficiently large max-height */
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), overflow 0.5s;
+/* 輪播側邊按鈕 */
+.carousel-side-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 5rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
   overflow: hidden;
 }
 
-.group-content:not(.collapsed) {
-  overflow-y: auto;
+/* 按鈕光暈效果 */
+.carousel-side-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
 }
 
-.group-content.collapsed {
-  max-height: 0;
+.carousel-side-btn:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.carousel-side-btn svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0.9;
+}
+
+.carousel-side-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1);
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16), 0 4px 8px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.carousel-side-btn:hover:not(:disabled) svg {
+  transform: scale(1.1);
+  opacity: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.carousel-side-btn:active:not(:disabled) {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.carousel-side-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 輪播容器包裝器 */
+.carousel-slides-wrapper {
+  position: relative;
   overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+/* 輪播指示點 */
+.carousel-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background-color: #374151;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}
+
+.carousel-dot:hover {
+  background-color: #6b7280;
+}
+
+.carousel-dot.active {
+  width: 2rem;
+  background: linear-gradient(to right, #60a5fa, #3b82f6);
+}
+
+/* 輪播容器 */
+.carousel-slides {
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* 響應式調整 */
+@media (max-width: 640px) {
+  .carousel-side-btn {
+    width: 1.25rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+  }
+
+  .carousel-side-btn svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .carousel-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+
+  .carousel-dot.active {
+    width: 1.5rem;
+  }
+}
+
+/* 平板尺寸調整 */
+@media (max-width: 1024px) and (min-width: 641px) {
+  .carousel-side-btn {
+    width: 1.75rem;
+    height: 4rem;
+    border-radius: 0.875rem;
+  }
+
+  .carousel-side-btn svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
 }
 
 /* Google Switch */
@@ -163,20 +302,20 @@ body {
   right: 0;
   bottom: 0;
   background-color: #3c4043;
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 34px;
   border: 1px solid #5f6368;
 }
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 14px;
   width: 14px;
   left: 3px;
   bottom: 3px;
   background-color: #9aa0a6;
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 50%;
 }
 
