@@ -5,7 +5,7 @@
 此儲存庫包含學習 Google ADK（代理開發工具包）的完整路線圖。此路線圖旨在引導學習者掌握有效使用 Google ADK 構建智能代理所需的重要主題和技能。
 
 ## 學習看板
-### 🔗 **Dashboard 連結 ➡**[https://lastingyeh.github.io/google-adk-study/](https://lastingyeh.github.io/google-adk-study/)
+### 🔗 **Dashboard 連結 ➡** [https://lastingyeh.github.io/google-adk-study/](https://lastingyeh.github.io/google-adk-study/)
 ---
 
 ### 🗓️ 第 1-20 天：ADK 核心基礎
