@@ -304,7 +304,8 @@ body {
   background-color: #3c4043;
   transition: 0.3s;
   border-radius: 34px;
-  border: 1px solid #5f6368;
+  border: 2px solid #5f6368;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 .slider:before {
@@ -313,21 +314,43 @@ body {
   height: 14px;
   width: 14px;
   left: 3px;
-  bottom: 3px;
+  bottom: 2px;
   background-color: #9aa0a6;
   transition: 0.3s;
   border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 input:checked + .slider {
   background-color: rgba(52, 168, 83, 0.2);
   border-color: var(--google-green);
+  border-width: 2px;
+  box-shadow: 0 0 0 1px rgba(52, 168, 83, 0.3);
 }
 
 input:checked + .slider:before {
   transform: translateX(18px);
   background-color: var(--google-green);
-  box-shadow: 0 0 8px rgba(52, 168, 83, 0.4);
+  box-shadow: 0 0 8px rgba(52, 168, 83, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile: Larger touch area for checkbox */
+@media (max-width: 640px) {
+  .google-switch {
+    width: 48px;
+    height: 26px;
+  }
+
+  .slider:before {
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 3px;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
 }
 
 /* List View Override */
@@ -376,6 +399,26 @@ input:checked + .slider:before {
   width: auto;
 }
 
+/* Mobile: Optimize Day badge in list view */
+@media (max-width: 640px) {
+  .dashboard-grid.list-view .day-card {
+    padding: 0.625rem 1rem;
+  }
+
+  .dashboard-grid.list-view .day-card .day-title {
+    margin: 0 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Ensure Day badge is visible and properly sized */
+  .dashboard-grid.list-view .day-card span[class*="bg-blue-500"] {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.625rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
 /* Mobile Dropdown Menu */
 #mobile-menu {
   transition: all 0.3s ease-in-out;
@@ -414,4 +457,38 @@ input:checked + .slider:before {
 }
 #search-input::placeholder {
   color: #9ca3af !important; /* gray-400 */
+}
+
+/* Modal Scrolling Optimization */
+#modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Mobile: Adjust modal height for better content visibility */
+@media (max-width: 640px) {
+  #modal-body {
+    max-height: 60vh;
+  }
+
+  /* Ensure modal container fits on small screens */
+  #detail-modal > div {
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Make modal body scrollable */
+  #detail-modal #modal-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Tablet: Optimize modal for medium screens */
+@media (max-width: 1024px) and (min-width: 641px) {
+  #modal-body {
+    max-height: 65vh;
+  }
 }
