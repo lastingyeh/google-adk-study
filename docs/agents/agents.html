@@ -147,16 +147,58 @@
         border-color: rgba(161, 66, 244, 0.2);
       }
 
+      /* 卡片視圖數字圖示 */
+      .card-view-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(66, 133, 244, 0.15) 0%,
+          rgba(161, 66, 244, 0.15) 100%
+        );
+        border: 1px solid rgba(66, 133, 244, 0.3);
+        color: #8ab4f8;
+        font-size: 0.75rem;
+        font-weight: 600;
+        flex-shrink: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .agent-card:hover .card-view-number {
+        background: linear-gradient(
+          135deg,
+          rgba(66, 133, 244, 0.25) 0%,
+          rgba(161, 66, 244, 0.25) 100%
+        );
+        border-color: rgba(66, 133, 244, 0.5);
+        transform: scale(1.1);
+      }
+
       /* List View Override */
       .dashboard-grid.list-view {
         grid-template-columns: 1fr !important;
         gap: 0.5rem;
       }
 
+      /* 在卡片視圖中隱藏列表元素 */
+      .dashboard-grid:not(.list-view) .list-view-number,
+      .dashboard-grid:not(.list-view) .list-view-arrow {
+        display: none;
+      }
+
+      /* 在列表視圖中隱藏卡片元素 */
+      .dashboard-grid.list-view .card-view-number {
+        display: none;
+      }
+
       .dashboard-grid.list-view .agent-card {
         flex-direction: row;
         align-items: center;
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1.5rem;
         background: rgba(19, 22, 32, 0.8) !important;
         min-height: auto;
       }
@@ -171,33 +213,108 @@
         align-items: center;
         flex: 1;
         width: 100%;
+        padding: 0;
+      }
+
+      /* 列表視圖左側數字圖示 */
+      .dashboard-grid.list-view .list-view-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          rgba(66, 133, 244, 0.15) 0%,
+          rgba(161, 66, 244, 0.15) 100%
+        );
+        border: 1px solid rgba(66, 133, 244, 0.3);
+        color: #8ab4f8;
+        font-size: 0.875rem;
+        font-weight: 600;
+        flex-shrink: 0;
+        margin-right: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .dashboard-grid.list-view .agent-card:hover .list-view-number {
+        background: linear-gradient(
+          135deg,
+          rgba(66, 133, 244, 0.25) 0%,
+          rgba(161, 66, 244, 0.25) 100%
+        );
+        border-color: rgba(66, 133, 244, 0.5);
+        transform: scale(1.05);
       }
 
       .dashboard-grid.list-view .agent-header {
         margin-bottom: 0 !important;
         margin-right: 1.5rem;
-        min-width: 200px;
+        min-width: 180px;
+        flex-shrink: 0;
       }
 
       .dashboard-grid.list-view .agent-title {
-        font-size: 1rem;
+        font-size: 0.95rem;
         margin-bottom: 0;
       }
 
       .dashboard-grid.list-view .agent-description {
         display: block;
         flex: 1;
-        margin: 0 1rem;
+        margin: 0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 400px;
+        font-size: 0.875rem;
       }
 
       .dashboard-grid.list-view .agent-meta {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        flex-shrink: 0;
+        margin-left: auto;
+        margin-right: 1rem;
+        order: 2;
+      }
+
+      .dashboard-grid.list-view .agent-labels {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        margin: 0;
+        margin-right: 1rem;
+        flex-shrink: 0;
+        order: 1;
+      }
+
+      /* 在列表模式下隱藏 type 標籤和 labels 區的 model 標籤 */
+      .dashboard-grid.list-view .agent-labels .tag-type,
+      .dashboard-grid.list-view .agent-labels .tag-model {
+        display: none;
+      }
+
+      /* 列表視圖右側箭頭圖示 */
+      .dashboard-grid.list-view .list-view-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(66, 133, 244, 0.1);
+        color: #8ab4f8;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        flex-shrink: 0;
+        order: 3;
+        margin-left: 1rem;
+      }
+
+      .dashboard-grid.list-view .agent-card:hover .list-view-arrow {
+        background: rgba(66, 133, 244, 0.2);
+        transform: translateX(4px);
       }
 
       .dashboard-grid.list-view .agent-footer {
@@ -1282,28 +1399,30 @@
           name: 'gepa_optimization_agent',
           path: 'workspace/python/agents/gepa-optimization-agent',
           type: 'Agent',
-          description: '一個客服代理，展示了如何使用 GEPA（遺rac遺傳演算法-帕雷托提示最佳化）來自動優化 LLM 代理的提示詞。',
+          description:
+            '一個客服代理，展示了如何使用 GEPA（遺rac遺傳演算法-帕雷托提示最佳化）來自動優化 LLM 代理的提示詞。',
           model: 'gemini-2.0-flash',
           tools: [
             {
               name: 'verify_customer_identity',
-              description: '檢查訂單 ID + 電子郵件'
+              description: '檢查訂單 ID + 電子郵件',
             },
             {
               name: 'check_return_policy',
-              description: '驗證 30 天退貨期限'
+              description: '驗證 30 天退貨期限',
             },
             {
               name: 'process_refund',
-              description: '驗證後執行退款'
-            }
+              description: '驗證後執行退款',
+            },
           ],
         },
         {
           name: 'ui_integration_agent',
           path: 'workspace/python/agents/ui-integration',
           type: 'Agent',
-          description: '一個最小化的實作，示範如何使用 AG-UI 協定 (AG-UI Protocol) 將 ADK 代理與 React UI 整合。',
+          description:
+            '一個最小化的實作，示範如何使用 AG-UI 協定 (AG-UI Protocol) 將 ADK 代理與 React UI 整合。',
           model: 'gemini-2.0-flash-exp',
           tools: [],
         },
@@ -1330,6 +1449,11 @@
         const content = document.createElement('div');
         content.className = 'agent-content p-5 flex flex-col h-full';
 
+        // 列表視圖數字圖示
+        const numberBadge = document.createElement('div');
+        numberBadge.className = 'list-view-number';
+        numberBadge.textContent = index + 1;
+
         // 標頭
         const header = document.createElement('div');
         header.className = 'agent-header flex justify-between items-start mb-3';
@@ -1339,9 +1463,15 @@
           'agent-title text-lg font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors';
         title.textContent = agent.name;
 
-        header.appendChild(title);
+        // 卡片視圖數字圖示
+        const cardNumberBadge = document.createElement('div');
+        cardNumberBadge.className = 'card-view-number';
+        cardNumberBadge.textContent = index + 1;
 
-        // 標籤區塊
+        header.appendChild(title);
+        header.appendChild(cardNumberBadge);
+
+        // 標籤區塊（用於卡片視圖）
         const labelBlock = document.createElement('div');
         labelBlock.className = 'agent-labels flex flex-wrap gap-2 mb-3';
 
@@ -1359,38 +1489,50 @@
           'agent-description text-sm text-gray-400 mb-4 line-clamp-2 flex-grow';
         desc.textContent = agent.description;
 
-        // 元資訊 (模型 & 工具數量)
-        const meta = document.createElement('div');
-        meta.className = 'agent-meta flex items-center gap-3 mt-auto';
-
+        // 如果有模型，則添加模型標籤
         if (agent.model) {
           const modelTag = document.createElement('span');
           modelTag.className = 'tag tag-model flex items-center gap-1';
           modelTag.innerHTML = `
-                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
-                ${agent.model.split('/')[1] || agent.model}
-            `;
-          meta.appendChild(modelTag);
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
+            ${agent.model.split('/')[1] || agent.model}
+          `;
+          labelBlock.appendChild(modelTag);
         }
+
+        // 元資訊 (模型 & 工具數量)
+        const meta = document.createElement('div');
+        meta.className = 'agent-meta flex items-center gap-3 mt-auto';
 
         const toolCount =
           (agent.tools ? agent.tools.length : 0) +
           (agent.sub_agents ? agent.sub_agents.length : 0);
-        if (toolCount > 0) {
-          const toolsTag = document.createElement('span');
-          toolsTag.className =
-            'text-xs text-gray-500 font-medium flex items-center gap-1';
-          toolsTag.innerHTML = `
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                ${toolCount} 個工具/代理
-             `;
-          meta.appendChild(toolsTag);
-        }
 
+        // 始終顯示工具數量，即使為 0
+        const toolsTag = document.createElement('span');
+        toolsTag.className =
+          'text-xs text-gray-500 font-medium flex items-center gap-1';
+        toolsTag.innerHTML = `
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+              ${toolCount} 個工具/代理
+           `;
+        meta.appendChild(toolsTag);
+
+        // 列表視圖右側箭頭圖示
+        const arrow = document.createElement('div');
+        arrow.className = 'list-view-arrow';
+        arrow.innerHTML = `
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        `;
+
+        content.appendChild(numberBadge);
         content.appendChild(header);
         content.appendChild(labelBlock); // 插入標籤區塊
         content.appendChild(desc);
         content.appendChild(meta);
+        content.appendChild(arrow);
 
         // 頁腳 (僅卡片視圖)
         const footer = document.createElement('div');
@@ -1400,7 +1542,7 @@
             <span class="text-xs text-gray-500 font-mono truncate max-w-[180px]" title="${
               agent.path
             }">${agent.path.split('/').pop()}</span>
-            <span class="text-purple-400 text-xs font-semibold group-hover:translate-x-1 transition-transform">詳情 →</span>
+            <span class="text-purple-400 text-xs font-semibold">詳情</span>
         `;
 
         card.appendChild(content);
