@@ -53,7 +53,110 @@
           >
         </p>
         <div class="mt-8 flex flex-col items-center gap-4 justify-center">
-          <div class="flex flex-col sm:flex-row gap-3">
+          <!-- Mobile Dropdown -->
+          <div class="relative sm:hidden w-full max-w-xs">
+            <button
+              id="mobile-menu-button"
+              class="w-full group inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full border border-gray-600 bg-gray-800/70 text-sm font-medium text-gray-200 hover:text-white hover:border-blue-500 hover:bg-gray-700/70 transition-all shadow-sm ring-1 ring-white/10"
+            >
+              <svg
+                class="w-4 h-4 text-blue-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                ></path>
+              </svg>
+              <span>快速導覽</span>
+              <svg
+                class="w-3 h-3 transform transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div
+              id="mobile-menu"
+              class="absolute top-full mt-2 w-full bg-gray-800 border border-blue-500/30 rounded-lg shadow-lg z-20 hidden p-2 flex-col gap-2"
+            >
+              <a
+                href="https://github.com/lastingyeh/google-adk-study/blob/master/docs/adk-sitemap.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-200 hover:bg-gray-700/70 rounded-md"
+              >
+                <svg
+                  class="w-4 h-4 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M3 3h7v7H3V3zM14 3h7v7h-7V3zM14 14h7v7h-7v-7zM3 14h7v7H3v-7zM10 7h4M10 17h4M17 10v4M7 10v4"
+                  />
+                </svg>
+                <span>Google ADK 官方學習地圖</span>
+              </a>
+              <a
+                href="https://github.com/lastingyeh/google-adk-study/blob/master/docs/a2a-sitemap.md"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-3 px-4 py-2 text-sm text-gray-200 hover:bg-gray-700/70 rounded-md"
+              >
+                <svg
+                  class="w-4 h-4 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                  />
+                </svg>
+                <span>A2A 官方學習地圖</span>
+              </a>
+              <a
+                href="agents/agents.html"
+                class="flex items-center gap-3 px-4 py-2 text-sm text-purple-200 hover:bg-gray-700/70 rounded-md"
+              >
+                <svg
+                  class="w-4 h-4 text-purple-300"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  ></path>
+                </svg>
+                <span>瀏覽代理市集</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Desktop Links -->
+          <div class="hidden sm:flex flex-col sm:flex-row gap-3">
             <a
               href="https://github.com/lastingyeh/google-adk-study/blob/master/docs/adk-sitemap.md"
               target="_blank"
@@ -110,7 +213,7 @@
 
           <a
             href="agents/agents.html"
-            class="group inline-flex items-center gap-2 px-5 py-2 rounded-full border border-purple-600 bg-purple-800/70 text-sm font-medium text-purple-200 hover:text-white hover:border-purple-500 hover:bg-purple-700/70 transition-all shadow-sm ring-1 ring-purple-500/20"
+            class="hidden sm:group sm:inline-flex items-center gap-2 px-5 py-2 rounded-full border border-purple-600 bg-purple-800/70 text-sm font-medium text-purple-200 hover:text-white hover:border-purple-500 hover:bg-purple-700/70 transition-all shadow-sm ring-1 ring-purple-500/20"
           >
             <svg
               class="w-4 h-4 text-purple-300 group-hover:text-white transition-colors"
@@ -1768,7 +1871,8 @@
 
         // 創建輪播外層容器
         const carouselWrapper = document.createElement('div');
-        carouselWrapper.className = 'relative w-full overflow-hidden px-12';
+        carouselWrapper.className =
+          'relative w-full overflow-hidden px-2 sm:px-4 md:px-12';
 
         // 創建輪播標題
         const carouselHeader = document.createElement('div');
@@ -1787,7 +1891,7 @@
 
         // 創建輪播內容區域容器 (包含左右按鈕和 slides)
         const carouselContent = document.createElement('div');
-        carouselContent.className = 'relative flex items-center gap-8';
+        carouselContent.className = 'relative flex items-center gap-2 md:gap-8';
         carouselContent.innerHTML = `
           <button id="prev-slide" class="carousel-side-btn carousel-side-btn-left" aria-label="上一組">
             <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
@@ -1897,6 +2001,31 @@
           if (e.key === 'ArrowLeft') goToSlide(currentSlide - 1);
           if (e.key === 'ArrowRight') goToSlide(currentSlide + 1);
         });
+
+        // 支援觸控滑動
+        const slidesWrapper = document.querySelector('.carousel-slides-wrapper');
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        slidesWrapper.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        slidesWrapper.addEventListener('touchend', (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+          const swipeThreshold = 50; // 最小滑動距離
+          if (touchStartX - touchEndX > swipeThreshold) {
+            // 向左滑
+            goToSlide(currentSlide + 1);
+          } else if (touchEndX - touchStartX > swipeThreshold) {
+            // 向右滑
+            goToSlide(currentSlide - 1);
+          }
+        }
       }
 
       // 切換到指定 slide
@@ -2200,6 +2329,31 @@
       const savedViewMode = localStorage.getItem('adkViewMode');
       if (savedViewMode === 'list') {
         setView('list');
+      }
+
+      // Mobile Menu Toggle
+      const mobileMenuButton = document.getElementById('mobile-menu-button');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+          const isOpen = mobileMenu.classList.toggle('open');
+          mobileMenuButton.classList.toggle('open', isOpen);
+          // For accessibility
+          mobileMenuButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close menu if clicking outside
+        document.addEventListener('click', (e) => {
+          if (
+            !mobileMenu.contains(e.target) &&
+            !mobileMenuButton.contains(e.target)
+          ) {
+            mobileMenu.classList.remove('open');
+            mobileMenuButton.classList.remove('open');
+            mobileMenuButton.setAttribute('aria-expanded', 'false');
+          }
+        });
       }
     </script>
   </body>

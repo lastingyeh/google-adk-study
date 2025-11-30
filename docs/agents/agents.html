@@ -337,6 +337,131 @@
       #search-input::placeholder {
         color: #9ca3af !important; /* gray-400 */
       }
+
+      /* Collapse Component Styles */
+      .collapse-header {
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.2s ease;
+      }
+
+      .collapse-header:hover {
+        opacity: 0.8;
+      }
+
+      .collapse-icon {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      .collapse-header.collapsed .collapse-icon {
+        transform: rotate(-90deg);
+      }
+
+      .collapse-content {
+        max-height: 40vh;
+        overflow-y: auto;
+        transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+        opacity: 1;
+        margin-top: 0.5rem;
+      }
+
+      .collapse-content.collapsed {
+        max-height: 0;
+        opacity: 0;
+        margin-top: 0;
+        overflow: hidden;
+      }
+
+      /* Mobile Responsive Adjustments */
+      @media (max-width: 768px) {
+        /* Container Padding */
+        .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        /* Header Adjustments */
+        h1.text-4xl {
+          font-size: 2rem;
+        }
+
+        /* List View Mobile Layout */
+        .dashboard-grid.list-view .agent-card {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          padding: 1rem !important;
+          gap: 0.75rem;
+        }
+
+        .dashboard-grid.list-view .agent-content {
+          flex-direction: column !important;
+          align-items: flex-start !important;
+          gap: 0.5rem;
+          padding: 0 !important; /* Reset padding override from list view */
+        }
+
+        /* Hide number in mobile list view to save space */
+        .dashboard-grid.list-view .list-view-number {
+          display: none !important;
+        }
+
+        .dashboard-grid.list-view .agent-header {
+          margin-right: 0 !important;
+          margin-bottom: 0 !important;
+          width: 100%;
+        }
+
+        .dashboard-grid.list-view .agent-labels {
+          margin-right: 0 !important;
+          order: 2;
+          width: 100%;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+        }
+
+        /* Show type/model tags in list view on mobile since we have space in column layout */
+        .dashboard-grid.list-view .agent-labels .tag-type,
+        .dashboard-grid.list-view .agent-labels .tag-model {
+          display: inline-block !important;
+        }
+
+        .dashboard-grid.list-view .agent-description {
+          white-space: normal !important;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          line-clamp: 3;
+          -webkit-box-orient: vertical;
+          margin: 0 !important;
+          order: 3;
+          width: 100%;
+        }
+
+        .dashboard-grid.list-view .agent-meta {
+          margin-left: 0 !important;
+          margin-right: 0 !important;
+          width: 100%;
+          order: 4;
+          justify-content: flex-start;
+          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          padding-top: 0.75rem;
+          margin-top: 0.25rem;
+        }
+
+        .dashboard-grid.list-view .list-view-arrow {
+          display: none !important;
+        }
+
+        /* Modal Adjustments */
+        #detail-modal .p-6 {
+          padding: 1.25rem !important;
+        }
+
+        #modal-title {
+          font-size: 1.25rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -389,7 +514,7 @@
 
       <!-- 搜尋與控制項 -->
       <div
-        class="mb-8 flex flex-col sm:flex-row items-center gap-4 sticky top-4 z-30 bg-[#0b0f19]/80 backdrop-blur-md p-2 rounded-xl border border-gray-800/50"
+        class="mb-8 flex flex-col sm:flex-row items-center gap-4"
       >
         <!-- Google 風格搜尋框 -->
         <div class="relative w-full sm:flex-grow">
@@ -511,16 +636,13 @@
       class="modal fixed inset-0 z-50 items-center justify-center overflow-hidden bg-black/80 p-4 backdrop-blur-sm"
     >
       <div
-        class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50 transform transition-all"
+        class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl border border-gray-700/50 transform transition-all flex flex-col max-h-[90vh]"
       >
-        <!-- Decorative gradient top -->
-        <div
-          class="h-1 w-full bg-gradient-to-r from-purple-500 via-blue-500 to-green-500"
-        ></div>
+   
 
         <!-- Modal 頂部 -->
         <div
-          class="flex items-center justify-between p-6 border-b border-gray-800/50 bg-[#1a1f2e]"
+          class="flex items-center justify-between p-6 border-b border-gray-800/50 bg-[#1a1f2e] flex-shrink-0"
         >
           <div class="flex flex-col">
             <h2
@@ -560,7 +682,8 @@
         </div>
 
         <!-- Modal 內容 (可滾動) -->
-        <div id="modal-body" class="p-6 space-y-8 max-h-[70vh] overflow-y-auto">
+        <div id="modal-body" class="p-6 overflow-y-auto flex-1">
+          <div class="space-y-8">
           <!-- 標籤區 -->
           <div class="flex flex-wrap gap-2" id="modal-tags">
             <!-- 動態標籤 -->
@@ -597,10 +720,33 @@
           <!-- 工具列表 -->
           <div id="modal-tools-container" style="display: none">
             <h3
-              class="text-lg font-semibold text-green-400 mb-2 flex items-center gap-2"
+              class="collapse-header collapsed text-lg font-semibold text-green-400 mb-2 flex items-center gap-2 justify-between"
+              onclick="toggleCollapse('tools')"
             >
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  ></path>
+                </svg>
+                可用工具 (Tools)
+              </div>
               <svg
-                class="w-5 h-5"
+                class="collapse-icon w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -609,19 +755,12 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                ></path>
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  d="M19 9l-7 7-7-7"
                 ></path>
               </svg>
-              可用工具 (Tools)
             </h3>
             <div
-              class="grid grid-cols-1 sm:grid-cols-2 gap-3"
+              class="collapse-content collapsed grid grid-cols-1 sm:grid-cols-2 gap-3"
               id="modal-tools-list"
             >
               <!-- 工具將動態填入 -->
@@ -631,10 +770,27 @@
           <!-- 子代理列表 -->
           <div id="modal-subagents-container" style="display: none">
             <h3
-              class="text-lg font-semibold text-purple-400 mb-2 flex items-center gap-2"
+              class="collapse-header collapsed text-lg font-semibold text-purple-400 mb-2 flex items-center gap-2 justify-between"
+              onclick="toggleCollapse('subagents')"
             >
+              <div class="flex items-center gap-2">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  ></path>
+                </svg>
+                子代理 (Sub-agents)
+              </div>
               <svg
-                class="w-5 h-5"
+                class="collapse-icon w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -643,12 +799,11 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  d="M19 9l-7 7-7-7"
                 ></path>
               </svg>
-              子代理 (Sub-agents)
             </h3>
-            <div class="space-y-2" id="modal-subagents-list">
+            <div class="collapse-content collapsed space-y-2" id="modal-subagents-list">
               <!-- 子代理將動態填入 -->
             </div>
           </div>
@@ -677,6 +832,7 @@
               id="modal-extras-list"
               class="list-disc list-inside space-y-1 text-gray-300"
             ></ul>
+          </div>
           </div>
         </div>
       </div>
@@ -1563,6 +1719,15 @@
 
       // 初始渲染
       renderCards(agentsData);
+
+      // Toggle collapse function for modal sections
+      function toggleCollapse(section) {
+        const header = event.currentTarget;
+        const content = header.nextElementSibling;
+
+        header.classList.toggle('collapsed');
+        content.classList.toggle('collapsed');
+      }
 
       // 搜尋功能
       searchInput.addEventListener('input', (e) => {

@@ -376,6 +376,29 @@ input:checked + .slider:before {
   width: auto;
 }
 
+/* Mobile Dropdown Menu */
+#mobile-menu {
+  transition: all 0.3s ease-in-out;
+  transform-origin: top;
+  transform: scaleY(0.95);
+  opacity: 0;
+}
+
+#mobile-menu.open {
+  display: flex;
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+#mobile-menu-button svg:last-child {
+  transition: transform 0.3s ease-in-out;
+}
+
+#mobile-menu-button.open svg:last-child {
+  transform: rotate(180deg);
+}
+
+
 /* Utilities */
 .text-gradient-gemini {
   background: linear-gradient(to right, #4285f4, #9b72cb, #d96570);
