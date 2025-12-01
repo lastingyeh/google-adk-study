@@ -639,5 +639,18 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </details>
 
+#### 🕗 Day 39
+<details>
+<summary>
+本教學展示如何使用 Google ADK 與 Next.js 建立前端整合代理應用。透過 AG-UI 協議，實現代理與 React/Next.js 應用的無縫互動，並提供完整範例與代碼說明，助您快速構建生產級 AI 前端應用。
+🏷️  `ui-integration`, `ag-ui`, `copilotkit`, `react`, `nextjs`, `frontend`
+</summary>
 
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/30-nextjs_adk_integration.md)
+  - [Customer Support Agent](./workspace/python/agents/customer-support-agent/)
+- **參考資源**
+  - [Tutorial 30: Next.js 15 + ADK Integration (AG-UI Protocol)](https://raphaelmansuy.github.io/adk_training/docs/nextjs_adk_integration)
+
+</details>
 </details>

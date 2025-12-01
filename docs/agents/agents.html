@@ -638,7 +638,7 @@
       <div
         class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl border border-gray-700/50 transform transition-all flex flex-col max-h-[90vh]"
       >
-   
+
 
         <!-- Modal 頂部 -->
         <div
@@ -1033,6 +1033,31 @@
             {
               name: 'update_payment_method',
               description: '更新客戶的付款方式',
+            },
+          ],
+        },
+        {
+          name: 'customer_support_agent',
+          path: 'workspace/python/agents/customer-support-agent',
+          type: 'Agent',
+          description: '整合 AG-UI 的客戶支援 ADK 代理人，提供客戶支援功能，具備知識庫搜尋、訂單狀態查詢和支援工單建立的工具。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'search_knowledge_base',
+              description: '搜尋知識庫以尋找相關資訊',
+            },
+            {
+              name: 'lookup_order_status',
+              description: '查詢客戶訂單的狀態',
+            },
+            {
+              name: 'create_support_ticket',
+              description: '為複雜問題建立支援工單',
+            },
+            {
+              name: 'get_product_details',
+              description: '從資料庫獲取產品詳情',
             },
           ],
         },

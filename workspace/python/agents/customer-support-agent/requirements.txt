@@ -1,0 +1,11 @@
+google-adk>=1.15.1
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+ag-ui-adk>=0.1.0
+python-dotenv>=1.0.0
+
+# 重點摘要
+# - **核心概念**：列出 Python 專案所需的相依套件清單。
+# - **關鍵技術**：requirements.txt, pip。
+# - **重要結論**：包含了執行代理人和後端服務所需的必要套件，如 `google-adk`, `fastapi`, `uvicorn` 等。
+# - **行動項目**：無。

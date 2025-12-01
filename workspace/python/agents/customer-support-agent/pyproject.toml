@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tutorial30"
+version = "0.1.0"
+description = "教學 30：Next.js ADK 整合 - 客戶支援代理人"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.15.1",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "ag-ui-adk>=0.1.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]
+exclude = ["nextjs_frontend*", "tests*"]
+
+# 重點摘要
+# - **核心概念**：Python 專案設定檔，定義了專案的元數據和相依性。
+# - **關鍵技術**：pyproject.toml, setuptools。
+# - **重要結論**：指定了專案名稱、版本、描述以及所需的 Python 版本和相依套件 (包括 Google ADK, FastAPI 等)。
+# - **行動項目**：無。
