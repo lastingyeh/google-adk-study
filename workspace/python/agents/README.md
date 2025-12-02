@@ -33,3 +33,4 @@
 | 29 | 整合 | [third-party-agent](./third-party-agent) | 展示如何將第三方框架工具 (LangChain, CrewAI) 整合到 ADK 代理中。 | LangChain Integration, CrewAI Integration, Wikipedia Tool | Integration, LangChain, CrewAI, Third-party Tools |
 | 30 | 整合 | [multi-llm-agent](./multi-llm-agent) | 透過 LiteLLM 整合多種 LLM (OpenAI, Claude, Ollama) 的代理。 | LiteLLM, Multi-LLM, OpenAI, Anthropic Claude, Ollama | Integration, LiteLLM, Multi-LLM, OpenAI, Claude, Ollama |
 | 31 | 整合 | [customer-support-agent](./customer-support-agent) | 整合 Next.js 前端與 AG-UI 的客戶支援代理，展示生成式 UI 與人機協作功能。 | AG-UI Integration, Generative UI, Human-in-the-Loop, CopilotKit Support | Next.js, AG-UI, Generative UI, HITL, React Integration |
+| 32 | 整合 | [data-analysis-dashboard](./data-analysis-dashboard/agent) | 結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent | AG-UI, Pandas, Chart.js, CSV Analysis, Visualization | Data Analysis, Visualization, Pandas, AG-UI |

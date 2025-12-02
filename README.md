@@ -654,4 +654,21 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
   - [Tutorial 30: Next.js 15 + ADK Integration (AG-UI Protocol)](https://raphaelmansuy.github.io/adk_training/docs/nextjs_adk_integration)
 
 </details>
+
+#### 🕗 Day 40
+<details>
+<summary>
+本教學介紹 React Vite 與 Google ADK 的整合開發。透過 AG-UI 協定與手動 SSE 串流，實作不依賴 CopilotKit 的客製化數據分析儀表板，具備檔案上傳、Gemini 智慧分析與 Chart.js 互動圖表功能，並提供與 Next.js 的比較及部署指南。
+
+🏷️  `ui`, `react`, `vite`, `ag-ui`, `custom-implementation`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/31-react_vite_adk_integration.md)
+  - [Data Analysis Dashboard](./workspace/python/agents/data-analysis-dashboard/)
+- **參考資源**
+  - [Tutorial 31: React Vite + ADK Integration (AG-UI Protocol)](https://raphaelmansuy.github.io/adk_training/docs/react_vite_adk_integration)
+
+</details>
+
 </details>

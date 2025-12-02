@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "data_analysis_agent"
+version = "1.0.0"
+description = "結合 pandas 與 Chart.js 視覺化的數據分析 ADK Agent"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai>=1.15.0",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+    "ag-ui-adk>=0.1.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=agent --cov-report=term-missing"
+
+#### 重點摘要 (程式碼除外)
+# - **核心概念**：Python 專案設定檔，定義了專案的中繼資料和建置需求。
+# - **關鍵技術**：setuptools, pip, pytest。
+# - **重要結論**：列出了專案執行所需的關鍵相依套件，如 `google-genai`、`fastapi`、`ag-ui-adk` 和 `pandas`，以及開發用的測試工具。
+# - **行動項目**：確保 Python 版本 >= 3.10。

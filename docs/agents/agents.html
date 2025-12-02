@@ -1607,6 +1607,27 @@
           model: 'gemini-2.0-flash-exp',
           tools: [],
         },
+        {
+          name: 'data_analyst',
+          path: 'workspace/python/agents/data-analysis-dashboard/agent',
+          type: 'Agent',
+          description: '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'load_csv_data',
+              description: '將 CSV 數據載入記憶體以進行分析',
+            },
+            {
+              name: 'analyze_data',
+              description: '對載入的數據集執行統計分析',
+            },
+            {
+              name: 'create_chart',
+              description: '生成視覺化圖表數據',
+            },
+          ],
+        },
       ];
 
       // DOM 元素
