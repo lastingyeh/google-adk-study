@@ -34,3 +34,4 @@
 | 30 | 整合 | [multi-llm-agent](./multi-llm-agent) | 透過 LiteLLM 整合多種 LLM (OpenAI, Claude, Ollama) 的代理。 | LiteLLM, Multi-LLM, OpenAI, Anthropic Claude, Ollama | Integration, LiteLLM, Multi-LLM, OpenAI, Claude, Ollama |
 | 31 | 整合 | [customer-support-agent](./customer-support-agent) | 整合 Next.js 前端與 AG-UI 的客戶支援代理，展示生成式 UI 與人機協作功能。 | AG-UI Integration, Generative UI, Human-in-the-Loop, CopilotKit Support | Next.js, AG-UI, Generative UI, HITL, React Integration |
 | 32 | 整合 | [data-analysis-dashboard](./data-analysis-dashboard/agent) | 結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent | AG-UI, Pandas, Chart.js, CSV Analysis, Visualization | Data Analysis, Visualization, Pandas, AG-UI |
+| 33 | 整合 | [data-analysis-agent](./data-analysis-agent) | 整合 Streamlit 與 ADK 的資料分析助理，實現檔案分析、圖表生成與對話。 | Streamlit UI, 程式碼執行 (Code Execution), 資料視覺化 | Streamlit, Data Analysis, Visualization, ADK |

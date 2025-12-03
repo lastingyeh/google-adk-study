@@ -8,7 +8,7 @@
 ### 🔗 **Dashboard 連結 ➡** [https://lastingyeh.github.io/google-adk-study/](https://lastingyeh.github.io/google-adk-study/)
 ---
 
-### 🗓️ 第 1-20 天：ADK 核心基礎
+### 🗓️ 第 1-30 天：ADK 核心基礎
 <details>
 <summary>第一階段：涵蓋 ADK 核心定義、範例專案實作、工作流程編排 (循序、並行、循環)、狀態管理與測試評估。</summary>
 
@@ -347,11 +347,6 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [Tutorial 12: Planners & Thinking Configuration](https://raphaelmansuy.github.io/adk_training/docs/planners_thinking)
 
 </details>
-</details>
-
-### 🗓️ 第 21-40 天：進階應用與企業級實踐
-<details>
-<summary>第二階段：深入探討進階主題，如程式碼執行、視覺化建構、即時串流、A2A 通訊、多模態、生產部署及第三方框架整合。</summary>
 
 #### 🕗 Day 21
 <details>
@@ -525,6 +520,11 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
   - [Tutorial 22: Model Selection & Optimization](https://raphaelmansuy.github.io/adk_training/docs/model_selection)
 
 </details>
+</details>
+
+### 🗓️ 第 31 天 ~：進階應用與企業級實踐
+<details>
+<summary>第二階段：深入探討進階主題，如程式碼執行、視覺化建構、即時串流、A2A 通訊、多模態、生產部署及第三方框架整合。</summary>
 
 #### 🕗 Day 31
 <details>
@@ -668,6 +668,22 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
   - [Data Analysis Dashboard](./workspace/python/agents/data-analysis-dashboard/)
 - **參考資源**
   - [Tutorial 31: React Vite + ADK Integration (AG-UI Protocol)](https://raphaelmansuy.github.io/adk_training/docs/react_vite_adk_integration)
+
+</details>
+
+#### 🕗 Day 41
+<details>
+<summary>
+Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 實現檔案分析、圖表生成與對話，免前端開發，快速部署。
+
+🏷️  `ui`, `streamlit`, `python`, `data-science`, `dashboard`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/32-streamlit_adk_integration.md)
+  - [Data Analysis Agent](./workspace/python/agents/data-analysis-agent/)
+- **參考資源**
+  - [Tutorial 32: Streamlit + ADK - Build Data Analysis Apps in Pure Python](https://raphaelmansuy.github.io/adk_training/docs/streamlit_adk_integration)
 
 </details>
 
