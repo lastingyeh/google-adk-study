@@ -23,7 +23,6 @@ applyTo: '**'
 
 ### 情況一：`README.md` 已更新 `Day <x>`
 
-```
 Day <x>: <scope> - <summary>
 
 背景：根據 Day <x> 的學習內容，實作/更新/修正相關功能。
@@ -42,8 +41,6 @@ Checklist:
 - `<summary>`: 對 Day <x> 內容的高度概括。
 
 ### 情況二：其他變更
-
-```
 <scope> - <summary>
 
 背景：<說明本次異動的目的，例如：修正錯誤、重構程式碼等>
@@ -65,8 +62,6 @@ Changed:
 - `src/sensors/humidity.ts` (新增讀取函式)
 
 **預期生成的 Commit Message:**
-
-```
 Day 5: sensor-api - 實作溫溼度感測器 API
 
 背景：根據 Day 5 的學習內容，實作溫溼度感測器的讀取功能。
@@ -79,4 +74,3 @@ Changed:
 Checklist:
 - [x] README Day 5 updated
 - [ ] Tests pass
-```
