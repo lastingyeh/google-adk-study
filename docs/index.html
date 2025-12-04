@@ -1835,6 +1835,30 @@
           labels: ['ui', 'streamlit', 'python', 'data-science', 'dashboard'],
           completed: false,
         },
+        {
+          day: 42,
+          title: 'Slack 機器人整合',
+          description:
+            '使用 Google ADK 建立 Slack 機器人，實現文件查詢與對話功能。整合 Gemini 2.0 提供智慧回應，並展示部署與擴展方法。',
+          docs: [
+            {
+              text: '文件連結',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/33-slack_adk_integration.md',
+            },
+            {
+              text: 'Support Bot',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/support-bot/',
+            },
+          ],
+          refs: [
+            {
+              text: 'Tutorial 33: Slack Bot Integration with ADK',
+              url: 'https://raphaelmansuy.github.io/adk_training/docs/slack_adk_integration',
+            },
+          ],
+          labels: ['ui', 'slack', 'python', 'bot', 'messaging'],
+          completed: false,
+        },
       ];
 
       // 獲取 DOM 元素
@@ -2133,18 +2157,28 @@
         });
 
         // 支援觸控滑動
-        const slidesWrapper = document.querySelector('.carousel-slides-wrapper');
+        const slidesWrapper = document.querySelector(
+          '.carousel-slides-wrapper'
+        );
         let touchStartX = 0;
         let touchEndX = 0;
 
-        slidesWrapper.addEventListener('touchstart', (e) => {
-          touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+        slidesWrapper.addEventListener(
+          'touchstart',
+          (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+          },
+          { passive: true }
+        );
 
-        slidesWrapper.addEventListener('touchend', (e) => {
-          touchEndX = e.changedTouches[0].screenX;
-          handleSwipe();
-        }, { passive: true });
+        slidesWrapper.addEventListener(
+          'touchend',
+          (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+          },
+          { passive: true }
+        );
 
         function handleSwipe() {
           const swipeThreshold = 50; // 最小滑動距離

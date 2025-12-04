@@ -1653,6 +1653,23 @@
                 },
               ],
             },
+            {
+              name: 'support_bot',
+              path: 'workspace/python/agents/support-bot',
+              type: 'Agent',
+              description: '協助處理公司政策與問題的團隊支援助理',
+              model: 'gemini-2.5-flash',
+              tools: [
+                {
+                  name: 'search_knowledge_base',
+                  description: '搜尋公司知識庫以獲取資訊',
+                },
+                {
+                  name: 'create_support_ticket',
+                  description: '為複雜問題建立支援工單',
+                },
+              ],
+            },
           ];
 
       // DOM 元素

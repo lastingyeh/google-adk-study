@@ -687,4 +687,20 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </details>
 
+#### 🕗 Day 42
+<details>
+<summary>
+使用 Google ADK 建立 Slack 機器人，實現文件查詢與對話功能。整合 Gemini 2.0 提供智慧回應，並展示部署與擴展方法。
+
+🏷️  `ui`, `slack`, `python`, `bot`, `messaging`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/33-slack_adk_integration.md)
+  - [Support Bot](./workspace/python/agents/support-bot/)
+- **參考資源**
+  - [Tutorial 33: Slack Bot Integration with ADK](https://raphaelmansuy.github.io/adk_training/docs/slack_adk_integration)
+
+</details>
+
 </details>

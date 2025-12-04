@@ -1,0 +1,19 @@
+# 核心依賴 (Core dependencies)
+google-adk>=1.16.0
+slack-bolt>=1.26.0
+google-genai>=1.45.0
+python-dotenv>=1.0.0
+
+# 選用：生產環境依賴 (Optional: Production dependencies)
+gunicorn>=21.0.0  # 用於生產環境部署
+Flask>=3.0.0      # 用於 HTTP 模式生產環境部署
+
+# 測試 (Testing)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# 重點摘要 (requirements.txt)
+# - 核心概念：定義專案執行所需的 Python 套件清單。
+# - 關鍵技術：pip。
+# - 重要結論：區分了核心功能、生產環境部署與測試所需的套件，方便不同環境的安裝與管理。
+# - 行動項目：使用 pip install -r requirements.txt 安裝所有依賴。

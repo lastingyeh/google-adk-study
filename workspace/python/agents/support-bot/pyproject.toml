@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tutorial33"
+version = "0.1.0"
+description = "課程 33：Slack 機器人與 ADK 整合"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.16.0",
+    "slack-bolt>=1.26.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+# 重點摘要 (pyproject.toml)
+# - 核心概念：Python 專案設定檔，定義了專案的中繼資料 (metadata) 與建置系統。
+# - 關鍵技術：TOML, Setuptools.
+# - 重要結論：明確指定了專案依賴 (google-adk, slack-bolt) 與開發工具 (pytest)，確保開發環境的一致性。
+# - 行動項目：若需新增其他套件，請更新 dependencies 區塊。

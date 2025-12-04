@@ -37,4 +37,5 @@
 | Next.js ADK 整合 - React 聊天介面 | [30-nextjs_adk_integration.md](./30-nextjs_adk_integration.md) | 使用 Next.js 15 和 CopilotKit 建構現代化聊天介面，建立具有即時功能和 AG-UI 協定的 React Agent 互動，包含生成式 UI 與人機協作功能。 | `ui`, `nextjs`, `react`, `copilotkit`, `chat-interface` |
 | React Vite ADK 整合 - 自訂 UI 協定 | [31-react_vite_adk_integration.md](./31-react_vite_adk_integration.md) | 使用 React Vite 和 AG-UI 協定建構自訂 UI，不依賴 CopilotKit，實現手動 SSE 串流、TOOL_CALL_RESULT 處理及固定側邊欄圖表功能。 | `ui`, `react`, `vite`, `ag-ui`, `custom-implementation` |
 | Streamlit ADK 整合 - Python 數據應用 | [32-streamlit_adk_integration.md](./32-streamlit_adk_integration.md) | 使用 Streamlit 和 ADK 構建純 Python 的數據分析應用程式，整合互動式儀表板、數據分析工具與 ADK Agents，無需前端開發經驗。 | `ui`, `streamlit`, `python`, `data-science`, `dashboard` |
+| Slack ADK 整合 - 智慧型 Slack 機器人 | [33-slack_adk_integration.md](./33-slack_adk_integration.md) | 使用 Google ADK 打造智慧型 Slack 機器人，提供團隊支援、知識庫搜尋和企業自動化功能。 | `ui`, `slack`, `python`, `bot`, `messaging` |
 | 進階 01. GEPA 優化 | [36-gepa_optimization_advanced.md](./36-gepa_optimization_advanced.md) | 學習使用基因演化提示詞增強（GEPA）技術，透過遺傳演算法、反思和評估來自動優化大型語言模型的提示詞。 | `advanced`, `gepa`, `prompt-engineering`, `optimization`, `genetic-algorithms` |
