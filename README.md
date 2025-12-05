@@ -712,7 +712,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/34-gcp_pubsub_integration.md)
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/34-pubsub_adk_integration.md)
   - [Pubsub Agent](./workspace/python/agents/pubsub-agent/)
 - **參考資源**
   - [Tutorial 34: Google Cloud Pub/Sub + Event-Driven Agents](https://raphaelmansuy.github.io/adk_training/docs/pubsub_adk_integration)
