@@ -1,0 +1,23 @@
+# 教學範例 34: Google Cloud Pub/Sub + 事件驅動代理 - Python 相依套件
+# Tutorial 34: Google Cloud Pub/Sub + Event-Driven Agents - Python Dependencies
+
+# ADK 核心框架
+# Core ADK framework
+google-adk>=1.15.1
+
+# Google Cloud Pub/Sub
+google-cloud-pubsub>=2.23.0
+
+# Google AI API
+google-genai>=1.0.0
+
+# 開發與測試
+# Development and testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# 程式碼品質
+# Code quality
+black>=23.0.0
+isort>=5.12.0
+flake8>=6.0.0

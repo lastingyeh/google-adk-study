@@ -22,6 +22,7 @@
      - 流程圖-分析流程與對應關係，轉換為適合的 `mermaid` 格式。
      - 表格-轉換為 Markdown 表格格式並完整呈現。
      - 連結-以 Markdown 連結格式呈現。
+     - 內容包含清單文字格式 (如 `-`、`1.` 等) 時，需使用靠左對齊 (如 `<div style='text-align: left;'> {content}</div>`) 。
 3. 新增章節「程式碼實現 (Code Implementation)」，產出規範如下：
    - 範例程式碼連結: 提供對應範例程式碼的相對路徑連結，格式為 `- {範例名稱}：[程式碼連結](../../../python/agents/{範例名稱}/)`。
 4. 根據內容更新`workspace/notes/google-adk-training-hub/adk_training/README.md`表格，新增對應筆記連結與說明。

@@ -36,3 +36,4 @@
 | 32 | 整合 | [data-analysis-dashboard](./data-analysis-dashboard/agent) | 結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent | AG-UI, Pandas, Chart.js, CSV Analysis, Visualization | Data Analysis, Visualization, Pandas, AG-UI |
 | 33 | 整合 | [data-analysis-agent](./data-analysis-agent) | 整合 Streamlit 與 ADK 的資料分析助理，實現檔案分析、圖表生成與對話。 | Streamlit UI, 程式碼執行 (Code Execution), 資料視覺化 | Streamlit, Data Analysis, Visualization, ADK |
 | 34 | 應用 | [support-bot](./support-bot) | 協助處理公司政策與問題的團隊支援助理。 | 知識庫搜尋, 工單建立, 團隊支援 | Support Bot, Knowledge Base, Ticketing |
+| 35 | 應用 | [pubsub-agent](./pubsub-agent) | 整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出。 | Event-Driven Architecture, Pub/Sub, Coordinator Pattern | GCP, Pub/Sub, Event-Driven, Python |

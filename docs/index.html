@@ -547,7 +547,7 @@
     <!-- JavaScript 邏輯 -->
     <script>
       // 設定每個群組的天數 (可在此調整)
-      const GROUP_SIZE = 10;
+      const GROUP_SIZE = 15;
 
       // 學習路線圖數據
       const learningData = [
@@ -1857,6 +1857,30 @@
             },
           ],
           labels: ['ui', 'slack', 'python', 'bot', 'messaging'],
+          completed: false,
+        },
+        {
+          day: 43,
+          title: 'Google Cloud Pub/Sub + 事件驅動代理',
+          description:
+            '本教學整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出，實現高效非同步的自動化分析架構。',
+          docs: [
+            {
+              text: '文件連結',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/adk_training/34-gcp_pubsub_integration.md',
+            },
+            {
+              text: 'Pubsub Agent',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/pubsub-agent/',
+            },
+          ],
+          refs: [
+            {
+              text: 'Tutorial 34: Google Cloud Pub/Sub + Event-Driven Agents',
+              url: 'https://raphaelmansuy.github.io/adk_training/docs/pubsub_adk_integration',
+            },
+          ],
+          labels: ['gcp cloud', 'pubsub', 'event-driven', 'python', 'agents'],
           completed: false,
         },
       ];

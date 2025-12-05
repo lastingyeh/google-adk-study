@@ -1670,6 +1670,32 @@
                 },
               ],
             },
+            {
+              name: 'pubsub_processor',
+              path: 'workspace/python/agents/pubsub-agent',
+              type: 'Agent',
+              description:
+                '整合 Pub/Sub 與 ADK 建構的事件驅動文件處理協調者，負責將文件路由到專門的分析器。',
+              model: 'gemini-2.5-flash',
+              tools: [
+                {
+                  name: 'financial_analyzer',
+                  description: '分析財務報告、收益、預算',
+                },
+                {
+                  name: 'technical_analyzer',
+                  description: '分析技術文件、架構、規格書',
+                },
+                {
+                  name: 'sales_analyzer',
+                  description: '分析銷售管道、交易、預測',
+                },
+                {
+                  name: 'marketing_analyzer',
+                  description: '分析行銷活動、參與度指標',
+                },
+              ],
+            },
           ];
 
       // DOM 元素

@@ -703,4 +703,20 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </details>
 
+#### 🕗 Day 43
+<details>
+<summary>
+本教學整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出，實現高效非同步的自動化分析架構。
+
+🏷️  `gcp cloud`, `pubsub`, `event-driven`, `python`, `agents`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/34-gcp_pubsub_integration.md)
+  - [Pubsub Agent](./workspace/python/agents/pubsub-agent/)
+- **參考資源**
+  - [Tutorial 34: Google Cloud Pub/Sub + Event-Driven Agents](https://raphaelmansuy.github.io/adk_training/docs/pubsub_adk_integration)
+
+</details>
+
 </details>
