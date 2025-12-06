@@ -1696,6 +1696,27 @@
                 },
               ],
             },
+            {
+              name: 'commerce_agent_e2e',
+              path: 'workspace/python/agents/commerce-agent-e2e',
+              type: 'Agent',
+              description: '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
+              model: 'gemini-2.5-flash',
+              tools: [
+                {
+                  name: 'search_products',
+                  description: '包裝 Google Search 的 AgentTool',
+                },
+                {
+                  name: 'save_preferences',
+                  description: '儲存使用者偏好',
+                },
+                {
+                  name: 'get_preferences',
+                  description: '取得使用者偏好',
+                },
+              ],
+            },
           ];
 
       // DOM 元素

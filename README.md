@@ -719,4 +719,20 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </details>
 
+#### 🕗 Day 44
+<details>
+<summary>
+
+
+🏷️  `advanced`, `e2e`, `production`, `sessions`, `commerce`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/35-commerce_agent_e2e.md)
+  - [Commerce Agent E2E](./workspace/python/agents/commerce-agent-e2e/)
+- **參考資源**
+  - [End-to-End Implementation 01: Production Commerce Agent with Session Persistence](https://raphaelmansuy.github.io/adk_training/docs/commerce_agent_e2e)
+
+</details>
+
 </details>
