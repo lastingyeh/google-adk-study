@@ -736,3 +736,21 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 </details>
 
 </details>
+
+#### 🕗 Day 45
+<details>
+<summary>
+教程 37 利用 Gemini File Search 構建 RAG。具自動引用與多代理功能，低成本高效解決企業政策查詢，大幅提升人資效率。
+
+🏷️  `advanced`, `file-search`, `rag`, `multi-agent`, `production`
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/37-file_search_policy_navigator.md)
+  - [Policy Navigator](./workspace/python/agents/policy-navigator/)
+- **參考資源**
+  - [Tutorial 37: Native RAG with File Search - Policy Navigator](https://raphaelmansuy.github.io/adk_training/docs/file_search_policy_navigator)
+
+</details>
+
+</details>

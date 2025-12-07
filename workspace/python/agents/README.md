@@ -38,3 +38,4 @@
 | 34 | 應用 | [support-bot](./support-bot) | 協助處理公司政策與問題的團隊支援助理。 | 知識庫搜尋, 工單建立, 團隊支援 | Support Bot, Knowledge Base, Ticketing |
 | 35 | 應用 | [pubsub-agent](./pubsub-agent) | 整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出。 | Event-Driven Architecture, Pub/Sub, Coordinator Pattern | GCP, Pub/Sub, Event-Driven, Python |
 | 36 | 應用 | [commerce-agent-e2e](./commerce-agent-e2e) | 一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。 | Google Search Grounding, Session Persistence, User Preferences, SQLite Support | E2E, Commerce, Grounding, Persistence, Session |
+| 37 | 應用 | [policy-navigator](./policy-navigator) | 企業合規與政策導航器，利用 File Search 構建 RAG，具自動引用與多代理功能，低成本高效解決企業政策查詢。 | RAG, File Search, Multi-Agent, Compliance | RAG, File Search, Compliance, Policy |

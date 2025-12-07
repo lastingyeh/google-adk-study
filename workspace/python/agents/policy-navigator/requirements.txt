@@ -1,0 +1,17 @@
+# 核心相依套件
+google-genai>=1.49.0
+google-adk>=1.16.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+loguru>=0.7.0
+
+# 開發相依套件
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+ruff>=0.1.0
+mypy>=1.0.0
+
+# 展示用選用工具
+httpx>=0.24.0
