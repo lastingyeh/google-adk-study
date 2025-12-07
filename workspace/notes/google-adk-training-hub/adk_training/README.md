@@ -41,3 +41,4 @@
 | Pub/Sub 事件代理 - 事件驅動處理 | [34-pubsub_adk_integration.md](./34-pubsub_adk_integration.md) | 使用 Google Cloud Pub/Sub 和 ADK 代理建構用於非同步處理的事件驅動文件處理管道。 | `gcp cloud`, `pubsub`, `event-driven`, `python`, `agents` |
 | 端對端實作 01 - 生產級商務代理 | [35-commerce_agent_e2e.md](./35-commerce_agent_e2e.md) | 建構一個具備 Grounding、多用戶對話隔離、SQLite 持久性以及綜合測試的生產級商務代理。 | `advanced`, `e2e`, `production`, `sessions`, `commerce` |
 | 進階 01. GEPA 優化 | [36-gepa_optimization_advanced.md](./36-gepa_optimization_advanced.md) | 學習使用基因演化提示詞增強（GEPA）技術，透過遺傳演算法、反思和評估來自動優化大型語言模型的提示詞。 | `advanced`, `gepa`, `prompt-engineering`, `optimization`, `genetic-algorithms` |
+| 檔案搜尋與原生 RAG - 策略導航器 | [37-file_search_policy_navigator.md](./37-file_search_policy_navigator.md) | 使用 Gemini 的原生檔案搜尋 API 構建可立即投入生產的策略管理系統，無需外部向量資料庫。 | `advanced`, `file-search`, `rag`, `multi-agent`, `production` |

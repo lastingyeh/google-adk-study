@@ -1707,17 +1707,76 @@
                   name: 'search_products',
                   description: '包裝 Google Search 的 AgentTool',
                 },
-                {
-                  name: 'save_preferences',
-                  description: '儲存使用者偏好',
-                },
-                {
-                  name: 'get_preferences',
-                  description: '取得使用者偏好',
-                },
-              ],
+            {
+              name: 'save_preferences',
+              description: '儲存使用者偏好',
             },
-          ];
+            {
+              name: 'get_preferences',
+              description: '取得使用者偏好',
+            },
+          ],
+        },
+        {
+          name: 'policy_navigator',
+          path: 'workspace/python/agents/policy-navigator',
+          type: 'Agent',
+          description: '企業合規與政策導航器，利用 File Search 構建 RAG，實作文件管理、搜尋專家、合規顧問與報告產生器等多代理人協作。',
+          model: 'gemini-2.0-flash',
+          sub_agents: [
+            {
+              name: 'document_manager',
+              description: '管理政策文件上傳、組織與 metadata 設定',
+            },
+            {
+              name: 'search_specialist',
+              description: '搜尋公司政策並檢索相關資訊',
+            },
+            {
+              name: 'compliance_advisor',
+              description: '評估合規風險並提供政策指導',
+            },
+            {
+              name: 'report_generator',
+              description: '產生政策摘要、報告與稽核追蹤',
+            },
+          ],
+          tools: [
+            {
+              name: 'upload_policy_documents',
+              description: '將政策文件上傳到 File Search stores',
+            },
+            {
+              name: 'search_policies',
+              description: '對政策文件執行語意搜尋',
+            },
+            {
+              name: 'filter_policies_by_metadata',
+              description: '依部門、類型與日期過濾政策',
+            },
+            {
+              name: 'compare_policies',
+              description: '跨部門比較政策',
+            },
+            {
+              name: 'check_compliance_risk',
+              description: '評估與政策相關的合規風險',
+            },
+            {
+              name: 'extract_policy_requirements',
+              description: '從政策中擷取特定需求',
+            },
+            {
+              name: 'generate_policy_summary',
+              description: '建立簡潔的政策摘要',
+            },
+            {
+              name: 'create_audit_trail',
+              description: '建立稽核追蹤項目',
+            },
+          ],
+        },
+      ];
 
       // DOM 元素
       const grid = document.getElementById('agents-grid');
