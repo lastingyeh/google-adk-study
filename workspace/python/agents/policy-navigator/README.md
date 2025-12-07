@@ -18,12 +18,12 @@ _注意：這是生產級的基礎架構。若要完全部署到生產環境，�
 
 ### 關鍵功能
 
-✅ **原生 File Search 整合** - 具備語意搜尋的持久性文件儲存
-✅ **多代理人架構** - 文件管理員 (Document Manager)、搜尋專家 (Search Specialist)、合規顧問 (Compliance Advisor)、報告產生器 (Report Generator)
-✅ **Metadata 管理** - 依部門、類型、管轄區、敏感度組織政策
-✅ **引用追蹤** - 自動來源歸屬以符合規性
-✅ **稽核追蹤 (Audit Trails)** - 追蹤所有政策存取與決策
-✅ **生產就緒 (Production Ready)** - 錯誤處理、日誌記錄與可觀測性
+- ✅ **原生 File Search 整合** - 具備語意搜尋的持久性文件儲存
+- ✅ **多代理人架構** - 文件管理員 (Document Manager)、搜尋專家 (Search Specialist)、合規顧問 (Compliance Advisor)、報告產生器 (Report Generator)
+- ✅ **Metadata 管理** - 依部門、類型、管轄區、敏感度組織政策
+- ✅ **引用追蹤** - 自動來源歸屬以符合規性
+- ✅ **稽核追蹤 (Audit Trails)** - 追蹤所有政策存取與決策
+- ✅ **生產就緒 (Production Ready)** - 錯誤處理、日誌記錄與可觀測性
 
 ## 📁 專案結構
 
