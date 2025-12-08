@@ -10,8 +10,3 @@ dependencies = [
     "google-adk>=1.7.0",
     "mcp[cli]>=1.12.0",
 ]
-
-[dependency-groups]
-dev = [
-    "pytest>=9.0.2",
-]

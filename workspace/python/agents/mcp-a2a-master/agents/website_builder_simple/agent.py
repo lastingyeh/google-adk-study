@@ -19,6 +19,8 @@ from google.genai import types
 from rich import print as rprint
 from rich.syntax import Syntax
 
+from pydantic import BaseModel, Field
+
 import json
 import logging
 import os
@@ -28,11 +30,34 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# 配置常數
+MAX_QUERY_LENGTH = 10000  # 查詢內容的最大長度（字元）
+MIN_QUERY_LENGTH = 1  # 查詢內容的最小長度（字元）
+
 # 設定日誌
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+
+class AgentResponse(BaseModel):
+    """
+    代理回應的標準化模型，使用 Pydantic 確保類型安全。
+    Standardized agent response model using Pydantic for type safety.
+    """
+
+    is_task_complete: bool = Field(
+        description="指示任務是否完成 (Indicates if the task is complete)"
+    )
+    content: str = Field(default="", description="最終結果內容 (Final result content)")
+    updates: str = Field(default="", description="任務進度更新 (Task progress updates)")
+    error: Optional[str] = Field(
+        default=None, description="錯誤訊息（如有） (Error message if any)"
+    )
+    metadata: dict = Field(
+        default_factory=dict, description="額外的元數據 (Additional metadata)"
+    )
 
 
 class WebsiteBuilderSimple:
@@ -64,9 +89,10 @@ class WebsiteBuilderSimple:
                 "WEBSITE_BUILDER_USER_ID", "website_builder_simple_agent_user"
             )
 
-            logger.info(
+            logger.debug(
                 f"初始化代理，使用模型: {self._model_name}, 用戶 ID: {self._user_id}"
             )
+            logger.info("代理初始化完成")
 
             self._agent = self._build_agent()
             self._runner = Runner(
@@ -112,11 +138,37 @@ class WebsiteBuilderSimple:
                 'error': str | None,  # 錯誤訊息（如有）
                 'metadata': dict  # 額外資訊
             }
+
+        Raises:
+            ValueError: 當查詢內容無效時
         """
-        try:
-            logger.info(
-                f"開始處理查詢 - Session ID: {session_id}, Query: {query[:50]}..."
+        # 輸入驗證
+        if not query or not query.strip():
+            logger.warning("收到空的查詢內容")
+            yield self._create_response(
+                is_complete=True, error="查詢內容不能為空 (Query cannot be empty)"
             )
+            return
+
+        if len(query) < MIN_QUERY_LENGTH:
+            logger.warning(f"查詢內容過短: {len(query)} 字元")
+            yield self._create_response(
+                is_complete=True,
+                error=f"查詢內容過短，至少需要 {MIN_QUERY_LENGTH} 字元 (Query too short)",
+            )
+            return
+
+        if len(query) > MAX_QUERY_LENGTH:
+            logger.warning(f"查詢內容過長: {len(query)} 字元")
+            yield self._create_response(
+                is_complete=True,
+                error=f"查詢內容過長，最多 {MAX_QUERY_LENGTH} 字元 (Query too long, max {MAX_QUERY_LENGTH} characters)",
+            )
+            return
+
+        try:
+            logger.info(f"開始處理查詢 - Session ID: {session_id}")
+            logger.debug(f"查詢內容: {query[:100]}...")  # 只記錄前100個字元
 
             # 獲取或建立會話
             try:
@@ -186,14 +238,33 @@ class WebsiteBuilderSimple:
         error: Optional[str] = None,
         metadata: Optional[dict] = None,
     ) -> dict:
-        """建立標準化的回應格式"""
-        return {
-            "is_task_complete": is_complete,
-            "content": content,
-            "updates": updates,
-            "error": error,
-            "metadata": metadata or {},
-        }
+        """
+        建立標準化的回應格式，使用 Pydantic 模型確保類型安全。
+        Creates a standardized response format using Pydantic model for type safety.
+        """
+        response = AgentResponse(
+            is_task_complete=is_complete,
+            content=content,
+            updates=updates,
+            error=error,
+            metadata=metadata or {},
+        )
+        return response.model_dump()
+
+    async def cleanup(self) -> None:
+        """
+        清理代理資源，包括會話、artifacts 等。
+        Cleanup agent resources including sessions, artifacts, etc.
+        """
+        try:
+            logger.info("開始清理代理資源")
+            # 這裡可以添加具體的清理邏輯
+            # 例如：清理會話、關閉連接等
+            # await self._runner.session_service.cleanup()
+            logger.info("代理資源清理完成")
+        except Exception as e:
+            logger.error(f"清理資源失敗: {str(e)}", exc_info=True)
+            # 不拋出異常，確保清理過程不會中斷
 
 
 def print_json_response(response: Any, title: str) -> None:

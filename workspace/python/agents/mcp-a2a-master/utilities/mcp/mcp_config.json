@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "terminal_server": {
-      "command": "/Library/Frameworks/Python.framework/Versions/3.13/bin/uv",
+      "command": "uv",
       "args": [
         "--directory",
         "/Users/cfh00543956/Desktop/Labs/google-adk-study/workspace/python/agents/mcp-a2a-master/mcp/servers/terminal_server",
