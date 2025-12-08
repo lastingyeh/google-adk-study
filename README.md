@@ -735,8 +735,6 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </details>
 
-</details>
-
 #### 🕗 Day 45
 <details>
 <summary>
