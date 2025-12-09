@@ -290,7 +290,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/notes/google-adk-training-hub/README.md)
+  - [文件連結](./workspace/notes/google-adk-training-hub/learning-paths.md)
 - **參考資源**
   - [Learning Paths](https://raphaelmansuy.github.io/adk_training/docs/learning-paths)
   - [ADK Cheat Sheet - Complete Reference](https://raphaelmansuy.github.io/adk_training/docs/adk-cheat-sheet)
@@ -308,7 +308,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/notes/google-adk-training-hub/README.md#六資源與支援)
+  - [文件連結](./workspace/notes/google-adk-training-hub/reference-guide.md)
   - [00-setup_authentication](./workspace/notes/google-adk-training-hub/adk_training/00-setup_authentication.md)
   - [01-hello_world_agent](./workspace/notes/google-adk-training-hub/adk_training/01-hello_world_agent.md)
   - [hello-agent](./workspace/python/agents/hello-agent/)
