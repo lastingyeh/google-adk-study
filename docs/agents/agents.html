@@ -361,7 +361,8 @@
       .collapse-content {
         max-height: 40vh;
         overflow-y: auto;
-        transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+        transition: max-height 0.3s ease, opacity 0.3s ease,
+          margin-top 0.3s ease;
         opacity: 1;
         margin-top: 0.5rem;
       }
@@ -513,9 +514,7 @@
       </header>
 
       <!-- 搜尋與控制項 -->
-      <div
-        class="mb-8 flex flex-col sm:flex-row items-center gap-4"
-      >
+      <div class="mb-8 flex flex-col sm:flex-row items-center gap-4">
         <!-- Google 風格搜尋框 -->
         <div class="relative w-full sm:flex-grow">
           <div
@@ -638,8 +637,6 @@
       <div
         class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl border border-gray-700/50 transform transition-all flex flex-col max-h-[90vh]"
       >
-
-
         <!-- Modal 頂部 -->
         <div
           class="flex items-center justify-between p-6 border-b border-gray-800/50 bg-[#1a1f2e] flex-shrink-0"
@@ -684,46 +681,16 @@
         <!-- Modal 內容 (可滾動) -->
         <div id="modal-body" class="p-6 overflow-y-auto flex-1">
           <div class="space-y-8">
-          <!-- 標籤區 -->
-          <div class="flex flex-wrap gap-2" id="modal-tags">
-            <!-- 動態標籤 -->
-          </div>
+            <!-- 標籤區 -->
+            <div class="flex flex-wrap gap-2" id="modal-tags">
+              <!-- 動態標籤 -->
+            </div>
 
-          <!-- 詳細說明 -->
-          <div>
-            <h3
-              class="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <!-- 詳細說明 -->
+            <div>
+              <h3
+                class="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-              功能描述
-            </h3>
-            <p
-              id="modal-description"
-              class="text-base leading-relaxed text-gray-300 bg-gray-800/30 p-4 rounded-lg border border-gray-700/30"
-            >
-              <!-- Modal 詳細說明將動態填入 -->
-            </p>
-          </div>
-
-          <!-- 工具列表 -->
-          <div id="modal-tools-container" style="display: none">
-            <h3
-              class="collapse-header collapsed text-lg font-semibold text-green-400 mb-2 flex items-center gap-2 justify-between"
-              onclick="toggleCollapse('tools')"
-            >
-              <div class="flex items-center gap-2">
                 <svg
                   class="w-5 h-5"
                   fill="none"
@@ -734,46 +701,118 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
+                </svg>
+                功能描述
+              </h3>
+              <p
+                id="modal-description"
+                class="text-base leading-relaxed text-gray-300 bg-gray-800/30 p-4 rounded-lg border border-gray-700/30"
+              >
+                <!-- Modal 詳細說明將動態填入 -->
+              </p>
+            </div>
+
+            <!-- 工具列表 -->
+            <div id="modal-tools-container" style="display: none">
+              <h3
+                class="collapse-header collapsed text-lg font-semibold text-green-400 mb-2 flex items-center gap-2 justify-between"
+                onclick="toggleCollapse('tools')"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                  可用工具 (Tools)
+                </div>
+                <svg
+                  class="collapse-icon w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    d="M19 9l-7 7-7-7"
                   ></path>
                 </svg>
-                可用工具 (Tools)
-              </div>
-              <svg
-                class="collapse-icon w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              </h3>
+              <div
+                class="collapse-content collapsed grid grid-cols-1 sm:grid-cols-2 gap-3"
+                id="modal-tools-list"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                ></path>
-              </svg>
-            </h3>
-            <div
-              class="collapse-content collapsed grid grid-cols-1 sm:grid-cols-2 gap-3"
-              id="modal-tools-list"
-            >
-              <!-- 工具將動態填入 -->
+                <!-- 工具將動態填入 -->
+              </div>
             </div>
-          </div>
 
-          <!-- 子代理列表 -->
-          <div id="modal-subagents-container" style="display: none">
-            <h3
-              class="collapse-header collapsed text-lg font-semibold text-purple-400 mb-2 flex items-center gap-2 justify-between"
-              onclick="toggleCollapse('subagents')"
-            >
-              <div class="flex items-center gap-2">
+            <!-- 子代理列表 -->
+            <div id="modal-subagents-container" style="display: none">
+              <h3
+                class="collapse-header collapsed text-lg font-semibold text-purple-400 mb-2 flex items-center gap-2 justify-between"
+                onclick="toggleCollapse('subagents')"
+              >
+                <div class="flex items-center gap-2">
+                  <svg
+                    class="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    ></path>
+                  </svg>
+                  子代理 (Sub-agents)
+                </div>
+                <svg
+                  class="collapse-icon w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </h3>
+              <div
+                class="collapse-content collapsed space-y-2"
+                id="modal-subagents-list"
+              >
+                <!-- 子代理將動態填入 -->
+              </div>
+            </div>
+
+            <!-- 其他資訊 (Plugins, Capabilities) -->
+            <div id="modal-extras-container" style="display: none">
+              <h3
+                class="text-lg font-semibold text-yellow-400 mb-2 flex items-center gap-2"
+              >
                 <svg
                   class="w-5 h-5"
                   fill="none"
@@ -784,55 +823,16 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"
                   ></path>
                 </svg>
-                子代理 (Sub-agents)
-              </div>
-              <svg
-                class="collapse-icon w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M19 9l-7 7-7-7"
-                ></path>
-              </svg>
-            </h3>
-            <div class="collapse-content collapsed space-y-2" id="modal-subagents-list">
-              <!-- 子代理將動態填入 -->
+                其他功能
+              </h3>
+              <ul
+                id="modal-extras-list"
+                class="list-disc list-inside space-y-1 text-gray-300"
+              ></ul>
             </div>
-          </div>
-
-          <!-- 其他資訊 (Plugins, Capabilities) -->
-          <div id="modal-extras-container" style="display: none">
-            <h3
-              class="text-lg font-semibold text-yellow-400 mb-2 flex items-center gap-2"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                ></path>
-              </svg>
-              其他功能
-            </h3>
-            <ul
-              id="modal-extras-list"
-              class="list-disc list-inside space-y-1 text-gray-300"
-            ></ul>
-          </div>
           </div>
         </div>
       </div>
@@ -1040,7 +1040,8 @@
           name: 'customer_support_agent',
           path: 'workspace/python/agents/customer-support-agent',
           type: 'Agent',
-          description: '整合 AG-UI 的客戶支援 ADK 代理人，提供客戶支援功能，具備知識庫搜尋、訂單狀態查詢和支援工單建立的工具。',
+          description:
+            '整合 AG-UI 的客戶支援 ADK 代理人，提供客戶支援功能，具備知識庫搜尋、訂單狀態查詢和支援工單建立的工具。',
           model: 'gemini-2.0-flash-exp',
           tools: [
             {
@@ -1607,106 +1608,108 @@
           model: 'gemini-2.0-flash-exp',
           tools: [],
         },
+        {
+          name: 'data_analyst',
+          path: 'workspace/python/agents/data-analysis-dashboard/agent',
+          type: 'Agent',
+          description:
+            '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
             {
-              name: 'data_analyst',
-              path: 'workspace/python/agents/data-analysis-dashboard/agent',
-              type: 'Agent',
-              description: '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
-              model: 'gemini-2.0-flash-exp',
-              tools: [
-                {
-                  name: 'load_csv_data',
-                  description: '將 CSV 數據載入記憶體以進行分析',
-                },
-                {
-                  name: 'analyze_data',
-                  description: '對載入的數據集執行統計分析',
-                },
-                {
-                  name: 'create_chart',
-                  description: '生成視覺化圖表數據',
-                },
-              ],
+              name: 'load_csv_data',
+              description: '將 CSV 數據載入記憶體以進行分析',
             },
             {
-              name: 'data_analysis_agent',
-              path: 'workspace/python/agents/data-analysis-agent',
-              type: 'Agent',
-              description: '整合 Streamlit 與 ADK 的資料分析助理',
-              model: 'gemini-2.0-flash',
-              tools: [
-                {
-                  name: 'analyze_column',
-                  description: '統計分析',
-                },
-                {
-                  name: 'calculate_correlation',
-                  description: '尋找關聯性',
-                },
-                {
-                  name: 'filter_data',
-                  description: '子集探索',
-                },
-                {
-                  name: 'get_dataset_summary',
-                  description: '概覽資訊',
-                },
-              ],
+              name: 'analyze_data',
+              description: '對載入的數據集執行統計分析',
             },
             {
-              name: 'support_bot',
-              path: 'workspace/python/agents/support-bot',
-              type: 'Agent',
-              description: '協助處理公司政策與問題的團隊支援助理',
-              model: 'gemini-2.5-flash',
-              tools: [
-                {
-                  name: 'search_knowledge_base',
-                  description: '搜尋公司知識庫以獲取資訊',
-                },
-                {
-                  name: 'create_support_ticket',
-                  description: '為複雜問題建立支援工單',
-                },
-              ],
+              name: 'create_chart',
+              description: '生成視覺化圖表數據',
+            },
+          ],
+        },
+        {
+          name: 'data_analysis_agent',
+          path: 'workspace/python/agents/data-analysis-agent',
+          type: 'Agent',
+          description: '整合 Streamlit 與 ADK 的資料分析助理',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'analyze_column',
+              description: '統計分析',
             },
             {
-              name: 'pubsub_processor',
-              path: 'workspace/python/agents/pubsub-agent',
-              type: 'Agent',
-              description:
-                '整合 Pub/Sub 與 ADK 建構的事件驅動文件處理協調者，負責將文件路由到專門的分析器。',
-              model: 'gemini-2.5-flash',
-              tools: [
-                {
-                  name: 'financial_analyzer',
-                  description: '分析財務報告、收益、預算',
-                },
-                {
-                  name: 'technical_analyzer',
-                  description: '分析技術文件、架構、規格書',
-                },
-                {
-                  name: 'sales_analyzer',
-                  description: '分析銷售管道、交易、預測',
-                },
-                {
-                  name: 'marketing_analyzer',
-                  description: '分析行銷活動、參與度指標',
-                },
-              ],
+              name: 'calculate_correlation',
+              description: '尋找關聯性',
             },
             {
-              name: 'commerce_agent_e2e',
-              path: 'workspace/python/agents/commerce-agent-e2e',
-              type: 'Agent',
-              description: '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
-              model: 'gemini-2.5-flash',
-              tools: [
-                {
-                  name: 'search_products',
-                  description: '包裝 Google Search 的 AgentTool',
-                },
+              name: 'filter_data',
+              description: '子集探索',
+            },
+            {
+              name: 'get_dataset_summary',
+              description: '概覽資訊',
+            },
+          ],
+        },
+        {
+          name: 'support_bot',
+          path: 'workspace/python/agents/support-bot',
+          type: 'Agent',
+          description: '協助處理公司政策與問題的團隊支援助理',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'search_knowledge_base',
+              description: '搜尋公司知識庫以獲取資訊',
+            },
+            {
+              name: 'create_support_ticket',
+              description: '為複雜問題建立支援工單',
+            },
+          ],
+        },
+        {
+          name: 'pubsub_processor',
+          path: 'workspace/python/agents/pubsub-agent',
+          type: 'Agent',
+          description:
+            '整合 Pub/Sub 與 ADK 建構的事件驅動文件處理協調者，負責將文件路由到專門的分析器。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'financial_analyzer',
+              description: '分析財務報告、收益、預算',
+            },
+            {
+              name: 'technical_analyzer',
+              description: '分析技術文件、架構、規格書',
+            },
+            {
+              name: 'sales_analyzer',
+              description: '分析銷售管道、交易、預測',
+            },
+            {
+              name: 'marketing_analyzer',
+              description: '分析行銷活動、參與度指標',
+            },
+          ],
+        },
+        {
+          name: 'commerce_agent_e2e',
+          path: 'workspace/python/agents/commerce-agent-e2e',
+          type: 'Agent',
+          description:
+            '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'search_products',
+              description: '包裝 Google Search 的 AgentTool',
+            },
             {
               name: 'save_preferences',
               description: '儲存使用者偏好',
@@ -1721,7 +1724,8 @@
           name: 'policy_navigator',
           path: 'workspace/python/agents/policy-navigator',
           type: 'Agent',
-          description: '企業合規與政策導航器，利用 File Search 構建 RAG，實作文件管理、搜尋專家、合規顧問與報告產生器等多代理人協作。',
+          description:
+            '企業合規與政策導航器，利用 File Search 構建 RAG，實作文件管理、搜尋專家、合規顧問與報告產生器等多代理人協作。',
           model: 'gemini-2.0-flash',
           sub_agents: [
             {
@@ -1773,6 +1777,33 @@
             {
               name: 'create_audit_trail',
               description: '建立稽核追蹤項目',
+            },
+          ],
+        },
+        {
+          name: 'mcp_a2a_master_agent',
+          path: 'workspace/python/agents/mcp-a2a-master/',
+          type: 'Agent',
+          description:
+            '整合 cmd 與 MCP 的 A2A 主協調者代理，展示跨代理通訊與協作。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: '_list_agents',
+              description:
+                'A2A 工具：回傳已註冊的 A2A 子代理的代理卡片物件字典列表。',
+            },
+            {
+              name: '_delgate_task',
+              description: '將任務委派給指定的代理。',
+            },
+            {
+              name: 'add_numbers',
+              description: '將兩個數字相加並回傳結果。',
+            },
+            {
+              name: 'terminal_server',
+              description: '在終端機中執行指令並回傳輸出。',
             },
           ],
         },
