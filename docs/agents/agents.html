@@ -1776,6 +1776,22 @@
             },
           ],
         },
+        {
+          name: 'host_agent',
+          path: 'workspace/python/agents/mcp-a2a-master/agents/host_agent',
+          type: 'Agent',
+          description: '將請求路由至 A2A 代理或 MCP 工具。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [],
+        },
+        {
+          name: 'website_builder_simple',
+          path: 'workspace/python/agents/mcp-a2a-master/agents/website_builder_simple',
+          type: 'Agent',
+          description: '此代理接收使用者關於建立網站的查詢，並生成一個包含嵌入式 CSS 和 JavaScript 的單一獨立 HTML 檔案。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [],
+        },
       ];
 
       // DOM 元素

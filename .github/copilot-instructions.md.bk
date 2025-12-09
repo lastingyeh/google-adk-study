@@ -1,0 +1,677 @@
+# Google ADK 訓練專案 - AI 程式撰寫指南
+
+## 專案概述
+
+這是一個全方位的 Google Agent Development Kit (ADK) 訓練儲存庫,包含 28 個教學、心智模型、研究與自動化測試。本專案從基本原理到生產環境部署,教授代理開發的完整流程。
+
+
+## 架構模式
+
+### 代理階層與組合
+
+- **Root Agent 慣例**: 每個代理模組必須匯出一個 `root_agent` 變數作為主要進入點
+- **順序工作流程**: 使用 `SequentialAgent` 建立有序管線,每個步驟依賴前一個步驟
+- **平行工作流程**: 使用 `ParallelAgent` 執行可同時運行的獨立任務
+- **循環工作流程**: 使用 `LoopAgent` 進行迭代改進,採用評論者/精煉者模式
+- **狀態通訊**: 代理透過 `output_key` (儲存至工作階段狀態) 和狀態插值 `{key_name}` 進行通訊
+
+### 工具開發模式
+
+- **函式工具**: Python 函式成為可呼叫的工具 - 回傳包含 `status`、`report` 和資料欄位的結構化字典
+- **OpenAPI 工具**: 使用 `OpenAPIToolset` 進行 REST API 整合,自動產生工具
+- **MCP 工具**: 使用 `MCPToolset` 處理標準化協定工具 (檔案系統、資料庫)
+- **回傳格式**: 工具回傳 `{'status': 'success/error', 'report': '可讀訊息', ...data}`
+
+### 狀態管理
+
+- **工作階段狀態**: `state['key']` 用於對話範圍資料
+- **使用者狀態**: `state['user:key']` 用於跨工作階段使用者資料
+- **應用程式狀態**: `state['app:key']` 用於全域應用程式資料
+- **暫存狀態**: `state['temp:key']` 僅用於單次呼叫的資料
+
+## 開發工作流程
+
+### 專案結構
+
+```
+tutorial_implementation/tutorialXX/
+├── Makefile              # 標準命令 (setup, dev, test, demo)
+├── requirements.txt      # Python 相依套件
+├── agent_name/           # 代理實作
+│   ├── __init__.py
+│   ├── agent.py          # 主要代理 (匯出 root_agent)
+│   └── .env.example      # 環境變數
+└── tests/                # 完整測試套件
+    ├── test_agent.py     # 代理組態測試
+    ├── test_imports.py   # 匯入驗證
+    └── test_structure.py # 專案結構測試
+```
+
+### 測試模式
+
+- **單元測試**: 模擬外部相依性,測試代理組態和工具邏輯
+- **整合測試**: 當 GOOGLE_API_KEY 可用時,使用真實 ADK 元件進行測試
+- **測試組織**: 依功能分組 (TestAgentConfig, TestTools, TestIntegration)
+- **測試執行器**: 使用 `pytest` 搭配 `pytest-cov` 進行覆蓋率報告
+
+### 常用命令
+
+```bash
+# 設定環境
+make setup              # 安裝相依套件
+export GOOGLE_API_KEY=your_key
+
+# 開發
+make dev                # 啟動 ADK 網頁介面 (localhost:8000)
+make demo               # 顯示範例提示與用法
+
+# 測試
+make test               # 執行所有測試
+pytest tests/ -v        # 詳細測試輸出
+
+# 清理
+make clean              # 移除快取檔案與產物
+```
+
+## Today I Learn (TIL) - 快速功能學習
+
+### TIL 位置
+
+**文件**: `/docs/docs/til/`
+- `til_index.md` - 所有可用 TIL 的索引
+- `til_context_compaction_20250119.md` - Context Compaction 功能
+- `til_pause_resume_20251020.md` - Pause and Resume Invocations
+- `til_rubric_based_tool_use_quality_20251021.md` - Tool Use Quality 評估
+- `TIL_TEMPLATE.md` - 建立新 TIL 的指引
+
+**實作**: `/til_implementation/`
+- `til_context_compaction_20250119/` - 完整可運作範例與測試
+- `til_pause_resume_20251020/` - 完整可運作範例與測試
+- `til_rubric_based_tool_use_quality_20251021/` - 完整可運作範例與測試
+
+### TIL 結構
+
+每個 TIL 包含兩個組成部分:
+
+1. **文件** (`docs/docs/til/til_[feature]_[YYYYMMDD].md`)
+   - Docusaurus frontmatter (id, title, sidebar_label, tags 等)
+   - 快速問題陳述 (為何重要)
+   - 5-10 分鐘閱讀格式
+   - 可運作的程式碼範例
+   - 關鍵概念 (3-5 個主要想法)
+   - 使用案例與最佳實務
+   - 連結至可運作的實作
+
+2. **實作** (`til_implementation/til_[feature]_[YYYYMMDD]/`)
+   - 包含 root_agent 匯出的代理模組
+   - 3-5 個展示功能的工具
+   - 完整測試套件 (~19 個測試)
+   - Makefile (setup, test, dev, demo, clean)
+   - 包含詳細文件的 README
+   - 組態用的 `.env.example`
+
+### 建立新 TIL
+
+1. **建立文件**
+   - 複製 `docs/docs/til/TIL_TEMPLATE.md`
+   - 新增包含適當 metadata 的 frontmatter
+   - 撰寫 5-10 分鐘的專注指南
+   - 包含可運作的程式碼範例
+   - 參照實作
+
+2. **建立實作**
+   - 建立 `til_implementation/til_[feature]_[YYYYMMDD]/`
+   - 使用現有 TIL 的模式 (context compaction 或 pause/resume)
+   - 包含 agent、tools、tests、Makefile、README
+   - 確保所有測試通過
+
+3. **在 Docusaurus 註冊**
+   - 在 `docs/sidebars.ts` 的 TIL 類別下新增條目
+   - 使用新 TIL 資訊更新 `docs/docs/til/til_index.md`
+   - 設定正確的 `sidebar_position` (遞增)
+
+### TIL 命名慣例
+
+- 檔案: `til_[feature_name]_[YYYYMMDD].md`
+- 目錄: `til_[feature_name]_[YYYYMMDD]/`
+- ID: `til_[feature_name]_[YYYYMMDD]`
+- 範例:
+  - `til_context_compaction_20250119.md`
+  - `til_pause_resume_20251020.md`
+
+### TIL 最佳實務
+
+- **快速閱讀**: 目標 5-10 分鐘 (文件 500-800 字)
+- **可運作範例**: 務必包含可複製貼上的程式碼
+- **單一功能專注**: 不要在一個 TIL 中混合多個功能
+- **連結至實作**: 參照可運作的範例
+- **測試覆蓋率**: 實作應包含約 15-20 個測試
+- **日期標記**: 包含發布日期以便追蹤參照
+
+## 整合點
+
+### UI 框架
+
+- **Next.js**: 使用 CopilotKit 進行 React 整合 (`/api/copilotkit` 端點)
+- **Vite**: 類似 CopilotKit 設定,但使用不同的建置組態
+- **Streamlit**: 直接 ADK 整合,不需 CopilotKit 中介軟體
+- **FastAPI 後端**: 標準 REST API,配置 CORS 以支援前端來源
+
+### 外部服務
+
+- **Google ADK**: 核心代理框架,使用 Gemini 模型
+- **CopilotKit**: React 元件庫,用於 AI 聊天介面
+- **Google Cloud**: Vertex AI、Cloud Run、Cloud Storage 用於生產環境部署
+- **Google Search**: 內建搜尋工具,用於網頁搜尋功能
+
+## 程式碼慣例
+
+### 代理定義
+
+```python
+# 標準代理模式
+root_agent = Agent(
+    name="agent_name",                    # snake_case, 描述性名稱
+    model="gemini-2.5-flash",            # 使用最新 Gemini 模型
+    description="此代理的功能",           # 清晰、簡潔的描述
+    instruction="詳細行為...",           # 完整提示
+    tools=[tool1, tool2],                # 工具函式清單
+    output_key="result_key"              # 選用: 儲存至狀態
+)
+```
+
+### 工具函式
+
+```python
+def tool_name(param: Type) -> Dict[str, Any]:
+    """
+    說明此工具功能的 docstring。
+
+    Args:
+        param: 參數描述
+
+    Returns:
+        包含 status、report 和資料欄位的字典
+    """
+    try:
+        # 工具邏輯
+        result = {...}
+        return {
+            'status': 'success',
+            'report': '可讀的成功訊息',
+            'data': result
+        }
+    except Exception as e:
+        return {
+            'status': 'error',
+            'error': str(e),
+            'report': '可讀的錯誤訊息'
+        }
+```
+
+### 工作流程組合
+
+```python
+# 順序管線
+sequential_agent = SequentialAgent(
+    name="PipelineName",
+    sub_agents=[agent1, agent2, agent3],  # 依序執行
+    description="管線功能說明"
+)
+
+# 平行執行
+parallel_agent = ParallelAgent(
+    name="ParallelName",
+    sub_agents=[agent1, agent2, agent3],  # 同時執行
+    description="平行任務功能說明"
+)
+
+# 迭代改進
+loop_agent = LoopAgent(
+    sub_agents=[critic_agent, refiner_agent],
+    max_iterations=5,  # 防止無限迴圈
+    description="迭代改進流程"
+)
+```
+
+## 關鍵檔案與目錄
+
+- `overview.md`: 心智模型與架構概念
+- `docs/tutorial/`: 28 個完整教學 (01_hello_world_agent.md 至 34_pubsub_adk_integration.md)
+- `tutorial_implementation/`: 每個教學的可執行程式碼
+- `research/`: ADK 原始碼分析與整合範例
+- `test_tutorials/`: 自動化測試框架,包含 70+ 個測試
+- `https://github.com/google/adk-python`: 官方 ADK 原始碼與文件
+
+## 部署選項
+
+- **本地開發**: `adk web` 用於互動式開發
+- **Cloud Run**: `adk deploy cloud_run` 用於無伺服器生產環境
+- **Vertex AI Agent Engine**: `adk deploy agent_engine` 用於受管理的企業部署
+- **GKE**: `adk deploy gke` 用於自訂 Kubernetes 基礎設施
+
+## 品質標準
+
+- **錯誤處理**: 所有工具回傳結構化錯誤回應
+- **文件**: 所有公開函式包含完整 docstring
+- **測試**: 已實作教學達成 100% 測試覆蓋率
+- **狀態安全**: 使用適當的狀態範圍 (temp, session, user, app)
+- **效能**: 獨立任務優先使用平行執行
+
+## 應避免的常見模式
+
+- 不要建立工具缺乏適當錯誤處理的代理
+- 不要使用通用 Exception 捕捉 - 要具體指定
+- 不要硬編碼 API 金鑰 - 使用環境變數
+- 不要在 LoopAgent 中建立無限迴圈 - 務必設定 max_iterations
+- 不要不當混用狀態範圍 (在 app 範圍中存放 session 資料)
+
+## 取得協助
+
+- 先閱讀 `overview.md` 以了解心智模型與決策框架
+- 查看 `docs/tutorial/XX_tutorial_name.md` 取得詳細實作指南
+- 在任何教學目錄執行 `make demo` 以取得快速範例
+- 使用 `adk web` 進行互動式實驗
+- 查看 `test_tutorials/` 取得可運作的範例與測試模式
+
+## 技巧與經驗學習
+
+- 務必使用 cat 管線化命令以避免特定 shell 的問題,例如避免 zsh 的分頁問題:
+
+```bash
+ls -la | cat
+```
+
+- 如果不確定,請在 ./research 中尋找真相,那裡有 ADK 和相關專案的完整原始碼。您也可以查看每個專案的官方文件和 Github 儲存庫。
+- 絕不要直接在儲存庫中編輯或產生 .env 檔案。務必使用 .env.example 作為範本,並為本地開發建立自己的 .env 檔案。
+
+### ADK 代理探索 (網頁介面的關鍵)
+
+**問題**: `adk web agent_name` 無法在網頁介面載入代理。
+
+**根本原因**: ADK 需要將代理安裝為 Python 套件才能被探索。
+
+**解決方案**:
+
+1. 在教學根目錄建立 `setup.py`:
+
+```python
+from setuptools import setup, find_packages
+
+setup(
+    name="agent_name",
+    version="0.1.0",
+    packages=find_packages(),
+    install_requires=["google-genai>=1.15.0"],
+)
+```
+
+2. 更新 Makefile setup 命令:
+
+```makefile
+setup:
+    pip install -r requirements.txt
+    pip install -e .  # 將代理安裝為可探索的套件
+```
+
+3. 使用 `adk web` (而非 `adk web agent_name`) 以在網頁介面顯示代理下拉選單。
+
+**與 Tutorial 01 的主要差異**: Tutorial 01 使用 `pip install -e .` 和 `adk web` 下拉選單,而初期的 Tutorial 10 嘗試 `adk web support_agent`,在沒有安裝套件的情況下無法運作。
+
+**學習自**: Tutorial 10 實作 - 在實施適當的套件安裝前,代理無法在 ADK 網頁介面中被選取。
+
+## 必須確保的事項
+
+- 如果您想報告已完成、更新或達成的事項,絕不要在教學或實作中報告。必須在專案根目錄的 ./log 目錄中完成。請簡潔撰寫。
+
+使用路徑: ./log/YYYYMMDD_HHMMSS_變更描述.md
+
+- 絕不要提交包含機密資訊或 API 金鑰的檔案。
+
+- 優先使用 pyproject 而非 setup.py 檔案。
+
+
+- 為避免 zsh 分頁,務必使用 cat 管線化命令,如下:
+
+```bash
+cd /Users/raphaelmansuy/Github/03-working/adk_training && python -c "
+from mcp.types import SamplingCapability
+print('SamplingCapability:', SamplingCapability)
+help(SamplingCapability)
+" | cat
+```
+
+- 務必使用最新版本的 ADK 和相關函式庫。查看官方文件和 Github 儲存庫以取得最新版本。
+
+- 使用 heredoc 產生多行 shell 命令時 (例如 << 'EOF' ... EOF),務必確保結尾 EOF 分隔符號從第 0 列開始 (不要有前導空格或 tab)。對於縮排的程式碼區塊,請改用 <<- 'EOF',並僅使用 tab (不用空格) 縮排內容/分隔符號。在建議執行前檢視並取消縮排分隔符號。
+
+- 非常重要: 避免在 shell 命令中使用 heredoc (<< 'EOF' ... EOF 或類似語法) 來寫入多行檔案 (例如 cat > file.py << 'EOF'),因為由於縮排問題,這經常導致 VSCode 終端機掛起/當機。相反地,建議直接在編輯器中貼上程式碼,簡單情況使用 echo 'multi-line code' | sed 's/^/  /' > file.py,或使用 printf 等工具進行跳脫多行輸出。
+
+
+## 必須遵循的建議
+
+- 務必閱讀關於如何撰寫良好文件的文件: docs/docs/skills/how_to_write_good_documentation.md,並確保所有文件遵循指引。
+
+## ⚠️ 重要: Heredoc (EOF) 導致 PTY 主機中斷連線
+
+**規則: 絕不要在 VSCode 整合終端機中使用 heredoc 語法 (`<< 'EOF'` ... `EOF`)。**
+
+Heredoc 命令會在 VSCode 中觸發立即的 PTY 主機中斷連線。這是 VSCode 終端機在處理多行輸入時的限制。
+
+### 不要做什麼 (導致當機)
+
+```bash
+# ❌ 不要這樣做 - 導致 PTY 中斷連線
+cat > file.py << 'EOF'
+# 多行內容
+print("hello")
+EOF
+```
+
+**結果**: PTY 主機中斷連線錯誤,終端機無法使用。
+
+### 改做什麼 (安全替代方案)
+
+**選項 1: 使用 echo 搭配 printf (建議)**
+
+```bash
+# ✅ 改用此方法
+printf 'line1\nline2\nline3\n' > file.py
+```
+
+**選項 2: 使用 printf 搭配跳脫序列**
+
+```bash
+# ✅ 安全的多行方法
+printf 'line1\nline2\nline3\n' > script.sh
+chmod +x script.sh
+```
+
+**選項 3: 直接在編輯器貼上**
+
+```bash
+# ✅ 使用 VSCode 編輯器
+# 1. 開啟檔案: code path/to/file.py
+# 2. 直接在編輯器貼上內容
+# 3. 使用 Cmd+S 儲存
+# 4. 完成 - 無 PTY 問題
+```
+
+**選項 4: 使用獨立檔案 + 複製**
+
+```bash
+# ✅ 在 VSCode 外建立內容,然後複製
+# 1. 在外部終端機或編輯器建立檔案
+# 2. 複製至專案: cp ~/Desktop/content.txt ./file.py
+# 3. 無 PTY 涉入
+```
+
+### 如果發生 PTY 中斷連線
+
+```bash
+# 1. 重新啟動 VSCode 終端機
+# Terminal > New Terminal (Cmd+Shift+`)
+
+# 2. 或關閉並重新開啟 VSCode
+Command+Q  # 關閉 VSCode
+# 重新開啟
+```
+
+## 執行耗資源的建置 (Docusaurus 建置)
+
+⚠️ **重要: 絕不要從 VSCode 整合終端機執行 `npm run build`**
+
+這會導致 PTY 主機中斷連線。這是 VSCode PTY 模擬的架構限制,不是組態問題。
+
+### ⚠️ 最終解決方案: 關閉 VSCode,使用外部終端機 (唯一 100% 有效的方法)
+
+**經過廣泛測試,唯一防止 PTY 中斷連線的方法是:**
+
+```bash
+# 步驟 1: 完全關閉 VSCode
+Command+Q  # 或從選單退出 VSCode
+
+# 步驟 2: 開啟外部終端機
+open -a Terminal  # macOS Terminal
+# 或 iTerm2
+
+# 步驟 3: 使用適當隔離執行建置
+export NODE_OPTIONS=--max-old-space-size=4096
+cd /Users/raphaelmansuy/Github/03-working/adk_training/docs
+nohup npm run build > build.log 2>&1 &
+
+# 步驟 4: 監控建置進度
+tail -f build.log
+
+# 步驟 5: 建置完成後,重新開啟 VSCode
+open -a "Visual Studio Code" /Users/raphaelmansuy/Github/03-working/adk_training
+```
+
+**為何關閉 VSCode 是唯一解決方案:**
+
+PTY 中斷連線問題不是建置問題—而是 **VSCode 終端機架構限制**:
+
+1. VSCode 整合終端機使用 PTY 模擬層 (非原生 PTY)
+2. 此模擬層有資源限制和逾時機制
+3. 複雜的處理程序樹 (webpack 4-8 個 worker) 超過這些限制
+4. VSCode 逾時並發送 SIGINT 信號
+5. Shell 處理程序終止 → PTY 連線孤立
+6. 發生「PTY 主機中斷連線」錯誤
+7. **沒有 VSCode 設定或組態可以修復此問題** (這是架構性的)
+
+唯一避免方法:
+
+- ✅ **選項 A (最佳)**: 關閉 VSCode,在外部終端機執行建置
+- ✅ **選項 B (可接受)**: 保持 VSCode 但在外部終端機執行建置 (獨立處理程序)
+- ❌ **選項 C (無效)**: 從 VSCode 任務/終端機執行 (仍涉及 PTY)
+- ❌ **選項 D (無效)**: VSCode 設定變更 (無法覆蓋架構)
+- ❌ **選項 E (無效)**: 不同建置命令 (若從 VSCode 執行仍使用 PTY)
+
+### 典型建置工作流程 (安全 - 防止所有當機)
+
+**完整逐步流程 (唯一保證安全的方法):**
+
+**步驟 1: 關閉 VSCode**
+
+```bash
+# 從 dock 完全關閉 VSCode 或使用:
+Command+Q
+```
+
+**步驟 2: 開啟外部終端機**
+
+```bash
+# 按 Command+Space 並輸入: Terminal
+# 按 Enter 開啟 macOS Terminal
+# 或使用更穩定的 iTerm2
+```
+
+**步驟 3: 設定 Node.js 記憶體**
+
+```bash
+# 設定 Node.js 記憶體配置
+export NODE_OPTIONS=--max-old-space-size=4096
+
+# 驗證記憶體已設定
+echo $NODE_OPTIONS
+```
+
+**步驟 4: 執行建置**
+
+```bash
+# 導航至 docs 目錄
+cd /Users/raphaelmansuy/Github/03-working/adk_training/docs
+
+# 使用適當輸出擷取執行建置
+set -o pipefail; rm -rf build && npm run build 2>&1 | tail -100
+BUILD_STATUS=$?
+
+# 檢查結果
+echo "Build exit status: $BUILD_STATUS"
+```
+
+**步驟 5: 驗證建置完成**
+
+```bash
+# 檢查建置是否成功
+if [ -d "build" ] && [ -f "build/index.html" ]; then
+  echo "✅ 建置成功"
+  find build -name "*.html" | wc -l  # 應顯示 225+
+else
+  echo "❌ 建置失敗"
+  exit 1
+fi
+```
+
+**步驟 6: 建置後驗證連結**
+
+```bash
+# 從專案根目錄驗證所有內部連結
+cd ..
+python3 scripts/verify_links.py --skip-external
+
+# 預期: 成功率 99%+
+```
+
+**步驟 7: 重新開啟 VSCode**
+
+```bash
+# 建置完成並驗證後,重新開啟 VSCode
+open -a "Visual Studio Code" /Users/raphaelmansuy/Github/03-working/adk_training
+
+# VSCode 將處於全新且回應迅速的狀態
+# 所有建置產物已快取,下次 VSCode 工作階段將快速進行
+```
+
+**完整單行指令 (供有經驗的使用者):**
+
+```bash
+export NODE_OPTIONS=--max-old-space-size=4096 && \
+cd /Users/raphaelmansuy/Github/03-working/adk_training/docs && \
+set -o pipefail; rm -rf build && npm run build 2>&1 | tail -100 && \
+cd .. && \
+python3 scripts/verify_links.py --skip-external
+```
+
+**關鍵成功指標:**
+
+✅ 建置以 exit status 0 完成
+✅ `docs/build` 中產生 225 個 HTML 檔案
+✅ 連結驗證顯示 99%+ 成功率
+✅ 無中斷連結報告
+✅ VSCode 保持回應 (若獨立開啟)
+✅ 無終端機掛起或當機
+✅ 無「PTY 主機中斷連線」錯誤
+
+**步驟 2: 執行建置 (使用記憶體和隔離)**
+
+```bash
+# 導航至 docs 目錄並執行建置
+cd /Users/raphaelmansuy/Github/03-working/adk_training/docs
+
+# 選項 A: 同步建置 (簡單,阻塞終端機)
+set -o pipefail; rm -rf build && npm run build 2>&1 | tail -100
+BUILD_STATUS=$?
+
+# 選項 B: 非同步建置 (進階,繼續工作)
+set -o pipefail; rm -rf build && npm run build 2>&1 | tail -100 &!
+BUILD_PID=$!
+```
+
+**步驟 3: 監控建置進度 (若為非同步)**
+
+```bash
+# 檢查建置是否仍在執行
+ps -p $BUILD_PID
+
+# 等待完成
+wait $BUILD_PID
+BUILD_STATUS=$?
+
+# 或檢查工作狀態
+jobs -l
+```
+
+**步驟 4: 驗證建置成功**
+
+```bash
+# 檢查建置 exit status (0 = 成功, 非零 = 失敗)
+echo "Build status: $BUILD_STATUS"
+
+# 驗證建置產物存在
+ls -lh docs/build/index.html  # 應存在
+
+# 檢查產生的 HTML 檔案總數
+find docs/build -name "*.html" | wc -l  # 應顯示 225+
+```
+
+**步驟 5: 驗證所有連結**
+
+```bash
+# 快速檢查 (僅內部連結,快速)
+python3 scripts/verify_links.py --skip-external
+
+# 完整檢查 (包含外部 URL,較慢)
+python3 scripts/verify_links.py
+
+# 匯出報告以供分析
+python3 scripts/verify_links.py --json-output links_report.json
+```
+
+**步驟 6: 檢視結果**
+
+```bash
+# 檢視中斷連結數量
+grep "Success Rate" <(python3 scripts/verify_links.py --skip-external)
+
+# 若有產生 JSON,檢視它
+cat links_report.json | head -50
+
+# 預期: 成功率: 99.9% 或更高
+```
+
+**完整單行指令 (供有經驗的使用者):**
+
+```bash
+export NODE_OPTIONS=--max-old-space-size=4096 && \
+cd /Users/raphaelmansuy/Github/03-working/adk_training/docs && \
+rm -rf build && npm run build 2>&1 | tail -100 && \
+cd .. && python3 scripts/verify_links.py --skip-external
+```
+
+**關鍵成功指標:**
+
+✅ 建置以 exit status 0 完成
+✅ `docs/build` 中產生 225 個 HTML 檔案
+✅ 連結驗證顯示 99%+ 成功率
+✅ 無中斷連結報告
+✅ VSCode 保持回應 (若開啟)
+✅ 無終端機掛起或當機
+
+**如果出現問題:**
+
+| 問題 | 解決方案 |
+|---------|----------|
+| 建置失敗 (非零狀態) | 檢查 `npm run build` 輸出,尋找編譯錯誤 |
+| 連結驗證但顯示中斷 | 執行完整驗證: `python3 scripts/verify_links.py` |
+| 記憶體問題 (建置緩慢/掛起) | 增加 NODE_OPTIONS: `--max-old-space-size=6144` |
+| VSCode 在建置期間當機 | 確保使用獨立終端機,不要最小化 VSCode 會有幫助 |
+| 找不到檔案錯誤 | 驗證 docs 目錄存在: `ls docs/package.json` |
+| 建置後連結仍中斷 | 檢查 copilot-instructions.md 中的已知問題 |
+
+### 建置後的連結驗證
+
+成功建置 Docusaurus 後,驗證所有內部連結:
+
+```bash
+# 快速內部連結檢查 (快速)
+python3 scripts/verify_links.py --skip-external
+
+# 完整連結驗證,包含外部 URL (較慢,會發出網路請求)
+python3 scripts/verify_links.py
+
+# 匯出結果至 JSON 以供分析
+python3 scripts/verify_links.py --json-output links_report.json
+```
+
+詳見 `scripts/verify_links.py` 取得完整文件與選項。
