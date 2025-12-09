@@ -270,7 +270,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/notes/google-adk-training-hub/README.md)
+  - [文件連結](./workspace/notes/google-adk-training-hub/overview.md)
 - **參考資源**
   - [LLM Integration](https://raphaelmansuy.github.io/adk_training/docs/llm-integration)
   - [Production & Deployment](https://raphaelmansuy.github.io/adk_training/docs/production-deployment)
@@ -840,6 +840,24 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
   - [Policy Navigator](./workspace/python/agents/policy-navigator/)
 - **參考資源**
   - [Tutorial 37: Native RAG with File Search - Policy Navigator](https://raphaelmansuy.github.io/adk_training/docs/file_search_policy_navigator)
+
+</details>
+
+#### 🕗 Day 46
+
+<details>
+<summary>
+本專案教學如何從零建構多代理系統,使用 MCP 協定進行服務發現、A2A 協定實現代理間通訊,透過 Host Agent 協調任務委派,整合可串流 HTTP 與 Stdio 伺服器,建立可擴展的 AI 代理架構。
+
+🏷️ `mcp`, `a2a`, `multi-agent`, `jsonrpc2`
+
+</summary>
+
+- **詳細說明**：
+  - [MCP A2A Master](./workspace/python/agents/mcp-a2a-master/)
+- **參考資源**
+  - [a2a_samples-version_7_mcp_a2a_master-mcp_a2a_master](https://github.com/theailanguage/a2a_samples/tree/main/version_7_mcp_a2a_master/mcp_a2a_master)
+  - [MCP & A2A - Model Context Protocol & Agent to Agent Protocol](https://www.udemy.com/course/modelcontextprotocol)
 
 </details>
 </details>

@@ -77,7 +77,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
         # ========== 步驟 2: 初始化 TaskUpdater ==========
         # TaskUpdater 負責將任務狀態更新推送到 EventQueue
         # 然後由 EventQueue 透過 SSE 推送給客戶端
-        updater = TaskUpdater(event_queue, task.id, task.contextId)
+        updater = TaskUpdater(event_queue, task.id, task.context_id)
         self._cancel_requested = False  # 重置取消標記
 
         try:
@@ -86,7 +86,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
             # 防止 LLM 請求卡死或無限等待
             async with asyncio.timeout(TASK_EXECUTION_TIMEOUT):
                 # invoke() 回傳 AsyncIterable，支援串流處理
-                async for item in self.agent.invoke(query, task.contextId):
+                async for item in self.agent.invoke(query, task.context_id):
                     # ========== 步驟 3.1: 檢查取消請求 ==========
                     # 用戶可能在任務執行期間調用 cancel() 方法
                     if self._cancel_requested:
@@ -95,7 +95,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
                             TaskState.cancelled,  # 更新為取消狀態
                             new_agent_text_message(
                                 "任務已被用戶取消 (Task cancelled by user)",
-                                task.contextId,
+                                task.context_id,
                                 task.id,
                             ),
                         )
@@ -120,7 +120,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
                         )
                         await updater.update_status(
                             TaskState.working,  # 狀態: 執行中
-                            new_agent_text_message(message, task.contextId, task.id),
+                            new_agent_text_message(message, task.context_id, task.id),
                         )
                     else:
                         # 任務完成，回傳最終結果
@@ -130,7 +130,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
                         await updater.update_status(
                             TaskState.completed,  # 狀態: 完成
                             new_agent_text_message(
-                                final_result, task.contextId, task.id
+                                final_result, task.context_id, task.id
                             ),
                         )
 
@@ -152,7 +152,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
             logger.error(f"{error_message} - Task ID: {task.id}")
             await updater.update_status(
                 TaskState.failed,  # 狀態: 失敗
-                new_agent_text_message(error_message, task.contextId, task.id),
+                new_agent_text_message(error_message, task.context_id, task.id),
             )
             raise  # 重新拋出異常，讓上層處理
 
@@ -167,7 +167,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
             logger.error(f"{error_message} - Task ID: {task.id}", exc_info=True)
             await updater.update_status(
                 TaskState.failed,
-                new_agent_text_message(error_message, task.contextId, task.id),
+                new_agent_text_message(error_message, task.context_id, task.id),
             )
             raise
 
@@ -182,7 +182,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
             logger.error(f"{error_message} - Task ID: {task.id}", exc_info=True)
             await updater.update_status(
                 TaskState.failed,
-                new_agent_text_message(error_message, task.contextId, task.id),
+                new_agent_text_message(error_message, task.context_id, task.id),
             )
             raise
 
@@ -194,7 +194,7 @@ class WebsiteBuilderSimpleAgentExecutor(AgentExecutor):
             logger.exception(f"未預期的錯誤 - Task ID: {task.id}")
             await updater.update_status(
                 TaskState.failed,
-                new_agent_text_message(error_message, task.contextId, task.id),
+                new_agent_text_message(error_message, task.context_id, task.id),
             )
             raise
 

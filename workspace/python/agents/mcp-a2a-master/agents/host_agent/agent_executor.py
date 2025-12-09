@@ -43,10 +43,10 @@ class HostAgentExecutor(AgentExecutor):
             task = new_task(context.message)
             await event_queue.enqueue_event(task)
 
-        updater = TaskUpdater(event_queue, task.id, task.contextId)
+        updater = TaskUpdater(event_queue, task.id, task.context_id)
 
         try:
-            async for item in self.agent.invoke(query, task.contextId):
+            async for item in self.agent.invoke(query, task.context_id):
                 is_task_complete = item.get("is_task_complete", False)
 
                 if not is_task_complete:
@@ -56,7 +56,7 @@ class HostAgentExecutor(AgentExecutor):
                     )
                     await updater.update_status(
                         TaskState.working,
-                        new_agent_text_message(message, task.contextId, task.id),
+                        new_agent_text_message(message, task.context_id, task.id),
                     )
                 else:
                     final_result = item.get(
@@ -64,7 +64,7 @@ class HostAgentExecutor(AgentExecutor):
                     )
                     await updater.update_status(
                         TaskState.completed,
-                        new_agent_text_message(final_result, task.contextId, task.id),
+                        new_agent_text_message(final_result, task.context_id, task.id),
                     )
 
                     await asyncio.sleep(
@@ -76,7 +76,7 @@ class HostAgentExecutor(AgentExecutor):
             error_message = f"發生錯誤 (An error occurred): {str(e)}"
             await updater.update_status(
                 TaskState.failed,
-                new_agent_text_message(error_message, task.contextId, task.id),
+                new_agent_text_message(error_message, task.context_id, task.id),
             )
             raise
 
