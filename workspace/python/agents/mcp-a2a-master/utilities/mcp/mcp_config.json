@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "terminal_server": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/cfh00543956/Desktop/Labs/google-adk-study/workspace/python/agents/mcp-a2a-master/mcp/servers/terminal_server",
+        "run",
+        "terminal_server.py"
+      ]
+    },
+    "arithmetic_server": {
+      "command": "streamable_http",
+      "args": ["http://localhost:3000/mcp/"]
+    }
+  }
+}
