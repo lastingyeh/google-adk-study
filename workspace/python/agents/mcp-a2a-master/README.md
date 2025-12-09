@@ -231,7 +231,7 @@ sequenceDiagram
     Host->>OtherAgent: 委派任務 (Delegate Tasks)
     Note over Host, OtherAgent: 使用 A2A 協定進行通訊
 ```
-
+---
 ## 重點摘要
 
 - **核心概念**：
