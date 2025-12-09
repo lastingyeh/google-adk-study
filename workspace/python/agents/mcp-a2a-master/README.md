@@ -47,10 +47,6 @@
 │       ├── README.md (命令列應用說明文件)
 │       ├── __init__.py (模組初始化)
 │       ├── __main__.py (主程式入口)
-│       ├── __pycache__ (Python 快取目錄)
-│       │   ├── __init__.cpython-314.pyc
-│       │   ├── __main__.cpython-314.pyc
-│       │   └── tree.cpython-314.pyc
 │       ├── cmd.py (命令列核心邏輯)
 │       └── tree.py (目錄樹工具)
 ├── main.py (系統主入口程式)
@@ -77,7 +73,7 @@
 
 ## 專案架構設計
 
-參考：[多代理系統架構設計說明文件](./ARCHI.md)
+參考 ✏️：[多代理系統架構設計說明文件](./ARCHI.md)
 
 ## 資料夾說明
 
