@@ -860,4 +860,24 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
   - [MCP & A2A - Model Context Protocol & Agent to Agent Protocol](https://www.udemy.com/course/modelcontextprotocol)
 
 </details>
+
+#### 🕗 Day 47
+
+<details>
+<summary>
+本文介紹如何使用 OpenTelemetry 與 Jaeger 追蹤 Google ADK 代理的執行細節。重點說明 TracerProvider 衝突問題及解決方案：使用環境變數配置（適用 adk web）或手動設定（獨立腳本）。同時涵蓋本地開發與 Google Cloud Trace 生產環境部署。
+
+🏷️ `adk`, `opentelemetry`, `jaeger`, `observability`, `tracing`, `debugging`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-11-18-opentelemetry-adk-jaeger.md)
+  - [Math Agent Otel](./workspace/python/agents/math-agent-otel/)
+- **參考資源**
+  - [Observing ADK Agents: OpenTelemetry Tracing with Jaeger](https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger)
+  - [Instrument ADK applications with OpenTelemetry](https://docs.cloud.google.com/stackdriver/docs/instrumentation/ai-agent-adk)
+  - [OpenTelemetry + ADK + Jaeger](https://github.com/raphaelmansuy/adk_training/tree/main/til_implementation/til_opentelemetry_jaeger_20251118)
+
+</details>
 </details>

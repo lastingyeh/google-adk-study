@@ -1955,6 +1955,45 @@
           labels: ['mcp', 'a2a', 'multi-agent', 'streamable'],
           completed: false,
         },
+        {
+          day: 47,
+          title: 'OpenTelemetry 與 Jaeger 追蹤',
+          description:
+            '本文介紹如何使用 OpenTelemetry 與 Jaeger 追蹤 Google ADK 代理的執行細節。重點說明 TracerProvider 衝突問題及解決方案：使用環境變數配置（適用 adk web）或手動設定（獨立腳本）。同時涵蓋本地開發與 Google Cloud Trace 生產環境部署。',
+          docs: [
+            {
+              text: '文件連結',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/blog/2025-11-18-opentelemetry-adk-jaeger.md',
+            },
+            {
+              text: 'Math Agent Otel',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/math-agent-otel/',
+            },
+          ],
+          refs: [
+            {
+              text: 'Observing ADK Agents: OpenTelemetry Tracing with Jaeger',
+              url: 'https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger',
+            },
+            {
+              text: 'Instrument ADK applications with OpenTelemetry',
+              url: 'https://docs.cloud.google.com/stackdriver/docs/instrumentation/ai-agent-adk',
+            },
+            {
+              text: 'OpenTelemetry + ADK + Jaeger',
+              url: 'https://github.com/raphaelmansuy/adk_training/tree/main/til_implementation/til_opentelemetry_jaeger_20251118',
+            },
+          ],
+          labels: [
+            'adk',
+            'opentelemetry',
+            'jaeger',
+            'observability',
+            'tracing',
+            'debugging',
+          ],
+          completed: false,
+        },
       ];
 
       // 獲取 DOM 元素

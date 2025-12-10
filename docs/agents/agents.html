@@ -1807,6 +1807,32 @@
             },
           ],
         },
+        {
+          name: 'math_agent_otel',
+          path: 'workspace/python/agents/math-agent-otel',
+          type: 'Agent',
+          description:
+            '具有 OpenTelemetry 儀表化的 ADK 數學代理，展示使用 Jaeger 後端的分散式追蹤與結構化日誌。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'add_numbers',
+              description: '將兩個數字相加',
+            },
+            {
+              name: 'subtract_numbers',
+              description: '從 a 減去 b',
+            },
+            {
+              name: 'multiply_numbers',
+              description: '將兩個數字相乘',
+            },
+            {
+              name: 'divide_numbers',
+              description: '將 a 除以 b',
+            },
+          ],
+        },
       ];
 
       // DOM 元素
