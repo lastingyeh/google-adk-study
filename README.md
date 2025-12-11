@@ -880,4 +880,21 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
   - [OpenTelemetry + ADK + Jaeger](https://github.com/raphaelmansuy/adk_training/tree/main/til_implementation/til_opentelemetry_jaeger_20251118)
 
 </details>
+
+#### 🕗 Day 48
+
+<details>
+<summary>
+Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主權。結合 SLA 保證與完整稽核，解決標準 API 風險，協助企業安心部署生產級 AI 代理。
+
+🏷️ `gemini`, `enterprise`, `ai-agents`, `agent-engine`, `deployment`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-21-gemini-enterprise.md)
+- **參考資源**
+  - [Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](https://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
+
+</details>
 </details>
