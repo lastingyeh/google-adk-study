@@ -897,4 +897,24 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
   - [Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](https://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
 
 </details>
+
+#### 🕗 Day 49
+
+<details>
+<summary>
+深入解析 Google Cloud Agent Starter Pack，這是一套全面的工具包，旨在讓您在幾分鐘內於 Google Cloud Platform (GCP) 上啟動已準備好投入生產的生成式 AI 代理。
+
+🏷️ `agent-starter-pack`, `gcp`, `genai`, `observability`, `production`, `vertex`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-01-fast-track-agent-starter-pack.md)
+- **參考資源**
+  - [Fast-track Your GenAI Agents: Deep Dive into the Google Cloud Agent Starter Pack](https://raphaelmansuy.github.io/adk_training/blog/2025/12/01/fast-track-agent-starter-pack)
+  - [🚀 GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+  - [📝 Agent Starter Pack Production-Ready Agents on Google Cloud, faster](https://googlecloudplatform.github.io/agent-starter-pack/)
+  - [🔎 Generative AI on Google Cloud](https://github.com/GoogleCloudPlatform/generative-ai)
+
+</details>
 </details>

@@ -1,0 +1,112 @@
+[project]
+name = "pack-adk-a2a-agent"
+version = "0.1.0"
+description = ""
+authors = [{ name = "Lasting Yeh", email = "lastingyeh@gmail.com" }]
+dependencies = [
+    "google-adk>=1.16.0,<2.0.0",
+    "a2a-sdk~=0.3.9",
+    "nest-asyncio>=1.6.0,<2.0.0",
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0",
+    "gcsfs>=2024.11.0",
+    "google-cloud-logging>=3.12.0,<4.0.0",
+    "google-cloud-aiplatform[evaluation]>=1.118.0,<2.0.0",
+    "fastapi~=0.115.8",
+    "uvicorn~=0.34.0",
+    "asyncpg>=0.30.0,<1.0.0",
+]
+requires-python = ">=3.10,<3.14"
+
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.4,<9.0.0",
+    "pytest-asyncio>=0.23.8,<1.0.0",
+    "nest-asyncio>=1.6.0,<2.0.0",
+]
+
+[project.optional-dependencies]
+jupyter = ["jupyter>=1.0.0,<2.0.0"]
+lint = [
+    "ruff>=0.4.6,<1.0.0",
+    "mypy>=1.15.0,<2.0.0",
+    "codespell>=2.2.0,<3.0.0",
+    "types-pyyaml>=6.0.12.20240917,<7.0.0",
+    "types-requests>=2.32.0.20240914,<3.0.0",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "RUF", # ruff 具體規則
+]
+ignore = ["E501", "C901", "B006"] # 忽略行過長、太複雜
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "frontend"]
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+disallow_subclassing_any = true
+warn_incomplete_stub = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+follow_imports = "silent"
+ignore_missing_imports = true
+explicit_package_bases = true
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"]
+
+exclude = [".venv"]
+
+[tool.codespell]
+ignore-words-list = "rouge"
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+pythonpath = "."
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "frontend"]
+
+[tool.agent-starter-pack]
+# 生成元數據 - 啟用 CLI 指令以了解專案上下文
+# 這些欄位允許任何生成的專案作為遠端範本工作
+name = "pack-adk-a2a-agent"
+description = "這是一個使用 Google 的 Agent Development Kit (ADK) 和 Agent2Agent (A2A) 協議構建的基礎 ReAct 代理程式。 #experimental"
+base_template = "adk_a2a_base"
+agent_directory = "app"
+
+# 生成上下文
+generated_at = "2025-12-12T02:55:49.505901+00:00"
+asp_version = "0.27.0"
+
+[tool.agent-starter-pack.create_params]
+# 專案建立期間使用的參數
+deployment_target = "cloud_run"
+session_type = "in_memory"
+cicd_runner = "github_actions"
+include_data_ingestion = false
+datastore = "none"
+frontend_type = "None"

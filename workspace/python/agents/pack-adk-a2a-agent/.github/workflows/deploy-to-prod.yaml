@@ -1,0 +1,85 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 部署至正式環境工作流程
+# 重點：此工作流程負責將應用程式部署到生產環境的 Cloud Run 服務
+name: Deploy to Production
+
+# 觸發條件：支援手動觸發或被其他工作流程呼叫
+on:
+  workflow_dispatch: # 手動觸發
+  workflow_call: # 工作流程呼叫（可被其他工作流程引用）
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    # 環境設定重點：
+    # 此任務針對 'production' 環境，該環境由 Terraform 設定自動建立 (`deployment/terraform/github.tf`)
+    #
+    # 啟用手動審核部署的步驟：
+    # 1. 前往 GitHub repository 的 Settings > Environments
+    # 2. 選擇 'production' 環境
+    # 3. 在 'Protection rules' 下勾選 'Required reviewers' 選項
+    # 4. 新增必須審核部署的特定使用者或團隊
+    #
+    # 設定完成後，工作流程會在此步驟暫停，等待授權使用者批准後才會繼續執行
+    # 重點：這是生產環境的重要安全機制，確保部署經過審核
+    environment:
+      name: production
+
+    # 並發控制：確保同時只有一個部署任務在 production 環境執行
+    concurrency: production
+
+    # 權限設定：
+    # - read：讀取程式碼內容
+    # - write：用於 Workload Identity Federation 身份驗證
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # 步驟 1：檢出程式碼
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 2：設定 Python 環境（版本 3.12）
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 步驟 3：驗證 Google Cloud 身份
+      # 重點：使用 Workload Identity Federation 進行無密鑰驗證，提升安全性
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      # 步驟 4：設定 Cloud SDK 工具
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      # 步驟 5：部署到正式環境 (Cloud Run)
+      # 重點：從 Artifact Registry 拉取映像檔並部署至生產專案的 Cloud Run 服務
+      - name: Deploy to Production (Cloud Run)
+        run: |
+          gcloud run deploy pack-adk-a2a-agent \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --region ${{ vars.REGION }} \
+            --project ${{ vars.PROD_PROJECT_ID }}

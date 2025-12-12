@@ -1,0 +1,163 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 部署至測試環境工作流程
+# 重點：自動建置、部署到 Staging 環境並執行負載測試，通過後觸發正式環境部署
+name: Deploy to Staging
+
+# 觸發條件：當程式碼推送到 main 分支且變更特定路徑時觸發
+on:
+  push:
+    branches:
+      - main
+    # 路徑過濾器：只有當以下路徑的檔案變更時才觸發部署
+    paths:
+      - 'app/**' # 應用程式程式碼
+      - 'data_ingestion/**' # 資料擷取相關程式碼
+      - 'tests/**' # 測試程式碼
+      - 'deployment/**' # 部署設定
+      - 'uv.lock' # 依賴套件鎖定檔案
+
+jobs:
+  # 任務 1：部署並測試 Staging 環境
+  deploy_and_test_staging:
+    runs-on: ubuntu-latest
+
+    # 權限設定：
+    # - read：讀取程式碼內容
+    # - write：用於 Workload Identity Federation 身份驗證
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # 步驟 1：檢出程式碼
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 2：設定 Python 環境（版本 3.12）
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 步驟 3：驗證 Google Cloud 身份
+      # 重點：使用 Workload Identity Federation 進行無密鑰驗證
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      # 步驟 4：設定 Cloud SDK 工具
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      # 步驟 5：設定 Docker 以使用 Artifact Registry
+      # 重點：配置 Docker 認證以便推送映像檔到 GCP Artifact Registry
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev --quiet
+
+      # 步驟 6：從 pyproject.toml 提取版本號
+      # 重點：自動讀取專案版本，用於 Docker 映像標籤
+      - name: Extract version from pyproject.toml
+        id: extract-version
+        run: |
+          VERSION=$(awk -F'"' '/^version = / {print $2}' pyproject.toml || echo '0.0.0')
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+      # 步驟 7：建置並推送 Docker 映像檔
+      # 重點：
+      # - 使用 commit SHA 和版本號作為建置參數，便於追蹤
+      # - 映像檔推送到 Artifact Registry 供後續部署使用
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            --build-arg AGENT_VERSION=${{ steps.extract-version.outputs.version }} \
+            .
+          docker push ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }}
+
+      # 步驟 8：部署到測試環境 (Cloud Run)
+      # 重點：將新建置的映像檔部署到 Staging 專案的 Cloud Run 服務
+      - name: Deploy to Staging (Cloud Run)
+        run: |
+          gcloud run deploy pack-adk-a2a-agent \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --region ${{ vars.REGION }} \
+            --project ${{ vars.STAGING_PROJECT_ID }}
+
+      # 步驟 9：取得 Staging 服務 URL
+      # 重點：獲取部署後的服務端點，用於後續的負載測試
+      - name: Fetch Staging Service URL
+        id: fetch-url
+        run: |
+          _STAGING_URL=$(gcloud run services describe pack-adk-a2a-agent \
+            --region ${{ vars.REGION }} --project ${{ vars.STAGING_PROJECT_ID }} --format="value(status.url)")
+          echo "_staging_url=${_STAGING_URL}" >> $GITHUB_OUTPUT
+
+      # 步驟 10：取得身份驗證 Token
+      # 重點：產生 ID Token 用於存取受保護的 Cloud Run 服務
+      # 使用 add-mask 隱藏 token 避免在日誌中洩漏
+      - name: Fetch ID Token
+        id: fetch-token
+        run: |
+          _ID_TOKEN=$(gcloud auth print-identity-token --impersonate-service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} -q)
+          echo "::add-mask::${_ID_TOKEN}"
+          echo "_id_token=${_ID_TOKEN}" >> $GITHUB_OUTPUT
+
+      # 步驟 11：執行負載測試
+      # 重點：
+      # - 使用 Locust 進行負載測試
+      # - 30 秒測試時間，10 個並發使用者，每秒增加 0.5 個使用者
+      # - 產生 CSV 和 HTML 格式的測試報告
+      - name: Run load test
+        run: |
+          export _ID_TOKEN="${{ steps.fetch-token.outputs._id_token }}"
+          export _STAGING_URL="${{ steps.fetch-url.outputs._staging_url }}"
+          pip install locust==2.31.1 a2a-sdk~=0.3.9
+          locust -f tests/load_test/load_test.py \
+          --headless \
+          -H ${_STAGING_URL} \
+          -t 30s -u 10 -r 0.5 \
+          --csv=tests/load_test/.results/results \
+          --html=tests/load_test/.results/report.html
+
+      # 步驟 12：匯出負載測試結果到 GCS
+      # 重點：將測試結果上傳到 Google Cloud Storage 保存，便於日後分析與比較
+      - name: Export Load Test Results to GCS
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          gcloud storage cp --recursive tests/load_test/.results gs://${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP} --quiet
+          echo "_________________________________________________________________________"
+          echo "Load test results copied to gs://${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP}"
+          echo "HTTP link: https://console.cloud.google.com/storage/browser/${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP}"
+          echo "_________________________________________________________________________"
+
+  # 任務 2：呼叫正式環境部署工作流程
+  # 重點：
+  # - 只有在 Staging 部署和測試都成功後才會執行
+  # - 重用 deploy-to-prod.yaml 工作流程，避免重複程式碼
+  # - 繼承所有 secrets，確保認證資訊可用
+  call_production_workflow:
+    needs: deploy_and_test_staging # 依賴關係：等待 Staging 任務完成
+    uses: ./.github/workflows/deploy-to-prod.yaml
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    secrets: inherit # 繼承父工作流程的所有 secrets

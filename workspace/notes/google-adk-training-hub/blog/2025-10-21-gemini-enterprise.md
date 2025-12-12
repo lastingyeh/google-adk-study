@@ -2,7 +2,8 @@
 
 ## 📝 **本文內容主要參考自 Raphaël MANSUY 的 Blog**：[Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](http://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
 
-## 重大問題：為何您應該在意？ (The BIG Question: Why Should You Care?)
+## 簡介 (Introduction)
+### 重大問題：為何您應該在意？ (The BIG Question: Why Should You Care?)
 
 您的 AI 代理在開發環境中運作良好。它們能夠處理複雜的工作流程、推理問題，並與您的工具整合。但在生產環境中，您將面臨規模、安全性、合規性和可靠性的需求，這些是標準設定無法保證的。
 

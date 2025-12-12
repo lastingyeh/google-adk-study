@@ -4,5 +4,6 @@
 
 | 名稱 | 檔案名稱 | 描述 | 標籤 |
 | :--- | :--- | :--- | :--- |
+| 加速您的 GenAI 代理開發：深入解析 Google Cloud Agent Starter Pack | [2025-12-01-fast-track-agent-starter-pack](../blog/2025-12-01-fast-track-agent-starter-pack.md) | 深入解析 Google Cloud Agent Starter Pack，這是一套全面的工具包，旨在讓您在幾分鐘內於 Google Cloud Platform (GCP) 上啟動已準備好投入生產的生成式 AI 代理。 | `agent-starter-pack`, `gcp`, `genai`, `observability`, `production`, `vertex` |
 | 觀察 ADK 代理 - OpenTelemetry 與 Jaeger | [2025-11-18-opentelemetry-adk-jaeger](../blog/2025-11-18-opentelemetry-adk-jaeger.md) | 了解如何使用 OpenTelemetry 和 Jaeger 為您的 Google ADK 代理新增分散式追蹤。視覺化從推理到工具執行的每個步驟。 | `adk`, `opentelemetry`, `jaeger`, `observability`, `tracing`, `debugging` |
 | Gemini Enterprise：為何您的 AI 代理需要企業級功能 | [2025-10-21-gemini-enterprise](../blog/2025-10-21-gemini-enterprise.md) | 了解 Gemini Enterprise 與標準 AI API 之間的差異。學習資料主權、合規性，以及何時為您的生產環境代理選擇企業級 AI。 | `gemini`, `enterprise`, `ai-agents`, `agent-engine`, `deployment` |

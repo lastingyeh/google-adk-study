@@ -1833,6 +1833,24 @@
             },
           ],
         },
+        {
+          name: 'pack_adk_a2a_agent',
+          path: 'workspace/python/agents/pack-adk-a2a-agent',
+          type: 'Agent',
+          description:
+            '一個可以提供有關天氣和時間資訊的代理程式，並支援 A2A 通訊。',
+          model: 'gemini-3-pro-preview',
+          tools: [
+            {
+              name: 'get_weather',
+              description: '模擬網路搜尋。使用它來獲取天氣資訊。',
+            },
+            {
+              name: 'get_current_time',
+              description: '模擬獲取城市的當前時間。',
+            },
+          ],
+        },
       ];
 
       // DOM 元素

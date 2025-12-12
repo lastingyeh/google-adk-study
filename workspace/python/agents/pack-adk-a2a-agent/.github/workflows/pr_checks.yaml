@@ -1,0 +1,80 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Pull Request 檢查工作流程
+# 重點：在合併到 main 分支前執行自動化測試，確保程式碼品質
+name: PR Checks
+
+# 觸發條件：當建立針對 main 分支的 PR 且變更特定路徑時觸發
+on:
+  pull_request:
+    branches:
+      - main
+    # 路徑過濾器：只有當以下路徑的檔案變更時才觸發檢查
+    paths:
+      - 'app/**' # 應用程式程式碼
+      - 'data_ingestion/**' # 資料擷取相關程式碼
+      - 'tests/**' # 測試程式碼
+      - 'deployment/**' # 部署設定
+      - 'uv.lock' # 依賴套件鎖定檔案
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # 權限設定：
+    # - read：讀取程式碼內容
+    # - write：用於 Workload Identity Federation 身份驗證
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # 步驟 1：檢出 PR 的程式碼
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 步驟 2：驗證 Google Cloud 身份
+      # 重點：即使是測試階段也需要 GCP 驗證，可能用於存取測試資源或服務
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      # 步驟 3：設定 Python 環境（版本 3.12）
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 步驟 4：安裝 uv 套件管理工具及專案依賴
+      # 重點：使用 --locked 參數確保依賴版本與 uv.lock 完全一致，保證測試環境可重現
+      - name: Install uv and dependencies
+        run: |
+          pip install uv==0.8.13
+          uv sync --locked
+
+      # 步驟 5：執行單元測試
+      # 重點：測試個別函式或類別的邏輯正確性
+      - name: Run unit tests
+        run: uv run pytest tests/unit
+
+      # 步驟 6：執行整合測試
+      # 重點：測試多個元件之間的互動與整合是否正常運作
+      - name: Run integration tests
+        run: uv run pytest tests/integration

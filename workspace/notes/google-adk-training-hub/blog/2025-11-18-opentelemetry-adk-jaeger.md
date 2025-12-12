@@ -1,6 +1,11 @@
 # 觀察 ADK 代理：使用 OpenTelemetry 與 Jaeger 進行追蹤 (Observing ADK Agents: OpenTelemetry Tracing with Jaeger)
 ---
 
+## 📝 **本文內容主要參考自 Raphaël MANSUY 的 Blog**：[Observing ADK Agents: OpenTelemetry Tracing with Jaeger](https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger)
+
+
+## 簡介 (Introduction)
+
 你使用 Google ADK 建立了一個 AI 代理。它運作正常。但是當你問 **「為什麼代理選擇那個工具？」** 或 **「哪個 LLM 呼叫花了 5 秒鐘？」** 時——你就像在盲目飛行。
 
 進入 **分散式追蹤 (distributed tracing)**：Jaeger 視覺化了你的代理採取的每一個步驟，從推理到工具執行再到 LLM 呼叫。ADK 擁有 **內建的 OpenTelemetry 支援**，讓這一切變得輕而易舉……一旦你理解了一個關鍵的陷阱。
