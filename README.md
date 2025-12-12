@@ -910,6 +910,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-01-fast-track-agent-starter-pack.md)
+  - [Pack ADK A2A Agent](./workspace/python/agents/pack-adk-a2a-agent/)
 - **參考資源**
   - [Fast-track Your GenAI Agents: Deep Dive into the Google Cloud Agent Starter Pack](https://raphaelmansuy.github.io/adk_training/blog/2025/12/01/fast-track-agent-starter-pack)
   - [🚀 GoogleCloudPlatform/agent-starter-pack](https://github.com/GoogleCloudPlatform/agent-starter-pack)
