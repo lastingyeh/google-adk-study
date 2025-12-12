@@ -1,7 +1,8 @@
 # pack-adk-a2a-agent
 
-這是一個使用 Google 的 Agent Development Kit (ADK) 和 Agent2Agent (A2A) 協議構建的基礎 ReAct 代理程式。 #experimental
-本代理程式使用 [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) 版本 `0.27.0` 生成。
+這是一個使用 Google 的 Agent Development Kit (ADK) 和 Agent2Agent (A2A) 協議構建的基礎 ReAct 代理程式。
+
+🧪 本代理程式使用 [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) 版本 `0.27.0` 生成。
 
 ## 專案結構
 
