@@ -1,6 +1,6 @@
 # Gemini Enterprise：為何您的 AI 代理需要企業級功能 (Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities)
 
-## 📝 **本文內容主要參考自 Raphaël MANSUY 的 Blog**：[Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](http://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
+> 📝 **內容參考 Raphaël MANSUY 的 Blog**：[Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](http://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
 
 ## 簡介 (Introduction)
 ### 重大問題：為何您應該在意？ (The BIG Question: Why Should You Care?)

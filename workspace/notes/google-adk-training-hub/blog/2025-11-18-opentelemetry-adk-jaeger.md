@@ -1,7 +1,6 @@
 # 觀察 ADK 代理：使用 OpenTelemetry 與 Jaeger 進行追蹤 (Observing ADK Agents: OpenTelemetry Tracing with Jaeger)
----
 
-## 📝 **本文內容主要參考自 Raphaël MANSUY 的 Blog**：[Observing ADK Agents: OpenTelemetry Tracing with Jaeger](https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger)
+> 📝 **內容參考 Raphaël MANSUY 的 Blog**：[Observing ADK Agents: OpenTelemetry Tracing with Jaeger](https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger)
 
 
 ## 簡介 (Introduction)

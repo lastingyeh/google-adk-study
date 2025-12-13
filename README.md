@@ -918,4 +918,22 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
   - [Generative AI on Google Cloud](https://github.com/GoogleCloudPlatform/generative-ai)
 
 </details>
+
+#### 🕗 Day 50
+
+<details>
+<summary>
+本文深入探討 Google ADK 中的 Context Engineering，揭示 Google 用於生產 AI 代理的架構。涵蓋多代理系統設計、狀態管理、觀察性實踐，以及如何利用上下文提升代理性能與可靠性。
+
+🏷️ `adk`, `context-engineering`, `architecture`, `production`, `multi-agent`, `observability`, `state-management`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-08-context-engineering-google-adk-architecture.md)
+
+- **參考資源**
+  - [Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
+
+</details>
 </details>
