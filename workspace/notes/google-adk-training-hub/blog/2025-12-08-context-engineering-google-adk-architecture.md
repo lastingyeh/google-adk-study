@@ -1,8 +1,8 @@
 # 上下文工程：深入解析 Google 生產級 AI 代理架構 (Context Engineering: Inside Google's Architecture for Production AI Agents)
 
-> 📝 **本文內容主要參考自 Raphaël MANSUY 的 Blog**：[Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
+> 📝 **原文翻譯自 Raphaël MANSUY 的 Blog**：[Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
 
-> 🖼️ 文章圖片來源：[docs/blog/assets/context-engineering](https://github.com/raphaelmansuy/adk_training/tree/main/docs/blog/assets/context-engineering)
+> 🖼️ 圖片來源：[docs/blog/assets/context-engineering](https://github.com/raphaelmansuy/adk_training/tree/main/docs/blog/assets/context-engineering)
 
 ---
 ## 前言 (Preface)
