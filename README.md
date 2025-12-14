@@ -936,4 +936,22 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
   - [Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
 
 </details>
+
+#### 🕗 Day 51
+
+<details>
+<summary>
+本教學介紹如何使用 eBPF 技術強化 GKE 上的 Google ADK 代理安全性與監控能力。涵蓋 eBPF 基礎、GKE 整合方法，以及實作數據平面監控與網路安全範例，提升代理在生產環境中的可視性與防護。
+
+🏷️ `adk`, `ebpf`, `gke`, `security`, `a2a`, `monitoring`, `dataplane-v2`,`networking`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/articles/ebpf/README.md)
+
+- **參考資源**
+  - [EBPF 文章參考文獻 References](./workspace/articles/ebpf/README.md#-參考文獻-references)
+
+</details>
 </details>

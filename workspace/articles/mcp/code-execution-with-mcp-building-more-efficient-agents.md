@@ -310,3 +310,5 @@ MCP 為 agents 連接到眾多工具和系統提供了一個基礎協議。然�
 - 技能 (Skills)：[https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 - 沙盒 (sandboxing)：[https://www.anthropic.com/engineering/claude-code-sandboxing](https://www.anthropic.com/engineering/claude-code-sandboxing)
 - MCP 社群 (MCP community)：[https://modelcontextprotocol.io/community/communication](https://modelcontextprotocol.io/community/communication)
+- theailanguage 頻道：[I Just Made Google ADK 10x Faster with Anthropic’s New Programmatic Tool Calling (MCP Demo)](https://www.youtube.com/watch?v=ewGEbeWzWI0&list=TLGGxAYCU_zHTtQxNDEyMjAyNQ)
+- theailanguage Github 範例：[version_7_programmatic_tool_execution](https://github.com/theailanguage/adk_samples/tree/main/version_7_programmatic_tool_execution)

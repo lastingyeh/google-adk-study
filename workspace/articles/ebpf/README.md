@@ -1,274 +1,309 @@
-# eBPF-Enhanced AI Agent Security Platform (基於 GKE)
+# eBPF 增強型 AI Agent 安全導入 GKE 雲端平台應用 (eBPF-Enhanced AI Agent Security Platform For GKE)
 
-歡迎來到 **eBPF AI Agent 安全防禦平台** 設計文檔。本系列文章旨在協助雲原生團隊與資安工程師，從概念到實作，逐步打造一個基於 Linux Kernel 技術 (eBPF) 的深層觀測與防禦系統。
-
-## 📖 專案簡介 (Introduction)
-
-隨著 AI Agent 與微服務架構的普及，傳統的應用層監控 (Application Logs) 與邊界防禦 (WAF/Gateway) 已不足以應對現代資安威脅。Agent 內部的系統呼叫 (Syscalls)、檔案存取與非預期的網路連線，往往是傳統工具的盲區。
-
-本專案利用 **eBPF (Extended Berkeley Packet Filter)** 技術，在不修改應用程式代碼的前提下，直接深入 Kernel 層級進行觀測與阻斷。結合 **Google Kubernetes Engine (GKE) Dataplane V2**、**Cilium** 與 **Tetragon**，我們能構建一個高效能、低干擾且具備實時防禦能力的次世代安全平台。
+## **介紹 (Introduction)**
+基於 GKE 的次世代 AI Agent 安全防禦體系。彙整了從高層戰略、技術架構、實作藍圖到部署手冊的所有關鍵文件，為企業構建「Kernel 層級可觀測與防禦」平台提供一站式指引。
 
 ---
 
-## 📂 完整文章導覽 (Article Series)
+## 📖 摘要 (Abstract)
 
-本系列文章依照「由淺入深、從概念到落地」的邏輯編排，建議依序閱讀：
+隨著企業大規模導入 AI Agent 與微服務架構，傳統基於應用層 (Application Layer) 的安全監控已無法有效防禦針對 Runtime 的深層威脅。Agent 的自主性帶來了不可預測的系統呼叫 (Syscalls) 與網絡行為，這要求我們必須將安全邊界下沈至作業系統核心。
 
-### 1. 建立認知與共識
-*   **[01. 5W1H 概念設計 (Concept)](./01-concept-5w1h.md)**
-    *   **內容重點**: 深入探討「為什麼需要 eBPF？」分析 AI Agent 面臨的獨特安全挑戰，並以 5W1H 架構定義平台的核心價值與角色職責。
-*   **[02. 內部推廣簡報 (Presentation)](./02-presentation-pitch.md)**
-    *   **內容重點**: 提供給技術主管與團隊的溝通素材。透過直觀的比喻與互動問題，快速建立對「Kernel 層級防禦」的認知與共識。
-
-### 2. 評估與架構設計
-*   **[03. 導入評估決策樹 (Strategy)](./03-adoption-strategy.md)**
-    *   **內容重點**: 提供決策流程圖，協助團隊評估現有環境是否適合導入 eBPF，以及如何根據需求（觀測 vs. 防禦）選擇合適的元件組合。
-*   **[04. 系統架構與時序 (Architecture)](./04-architecture-workflow.md)**
-    *   **內容重點**: 技術深潛章節。解析從 Client Request 到 Agent Response 的完整生命週期，詳述 eBPF 在 Ingress、Pod 及 Kernel 層的具體介入點與觀測價值。
-
-### 3. 規劃與實作
-*   **[05. 設計計劃與路線圖 (Roadmap)](./05-project-roadmap.md)**
-    *   **內容重點**: 專案管理視角。定義三階段導入計畫（準備、基礎觀測、安全執行）、成功指標 (KPIs) 以及風險應對策略。
-*   **[06. 部署實作指南 (Deployment)](./06-deployment-guide.md)**
-    *   **內容重點**: Hands-on 實戰。提供完整的 Terraform 與 Helm 腳本，手把手教學如何建立 GKE 環境、安裝 Cilium/Tetragon 並部署基礎安全策略。
+本文章主要詳細闡述如何利用 **eBPF (Extended Berkeley Packet Filter)** 技術，結合 **Google Kubernetes Engine (GKE) Dataplane V2**、**Cilium** 與 **Tetragon**，構建一個具備「核心級可觀測性」與「實時阻斷能力」的安全平台。我們將從戰略價值、技術架構到實作部署，提供一套完整的落地指南。
 
 ---
 
-## 🏗 架構參考 (Architecture Diagrams)
+## 📂 目錄 (Table of Contents)
 
-### 核心架構圖
-```mermaid
-graph TB
-    %% ===== User / Entry =====
-    USER["User / System Request"]
+主要分為六個章節，涵蓋從概念驗證到工程實作的完整生命週期：
 
-    %% ===== Agent Application Layer =====
-    subgraph AGENT_APP["AI Agent Application Layer"]
-        UI["Chat UI / API Gateway"]
-        PLANNER["Planner Agent"]
-        EXECUTOR["Executor Agent"]
-        RAG["RAG Agent"]
-        TOOL["Tool Agent"]
-    end
+### **Chapter 1: 執行摘要與核心概念**
+*   📄 **[01-executive-summary.md](./01-executive-summary.md)**
+    *   **5W1H 分析**: 定義專案背景、核心痛點 (Why) 與解決方案 (What)。
+    *   **角色與職責**: 釐清 SRE、Security 與開發團隊在 eBPF 平台中的角色。
+    *   **核心價值**: 闡述 Kernel 層級防禦相較於傳統 Sidecar 模式的優勢。
 
-    %% ===== Agent Framework & Protocol =====
-    subgraph FRAMEWORK["Agent Framework & Protocol"]
-        ADK["Google ADK<br/>(Agent Runtime)"]
-        A2A["A2A Protocol<br/>(Agent-to-Agent)"]
-        MCP["MCP Tools<br/>(Tool Invocation)"]
-    end
+### **Chapter 2: 技術架構與運作流程**
+*   📄 **[02-technical-architecture.md](./02-technical-architecture.md)**
+    *   **系統時序圖**: 解析從 Client Request 到 Agent Response 的完整流量路徑。
+    *   **觀測深度**: 詳解 eBPF 在 Ingress (Cilium)、Pod Runtime (Tetragon) 與 Kernel 的介入點。
+    *   **數據流向**: 說明 Network Flow Logs 與 Security Events 的收集與分析架構。
 
-    %% ===== Platform Agents =====
-    subgraph PLATFORM_AGENTS["Platform / Governance Agents"]
-        MON["Monitoring Agent"]
-        SRE["SRE Copilot Agent"]
-        SEC["Security Agent"]
-        FIN["FinOps Agent"]
-        KNOW["Knowledge / RAG Agent"]
-    end
+### **Chapter 3: 導入策略與評估**
+*   📄 **[03-strategic-planning.md](./03-strategic-planning.md)**
+    *   **決策流程樹**: 提供企業評估導入 eBPF 的判斷依據（環境需求、Kernel 版本、團隊能力）。
+    *   **元件選擇**: 根據「純觀測」或「主動防禦」需求，建議適合的工具組合。
 
-    %% ===== Observability Stack =====
-    subgraph OBS["Observability Stack"]
-        MET["Metrics<br/>(Prometheus)"]
-        LOG["Logs<br/>(Loki / ELK)"]
-        TRC["Traces<br/>(OpenTelemetry)"]
-    end
+### **Chapter 4: 實施路線圖**
+*   📄 **[04-implementation-roadmap.md](./04-implementation-roadmap.md)**
+    *   **三階段計畫**: 準備期 (Preparation) → 觀測期 (Observability) → 防禦期 (Enforcement)。
+    *   **KPI 與指標**: 定義專案成功的關鍵績效指標（如：Syscall 覆蓋率、攻擊阻斷時間）。
+    *   **風險管理**: 識別潛在的 Kernel 相容性與效能風險及應對策略。
 
-    %% ===== eBPF Layer =====
-    subgraph EBPF["eBPF Kernel Sensing Layer"]
-        SYSCALL["Syscall Tracing"]
-        NET["Network Tracing"]
-        IO["File / IO Tracing"]
-        PERF["Latency / CPU / Memory"]
-        SEC_EVT["Runtime Security Events"]
-    end
+### **Chapter 5: 部署實戰手冊**
+*   📄 **[05-deployment-handbook.md](./05-deployment-handbook.md)**
+    *   **Infrastructure as Code**: GKE (Terraform) 與 Cilium/Tetragon (Helm) 的完整部署代碼。
+    *   **Policy 範例**: 實作 `TracingPolicy` 以監控敏感檔案存取 (`/etc/shadow`) 與異常網路連線。
 
-    %% ===== Kernel =====
-    KERNEL["Linux Kernel"]
-
-    %% ===== Flows =====
-    USER --> UI
-    UI --> PLANNER
-    PLANNER -->|A2A| EXECUTOR
-    EXECUTOR -->|A2A| RAG
-    EXECUTOR -->|A2A| TOOL
-
-    PLANNER --- ADK
-    EXECUTOR --- ADK
-    RAG --- ADK
-    TOOL --- ADK
-
-    EXECUTOR -->|Tool Call| MCP
-
-    %% eBPF attaches
-    KERNEL --> SYSCALL
-    KERNEL --> NET
-    KERNEL --> IO
-    KERNEL --> PERF
-    KERNEL --> SEC_EVT
-
-    %% Observability flow
-    SYSCALL --> LOG
-    NET --> TRC
-    PERF --> MET
-
-    MET --> MON
-    LOG --> MON
-    TRC --> MON
-
-    MON --> SRE
-    SEC_EVT --> SEC
-    PERF --> FIN
-
-    %% Knowledge loop
-    LOG --> KNOW
-    TRC --> KNOW
-    KNOW --> PLANNER
-```
-
-### GKE 部署架構
-```mermaid
-graph TB
-    %% =========================
-    %% Entry / Edge
-    %% =========================
-    USER["User / System Request"]
-    DNS["Cloud DNS"]
-    ARMOR["Cloud Armor<br/>(WAF / DDoS)"]
-    LB["Cloud Load Balancing<br/>(HTTPS)"]
-    APIM["API Gateway / Apigee<br/>(Optional)"]
-
-    USER --> DNS --> LB --> ARMOR --> APIM
-
-    %% =========================
-    %% GKE Cluster
-    %% =========================
-    subgraph VPC["VPC Network"]
-        NAT["Cloud NAT"]
-        PSC["Private Service Connect<br/>(Optional)"]
-    end
-
-    subgraph GKE["GKE Cluster<br/>(Standard / Autopilot)"]
-        INGRESS["Ingress / Gateway<br/>(GKE)"]
-
-        subgraph AGENT_APP["AI Agent Application Layer<br/>(Pods)"]
-            UI["Chat UI / Agent API"]
-            PLANNER["Planner Agent"]
-            EXECUTOR["Executor Agent"]
-            RAG["RAG Agent"]
-            TOOL["Tool Agent"]
-        end
-
-        subgraph FRAMEWORK["Agent Framework & Protocol"]
-            ADK["Google ADK<br/>(Agent Runtime)"]
-            A2A["A2A Protocol<br/>(Agent-to-Agent)"]
-            MCP["MCP Tools<br/>(Tool Invocation)"]
-        end
-
-        subgraph EBPF["eBPF Runtime Layer<br/>(Node / CNI)"]
-            DPV2["GKE Dataplane V2<br/>(eBPF, Optional)"]
-            CILIUM["Cilium + Hubble<br/>(eBPF Networking, Optional)"]
-            TETRA["Tetragon<br/>(eBPF Runtime Security, Optional)"]
-        end
-
-        subgraph PLATFORM_AGENTS["Platform / Governance Agents<br/>(Pods / Services)"]
-            MON["Monitoring Agent"]
-            SRE["SRE Copilot Agent"]
-            SEC["Security Agent"]
-            FIN["FinOps Agent"]
-            KNOW["Knowledge / RAG Agent"]
-        end
-    end
-
-    APIM --> INGRESS --> UI
-    UI --> PLANNER
-    PLANNER -->|A2A| EXECUTOR
-    EXECUTOR -->|A2A| RAG
-    EXECUTOR -->|A2A| TOOL
-
-    PLANNER --- ADK
-    EXECUTOR --- ADK
-    RAG --- ADK
-    TOOL --- ADK
-
-    EXECUTOR -->|Tool Call| MCP
-
-    %% =========================
-    %% Data / Model Services
-    %% =========================
-    VAI["Vertex AI<br/>(Gemini / Endpoints)"]
-    VEC["Vertex AI Vector Search<br/>(Optional)"]
-    PGV["AlloyDB / Cloud SQL (PostgreSQL)<br/>(pgvector, Optional)"]
-    GCS["Cloud Storage<br/>(Docs / Index Files)"]
-    BQ["BigQuery<br/>(Analytics / Audit)"]
-    REDIS["Memorystore (Redis)<br/>(Cache / Session)"]
-    PUBSUB["Pub/Sub<br/>(Events)"]
-    TASKS["Cloud Tasks<br/>(Async Jobs)"]
-
-    RAG --> GCS
-    RAG --> VEC
-    RAG --> PGV
-    PLANNER --> VAI
-    EXECUTOR --> VAI
-    TOOL --> BQ
-    EXECUTOR --> PUBSUB
-    EXECUTOR --> TASKS
-    UI --> REDIS
-
-    %% Private egress patterns
-    GKE --> NAT
-    GKE --> PSC
-
-    %% =========================
-    %% Observability (Cloud Ops)
-    %% =========================
-    LOG["Cloud Logging"]
-    MET["Cloud Monitoring<br/>(Managed Prometheus)"]
-    TRC["Cloud Trace<br/>(OTel)"]
-    PROF["Cloud Profiler<br/>(Optional)"]
-
-    %% eBPF -> Observability
-    DPV2 --> MET
-    CILIUM --> TRC
-    CILIUM --> MET
-    TETRA --> LOG
-
-    %% Workload -> Observability
-    GKE --> LOG
-    GKE --> MET
-    GKE --> TRC
-
-    MET --> MON
-    LOG --> MON
-    TRC --> MON
-    MON --> SRE
-
-    %% Security & Governance
-    BINAUTH["Binary Authorization"]
-    SCAN["Artifact Analysis / Container Scanning"]
-    SECMGR["Secret Manager + Cloud KMS"]
-    AUDIT["Cloud Audit Logs"]
-    POLICY["GKE Policy Controller<br/>(OPA/Gatekeeper)"]
-
-    SCAN --> BINAUTH
-    BINAUTH --> GKE
-    SECMGR --> GKE
-    AUDIT --> SEC
-    POLICY --> SEC
-    TETRA --> SEC
-    MET --> FIN
-
-    %% Knowledge loop
-    LOG --> KNOW
-    TRC --> KNOW
-    KNOW --> PLANNER
-```
+### **Appendix: 內部推廣素材**
+*   📄 **[06-presentation-materials.md](./06-presentation-materials.md)**
+    *   **Pitch Deck 大綱**: 用於向管理層或技術團隊推廣 eBPF 概念的簡報架構。
+    *   **關鍵溝通點**: 協助建立「安全下沈至 Kernel」的團隊共識。
 
 ---
 
-## 📚 參考資料彙整 (References)
+## 🏗 架構藍圖 (Architecture Blueprints)
 
-以下是本系列文章中引用的官方文檔與技術資源，供進一步深入研究：
+### 1. eBPF AI Agent Security Platform Overview
+![eBPF Security Architecture](./assets/archi-blueprint-ai-agent-driven.png)
+---
+### 架構圖說明 (Architecture Explanation)
+
+1️⃣ Layer 1｜Kernel & eBPF 感知層
+
+| 架構元件                    | GKE / K8s 對應元件                             | 建議做法                                                         |
+| --------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
+| Linux Kernel                | GKE Node（COS/Ubuntu）                         | 優先使用 Google 建議的 Node OS；確保可支援 eBPF                  |
+| eBPF Layer                  | **Cilium** / **Tetragon**（以 DaemonSet 部署） | 每個 node 一個 agent，負責抓 syscall / network / security events |
+| Syscall / Network / IO 事件 | Tetragon Policies / Cilium Observability       | 用 policy 控制收集範圍，避免全量造成成本與噪音                   |
+
+---
+
+2️⃣ Layer 2｜Observability 資料管線層（Logs / Traces / Metrics）
+
+| 資料類型            | 架構元件             | GKE 對應元件                                                                  | 建議做法                                                                |
+| ------------------- | -------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Logs                | Loki / ELK           | **Cloud Logging**（可替代）或自建 Loki/ELK                                    | 若走 GCP 原生：直接導 Cloud Logging；若走自管：用 Fluent Bit / Promtail |
+| Traces              | OpenTelemetry        | **OpenTelemetry Collector**（Deployment/DaemonSet）＋ **Cloud Trace**（可選） | 以 OTEL 統一收集，再輸出到 Cloud Trace / Jaeger / Tempo                 |
+| Metrics             | Prometheus           | **Managed Service for Prometheus**（GMP）或自建 Prometheus                    | 推薦 GMP（省維運），搭配 Alertmanager                                   |
+| Observability Stack | Processing & Storage | **Cloud Monitoring + Cloud Logging + Cloud Trace** 或 Grafana Stack           | 依治理需求決定「全 GCP 原生」或「可移植」方案                           |
+
+---
+
+3️⃣ Layer 3｜AI Agent 應用層（Agent Runtime / A2A / MCP）
+
+| 架構元件                               | GKE 對應元件                                          | 建議做法                                      |
+| -------------------------------------- | ----------------------------------------------------- | --------------------------------------------- |
+| Chat UI / API Gateway（Entry Point）   | **API Gateway** 或 **Cloud Load Balancing + Ingress** | 對外入口統一控管、加上 WAF / rate limit       |
+| Planner / Executor / RAG / Tool Agents | **Deployments**（多個微服務）                         | 每個 Agent 一個 Deployment；用 HPA 做彈性伸縮 |
+| A2A Protocol（Agent 溝通）             | **K8s Service + gRPC/HTTP**                           | 服務內通訊走 ClusterIP；必要時加 mTLS         |
+| MCP Tools（工具呼叫）                  | Tool Server Pod + RBAC + Workload Identity            | 工具要做權限分層：只給必要的 K8s / GCP 權限   |
+| 任務佇列 / 工作流（可選）              | Pub/Sub / Kafka / Cloud Tasks / Workflows             | 若需要可靠編排：引入 Pub/Sub 或 Workflow      |
+
+---
+
+⚠️ Layer 3.5｜RAG / Knowledge（資料與索引層，建議新增到架構圖上）
+
+| 架構需求        | GKE / GCP 常見選擇                                           | 建議做法                                               |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------ |
+| 文件/知識庫儲存 | **Cloud Storage** / Filestore                                | 文件、log 摘要、runbook 放 GCS                         |
+| 向量資料庫      | **Vertex AI Vector Search** / AlloyDB pgvector / 自建 Milvus | 若要 GCP 託管優先：Vertex；要可控可攜：pgvector/Milvus |
+| 內容索引 / ETL  | Cloud Run Jobs / Dataflow / GKE CronJob                      | 批次索引用 CronJob 或 Cloud Run Jobs                   |
+
+---
+
+4️⃣ Layer 4｜AI Governance & Optimization（SRE / Security / FinOps）
+
+| Governance Agent | GKE / GCP 對應元件                                         | 輸入資料         | 主要輸出                              |
+| ---------------- | ---------------------------------------------------------- | ---------------- | ------------------------------------- |
+| SRE Copilot      | 服務（Deployment）+ Cloud Monitoring Alerts                | Metrics / Traces | SLO、告警、修復建議、auto-remediation |
+| Security Agent   | Tetragon + Cloud Logging + Security Command Center（可選） | Syscall/Logs     | 異常偵測、風險事件、告警與封鎖建議    |
+| FinOps Agent     | Cloud Billing Export + Metrics                             | 資源用量 / 成本  | 省錢建議、rightsizing、token 成本治理 |
+| Knowledge Agent  | RAG Pipeline + Vector DB                                   | Logs/Traces 摘要 | 事件回顧、Runbook 生成、知識沉澱      |
+
+---
+
+5️⃣ Layer 5｜Feedback Loop（閉環）
+
+| 閉環步驟       | GKE / GCP 元件                   | 實作提示                                       |
+| -------------- | -------------------------------- | ---------------------------------------------- |
+| 行為收集       | Cilium/Tetragon + OTEL + GMP     | 先定義「收什麼」避免噪音                       |
+| 分析與決策     | Governance Agents（Deployments） | 用 policy/規則引擎或 prompt guardrail 控制輸出 |
+| 回寫知識       | GCS + Vector DB                  | 事件摘要、根因、處置步驟結構化                 |
+| 影響下一次推理 | RAG Agent + Planner              | 讓 Planner 吃「過去案例」做更快拆解            |
+
+---
+
+### 總覽
+
+| 分層     | 圖上的概念                | GKE/GCP 最常見對應                         |
+| -------- | ------------------------- | ------------------------------------------ |
+| 感知層   | eBPF                      | Cilium / Tetragon（DaemonSet）             |
+| 資料層   | Logs/Metrics/Traces       | Cloud Logging / GMP / OTEL(+Cloud Trace)   |
+| Agent 層 | Planner/Executor/RAG/Tool | Deployments + Services + Workload Identity |
+| 治理層   | SRE/Sec/FinOps            | Monitoring/Logging + 專用 Agents           |
+| 閉環     | Feedback Loop             | GCS + Vector DB + RAG                      |
+---
+
+### 2. Scalable AI Agent Security with GKE Platform
+![eBPF Security Components](./assets/archi-scalable-ai-agent-gke.png)
+
+---
+
+### 架構圖說明 (Architecture Explanation)
+
+---
+
+1️⃣ Request Ingress & Edge Security（請求入口與邊界防護層）
+
+| 架構面向 | GCP 元件                     | 主要職責             | 設計重點             |
+| -------- | ---------------------------- | -------------------- | -------------------- |
+| DNS 入口 | Cloud DNS                    | 將使用者請求導向 GCP | 高可用、全球解析     |
+| 流量入口 | Cloud Load Balancing (HTTPS) | L7 流量分流與 HA     | TLS 終結、全球負載   |
+| Web 防護 | Cloud Armor                  | WAF / DDoS 防護      | 第一層資安防線       |
+| API 管理 | API Gateway / Apigee（選用） | API 存取控管、配額   | 非必要不過度複雜     |
+| 叢集入口 | GKE Ingress / Gateway        | 將流量導入 GKE       | 建議使用 Gateway API |
+
+👉 **這一層的本質**：
+
+> 把「不可信的 Internet 流量」轉成「可控的內部請求」
+
+---
+
+2️⃣ GKE Cluster（AI Agent Core 核心）
+
+> 2-1｜AI Agent Application Layer（Agent 應用層）
+
+| Agent 元件     | 功能定位       | 說明                  |
+| -------------- | -------------- | --------------------- |
+| Chat UI / API  | 使用者互動入口 | 提供對話 / 任務請求   |
+| Planner Agent  | 任務拆解       | 將需求轉為可執行步驟  |
+| Executor Agent | 任務執行       | 編排並執行 Agent 行為 |
+| RAG Agent      | 知識檢索       | 查詢文件、事件、紀錄  |
+| Tool Agent     | 工具操作       | 呼叫外部系統 / API    |
+
+👉 **關鍵設計原則**：
+
+* 一個 Agent = 一個 Deployment
+* 可水平擴展（HPA）
+
+---
+
+> 2-2｜Agent Framework & Protocol Layer（Agent 框架層）
+
+| 元件          | 技術         | 職責                    |
+| ------------- | ------------ | ----------------------- |
+| Agent Runtime | Google ADK   | Agent 生命週期管理      |
+| Agent 通訊    | A2A Protocol | Agent-to-Agent 協作     |
+| 工具調用      | MCP          | 控制 Agent 使用外部工具 |
+
+👉 **這一層讓 AI「會合作、會做事」**
+
+---
+
+> 2-3｜Platform & Governance Agents（平台治理 Agent）
+
+| Governance Agent      | 分析資料              | 治理目標     |
+| --------------------- | --------------------- | ------------ |
+| Monitoring Agent      | Metrics               | 系統健康狀態 |
+| SRE Copilot Agent     | Metrics / Traces      | 穩定性、SLO  |
+| Security Agent        | Logs / Runtime Events | 行為型資安   |
+| FinOps Agent          | Metrics / Billing     | 成本最佳化   |
+| Knowledge / RAG Agent | Logs / Traces         | 知識沉澱     |
+
+---
+
+> 2-4｜Optional eBPF Runtime Layer（深度系統感知）
+
+| 元件             | 角色             | 價值                  |
+| ---------------- | ---------------- | --------------------- |
+| GKE Dataplane v2 | eBPF 基礎        | 提供 kernel 可觀測性  |
+| Cilium           | Networking       | L7 Network Visibility |
+| Tetragon         | Runtime Security | Syscall / 行為偵測    |
+
+👉 **這一層是「看見真實行為」的能力來源**
+
+---
+
+3️⃣ Backend AI & Data Services（後端 AI 與資料層）
+
+> 3-1｜AI / 模型服務
+
+| 類型     | GCP 服務           | 用途            |
+| -------- | ------------------ | --------------- |
+| 基礎模型 | Vertex AI (Gemini) | LLM / Embedding |
+| 推論管理 | Vertex AI Endpoint | 模型治理        |
+
+---
+
+> 3-2｜RAG / 向量資料庫
+
+| 資料類型     | 服務                           | 說明           |
+| ------------ | ------------------------------ | -------------- |
+| 非結構化資料 | Cloud Storage                  | 文件、log 摘要 |
+| 向量搜尋     | Vertex AI Vector Search        | 託管 RAG       |
+| 向量資料庫   | AlloyDB / Cloud SQL (pgvector) | 可控型 RAG     |
+
+---
+
+> 3-3｜核心資料服務
+
+| 服務                | 功能           |
+| ------------------- | -------------- |
+| BigQuery            | 分析、歷史資料 |
+| Memorystore (Redis) | 快取 / Session |
+| Pub/Sub             | 非同步事件     |
+| Cloud Tasks         | 背景任務       |
+
+---
+
+4️⃣ Observability & Governance（集中可觀測與治理）
+
+| 類型      | GCP 服務                      | 功能              |
+| --------- | ----------------------------- | ----------------- |
+| Logs      | Cloud Logging                 | 行為紀錄          |
+| Metrics   | Cloud Monitoring (Prometheus) | 效能 / SLO        |
+| Traces    | Cloud Trace (OTel)            | Request 鏈路      |
+| Profiling | Cloud Profiler                | CPU / Memory 分析 |
+
+👉 **這一層是所有 Governance Agent 的「資料來源」**
+
+---
+
+5️⃣ Multi-Layered Security Framework（多層資安架構）
+
+> 5-1｜供應鏈安全（Supply Chain）
+
+| 項目       | 服務                 | 說明           |
+| ---------- | -------------------- | -------------- |
+| Image Scan | Artifact Analysis    | 掃描惡意程式   |
+| Image 信任 | Binary Authorization | 僅允許可信映像 |
+
+---
+
+> 5-2｜執行期安全（Runtime）
+
+| 項目     | 服務                  | 功能         |
+| -------- | --------------------- | ------------ |
+| 政策控管 | GKE Policy Controller | 強制設定     |
+| 機密管理 | Secret Manager        | 憑證保護     |
+| 稽核     | Cloud Audit Logs      | 不可竄改紀錄 |
+
+---
+
+6️⃣ Secure Egress（安全對外連線）
+
+| 元件                    | 功能              |
+| ----------------------- | ----------------- |
+| Cloud NAT               | 控制對外流量      |
+| Private Service Connect | 私有存取 GCP 服務 |
+
+---
+
+### 總覽
+
+| 分層           | 核心價值    |
+| -------------- | ----------- |
+| Ingress        | 安全接入    |
+| GKE Agent Core | AI 任務執行 |
+| Data & AI      | 模型與知識  |
+| Observability  | 事實資料    |
+| Governance     | 智能治理    |
+| Security       | 全面防護    |
+
+---
+
+## 📚 參考文獻 (References)
 
 *   **基礎概念 (Concepts)**
     *   [Wikipedia: eBPF](https://en.wikipedia.org/wiki/EBPF)
