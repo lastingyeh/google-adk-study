@@ -954,4 +954,22 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
   - [EBPF 文章參考文獻 References](./workspace/articles/ebpf/README.md#-參考文獻-references)
 
 </details>
+
+#### 🕗 Day 52
+
+<details>
+<summary>
+探討多代理模式如何透過「分而治之」來管理系統複雜性與認知負載。分析了單一代理與多代理的權衡、委派中的上下文遺失問題，並介紹了階層式、市場式等進階架構，以及在 ADK 中實作清晰邊界與錯誤處理的最佳實踐。
+
+🏷️ `multi-agent`, `architecture`, `complexity-management`, `adk`, `patterns`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-14-multi-agent-pattern.md)
+
+- **參考資源**
+  - [The Multi-Agent Pattern: Managing Complexity Through Divide and Conquer](https://raphaelmansuy.github.io/adk_training/blog/multi-agent-pattern-complexity-management)
+
+</details>
 </details>
