@@ -8,8 +8,6 @@
 
 ### 🔗 **Dashboard 連結 ➡** [https://lastingyeh.github.io/google-adk-study/](https://lastingyeh.github.io/google-adk-study/)
 
----
-
 ### 🗓️ 第 1-30 天：ADK 核心基礎
 
 <details>
@@ -27,6 +25,7 @@
 
 - **詳細說明**：
   - [文件連結](./docs/google-adk-docs-community_summary.md)
+- **參考資源**
   - [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
   - [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
   - [software-bug-assistant](https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant)
@@ -48,6 +47,7 @@
 - **詳細說明**：
   - [文件連結](.github/agents/repo-guiding-learning.chatmode.agent.md)
 - **參考資源**
+  - [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
   - [專案相依連結](./workspace/python/agents/software-bug-assistant/README.md)
 
 </details>
@@ -58,15 +58,15 @@
 <summary>
 實做範例 software-bug-assistant 專案，了解如何使用 Google ADK 建立一個能夠協助識別和修復軟體錯誤的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。
 
-🏷️ `sample-project`, `bug-assistant`, `implementation`
+🏷️ `software`, `bug-assistant`, `implementation`, `postgres`
 
 </summary>
 
 - **詳細說明**：
   - [環境初始化流程](./workspace/python/agents/software-bug-assistant/docs/INSTALLATION_GUIDE.md)
-  - [文件連結](./workspace/python/agents/software-bug-assistant/README.md)
+  - [Software Bug Assistant](./workspace/python/agents/software-bug-assistant/)
 - **參考資源**
-  - [software-bug-assistant](./workspace/python/agents/software-bug-assistant/)
+  - [Software Bug Assistant - ADK Python Sample Agent](https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant)
 
 </details>
 
@@ -76,16 +76,15 @@
 <summary>
 實做範例 youtube-shorts-agent 專案，了解如何使用 Google ADK 建立一個能夠協助生成和管理 YouTube Shorts 內容的智能代理。此專案展示了 ADK 的強大功能，並提供了實際應用的範例，幫助學習者深入理解代理程式的設計與實作過程。
 
-🏷️ `sample-project`, `youtube-shorts`, `implementation`
+🏷️ `sub-agents`, `youtube-shorts`, `implementation`, `assistant`, `loop-agent`
 
 </summary>
 
 - **詳細說明**：
   - [文件連結](./workspace/python/agents/youtube-shorts-assistant/README.md)
-  - [學習訓練指引筆記](./workspace/notes/google-adk-training-hub/README.md)
+  - [Youtube Shorts Assistant](./workspace/python/agents/youtube-shorts-assistant/)
 - **參考資源**
   - [Getting started with Agent Development Kit](https://www.youtube.com/watch?v=44C8u0CDtSo)
-  - [youtube-shorts-assistant 專案 Repo](./workspace/python/agents/youtube-shorts-assistant/)
   - [Google ADK Training Hub](https://raphaelmansuy.github.io/adk_training/)
 
 </details>
@@ -101,10 +100,12 @@
 </summary>
 
 - **詳細說明**：
+
   - [文件連結](./workspace/python/agents/finance-assistant/README.md)
+  - [Finance Assistant](./workspace/python/agents/finance-assistant/)
+
 - **參考資源**
   - [Tutorial 02: Function Tools Implementation](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial02)
-  - [finance-assistant](./workspace/python/agents/finance-assistant/)
   - [Tutorial 02: Function Tools - Give Your Agent Superpowers](https://raphaelmansuy.github.io/adk_training/docs/function_tools)
 
 </details>
@@ -113,18 +114,19 @@
 
 <details>
 <summary>
-實現範例 chuck-norris-agent 專案，學習如何從 OpenAPI 規範中自動產生工具，使您的代理程式能夠與 REST API 互動，而無需手動編寫工具函式。
+本教學介紹如何使用 OpenAPI 工具將 AI 代理程式連接到 RESTful Web API。內容涵蓋 OpenAPI 規範基礎、ADK 中的 OpenAPIToolset 使用方法，以及如何配置和調用外部 API。透過實作 Chuck Norris Agent 範例，展示如何利用 OpenAPI 工具擴展代理的功能，實現與外部服務的互動。
 
 🏷️ `openapi`, `rest-api`, `integration`, `toolset`, `api-automation`
 
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md)
+  - [Chuck Norris Agent](./workspace/python/agents/chuck-norris-agent/)
+
 - **參考資源**
   - [Tutorial 03: OpenAPI Tools - Connect Your Agent to Web APIs](https://raphaelmansuy.github.io/adk_training/docs/openapi_tools/)
-  - [教學 03：OpenAPI 工具 - REST API 整合](./workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md)
-  - [chuck-norris-agent](./workspace/python/agents/chuck-norris-agent/)
   - [Tutorial 03: Chuck Norris OpenAPI Tools Agent](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_implementation/tutorial03/)
 
 </details>
@@ -140,10 +142,10 @@
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/python/agents/chuck-norris-agent/README.md)
-- **參考資源**
-  - [教學 11：內建工具與基礎 (Built-in Tools & Grounding)](./workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md)
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md)
   - [Grounding Agent](./workspace/python/agents/grounding-agent/)
+- **參考資源**
+  - [Tutorial 11: Built-in Tools & Grounding](https://raphaelmansuy.github.io/adk_training/docs/built_in_tools_grounding)
 
 </details>
 
@@ -158,10 +160,10 @@
 </summary>
 
 - **詳細說明**：
-  - [文件連結](./workspace/python/agents/mcp-agent/README.md)
-- **參考資源**
-  - [教學 16: 模型內容協議 (MCP) 整合 - 標準化工具協議](./workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md)
+  - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md)
   - [MCP Agent](./workspace/python/agents/mcp-agent/)
+- **參考資源**
+  - [Tutorial 16: Model Context Protocol (MCP) Integration](https://raphaelmansuy.github.io/adk_training/docs/mcp_integration)
 
 </details>
 
@@ -194,9 +196,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/04-sequential_workflows.md)
-- **參考資源**
-  - [教學 04：循序工作流程 - Agent Pipelines 重點說明](./workspace/python/agents/blog-pipeline/README.md)
   - [Blog Creation Pipeline](./workspace/python/agents/blog-pipeline/)
+- **參考資源**
   - [Tutorial 04: Sequential Workflows - Build Agent Pipelines](https://raphaelmansuy.github.io/adk_training/docs/sequential_workflows)
 
 </details>
@@ -213,9 +214,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/05-parallel_processing.md)
-- **參考資源**
-  - [教學 05：平行處理 - 旅遊規劃系統](./workspace/python/agents/travel-planner/README.md)
   - [Travel Planner](./workspace/python/agents/travel-planner/)
+- **參考資源**
   - [Tutorial 05: Parallel Processing - Run Multiple Agents Simultaneously](https://raphaelmansuy.github.io/adk_training/docs/parallel_processing)
 
 </details>
@@ -232,10 +232,9 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/06-multi_agent_systems.md)
-- **參考資源**
-  - [教學 06：多代理系統 - 內容發布系統](./workspace/python/agents/content-publisher/README.md)
   - [Content Publisher](./workspace/python/agents/content-publisher/)
   - [Content Publisher Agent Architecture](./workspace/python/agents/content-publisher/agent_architecture.md)
+- **參考資源**
   - [Tutorial 06: Multi-Agent Systems - Agents Working Together](https://raphaelmansuy.github.io/adk_training/docs/multi_agent_systems/)
 
 </details>
@@ -252,9 +251,8 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/07-loop_agents.md)
-- **參考資源**
-  - [教學 07：循環代理（Loop Agents）- 文章精煉系統](./workspace/python/agents/essay-refiner/README.md)
   - [Essay Refiner](./workspace/python/agents/essay-refiner/)
+- **參考資源**
   - [Tutorial 07: Loop Agents - Iterative Refinement with Critic/Refiner Patterns](https://raphaelmansuy.github.io/adk_training/docs/loop_agents)
 
 </details>
@@ -367,7 +365,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md)
-  - [content moderator](./workspace/python/agents/support-agent/)
+  - [Support Agent](./workspace/python/agents/support-agent/)
 - **參考資源**
   - [Tutorial 10: Evaluation & Testing - Quality Assurance for Agents](https://raphaelmansuy.github.io/adk_training/docs/evaluation_testing)
 
@@ -385,7 +383,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/12-planners_thinking.md)
-  - [content moderator](./workspace/python/agents/strategic-solver/)
+  - [Strategic Solver](./workspace/python/agents/strategic-solver/)
 - **參考資源**
   - [Tutorial 12: Planners & Thinking Configuration](https://raphaelmansuy.github.io/adk_training/docs/planners_thinking)
 
@@ -403,7 +401,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/13-code_execution.md)
-  - [code calculator](./workspace/python/agents/code-calculator/)
+  - [Code Calculator](./workspace/python/agents/code-calculator/)
 - **參考資源**
   - [Tutorial 13: Code Execution - Dynamic Python Code Generation](https://raphaelmansuy.github.io/adk_training/docs/code_execution/)
 
@@ -468,7 +466,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/17-agent_to_agent.md)
-  - [a2a orchestrator](./workspace/python/agents/a2a-orchestrator/)
+  - [A2A Orchestrator](./workspace/python/agents/a2a-orchestrator/)
 - **參考資源**
   - [Tutorial 17: Agent-to-Agent (A2A) Communication](https://raphaelmansuy.github.io/adk_training/docs/agent_to_agent)
 
@@ -486,7 +484,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/18-events_observability.md)
-  - [observability agent](./workspace/python/agents/observability-agent/)
+  - [Observability Agent](./workspace/python/agents/observability-agent/)
 - **參考資源**
   - [Tutorial 18: Events and Observability - Agent Monitoring](https://raphaelmansuy.github.io/adk_training/docs/events_observability)
 
@@ -504,7 +502,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/19-artifacts_files.md)
-  - [artifact agent](./workspace/python/agents/artifact-agent/)
+  - [Artifact Agent](./workspace/python/agents/artifact-agent/)
 - **參考資源**
   - [Tutorial 19: Artifacts & File Management](https://raphaelmansuy.github.io/adk_training/docs/artifacts_files)
 
@@ -522,7 +520,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/20-yaml_configuration.md)
-  - [customer support](./workspace/python/agents/customer-support/)
+  - [Customer Support](./workspace/python/agents/customer-support/)
 - **參考資源**
   - [Tutorial 20: Agent Configuration with YAML](https://raphaelmansuy.github.io/adk_training/docs/yaml_configuration)
 
@@ -540,7 +538,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/21-multimodal_image.md)
-  - [vision catalog agent](./workspace/python/agents/vision-catalog-agent/)
+  - [Vision Catalog Agent](./workspace/python/agents/vision-catalog-agent/)
 - **參考資源**
   - [Tutorial 21: Multimodal & Image Generation](https://raphaelmansuy.github.io/adk_training/docs/multimodal_image)
 
@@ -711,7 +709,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/29-ui_integration_intro.md)
-  - [GEPA Optimization Agent](./workspace/python/agents/ui-integration/)
+  - [UI Integration](./workspace/python/agents/ui-integration/)
 - **參考資源**
   - [Tutorial 29: Introduction to UI Integration & AG-UI Protocol](https://raphaelmansuy.github.io/adk_training/docs/ui_integration_intro)
 
@@ -931,7 +929,6 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 - **詳細說明**：
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-08-context-engineering-google-adk-architecture.md)
-
 - **參考資源**
   - [Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
 
@@ -949,7 +946,6 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 - **詳細說明**：
   - [文件連結](./workspace/articles/ebpf/README.md)
-
 - **參考資源**
   - [EBPF 文章參考文獻 References](./workspace/articles/ebpf/README.md#-參考文獻-references)
 

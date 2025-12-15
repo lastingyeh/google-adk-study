@@ -987,8 +987,8 @@ analyst_agent = Agent(
     model='gemini-2.5-pro',
     name='data_analyst',
     instruction="""
-您是一位資料分析師。使用 analyze_data 處理資訊。
-提供詳細的洞察和建議。
+    您是一位資料分析師。使用 analyze_data 處理資訊。
+    提供詳細的洞察和建議。
     """,
     tools=[FunctionTool(analyze_data)]
 )
@@ -999,14 +999,14 @@ orchestrator = Agent(
     name='orchestrator',
     description='多工具代理程式系統',
     instruction="""
-您協調研究和分析任務：
+    您協調研究和分析任務：
 
-1. 如果繼續工作，使用 load_memory 載入先前的上下文
-2. 對於研究任務，轉移給 research_specialist
-3. 對於資料分析，轉移給 data_analyst
-4. 當工作完成時，呼叫 exit_loop
+    1. 如果繼續工作，使用 load_memory 載入先前的上下文
+    2. 對於研究任務，轉移給 research_specialist
+    3. 對於資料分析，轉移給 data_analyst
+    4. 當工作完成時，呼叫 exit_loop
 
-您根據使用者需求決定工作流程。
+    您根據使用者需求決定工作流程。
     """,
     sub_agents=[research_agent, analyst_agent],
     tools=[
@@ -1030,9 +1030,9 @@ async def main():
     print("="*60 + "\n")
 
     query = """
-研究量子計算的最新發展，
-分析關鍵技術突破，
-並提供策略建議。
+    研究量子計算的最新發展，
+    分析關鍵技術突破，
+    並提供策略建議。
     """
 
     result = await runner.run_async(query, agent=orchestrator)
@@ -1064,4 +1064,4 @@ if __name__ == '__main__':
 - **問題："Grounding metadata not accessible"**：元資料是暫時的，只能在執行期間或執行後立即存取。
 
 ## 程式碼實現 (Code Implementation)
-- grounding-agent：[程式碼連結](../../../python/agents/grounding-agent/README.md)
+- grounding-agent：[程式碼連結](../../../python/agents/grounding-agent/)
