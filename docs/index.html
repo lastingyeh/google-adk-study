@@ -1036,13 +1036,27 @@
         }
 
         .pagination {
-          gap: 8px;
-          padding: 12px;
+          gap: 5px;
+          padding: 10px 6px;
         }
 
         .pagination button {
-          padding: 8px 16px;
-          font-size: 14px;
+          min-width: 34px;
+          height: 34px;
+          padding: 5px 8px;
+          font-size: 13px;
+          border-width: 1.5px;
+        }
+
+        .pagination button.prev-next {
+          min-width: 40px;
+          padding: 5px 10px;
+          font-size: 16px;
+        }
+
+        .page-ellipsis {
+          font-size: 13px;
+          padding: 0 2px;
         }
 
         .page-info {
@@ -1087,6 +1101,34 @@
 
         .detail-section h3 {
           font-size: 14px;
+        }
+      }
+
+      /* 極窄螢幕優化 (iPhone SE 等) */
+      @media (max-width: 375px) {
+        .pagination {
+          gap: 4px;
+          padding: 8px 4px;
+        }
+
+        .pagination button {
+          min-width: 30px;
+          height: 32px;
+          padding: 4px 6px;
+          font-size: 12px;
+          border-width: 1px;
+          border-radius: 8px;
+        }
+
+        .pagination button.prev-next {
+          min-width: 36px;
+          padding: 4px 8px;
+          font-size: 15px;
+        }
+
+        .page-ellipsis {
+          font-size: 12px;
+          padding: 0 1px;
         }
       }
     </style>
@@ -2909,10 +2951,19 @@
       function renderPagination() {
         paginationContainer.innerHTML = '';
 
+        // 根據螢幕寬度決定顯示的按鈕數量和文字
+        const isMobile = window.innerWidth <= 480;
+        const isTablet = window.innerWidth <= 768;
+        const isNarrow = window.innerWidth <= 375;
+        const maxButtons = isNarrow ? 3 : isMobile ? 3 : isTablet ? 5 : 7;
+        const prevText = isMobile ? '←' : '上一頁';
+        const nextText = isMobile ? '→' : '下一頁';
+        const showFirstLast = !isMobile && totalPages > maxButtons + 2;
+
         // 上一頁按鈕
         const prevBtn = document.createElement('button');
         prevBtn.className = 'prev-next';
-        prevBtn.textContent = '上一頁';
+        prevBtn.textContent = prevText;
         prevBtn.disabled = currentPage === 1;
         prevBtn.addEventListener('click', () => {
           if (currentPage > 1) {
@@ -2925,7 +2976,6 @@
         paginationContainer.appendChild(prevBtn);
 
         // 頁碼按鈕
-        const maxButtons = 7; // 最多顯示的頁碼按鈕數量
         let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
         let endPage = Math.min(totalPages, startPage + maxButtons - 1);
 
@@ -2934,8 +2984,8 @@
           startPage = Math.max(1, endPage - maxButtons + 1);
         }
 
-        // 第一頁按鈕（如果不在範圍內）
-        if (startPage > 1) {
+        // 第一頁按鈕（如果不在範圍內且不是手機模式）
+        if (showFirstLast && startPage > 1) {
           const firstBtn = document.createElement('button');
           firstBtn.textContent = '1';
           firstBtn.addEventListener('click', () => {
@@ -2949,7 +2999,7 @@
           if (startPage > 2) {
             const ellipsis = document.createElement('span');
             ellipsis.className = 'page-ellipsis';
-            ellipsis.textContent = '...';
+            ellipsis.textContent = '…';
             paginationContainer.appendChild(ellipsis);
           }
         }
@@ -2970,12 +3020,12 @@
           paginationContainer.appendChild(pageBtn);
         }
 
-        // 最後一頁按鈕（如果不在範圍內）
-        if (endPage < totalPages) {
+        // 最後一頁按鈕（如果不在範圍內且不是手機模式）
+        if (showFirstLast && endPage < totalPages) {
           if (endPage < totalPages - 1) {
             const ellipsis = document.createElement('span');
             ellipsis.className = 'page-ellipsis';
-            ellipsis.textContent = '...';
+            ellipsis.textContent = '…';
             paginationContainer.appendChild(ellipsis);
           }
 
@@ -2993,7 +3043,7 @@
         // 下一頁按鈕
         const nextBtn = document.createElement('button');
         nextBtn.className = 'prev-next';
-        nextBtn.textContent = '下一頁';
+        nextBtn.textContent = nextText;
         nextBtn.disabled = currentPage === totalPages;
         nextBtn.addEventListener('click', () => {
           if (currentPage < totalPages) {
