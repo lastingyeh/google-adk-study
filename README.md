@@ -968,4 +968,22 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
   - [The Multi-Agent Pattern: Managing Complexity Through Divide and Conquer](https://raphaelmansuy.github.io/adk_training/blog/multi-agent-pattern-complexity-management)
 
 </details>
+
+#### 🕗 Day 53
+
+<details>
+<summary>
+Google 全新的 Interactions API 是一個統一的閘道，可同時存取 Gemini 模型與 Deep Research Agent。它透過伺服器端狀態管理和背景執行功能，簡化了複雜、有狀態的 AI 應用程式開發，特別適合需要長時間運行的代理工作流程，是 `generateContent` API 的重要演進。
+
+🏷️ `adk`, `gemini`, `interactions-api`, `deep-research`, `ai-agents`, `tutorial`, `genai`
+
+</summary>
+
+- **詳細說明**：
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-12-interactions-api-deep-research.md)
+
+- **參考資源**
+  - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
+
+</details>
 </details>
