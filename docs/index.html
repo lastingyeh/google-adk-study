@@ -329,38 +329,6 @@
         margin-left: 12px;
       }
 
-      /* List View Mode */
-      #table-view.list-view .table-row {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px 16px;
-      }
-
-      #table-view.list-view .checkbox-area {
-        position: absolute;
-        top: 20px;
-        right: 16px;
-        margin: 0;
-      }
-
-      #table-view.list-view .chevron {
-        display: none;
-      }
-
-      #table-view.list-view .row-title {
-        -webkit-line-clamp: 3;
-        font-size: 18px;
-      }
-
-      #table-view.list-view .row-content {
-        width: calc(100% - 50px);
-        padding-right: 8px;
-      }
-
-      #table-view.list-view .row-labels {
-        margin-top: 12px;
-      }
-
       /* Pagination */
       .pagination {
         display: flex;
@@ -1258,25 +1226,6 @@
             placeholder="搜尋標題、內容或標籤..."
           />
           <button class="clear-btn" id="clear-btn">×</button>
-        </div>
-
-        <div class="view-toggle">
-          <button class="view-btn active" id="card-view-btn" title="卡片模式">
-            <svg fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M3 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 12a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H4a1 1 0 01-1-1v-4zM11 4a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V4zM11 12a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"
-              />
-            </svg>
-          </button>
-          <button class="view-btn" id="list-view-btn" title="列表模式">
-            <svg fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
         </div>
       </div>
 
@@ -2904,8 +2853,7 @@
       const closeBtn = document.getElementById('close-btn');
       const searchInput = document.getElementById('search-input');
       const clearBtn = document.getElementById('clear-btn');
-      const cardViewBtn = document.getElementById('card-view-btn');
-      const listViewBtn = document.getElementById('list-view-btn');
+
       const progressBar = document.getElementById('progress-bar');
       const progressPercentage = document.getElementById('progress-percentage');
       const completedCount = document.getElementById('completed-count');
@@ -3286,21 +3234,6 @@
         document.body.style.overflow = 'auto';
       }
 
-      // 視圖切換
-      function setViewMode(mode) {
-        if (mode === 'list') {
-          tableView.classList.add('list-view');
-          listViewBtn.classList.add('active');
-          cardViewBtn.classList.remove('active');
-          localStorage.setItem('adkViewMode', 'list');
-        } else {
-          tableView.classList.remove('list-view');
-          cardViewBtn.classList.add('active');
-          listViewBtn.classList.remove('active');
-          localStorage.setItem('adkViewMode', 'card');
-        }
-      }
-
       // 事件監聽 - Table View
       tableView.addEventListener('click', (e) => {
         const row = e.target.closest('.table-row');
@@ -3329,10 +3262,6 @@
         performSearch('');
       });
 
-      // 事件監聽 - 視圖切換
-      cardViewBtn.addEventListener('click', () => setViewMode('card'));
-      listViewBtn.addEventListener('click', () => setViewMode('list'));
-
       // 事件監聽 - Modal
       modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
@@ -3346,10 +3275,6 @@
 
       // 初始化
       loadProgress();
-      const savedViewMode = localStorage.getItem('adkViewMode');
-      if (savedViewMode === 'list') {
-        setViewMode('list');
-      }
       renderPage(currentPage);
       renderPagination();
     </script>
