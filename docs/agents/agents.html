@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Google ADK 代理市集</title>
-    <!-- 引入 Tailwind CSS -->
-    <link href="../tailwind.v2.2.19.min.css" rel="stylesheet" />
     <!-- 引入 Inter 字體 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,68 +12,450 @@
       rel="stylesheet"
     />
     <style>
-      /* Google ADK Tech Theme Variables */
-      :root {
-        --bg-primary: #0b0f19;
-        --bg-secondary: #131620;
-        --bg-card: rgba(22, 27, 34, 0.7);
-        --bg-card-hover: rgba(30, 36, 46, 0.8);
-        --text-primary: #e8eaed;
-        --text-secondary: #9aa0a6;
-        --accent-blue: #4285f4;
-        --accent-purple: #a142f4;
-        --google-red: #ea4335;
-        --google-yellow: #fbbc04;
-        --google-green: #34a853;
-        --google-blue: #4285f4;
-        --border-color: rgba(255, 255, 255, 0.1);
-        --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+      /* ===== iOS Grouped 風格 CSS ===== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      /* Base Styles */
       body {
-        font-family: 'Inter', 'Noto Sans TC', sans-serif;
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-        background-image: radial-gradient(
-            circle at 15% 50%,
-            rgba(66, 133, 244, 0.08) 0%,
-            transparent 25%
-          ),
-          radial-gradient(
-            circle at 85% 30%,
-            rgba(161, 66, 244, 0.08) 0%,
-            transparent 25%
-          );
-        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+          'Inter', 'Noto Sans TC', sans-serif;
+        background-color: #f2f2f7;
+        color: #000000;
+        line-height: 1.5;
+        padding: 20px 0;
       }
 
-      /* Scrollbar */
-      ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
       }
-      ::-webkit-scrollbar-track {
-        background: var(--bg-primary);
+
+      /* Header */
+      header {
+        text-align: center;
+        margin-bottom: 24px;
+        padding: 40px 20px 30px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        position: relative;
       }
-      ::-webkit-scrollbar-thumb {
-        background: #3c4043;
-        border-radius: 5px;
-        border: 2px solid var(--bg-primary);
+
+      header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 8px;
+        letter-spacing: -0.5px;
       }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #5f6368;
+
+      header p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 20px;
+      }
+
+      /* Stats Bar */
+      .stats-bar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        padding: 16px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+      }
+
+      .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .stat-icon {
+        width: 20px;
+        height: 20px;
+        fill: rgba(255, 255, 255, 0.9);
+      }
+
+      /* Navigation Links */
+      .nav-links {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+
+      .nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: #ffffff;
+        color: #007aff;
+        text-decoration: none;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .nav-link:hover {
+        background: #007aff;
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+      }
+
+      .nav-link svg {
+        width: 16px;
+        height: 16px;
+      }
+
+      /* Search & Controls */
+      .controls-bar {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .search-container {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 12px 40px 12px 40px;
+        border: 1px solid #e5e5ea;
+        border-radius: 12px;
+        font-size: 15px;
+        background: #ffffff;
+        transition: all 0.2s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #007aff;
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #8e8e93;
+      }
+
+      .clear-btn {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #8e8e93;
+        font-size: 20px;
+        padding: 4px;
+        display: none;
+      }
+
+      .search-input:not(:placeholder-shown) ~ .clear-btn {
+        display: block;
+      }
+
+      .view-toggle {
+        display: flex;
+        background: #ffffff;
+        border-radius: 10px;
+        padding: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+
+      .view-btn {
+        padding: 8px 12px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        color: #8e8e93;
+      }
+
+      .view-btn.active {
+        background: #007aff;
+        color: #ffffff;
+      }
+
+      .view-btn svg {
+        width: 20px;
+        height: 20px;
+        display: block;
+      }
+
+      /* Agent Cards Container */
+      #agents-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+
+      #agents-grid.list-view {
+        grid-template-columns: 1fr;
+      }
+
+      /* Agent Card */
+      .agent-card {
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+      }
+
+      .agent-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      }
+
+      .agent-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+      }
+
+      .agent-card:active {
+        transform: translateY(-2px);
+      }
+
+      /* Card Header */
+      .agent-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .agent-icon {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #e0e7ff;
+      }
+
+      .agent-icon svg {
+        width: 24px;
+        height: 24px;
+        color: #667eea;
+      }
+
+      .agent-title-group {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .agent-title {
+        font-size: 17px;
+        font-weight: 600;
+        color: #000000;
+        margin-bottom: 2px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .agent-path {
+        font-size: 12px;
+        color: #007aff;
+        font-family: 'SF Mono', 'Monaco', monospace;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        overflow: hidden;
+      }
+
+      .agent-path:hover {
+        color: #0051d5;
+        text-decoration: underline;
+      }
+
+      .agent-path svg {
+        width: 12px;
+        height: 12px;
+        flex-shrink: 0;
+      }
+
+      .agent-path span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Card Body */
+      .agent-description {
+        font-size: 14px;
+        color: #3c3c43;
+        line-height: 1.6;
+        margin-bottom: 12px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      /* Card Labels */
+      .agent-labels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .label-tag {
+        display: inline-block;
+        padding: 4px 10px;
+        background-color: #e5e5ea;
+        color: #3c3c43;
+        font-size: 11px;
+        border-radius: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .label-tag.type {
+        background: linear-gradient(135deg, #4285f415 0%, #4285f425 100%);
+        color: #4285f4;
+        border: 1px solid #4285f430;
+      }
+
+      .label-tag.model {
+        background: linear-gradient(135deg, #a142f415 0%, #a142f425 100%);
+        color: #a142f4;
+        border: 1px solid #a142f430;
+      }
+
+      /* Card Footer */
+      .agent-meta {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        color: #8e8e93;
+        padding-top: 12px;
+        border-top: 1px solid #f2f2f7;
+        margin-top: auto;
+      }
+
+      .meta-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .meta-item svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      /* List View Modifications */
+      #agents-grid.list-view .agent-card {
+        flex-direction: row;
+        align-items: center;
+        padding: 12px 16px;
+      }
+
+      #agents-grid.list-view .agent-header {
+        margin-bottom: 0;
+        min-width: 200px;
+        flex-shrink: 0;
+      }
+
+      #agents-grid.list-view .agent-icon {
+        width: 40px;
+        height: 40px;
+      }
+
+      #agents-grid.list-view .agent-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      #agents-grid.list-view .agent-description {
+        flex: 1;
+        margin-bottom: 0;
+        margin-right: 16px;
+        -webkit-line-clamp: 2;
+      }
+
+      #agents-grid.list-view .agent-labels {
+        flex-shrink: 0;
+        margin-bottom: 0;
+        margin-right: 16px;
+      }
+
+      #agents-grid.list-view .agent-meta {
+        flex-shrink: 0;
+        padding-top: 0;
+        border-top: none;
+        margin-top: 0;
+        margin-left: auto;
       }
 
       /* Modal */
       .modal {
         display: none;
-        transition: opacity 0.2s ease-in-out;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
         backdrop-filter: blur(8px);
+        animation: fadeIn 0.2s ease;
       }
-      .modal.flex {
+
+      .modal.show {
         display: flex;
-        animation: fadeIn 0.2s ease-out;
       }
 
       @keyframes fadeIn {
@@ -87,500 +467,397 @@
         }
       }
 
-      /* Enhanced Card Styling */
-      .agent-card {
-        background: var(--bg-card) !important;
-        border: var(--glass-border);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-
-      /* Top gradient line for cards */
-      .agent-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
+      .modal-content {
+        background: #ffffff;
+        border-radius: 20px;
+        max-width: 700px;
         width: 100%;
-        height: 2px;
-        background: linear-gradient(
-          90deg,
-          var(--google-blue),
-          var(--accent-purple)
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-
-      .agent-card:hover {
-        transform: translateY(-4px);
-        background: var(--bg-card-hover) !important;
-        box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3);
-        border-color: rgba(66, 133, 244, 0.3);
-      }
-
-      .agent-card:hover::before {
-        opacity: 1;
-      }
-
-      /* Tags */
-      .tag {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-        border-radius: 9999px;
-        font-weight: 500;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      .tag-type {
-        background-color: rgba(66, 133, 244, 0.1);
-        color: #8ab4f8;
-        border-color: rgba(66, 133, 244, 0.2);
-      }
-
-      .tag-model {
-        background-color: rgba(161, 66, 244, 0.1);
-        color: #d7aefb;
-        border-color: rgba(161, 66, 244, 0.2);
-      }
-
-      /* 卡片視圖數字圖示 */
-      .card-view-number {
+        max-height: 85vh;
         display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        padding: 24px 24px 16px;
+        border-bottom: 0.5px solid #e5e5ea;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-shrink: 0;
+        background: #ffffff;
+      }
+
+      .modal-title-group {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .modal-type-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        width: fit-content;
+      }
+
+      .modal-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #000000;
+        line-height: 1.4;
+        padding-right: 16px;
+        margin: 0;
+      }
+
+      .modal-path {
+        font-size: 11px;
+        color: #007aff;
+        font-family: 'SF Mono', 'Monaco', monospace;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        display: inline-flex;
         align-items: center;
-        justify-content: center;
+        gap: 4px;
+      }
+
+      .modal-path:hover {
+        color: #0051d5;
+        text-decoration: underline;
+      }
+
+      .modal-path svg {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+      }
+
+      .close-btn {
         width: 32px;
         height: 32px;
+        border: none;
+        background: #e5e5ea;
         border-radius: 50%;
-        background: linear-gradient(
-          135deg,
-          rgba(66, 133, 244, 0.15) 0%,
-          rgba(161, 66, 244, 0.15) 100%
-        );
-        border: 1px solid rgba(66, 133, 244, 0.3);
-        color: #8ab4f8;
-        font-size: 0.75rem;
-        font-weight: 600;
-        flex-shrink: 0;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .agent-card:hover .card-view-number {
-        background: linear-gradient(
-          135deg,
-          rgba(66, 133, 244, 0.25) 0%,
-          rgba(161, 66, 244, 0.25) 100%
-        );
-        border-color: rgba(66, 133, 244, 0.5);
-        transform: scale(1.1);
-      }
-
-      /* List View Override */
-      .dashboard-grid.list-view {
-        grid-template-columns: 1fr !important;
-        gap: 0.5rem;
-      }
-
-      /* 在卡片視圖中隱藏列表元素 */
-      .dashboard-grid:not(.list-view) .list-view-number,
-      .dashboard-grid:not(.list-view) .list-view-arrow {
-        display: none;
-      }
-
-      /* 在列表視圖中隱藏卡片元素 */
-      .dashboard-grid.list-view .card-view-number {
-        display: none;
-      }
-
-      .dashboard-grid.list-view .agent-card {
-        flex-direction: row;
-        align-items: center;
-        padding: 0.75rem 1.5rem;
-        background: rgba(19, 22, 32, 0.8) !important;
-        min-height: auto;
-      }
-
-      .dashboard-grid.list-view .agent-card:hover {
-        transform: translateX(4px);
-      }
-
-      .dashboard-grid.list-view .agent-content {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        flex: 1;
-        width: 100%;
-        padding: 0;
-      }
-
-      /* 列表視圖左側數字圖示 */
-      .dashboard-grid.list-view .list-view-number {
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: linear-gradient(
-          135deg,
-          rgba(66, 133, 244, 0.15) 0%,
-          rgba(161, 66, 244, 0.15) 100%
-        );
-        border: 1px solid rgba(66, 133, 244, 0.3);
-        color: #8ab4f8;
-        font-size: 0.875rem;
-        font-weight: 600;
-        flex-shrink: 0;
-        margin-right: 1rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .dashboard-grid.list-view .agent-card:hover .list-view-number {
-        background: linear-gradient(
-          135deg,
-          rgba(66, 133, 244, 0.25) 0%,
-          rgba(161, 66, 244, 0.25) 100%
-        );
-        border-color: rgba(66, 133, 244, 0.5);
-        transform: scale(1.05);
-      }
-
-      .dashboard-grid.list-view .agent-header {
-        margin-bottom: 0 !important;
-        margin-right: 1.5rem;
-        min-width: 180px;
+        transition: all 0.2s ease;
+        font-size: 20px;
+        color: #3c3c43;
         flex-shrink: 0;
       }
 
-      .dashboard-grid.list-view .agent-title {
-        font-size: 0.95rem;
+      .close-btn:hover {
+        background: #d1d1d6;
+      }
+
+      .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+        min-height: 0;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* 自定義滾動條樣式 */
+      .modal-body::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      .modal-body::-webkit-scrollbar-track {
+        background: #f9f9f9;
+        border-radius: 5px;
+        margin: 8px 0;
+      }
+
+      .modal-body::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        border-radius: 5px;
+        border: 2px solid #f9f9f9;
+      }
+
+      .modal-body::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
+      }
+
+      .detail-section {
+        margin-bottom: 24px;
+      }
+
+      .detail-section:last-child {
         margin-bottom: 0;
       }
 
-      .dashboard-grid.list-view .agent-description {
+      .detail-section h3 {
+        font-size: 15px;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f2f2f7;
+      }
+
+      .detail-section h3 svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .description-box {
+        background: linear-gradient(135deg, #f0f4ff 0%, #f9f9ff 100%);
+        padding: 16px;
+        border-radius: 12px;
+        border: 2px solid #e0e7ff;
+        font-size: 15px;
+        line-height: 1.7;
+        color: #1a1a1a;
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .detail-item {
+        background: #f9f9f9;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 1px solid #e5e5ea;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .detail-item strong {
+        color: #667eea;
+        font-weight: 600;
         display: block;
-        flex: 1;
+        margin-bottom: 4px;
+      }
+
+      .detail-item p {
+        color: #3c3c43;
         margin: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 0.875rem;
       }
 
-      .dashboard-grid.list-view .agent-meta {
+      .modal-labels {
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        flex-shrink: 0;
-        margin-left: auto;
-        margin-right: 1rem;
-        order: 2;
+        flex-wrap: wrap;
+        gap: 8px;
       }
 
-      .dashboard-grid.list-view .agent-labels {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-        margin: 0;
-        margin-right: 1rem;
-        flex-shrink: 0;
-        order: 1;
-      }
-
-      /* 在列表模式下隱藏 type 標籤和 labels 區的 model 標籤 */
-      .dashboard-grid.list-view .agent-labels .tag-type,
-      .dashboard-grid.list-view .agent-labels .tag-model {
-        display: none;
-      }
-
-      /* 列表視圖右側箭頭圖示 */
-      .dashboard-grid.list-view .list-view-arrow {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: rgba(66, 133, 244, 0.1);
-        color: #8ab4f8;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        flex-shrink: 0;
-        order: 3;
-        margin-left: 1rem;
-      }
-
-      .dashboard-grid.list-view .agent-card:hover .list-view-arrow {
-        background: rgba(66, 133, 244, 0.2);
-        transform: translateX(4px);
-      }
-
-      .dashboard-grid.list-view .agent-footer {
-        display: none;
-      }
-
-      /* Utilities */
-      .text-gradient-gemini {
-        background: linear-gradient(to right, #4285f4, #9b72cb, #d96570);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      /* Fix Search Input Visibility */
-      #search-input {
-        color: #ffffff !important;
-        background-color: #131620 !important;
-      }
-      #search-input::placeholder {
-        color: #9ca3af !important; /* gray-400 */
-      }
-
-      /* Collapse Component Styles */
-      .collapse-header {
-        cursor: pointer;
-        user-select: none;
+      .modal-label-tag {
+        padding: 6px 14px;
+        background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+        color: #667eea;
+        font-size: 13px;
+        border-radius: 16px;
+        font-weight: 600;
+        border: 2px solid #e0e7ff;
         transition: all 0.2s ease;
+        cursor: default;
       }
 
-      .collapse-header:hover {
-        opacity: 0.8;
+      .modal-label-tag:hover {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #ffffff;
+        border-color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
       }
 
-      .collapse-icon {
-        transition: transform 0.3s ease;
-        display: inline-block;
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #8e8e93;
       }
 
-      .collapse-header.collapsed .collapse-icon {
-        transform: rotate(-90deg);
+      .empty-state svg {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 16px;
+        opacity: 0.5;
       }
 
-      .collapse-content {
-        max-height: 40vh;
-        overflow-y: auto;
-        transition: max-height 0.3s ease, opacity 0.3s ease,
-          margin-top 0.3s ease;
-        opacity: 1;
-        margin-top: 0.5rem;
+      .empty-state h3 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #3c3c43;
       }
 
-      .collapse-content.collapsed {
-        max-height: 0;
-        opacity: 0;
-        margin-top: 0;
-        overflow: hidden;
+      .empty-state p {
+        font-size: 14px;
       }
 
-      /* Mobile Responsive Adjustments */
+      /* Responsive Design */
       @media (max-width: 768px) {
-        /* Container Padding */
-        .container {
-          padding-left: 1rem;
-          padding-right: 1rem;
+        header h1 {
+          font-size: 24px;
         }
 
-        /* Header Adjustments */
-        h1.text-4xl {
-          font-size: 2rem;
+        .stats-bar {
+          flex-direction: column;
+          gap: 12px;
         }
 
-        /* List View Mobile Layout */
-        .dashboard-grid.list-view .agent-card {
-          flex-direction: column !important;
-          align-items: flex-start !important;
-          padding: 1rem !important;
-          gap: 0.75rem;
+        .nav-links {
+          flex-direction: column;
         }
 
-        .dashboard-grid.list-view .agent-content {
-          flex-direction: column !important;
-          align-items: flex-start !important;
-          gap: 0.5rem;
-          padding: 0 !important; /* Reset padding override from list view */
+        .nav-link {
+          width: 100%;
+          justify-content: center;
         }
 
-        /* Hide number in mobile list view to save space */
-        .dashboard-grid.list-view .list-view-number {
-          display: none !important;
+        .controls-bar {
+          flex-direction: column;
         }
 
-        .dashboard-grid.list-view .agent-header {
-          margin-right: 0 !important;
-          margin-bottom: 0 !important;
+        .search-container {
           width: 100%;
         }
 
-        .dashboard-grid.list-view .agent-labels {
-          margin-right: 0 !important;
-          order: 2;
-          width: 100%;
-          display: flex;
-          flex-wrap: wrap;
-          gap: 0.5rem;
+        #agents-grid {
+          grid-template-columns: 1fr;
         }
 
-        /* Show type/model tags in list view on mobile since we have space in column layout */
-        .dashboard-grid.list-view .agent-labels .tag-type,
-        .dashboard-grid.list-view .agent-labels .tag-model {
-          display: inline-block !important;
+        #agents-grid.list-view .agent-card {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 16px;
         }
 
-        .dashboard-grid.list-view .agent-description {
-          white-space: normal !important;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          line-clamp: 3;
-          -webkit-box-orient: vertical;
-          margin: 0 !important;
-          order: 3;
+        #agents-grid.list-view .agent-header {
+          margin-bottom: 12px;
           width: 100%;
         }
 
-        .dashboard-grid.list-view .agent-meta {
-          margin-left: 0 !important;
-          margin-right: 0 !important;
+        #agents-grid.list-view .agent-description {
+          margin-right: 0;
+          margin-bottom: 12px;
+        }
+
+        #agents-grid.list-view .agent-labels {
+          margin-right: 0;
+          margin-bottom: 12px;
+        }
+
+        #agents-grid.list-view .agent-meta {
           width: 100%;
-          order: 4;
-          justify-content: flex-start;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 0.75rem;
-          margin-top: 0.25rem;
+          margin-left: 0;
         }
 
-        .dashboard-grid.list-view .list-view-arrow {
-          display: none !important;
+        .modal-content {
+          max-width: 100%;
+          max-height: 95vh;
         }
 
-        /* Modal Adjustments */
-        #detail-modal .p-6 {
-          padding: 1.25rem !important;
+        .modal-body {
+          padding: 16px;
         }
 
-        #modal-title {
-          font-size: 1.25rem;
+        .modal-title {
+          font-size: 18px;
         }
       }
     </style>
   </head>
+
   <body>
-    <!-- 主容器 -->
-    <div class="container mx-auto p-4 md:p-8">
-      <!-- 標題 -->
-      <header class="text-center mb-10 md:mb-16 relative">
-        <!-- Glow Effect -->
-        <div
-          class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"
-        ></div>
+    <div class="container">
+      <!-- Header -->
+      <header>
+        <h1>Google ADK 代理市集</h1>
+        <p>探索專案實現與整合社群打造的 AI 助手</p>
 
-        <div
-          class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-medium mb-4"
-        >
-          <span class="relative flex h-2 w-2">
-            <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"
-            ></span>
-          </span>
-          Agents Marketplace
-        </div>
-
-        <h1
-          class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight"
-        >
-          <span class="text-gradient-gemini">Google ADK</span>
-          <br class="md:hidden" />
-          <span class="text-gray-100">Agent Marketplace</span>
-        </h1>
-        <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto leading-relaxed">
-          探索專案實現與整合社群打造的 Google ADK 代理市集<br />
-          <span class="text-sm text-gray-500"
-            >一站式管理、部署與整合您的 AI 助手</span
-          >
-        </p>
-
-        <div class="mt-8 flex justify-center gap-4">
-          <a
-            href="../index.html"
-            class="px-5 py-2 rounded-full border border-gray-600 bg-gray-800/70 text-sm font-medium text-gray-300 hover:text-white hover:border-blue-500 transition-all"
-          >
-            ← 返回學習儀表板
-          </a>
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+          <div class="stat-item">
+            <svg class="stat-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+              ></path>
+            </svg>
+            <span>總計：<strong id="total-count">0</strong> 個代理</span>
+          </div>
+          <div class="stat-item">
+            <svg class="stat-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span id="agent-types-count">0 種類型</span>
+          </div>
         </div>
       </header>
 
-      <!-- 搜尋與控制項 -->
-      <div class="mb-8 flex flex-col sm:flex-row items-center gap-4">
-        <!-- Google 風格搜尋框 -->
-        <div class="relative w-full sm:flex-grow">
-          <div
-            class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none"
+      <!-- Navigation Links -->
+      <div class="nav-links">
+        <a href="../index.html" class="nav-link">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            ></path>
+          </svg>
+          返回學習儀表板
+        </a>
+      </div>
+
+      <!-- Search & View Controls -->
+      <div class="controls-bar">
+        <div class="search-container">
+          <svg
+            class="search-icon"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
           >
-            <svg
-              class="w-4 h-4 text-gray-400"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
-          </div>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            ></path>
+          </svg>
           <input
             type="text"
             id="search-input"
+            class="search-input"
             placeholder="搜尋代理名稱、功能或工具..."
-            class="block w-full p-3 pl-12 text-sm text-white border border-gray-700 rounded-lg bg-[#131620] focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 placeholder-gray-500 transition-all shadow-lg"
           />
-          <button
-            id="reset-button"
-            class="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-400 hover:text-white"
-          >
-            <svg
-              class="w-4 h-4"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
-            <span class="sr-only">清除搜尋</span>
-          </button>
+          <button class="clear-btn" id="clear-btn">×</button>
         </div>
 
-        <!-- 視圖切換按鈕 -->
-        <div
-          class="flex items-center gap-1 bg-[#131620] rounded-lg p-1 border border-gray-700/50"
-        >
-          <button
-            id="card-view-btn"
-            class="p-2 rounded-md text-purple-400 bg-purple-500/10 hover:bg-purple-500/20 transition-all duration-200"
-            aria-label="卡片模式"
-            title="卡片模式"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+        <div class="view-toggle">
+          <button class="view-btn active" id="card-view-btn" title="卡片模式">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -589,18 +866,8 @@
               ></path>
             </svg>
           </button>
-          <button
-            id="list-view-btn"
-            class="p-2 rounded-md text-gray-500 hover:text-gray-300 hover:bg-gray-800/50 transition-all duration-200"
-            aria-label="列表模式"
-            title="列表模式"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+          <button class="view-btn" id="list-view-btn" title="列表模式">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -612,228 +879,25 @@
         </div>
       </div>
 
-      <!-- 統計資訊 -->
-      <div class="mb-6 flex gap-4 text-sm text-gray-400 px-2">
-        <span
-          >總計：<strong id="total-count" class="text-white">0</strong>
-          個代理</span
-        >
-      </div>
-
-      <!-- 代理卡片容器 -->
-      <div
-        id="agents-grid"
-        class="dashboard-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-      >
+      <!-- Agent Cards Container -->
+      <div id="agents-grid">
         <!-- JavaScript 將在此處動態插入卡片 -->
       </div>
     </div>
 
-    <!-- 彈出式 Modal (預設隱藏) -->
-    <div
-      id="detail-modal"
-      class="modal fixed inset-0 z-50 items-center justify-center overflow-hidden bg-black/80 p-4 backdrop-blur-sm"
-    >
-      <div
-        class="relative w-full max-w-3xl mx-auto bg-[#131620] rounded-2xl shadow-2xl border border-gray-700/50 transform transition-all flex flex-col max-h-[90vh]"
-      >
-        <!-- Modal 頂部 -->
-        <div
-          class="flex items-center justify-between p-6 border-b border-gray-800/50 bg-[#1a1f2e] flex-shrink-0"
-        >
-          <div class="flex flex-col">
-            <h2
-              id="modal-title"
-              class="text-2xl font-bold text-white tracking-tight"
-            >
-              <!-- Modal 標題將動態填入 -->
-            </h2>
-            <span
-              id="modal-path"
-              class="text-xs text-gray-500 font-mono mt-1 break-all"
-            ></span>
+    <!-- Detail Modal -->
+    <div class="modal" id="detail-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title-group">
+            <span class="modal-type-badge" id="modal-type"></span>
+            <h2 class="modal-title" id="modal-title"></h2>
+            <div id="modal-path"></div>
           </div>
-
-          <!-- 關閉按鈕 -->
-          <button
-            onclick="closeModal()"
-            class="text-gray-400 bg-transparent hover:bg-gray-700 hover:text-white rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center ml-4 flex-shrink-0"
-          >
-            <svg
-              class="w-3 h-3"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 14 14"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-              />
-            </svg>
-            <span class="sr-only">關閉視窗</span>
-          </button>
+          <button class="close-btn" id="close-btn">×</button>
         </div>
-
-        <!-- Modal 內容 (可滾動) -->
-        <div id="modal-body" class="p-6 overflow-y-auto flex-1">
-          <div class="space-y-8">
-            <!-- 標籤區 -->
-            <div class="flex flex-wrap gap-2" id="modal-tags">
-              <!-- 動態標籤 -->
-            </div>
-
-            <!-- 詳細說明 -->
-            <div>
-              <h3
-                class="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  ></path>
-                </svg>
-                功能描述
-              </h3>
-              <p
-                id="modal-description"
-                class="text-base leading-relaxed text-gray-300 bg-gray-800/30 p-4 rounded-lg border border-gray-700/30"
-              >
-                <!-- Modal 詳細說明將動態填入 -->
-              </p>
-            </div>
-
-            <!-- 工具列表 -->
-            <div id="modal-tools-container" style="display: none">
-              <h3
-                class="collapse-header collapsed text-lg font-semibold text-green-400 mb-2 flex items-center gap-2 justify-between"
-                onclick="toggleCollapse('tools')"
-              >
-                <div class="flex items-center gap-2">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                    ></path>
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                    ></path>
-                  </svg>
-                  可用工具 (Tools)
-                </div>
-                <svg
-                  class="collapse-icon w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </h3>
-              <div
-                class="collapse-content collapsed grid grid-cols-1 sm:grid-cols-2 gap-3"
-                id="modal-tools-list"
-              >
-                <!-- 工具將動態填入 -->
-              </div>
-            </div>
-
-            <!-- 子代理列表 -->
-            <div id="modal-subagents-container" style="display: none">
-              <h3
-                class="collapse-header collapsed text-lg font-semibold text-purple-400 mb-2 flex items-center gap-2 justify-between"
-                onclick="toggleCollapse('subagents')"
-              >
-                <div class="flex items-center gap-2">
-                  <svg
-                    class="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                    ></path>
-                  </svg>
-                  子代理 (Sub-agents)
-                </div>
-                <svg
-                  class="collapse-icon w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
-                  ></path>
-                </svg>
-              </h3>
-              <div
-                class="collapse-content collapsed space-y-2"
-                id="modal-subagents-list"
-              >
-                <!-- 子代理將動態填入 -->
-              </div>
-            </div>
-
-            <!-- 其他資訊 (Plugins, Capabilities) -->
-            <div id="modal-extras-container" style="display: none">
-              <h3
-                class="text-lg font-semibold text-yellow-400 mb-2 flex items-center gap-2"
-              >
-                <svg
-                  class="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  ></path>
-                </svg>
-                其他功能
-              </h3>
-              <ul
-                id="modal-extras-list"
-                class="list-disc list-inside space-y-1 text-gray-300"
-              ></ul>
-            </div>
-          </div>
+        <div class="modal-body" id="modal-body">
+          <!-- 動態內容將在此處填入 -->
         </div>
       </div>
     </div>
@@ -1852,384 +1916,351 @@
           ],
         },
       ];
-
       // DOM 元素
-      const grid = document.getElementById('agents-grid');
+      const agentsGrid = document.getElementById('agents-grid');
       const searchInput = document.getElementById('search-input');
-      const resetButton = document.getElementById('reset-button');
-      const totalCountEl = document.getElementById('total-count');
+      const clearBtn = document.getElementById('clear-btn');
+      const cardViewBtn = document.getElementById('card-view-btn');
+      const listViewBtn = document.getElementById('list-view-btn');
+      const totalCount = document.getElementById('total-count');
+      const agentTypesCount = document.getElementById('agent-types-count');
       const modal = document.getElementById('detail-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalType = document.getElementById('modal-type');
+      const modalPath = document.getElementById('modal-path');
+      const modalBody = document.getElementById('modal-body');
+      const closeBtn = document.getElementById('close-btn');
 
-      // 更新總數
-      totalCountEl.textContent = agentsData.length;
+      let filteredData = [...agentsData];
 
-      // 建立卡片
-      function createCard(agent, index) {
-        const card = document.createElement('div');
-        card.className =
-          'agent-card bg-gray-800 rounded-lg cursor-pointer flex flex-col justify-between';
-        card.onclick = () => openModal(index);
+      // 更新統計資訊
+      function updateStats() {
+        totalCount.textContent = filteredData.length;
+        const types = new Set(filteredData.map((a) => a.type));
+        agentTypesCount.textContent = `${types.size} 種類型`;
+      }
 
-        // 內容區塊
-        const content = document.createElement('div');
-        content.className = 'agent-content p-5 flex flex-col h-full';
-
-        // 列表視圖數字圖示
-        const numberBadge = document.createElement('div');
-        numberBadge.className = 'list-view-number';
-        numberBadge.textContent = index + 1;
-
-        // 標頭
-        const header = document.createElement('div');
-        header.className = 'agent-header flex justify-between items-start mb-3';
-
-        const title = document.createElement('h3');
-        title.className =
-          'agent-title text-lg font-bold text-white tracking-tight group-hover:text-purple-300 transition-colors';
-        title.textContent = agent.name;
-
-        // 卡片視圖數字圖示
-        const cardNumberBadge = document.createElement('div');
-        cardNumberBadge.className = 'card-view-number';
-        cardNumberBadge.textContent = index + 1;
-
-        header.appendChild(title);
-        header.appendChild(cardNumberBadge);
-
-        // 標籤區塊（用於卡片視圖）
-        const labelBlock = document.createElement('div');
-        labelBlock.className = 'agent-labels flex flex-wrap gap-2 mb-3';
-
-        // 如果類型不是 "Agent"，則添加類型標籤
-        if (agent.type && agent.type !== 'Agent') {
-          const typeTag = document.createElement('span');
-          typeTag.className = 'tag tag-type text-xs';
-          typeTag.textContent = agent.type;
-          labelBlock.appendChild(typeTag);
-        }
-
-        // 描述
-        const desc = document.createElement('p');
-        desc.className =
-          'agent-description text-sm text-gray-400 mb-4 line-clamp-2 flex-grow';
-        desc.textContent = agent.description;
-
-        // 如果有模型，則添加模型標籤
-        if (agent.model) {
-          const modelTag = document.createElement('span');
-          modelTag.className = 'tag tag-model flex items-center gap-1';
-          modelTag.innerHTML = `
-            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path></svg>
-            ${agent.model.split('/')[1] || agent.model}
+      // 渲染代理卡片
+      function renderAgents() {
+        if (filteredData.length === 0) {
+          agentsGrid.innerHTML = `
+            <div class="empty-state">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+              </svg>
+              <h3>找不到相符的代理</h3>
+              <p>請嘗試其他搜尋關鍵字</p>
+            </div>
           `;
-          labelBlock.appendChild(modelTag);
+          return;
         }
 
-        // 元資訊 (模型 & 工具數量)
-        const meta = document.createElement('div');
-        meta.className = 'agent-meta flex items-center gap-3 mt-auto';
+        agentsGrid.innerHTML = filteredData
+          .map(
+            (agent) => `
+          <div class="agent-card" onclick="showDetail('${agent.name}')">
+            <div class="agent-header">
+              <div class="agent-icon">
+                <svg fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C10.34 2 9 3.34 9 5v1H7c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h1v2c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2v-2h1c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-2V5c0-1.66-1.34-3-3-3zm0 2c.55 0 1 .45 1 1v1h-2V5c0-.55.45-1 1-1zM7 8h10v2H7V8zm3 4h4v2h-4v-2zm-3 4v2c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2v-2h-2v1.5c0 .28-.22.5-.5.5h-7c-.28 0-.5-.22-.5-.5V16H7z"/>
+                  <circle cx="9" cy="9" r="1"/>
+                  <circle cx="15" cy="9" r="1"/>
+                </svg>
+              </div>
+              <div class="agent-title-group">
+                <div class="agent-title">${agent.name}</div>
+                <a href="https://github.com/lastingyeh/google-adk-study/tree/master/${
+                  agent.path
+                }"
+                   class="agent-path"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   onclick="event.stopPropagation()"
+                   title="${agent.path}">
+                  <svg fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                  </svg>
+                  <span>${agent.path.split('/').pop()}</span>
+                </a>
+              </div>
+            </div>
 
-        const toolCount =
-          (agent.tools ? agent.tools.length : 0) +
-          (agent.sub_agents ? agent.sub_agents.length : 0);
+            <div class="agent-description">${agent.description}</div>
 
-        // 始終顯示工具數量，即使為 0
-        const toolsTag = document.createElement('span');
-        toolsTag.className =
-          'text-xs text-gray-500 font-medium flex items-center gap-1';
-        toolsTag.innerHTML = `
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-              ${toolCount} 個工具/代理
-           `;
-        meta.appendChild(toolsTag);
+            <div class="agent-labels">
+              <span class="label-tag type">${agent.type}</span>
+              ${
+                agent.model
+                  ? `<span class="label-tag model">${agent.model}</span>`
+                  : ''
+              }
+            </div>
 
-        // 列表視圖右側箭頭圖示
-        const arrow = document.createElement('div');
-        arrow.className = 'list-view-arrow';
-        arrow.innerHTML = `
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        `;
-
-        content.appendChild(numberBadge);
-        content.appendChild(header);
-        content.appendChild(labelBlock); // 插入標籤區塊
-        content.appendChild(desc);
-        content.appendChild(meta);
-        content.appendChild(arrow);
-
-        // 頁腳 (僅卡片視圖)
-        const footer = document.createElement('div');
-        footer.className =
-          'agent-footer px-5 py-3 border-t border-gray-700/50 flex justify-between items-center bg-gray-800/50';
-        footer.innerHTML = `
-            <span class="text-xs text-gray-500 font-mono truncate max-w-[180px]" title="${
-              agent.path
-            }">${agent.path.split('/').pop()}</span>
-            <span class="text-purple-400 text-xs font-semibold">詳情</span>
-        `;
-
-        card.appendChild(content);
-        card.appendChild(footer);
-
-        return card;
-      }
-
-      // 渲染所有卡片
-      function renderCards(agents) {
-        grid.innerHTML = '';
-        agents.forEach((agent, index) => {
-          // 因為篩選後 index 會變，所以這裡我們傳遞原始資料的 index
-          const originalIndex = agentsData.indexOf(agent);
-          grid.appendChild(createCard(agent, originalIndex));
-        });
-      }
-
-      // 初始渲染
-      renderCards(agentsData);
-
-      // Toggle collapse function for modal sections
-      function toggleCollapse(section) {
-        const header = event.currentTarget;
-        const content = header.nextElementSibling;
-
-        header.classList.toggle('collapsed');
-        content.classList.toggle('collapsed');
+            <div class="agent-meta">
+              ${
+                agent.tools
+                  ? `
+                <div class="meta-item">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
+                  </svg>
+                  <span>${agent.tools.length} 工具</span>
+                </div>
+              `
+                  : ''
+              }
+              ${
+                agent.sub_agents
+                  ? `
+                <div class="meta-item">
+                  <svg fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
+                  </svg>
+                  <span>${agent.sub_agents.length} 子代理</span>
+                </div>
+              `
+                  : ''
+              }
+            </div>
+          </div>
+        `
+          )
+          .join('');
       }
 
       // 搜尋功能
-      searchInput.addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        const filtered = agentsData.filter(
-          (agent) =>
-            agent.name.toLowerCase().includes(term) ||
-            agent.description.toLowerCase().includes(term) ||
-            (agent.tools &&
-              agent.tools.some((t) => t.name.toLowerCase().includes(term)))
-        );
-        renderCards(filtered);
-      });
+      function performSearch(query) {
+        const searchTerm = query.toLowerCase().trim();
 
-      resetButton.addEventListener('click', () => {
-        searchInput.value = '';
-        renderCards(agentsData);
-      });
+        if (searchTerm === '') {
+          filteredData = [...agentsData];
+        } else {
+          filteredData = agentsData.filter((agent) => {
+            const searchableFields = [
+              agent.name,
+              agent.description,
+              agent.type,
+              agent.model,
+              ...(agent.tools || []).map((t) => t.name + ' ' + t.description),
+              ...(agent.sub_agents || []).map((s) => s.name),
+            ]
+              .filter(Boolean)
+              .join(' ')
+              .toLowerCase();
 
-      // Modal 功能
-      function openModal(index) {
-        const agent = agentsData[index];
-        document.getElementById('modal-title').textContent = agent.name;
-        document.getElementById('modal-path').innerHTML = `
-          <a href="https://github.com/lastingyeh/google-adk-study/tree/master/${agent.path}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-purple-400 hover:text-purple-300 hover:underline transition-colors duration-200">
-            <span>${agent.path}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-            </svg>
-          </a>
+            return searchableFields.includes(searchTerm);
+          });
+        }
+
+        updateStats();
+        renderAgents();
+      }
+
+      // 顯示詳細資訊
+      function showDetail(agentName) {
+        const agent = agentsData.find((a) => a.name === agentName);
+        if (!agent) return;
+
+        modalType.textContent = agent.type;
+        modalTitle.textContent = agent.name;
+        modalPath.innerHTML = `<a href="https://github.com/lastingyeh/google-adk-study/tree/master/${
+          agent.path
+        }"
+          class="modal-path"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="${agent.path}">
+          <svg fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+          </svg>
+          ${agent.path.split('/').pop()}
+        </a>`;
+
+        let bodyHTML = `
+          <div class="detail-section">
+            <h3>
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              功能描述
+            </h3>
+            <div class="description-box">${agent.description}</div>
+          </div>
         `;
-        document.getElementById('modal-description').textContent =
-          agent.description;
 
-        // 標籤
-        const tagsContainer = document.getElementById('modal-tags');
-        tagsContainer.innerHTML = '';
+        // 標籤區
+        const labels = [];
+        if (agent.type) labels.push(agent.type);
+        if (agent.model) labels.push(`Model: ${agent.model}`);
 
-        // 類型標籤
-        const typeSpan = document.createElement('span');
-        typeSpan.className = 'tag tag-type';
-        typeSpan.textContent = agent.type;
-        tagsContainer.appendChild(typeSpan);
-
-        // 模型標籤
-        if (agent.model) {
-          const modelSpan = document.createElement('span');
-          modelSpan.className = 'tag tag-model';
-          modelSpan.textContent = agent.model;
-          tagsContainer.appendChild(modelSpan);
+        if (labels.length > 0) {
+          bodyHTML += `
+            <div class="detail-section">
+              <h3>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                </svg>
+                標籤
+              </h3>
+              <div class="modal-labels">
+                ${labels
+                  .map((l) => `<span class="modal-label-tag">${l}</span>`)
+                  .join('')}
+              </div>
+            </div>
+          `;
         }
 
-        // 工具
-        const toolsContainer = document.getElementById('modal-tools-container');
-        const toolsList = document.getElementById('modal-tools-list');
-        toolsList.innerHTML = '';
-
+        // 工具列表
         if (agent.tools && agent.tools.length > 0) {
-          toolsContainer.style.display = 'block';
-          agent.tools.forEach((tool) => {
-            const div = document.createElement('div');
-            div.className =
-              'bg-gray-800/50 p-3 rounded border border-gray-700/50 hover:border-gray-600 transition-colors';
-
-            let paramsHtml = '';
-            if (tool.parameters && tool.parameters.length > 0) {
-              paramsHtml =
-                '<div class="mt-2 pt-2 border-t border-gray-700/30 space-y-1">';
-              tool.parameters.forEach((param) => {
-                paramsHtml += `
-                            <div class="flex items-baseline text-xs">
-                                <span class="text-blue-300 font-mono mr-2">${param.name}</span>
-                                <span class="text-gray-500 mr-2">(${param.type})</span>
-                                <span class="text-gray-400">${param.description}</span>
-                            </div>
-                        `;
-              });
-              paramsHtml += '</div>';
-            }
-
-            div.innerHTML = `
-                    <div class="font-mono text-sm text-green-300 font-semibold mb-1">${
-                      tool.name
-                    }</div>
-                    ${
-                      tool.description
-                        ? `<div class="text-xs text-gray-400 mb-1">${tool.description}</div>`
-                        : ''
-                    }
-                    ${paramsHtml}
-                `;
-            toolsList.appendChild(div);
-          });
-        } else if (agent.toolsets && agent.toolsets.length > 0) {
-          toolsContainer.style.display = 'block';
-          agent.toolsets.forEach((ts) => {
-            const div = document.createElement('div');
-            div.className =
-              'bg-gray-800/50 p-3 rounded border border-gray-700/50';
-            div.innerHTML = `
-                    <div class="font-mono text-sm text-green-300 font-semibold mb-1">${ts.name}</div>
-                    <div class="text-xs text-gray-400">Type: ${ts.type}</div>
-                `;
-            toolsList.appendChild(div);
-          });
-        } else {
-          toolsContainer.style.display = 'none';
+          bodyHTML += `
+            <div class="detail-section">
+              <h3>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                可用工具 (${agent.tools.length})
+              </h3>
+              <div class="detail-list">
+                ${agent.tools
+                  .map(
+                    (tool) => `
+                  <div class="detail-item">
+                    <strong>${tool.name}</strong>
+                    <p>${tool.description}</p>
+                  </div>
+                `
+                  )
+                  .join('')}
+              </div>
+            </div>
+          `;
         }
 
-        // 子代理
-        const subAgentsContainer = document.getElementById(
-          'modal-subagents-container'
-        );
-        const subAgentsList = document.getElementById('modal-subagents-list');
-        subAgentsList.innerHTML = '';
-
+        // 子代理列表
         if (agent.sub_agents && agent.sub_agents.length > 0) {
-          subAgentsContainer.style.display = 'block';
-
-          // 遞迴渲染子代理的輔助函式 (為 UI 簡化)
-          function renderSubAgent(sub, depth = 0) {
-            const div = document.createElement('div');
-            div.className = `p-2 rounded bg-gray-800/30 border border-gray-700/30 ${
-              depth > 0 ? 'ml-4' : ''
-            }`;
-
-            let content = `<div class="flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-purple-500"></span>
-                    <span class="font-semibold text-gray-200">${
-                      typeof sub === 'string' ? sub : sub.name
-                    }</span>
-                    ${
-                      sub.type
-                        ? `<span class="text-xs px-2 py-0.5 rounded bg-purple-900/30 text-purple-300 border border-purple-500/20">${sub.type}</span>`
-                        : ''
-                    }
-                </div>`;
-
-            if (sub.description) {
-              content += `<div class="text-sm text-gray-400 mt-1 ml-4">${sub.description}</div>`;
-            }
-
-            div.innerHTML = content;
-            subAgentsList.appendChild(div);
-
-            if (sub.sub_agents && Array.isArray(sub.sub_agents)) {
-              sub.sub_agents.forEach((child) =>
-                renderSubAgent(child, depth + 1)
-              );
-            }
-          }
-
-          agent.sub_agents.forEach((sub) => renderSubAgent(sub));
-        } else {
-          subAgentsContainer.style.display = 'none';
+          bodyHTML += `
+            <div class="detail-section">
+              <h3>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                </svg>
+                子代理 (${agent.sub_agents.length})
+              </h3>
+              <div class="detail-list">
+                ${agent.sub_agents
+                  .map(
+                    (sub) => `
+                  <div class="detail-item">
+                    <strong>${sub.name}</strong>
+                    ${sub.description ? `<p>${sub.description}</p>` : ''}
+                  </div>
+                `
+                  )
+                  .join('')}
+              </div>
+            </div>
+          `;
         }
 
-        // 額外資訊 (外掛、能力、規劃器)
-        const extrasContainer = document.getElementById(
-          'modal-extras-container'
-        );
-        const extrasList = document.getElementById('modal-extras-list');
-        extrasList.innerHTML = '';
-        let hasExtras = false;
-
-        if (agent.plugins) {
-          hasExtras = true;
-          agent.plugins.forEach((p) => {
-            extrasList.innerHTML += `<li>外掛程式: <span class="text-yellow-200">${p}</span></li>`;
-          });
-        }
+        // 其他功能
+        const extras = [];
         if (agent.capabilities) {
-          hasExtras = true;
-          agent.capabilities.forEach((c) => {
-            extrasList.innerHTML += `<li>能力: <span class="text-yellow-200">${c}</span></li>`;
-          });
+          extras.push(`Capabilities: ${agent.capabilities.join(', ')}`);
         }
-        if (agent.planner) {
-          hasExtras = true;
-          extrasList.innerHTML += `<li>規劃器: <span class="text-yellow-200">${agent.planner}</span></li>`;
+        if (agent.toolsets) {
+          extras.push(
+            `Toolsets: ${agent.toolsets
+              .map((t) => `${t.name} (${t.type})`)
+              .join(', ')}`
+          );
+        }
+        if (agent.callbacks) {
+          extras.push(`Callbacks: ${agent.callbacks.length} 個回調`);
         }
 
-        extrasContainer.style.display = hasExtras ? 'block' : 'none';
+        if (extras.length > 0) {
+          bodyHTML += `
+            <div class="detail-section">
+              <h3>
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                其他功能
+              </h3>
+              <div class="detail-list">
+                ${extras
+                  .map((e) => `<div class="detail-item">${e}</div>`)
+                  .join('')}
+              </div>
+            </div>
+          `;
+        }
 
-        modal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
+        modalBody.innerHTML = bodyHTML;
+        modal.classList.add('show');
       }
 
+      // 關閉 Modal
       function closeModal() {
-        modal.classList.remove('flex');
-        document.body.style.overflow = 'auto';
+        modal.classList.remove('show');
       }
 
-      // 在 Modal 外部點擊時關閉
+      // 視圖切換
+      function setViewMode(mode) {
+        if (mode === 'list') {
+          agentsGrid.classList.add('list-view');
+          cardViewBtn.classList.remove('active');
+          listViewBtn.classList.add('active');
+          localStorage.setItem('agentViewMode', 'list');
+        } else {
+          agentsGrid.classList.remove('list-view');
+          cardViewBtn.classList.add('active');
+          listViewBtn.classList.remove('active');
+          localStorage.setItem('agentViewMode', 'card');
+        }
+      }
+
+      // 事件監聽
+      searchInput.addEventListener('input', (e) => {
+        performSearch(e.target.value);
+      });
+
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        performSearch('');
+      });
+
+      cardViewBtn.addEventListener('click', () => setViewMode('card'));
+      listViewBtn.addEventListener('click', () => setViewMode('list'));
+
       modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
       });
 
-      // 按下 Escape 鍵時關閉
+      closeBtn.addEventListener('click', closeModal);
+
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape' && modal.classList.contains('show')) {
+          closeModal();
+        }
       });
 
-      // 視圖切換
-      const cardViewBtn = document.getElementById('card-view-btn');
-      const listViewBtn = document.getElementById('list-view-btn');
-
-      function setView(mode) {
-        if (mode === 'list') {
-          grid.classList.add('list-view');
-          listViewBtn.classList.add('text-purple-400', 'bg-purple-500/10');
-          listViewBtn.classList.remove('text-gray-500');
-          cardViewBtn.classList.remove('text-purple-400', 'bg-purple-500/10');
-          cardViewBtn.classList.add('text-gray-500');
-          localStorage.setItem('adkAgentsViewMode', 'list');
-        } else {
-          grid.classList.remove('list-view');
-          cardViewBtn.classList.add('text-purple-400', 'bg-purple-500/10');
-          cardViewBtn.classList.remove('text-gray-500');
-          listViewBtn.classList.remove('text-purple-400', 'bg-purple-500/10');
-          listViewBtn.classList.add('text-gray-500');
-          localStorage.setItem('adkAgentsViewMode', 'card');
-        }
+      // 初始化
+      const savedViewMode = localStorage.getItem('agentViewMode');
+      if (savedViewMode === 'list') {
+        setViewMode('list');
       }
 
-      cardViewBtn.addEventListener('click', () => setView('card'));
-      listViewBtn.addEventListener('click', () => setView('list'));
-
-      // 恢復視圖偏好設定
-      if (localStorage.getItem('adkAgentsViewMode') === 'list') {
-        setView('list');
-      }
+      updateStats();
+      renderAgents();
     </script>
   </body>
 </html>
