@@ -366,19 +366,22 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 12px;
-        margin-top: 24px;
+        gap: 8px;
+        margin-bottom: 20px;
         padding: 16px;
         background: #ffffff;
         border-radius: 12px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        flex-wrap: wrap;
       }
 
       .pagination button {
-        padding: 10px 20px;
-        background-color: #007aff;
-        color: #ffffff;
-        border: none;
+        min-width: 40px;
+        height: 40px;
+        padding: 8px 12px;
+        background-color: #ffffff;
+        color: #007aff;
+        border: 2px solid #e5e5ea;
         border-radius: 10px;
         font-size: 15px;
         font-weight: 600;
@@ -387,10 +390,10 @@
         font-family: inherit;
       }
 
-      .pagination button:hover:not(:disabled) {
-        background-color: #0051d5;
+      .pagination button:hover:not(:disabled):not(.active) {
+        background-color: #f9f9f9;
+        border-color: #007aff;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
       }
 
       .pagination button:active:not(:disabled) {
@@ -398,17 +401,40 @@
       }
 
       .pagination button:disabled {
-        background-color: #e5e5ea;
+        background-color: #f9f9f9;
         color: #c7c7cc;
+        border-color: #e5e5ea;
         cursor: not-allowed;
       }
 
-      .page-info {
+      .pagination button.active {
+        background-color: #007aff;
+        color: #ffffff;
+        border-color: #007aff;
+      }
+
+      .pagination button.prev-next {
+        padding: 8px 16px;
+        background-color: #007aff;
+        color: #ffffff;
+        border-color: #007aff;
+      }
+
+      .pagination button.prev-next:hover:not(:disabled) {
+        background-color: #0051d5;
+        border-color: #0051d5;
+      }
+
+      .pagination button.prev-next:disabled {
+        background-color: #e5e5ea;
+        border-color: #e5e5ea;
+      }
+
+      .page-ellipsis {
+        color: #8e8e93;
         font-size: 15px;
-        color: #3c3c43;
-        font-weight: 500;
-        min-width: 120px;
-        text-align: center;
+        font-weight: 600;
+        padding: 0 4px;
       }
 
       /* Progress Bar */
@@ -1254,15 +1280,13 @@
         </div>
       </div>
 
+      <!-- Pagination Controls -->
+      <div class="pagination" id="pagination-container">
+        <!-- 分頁按鈕將由 JavaScript 動態生成 -->
+      </div>
+
       <!-- Table View Container -->
       <div id="table-view"></div>
-
-      <!-- Pagination Controls -->
-      <div class="pagination">
-        <button id="prev-btn">上一頁</button>
-        <span class="page-info" id="page-info">第 1 頁，共 6 頁</span>
-        <button id="next-btn">下一頁</button>
-      </div>
     </div>
 
     <!-- Detail Modal -->
@@ -2871,9 +2895,9 @@
 
       // DOM 元素
       const tableView = document.getElementById('table-view');
-      const prevBtn = document.getElementById('prev-btn');
-      const nextBtn = document.getElementById('next-btn');
-      const pageInfo = document.getElementById('page-info');
+      const paginationContainer = document.getElementById(
+        'pagination-container'
+      );
       const modal = document.getElementById('detail-modal');
       const modalTitle = document.getElementById('modal-title');
       const modalBody = document.getElementById('modal-body');
@@ -2933,6 +2957,107 @@
         }
       }
 
+      // 渲染分頁按鈕
+      function renderPagination() {
+        paginationContainer.innerHTML = '';
+
+        // 上一頁按鈕
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'prev-next';
+        prevBtn.textContent = '上一頁';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener('click', () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+        paginationContainer.appendChild(prevBtn);
+
+        // 頁碼按鈕
+        const maxButtons = 7; // 最多顯示的頁碼按鈕數量
+        let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+        let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+        // 調整起始頁以確保顯示固定數量的按鈕
+        if (endPage - startPage < maxButtons - 1) {
+          startPage = Math.max(1, endPage - maxButtons + 1);
+        }
+
+        // 第一頁按鈕（如果不在範圍內）
+        if (startPage > 1) {
+          const firstBtn = document.createElement('button');
+          firstBtn.textContent = '1';
+          firstBtn.addEventListener('click', () => {
+            currentPage = 1;
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+          paginationContainer.appendChild(firstBtn);
+
+          if (startPage > 2) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'page-ellipsis';
+            ellipsis.textContent = '...';
+            paginationContainer.appendChild(ellipsis);
+          }
+        }
+
+        // 頁碼按鈕
+        for (let i = startPage; i <= endPage; i++) {
+          const pageBtn = document.createElement('button');
+          pageBtn.textContent = i;
+          if (i === currentPage) {
+            pageBtn.className = 'active';
+          }
+          pageBtn.addEventListener('click', () => {
+            currentPage = i;
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+          paginationContainer.appendChild(pageBtn);
+        }
+
+        // 最後一頁按鈕（如果不在範圍內）
+        if (endPage < totalPages) {
+          if (endPage < totalPages - 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.className = 'page-ellipsis';
+            ellipsis.textContent = '...';
+            paginationContainer.appendChild(ellipsis);
+          }
+
+          const lastBtn = document.createElement('button');
+          lastBtn.textContent = totalPages;
+          lastBtn.addEventListener('click', () => {
+            currentPage = totalPages;
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+          paginationContainer.appendChild(lastBtn);
+        }
+
+        // 下一頁按鈕
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'prev-next';
+        nextBtn.textContent = '下一頁';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener('click', () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderPage(currentPage);
+            renderPagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        });
+        paginationContainer.appendChild(nextBtn);
+      }
+
       // 渲染當前頁面
       function renderPage(page) {
         const startIndex = (page - 1) * ITEMS_PER_PAGE;
@@ -2982,11 +3107,6 @@
 
           tableView.appendChild(row);
         });
-
-        // 更新分頁資訊
-        pageInfo.textContent = `第 ${page} 頁，共 ${totalPages} 頁`;
-        prevBtn.disabled = page === 1;
-        nextBtn.disabled = page === totalPages;
       }
 
       // 搜尋功能
@@ -3011,6 +3131,7 @@
         totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);
         currentPage = 1;
         renderPage(currentPage);
+        renderPagination();
       }
 
       // 顯示詳細資料
@@ -3208,23 +3329,6 @@
         performSearch('');
       });
 
-      // 事件監聽 - 分頁
-      prevBtn.addEventListener('click', () => {
-        if (currentPage > 1) {
-          currentPage--;
-          renderPage(currentPage);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-
-      nextBtn.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-          currentPage++;
-          renderPage(currentPage);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      });
-
       // 事件監聽 - 視圖切換
       cardViewBtn.addEventListener('click', () => setViewMode('card'));
       listViewBtn.addEventListener('click', () => setViewMode('list'));
@@ -3247,6 +3351,7 @@
         setViewMode('list');
       }
       renderPage(currentPage);
+      renderPagination();
     </script>
   </body>
 </html>
