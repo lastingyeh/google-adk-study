@@ -58,7 +58,7 @@ client = genai.Client()
 # 建立一個互動 (Create an interaction)
 interaction = client.interactions.create(
     model="gemini-2.5-flash",
-    input="Tell me a short joke about programming." # 告訴我一個關於程式設計的短笑話
+    input="告訴我一個關於程式設計的短笑話"
 )
 
 print(interaction.outputs[-1].text)
@@ -83,14 +83,14 @@ client = genai.Client()
 # 第一輪對話
 interaction1 = client.interactions.create(
     model="gemini-2.5-flash",
-    input="Hi, my name is Alex." # 嗨，我的名字是 Alex
+    input="嗨，我的名字是 Alex"
 )
 print(f"Model: {interaction1.outputs[-1].text}")
 
 # 第二輪對話 - 上下文自動保留！
 interaction2 = client.interactions.create(
     model="gemini-2.5-flash",
-    input="What is my name?", # 我的名字是什麼？
+    input="我的名字是什麼？",
     previous_interaction_id=interaction1.id
 )
 print(f"Model: {interaction2.outputs[-1].text}")
@@ -229,7 +229,7 @@ interaction = client.interactions.create(
 ```python
 # 研究完成後
 follow_up = client.interactions.create(
-    input="Can you elaborate on the third key player you mentioned?", # 你能詳細說明你提到的第三個主要參與者嗎？
+    input="你能詳細說明你提到的第三個主要參與者嗎？",
     model="gemini-3-pro-preview",  # 可以使用模型進行後續追問
     previous_interaction_id=completed_interaction.id
 )
@@ -270,7 +270,7 @@ weather_tool = {
 # 發送帶有工具的請求
 interaction = client.interactions.create(
     model="gemini-2.5-flash",
-    input="What is the weather in Paris?", # 巴黎的天氣如何？
+    input="巴黎的天氣如何？",
     tools=[weather_tool]
 )
 
@@ -419,7 +419,7 @@ with open("image.png", "rb") as f:
 interaction = client.interactions.create(
     model="gemini-2.5-flash",
     input=[
-        {"type": "text", "text": "Describe what you see in this image."}, # 描述你在這張圖片中看到什麼
+        {"type": "text", "text": "描述你在這張圖片中看到什麼"},
         {"type": "image", "data": base64_image, "mime_type": "image/png"}
     ]
 )
@@ -431,7 +431,7 @@ print(interaction.outputs[-1].text)
 ```python
 interaction = client.interactions.create(
     model="gemini-3-pro-image-preview",
-    input="Generate an image of a futuristic AI research lab.", # 生成一張未來 AI 研究實驗室的圖片
+    input="生成一張未來 AI 研究實驗室的圖片",
     response_modalities=["IMAGE"]
 )
 
@@ -458,7 +458,7 @@ class ContentModeration(BaseModel):
 
 interaction = client.interactions.create(
     model="gemini-2.5-flash",
-    input="Moderate: 'Free money! Click here to claim your prize!'", # 審核：'免費金錢！點擊這裡領取獎品！'
+    input="Moderate: '審核：'免費金錢！點擊這裡領取獎品！'",
     response_format=ContentModeration.model_json_schema()
 )
 
@@ -481,7 +481,7 @@ print(f"Safe: {result.is_safe}, Category: {result.category}")
 # 停用儲存 (不能與 background=True 一起使用)
 interaction = client.interactions.create(
     model="gemini-2.5-flash",
-    input="Process this privately", # 私密處理
+    input="私密處理",
     store=False  # 選擇不儲存
 )
 ```
@@ -567,7 +567,7 @@ research = client.interactions.create(
 # 使用標準模型進行後續追問
 summary = client.interactions.create(
     model="gemini-2.5-flash",
-    input="目的為非技術受眾總結重點", #
+    input="目的為非技術受眾總結重點",
     previous_interaction_id=research.id
 )
 ```
@@ -638,3 +638,9 @@ Interactions API 代表了我們建構 AI 應用程式方式的重大演進。�
 ...開發者現在可以使用更少的樣板程式碼和更好的可靠性來建構複雜的 AI 系統。
 
 無論您是在建構研究助理、多輪客戶支援代理，還是複雜的代理工作流程，Interactions API 都為下一代 AI 應用程式提供了基礎。
+
+---
+
+## 程式碼實現 (Code Implementation)
+
+- interactions-api-basic：[程式碼連結](../../../python/agents/interactions-api-basic/)

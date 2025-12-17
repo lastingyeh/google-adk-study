@@ -962,6 +962,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 </summary>
 
 - **詳細說明**：
+
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-14-multi-agent-pattern.md)
 
 - **參考資源**
@@ -980,10 +981,30 @@ Google 全新的 Interactions API 是一個統一的閘道，可同時存取 Gem
 </summary>
 
 - **詳細說明**：
+
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-12-interactions-api-deep-research.md)
 
 - **參考資源**
   - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
+
+</details>
+
+#### 🕗 Day 54
+
+<details>
+<summary>
+展示 Interactions API 核心功能：與 Gemini 有狀態對話、串流回應、函式呼叫，透過 previous_interaction_id 維護狀態，適合多輪對話應用。
+
+🏷️ `interactions api`, `gemini`, `stateful`, `streaming`
+
+</summary>
+
+- **詳細說明**：
+  - [Interactions API Basic](./workspace/python/agents/interactions-api-basic/)
+
+- **參考資源**
+  - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
+  - [Interactions API Basic Example](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_blog_implementation/interactions_api_basic)
 
 </details>
 </details>

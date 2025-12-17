@@ -1915,6 +1915,28 @@
             },
           ],
         },
+        {
+          name: 'interactions_api_basic',
+          path: 'workspace/python/agents/interactions-api-basic',
+          type: 'Agent',
+          description:
+            '展示 Google Interactions API 的基礎功能，包含有狀態對話、Gemini 模型互動、串流回應與 Function Calling。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'google_search',
+              description: '內建 Google 搜尋工具',
+            },
+            {
+              name: 'code_execution',
+              description: '內建 Python 程式碼執行工具',
+            },
+            {
+              name: 'get_weather',
+              description: '演示用的天氣查詢工具 (Function Calling)',
+            },
+          ],
+        },
       ];
       // DOM 元素
       const agentsGrid = document.getElementById('agents-grid');
