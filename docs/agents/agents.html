@@ -183,45 +183,12 @@
         display: block;
       }
 
-      .view-toggle {
-        display: flex;
-        background: #ffffff;
-        border-radius: 10px;
-        padding: 4px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      }
-
-      .view-btn {
-        padding: 8px 12px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        color: #8e8e93;
-      }
-
-      .view-btn.active {
-        background: #007aff;
-        color: #ffffff;
-      }
-
-      .view-btn svg {
-        width: 20px;
-        height: 20px;
-        display: block;
-      }
-
       /* Agent Cards Container */
       #agents-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 16px;
         margin-bottom: 20px;
-      }
-
-      #agents-grid.list-view {
-        grid-template-columns: 1fr;
       }
 
       /* Agent Card */
@@ -391,50 +358,6 @@
       .meta-item svg {
         width: 14px;
         height: 14px;
-      }
-
-      /* List View Modifications */
-      #agents-grid.list-view .agent-card {
-        flex-direction: row;
-        align-items: center;
-        padding: 12px 16px;
-      }
-
-      #agents-grid.list-view .agent-header {
-        margin-bottom: 0;
-        min-width: 200px;
-        flex-shrink: 0;
-      }
-
-      #agents-grid.list-view .agent-icon {
-        width: 40px;
-        height: 40px;
-      }
-
-      #agents-grid.list-view .agent-icon svg {
-        width: 20px;
-        height: 20px;
-      }
-
-      #agents-grid.list-view .agent-description {
-        flex: 1;
-        margin-bottom: 0;
-        margin-right: 16px;
-        -webkit-line-clamp: 2;
-      }
-
-      #agents-grid.list-view .agent-labels {
-        flex-shrink: 0;
-        margin-bottom: 0;
-        margin-right: 16px;
-      }
-
-      #agents-grid.list-view .agent-meta {
-        flex-shrink: 0;
-        padding-top: 0;
-        border-top: none;
-        margin-top: 0;
-        margin-left: auto;
       }
 
       /* Modal */
@@ -743,32 +666,6 @@
           grid-template-columns: 1fr;
         }
 
-        #agents-grid.list-view .agent-card {
-          flex-direction: column;
-          align-items: flex-start;
-          padding: 16px;
-        }
-
-        #agents-grid.list-view .agent-header {
-          margin-bottom: 12px;
-          width: 100%;
-        }
-
-        #agents-grid.list-view .agent-description {
-          margin-right: 0;
-          margin-bottom: 12px;
-        }
-
-        #agents-grid.list-view .agent-labels {
-          margin-right: 0;
-          margin-bottom: 12px;
-        }
-
-        #agents-grid.list-view .agent-meta {
-          width: 100%;
-          margin-left: 0;
-        }
-
         .modal-content {
           max-width: 100%;
           max-height: 95vh;
@@ -853,29 +750,6 @@
             placeholder="搜尋代理名稱、功能或工具..."
           />
           <button class="clear-btn" id="clear-btn">×</button>
-        </div>
-
-        <div class="view-toggle">
-          <button class="view-btn active" id="card-view-btn" title="卡片模式">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-              ></path>
-            </svg>
-          </button>
-          <button class="view-btn" id="list-view-btn" title="列表模式">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              ></path>
-            </svg>
-          </button>
         </div>
       </div>
 
@@ -1942,8 +1816,6 @@
       const agentsGrid = document.getElementById('agents-grid');
       const searchInput = document.getElementById('search-input');
       const clearBtn = document.getElementById('clear-btn');
-      const cardViewBtn = document.getElementById('card-view-btn');
-      const listViewBtn = document.getElementById('list-view-btn');
       const totalCount = document.getElementById('total-count');
       const agentTypesCount = document.getElementById('agent-types-count');
       const modal = document.getElementById('detail-modal');
@@ -2235,21 +2107,6 @@
         modal.classList.remove('show');
       }
 
-      // 視圖切換
-      function setViewMode(mode) {
-        if (mode === 'list') {
-          agentsGrid.classList.add('list-view');
-          cardViewBtn.classList.remove('active');
-          listViewBtn.classList.add('active');
-          localStorage.setItem('agentViewMode', 'list');
-        } else {
-          agentsGrid.classList.remove('list-view');
-          cardViewBtn.classList.add('active');
-          listViewBtn.classList.remove('active');
-          localStorage.setItem('agentViewMode', 'card');
-        }
-      }
-
       // 事件監聽
       searchInput.addEventListener('input', (e) => {
         performSearch(e.target.value);
@@ -2259,9 +2116,6 @@
         searchInput.value = '';
         performSearch('');
       });
-
-      cardViewBtn.addEventListener('click', () => setViewMode('card'));
-      listViewBtn.addEventListener('click', () => setViewMode('list'));
 
       modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
@@ -2276,11 +2130,6 @@
       });
 
       // 初始化
-      const savedViewMode = localStorage.getItem('agentViewMode');
-      if (savedViewMode === 'list') {
-        setViewMode('list');
-      }
-
       updateStats();
       renderAgents();
     </script>
