@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "context_compaction_til"
+version = "0.1.0"
+description = "TIL：使用 Google ADK 1.16 進行上下文壓縮 (Context Compaction) - 展示自動對話摘要以減少 token 使用量"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.16.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["context_compaction_agent*"]

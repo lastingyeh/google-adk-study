@@ -2,11 +2,9 @@
 
 > 📝 **原文翻譯自 Raphaël MANSUY 的 Blog**：[The Multi-Agent Pattern: Managing Complexity Through Divide and Conquer](https://raphaelmansuy.github.io/adk_training/blog/multi-agent-pattern-complexity-management)
 
-## 簡介 (Introduction)
+## 簡介 (Overview)
 
 使用專門代理作為工具的多代理模式，其主要目的並非單純為了提升效能，而是為了管理複雜性與認知工作負載。這就是為什麼這一點至關重要：
-
-<!-- truncate -->
 
 ## 減少認知負載 (Reducing Cognitive Load)
 
@@ -1130,7 +1128,7 @@ def monitor_agent_health(agent_url: str) -> bool:
 
 ### 快速參考 (Quick Reference)
 
-**實作相關 TIL：** (未完成)
+**實作相關 TIL：**
 
 - **[TIL: 暫停與恢復調用 (TIL: Pause & Resume Invocations)](../../../python/agents/pause-resume-agent/)** - 在多代理移交中實作狀態管理
 - **[TIL: 上下文壓縮 (TIL: Context Compaction)](../../../python/agents/context-compaction-agent/)** - 管理協調者 + 子代理通訊的代幣成本

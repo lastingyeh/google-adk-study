@@ -312,3 +312,4 @@ MCP 為 agents 連接到眾多工具和系統提供了一個基礎協議。然�
 - MCP 社群 (MCP community)：[https://modelcontextprotocol.io/community/communication](https://modelcontextprotocol.io/community/communication)
 - theailanguage 頻道：[I Just Made Google ADK 10x Faster with Anthropic’s New Programmatic Tool Calling (MCP Demo)](https://www.youtube.com/watch?v=ewGEbeWzWI0&list=TLGGxAYCU_zHTtQxNDEyMjAyNQ)
 - theailanguage Github 範例：[version_7_programmatic_tool_execution](https://github.com/theailanguage/adk_samples/tree/main/version_7_programmatic_tool_execution)
+- Code Execution + MCP：[Code Execution + MCP: The New Way to Build Faster, Cheaper, and Smarter AI Agents](https://medium.com/coding-nexus/code-execution-mcp-the-new-way-to-build-faster-cheaper-and-smarter-ai-agents-0a460ed058d3)

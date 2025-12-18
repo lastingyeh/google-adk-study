@@ -3,7 +3,7 @@
 > 📝 **原文翻譯自 Raphaël MANSUY 的 Blog**：[Observing ADK Agents: OpenTelemetry Tracing with Jaeger](https://raphaelmansuy.github.io/adk_training/blog/opentelemetry-adk-jaeger)
 
 
-## 簡介 (Introduction)
+## 簡介 (Overview)
 
 你使用 Google ADK 建立了一個 AI 代理。它運作正常。但是當你問 **「為什麼代理選擇那個工具？」** 或 **「哪個 LLM 呼叫花了 5 秒鐘？」** 時——你就像在盲目飛行。
 

@@ -2,7 +2,8 @@
 
 > 📝 **原文翻譯自 Raphaël MANSUY 的 Blog**：[Fast-track Your GenAI Agents: Deep Dive into the Google Cloud Agent Starter Pack](https://raphaelmansuy.github.io/adk_training/blog/2025/12/01/fast-track-agent-starter-pack)
 
-## 簡介 (Introduction)
+## 簡介 (Overview)
+
 在筆記型電腦上建立 GenAI 代理原型就像變魔術一樣。您只需寫幾行 Python 程式碼，連接一個 LLM，突然間您就可以與您的資料聊天了。但是，將這種魔法從 Jupyter notebook 轉移到一個安全、可擴展且具備可觀測性的生產環境，才是真正頭痛的開始。
 
 這就是 **Google Cloud Agent Starter Pack** 登場的時候了。

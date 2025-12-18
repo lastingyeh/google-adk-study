@@ -14,7 +14,7 @@ Google Gen AI Agent Development Kit (ADK) 標誌著 **上下文工程 (Context E
 
 ![代理的工業化](./assets/context-engineering/industrialization-of-agency.png)
 
-## 1. 簡介 (Introduction)
+## 1. 簡介 (Overview)
 
 代理的工業化與上下文工程典範 (Introduction: The Industrialization of Agency and the Context Engineering Paradigm)
 

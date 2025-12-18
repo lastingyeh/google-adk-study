@@ -4,7 +4,7 @@
 
 > 🖼️ 圖片來源：[interaction](https://github.com/raphaelmansuy/adk_training/tree/main/docs/blog/assets/interraction)
 
-## 簡介 (Introduction)
+## 簡介 (Overview)
 
 AI 開發領域正在從無狀態的請求-回應模式轉變為**有狀態、多輪對話的代理工作流程 (stateful, multi-turn agentic workflows)**。Google 全新的 **Interactions API** 專為這個新時代設計，提供了一個統一的介面，可同時存取原始 Gemini 模型與完全託管的 **Deep Research Agent**。
 

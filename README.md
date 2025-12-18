@@ -1000,11 +1000,34 @@ Google 全新的 Interactions API 是一個統一的閘道，可同時存取 Gem
 </summary>
 
 - **詳細說明**：
+
   - [Interactions API Basic](./workspace/python/agents/interactions-api-basic/)
 
 - **參考資源**
   - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
   - [Interactions API Basic Example](https://github.com/raphaelmansuy/adk_training/tree/main/tutorial_blog_implementation/interactions_api_basic)
+
+</details>
+
+#### 🕗 Day 55
+
+<details>
+<summary>
+AI 代理部署與優化指南：部署 AI 代理比想像簡單，平台已處理安全性。Cloud Run 適合新創（約 $40/月），Agent Engine 適合企業合規（$50/月），GKE 適合 Kubernetes 環境。上下文壓縮技術透過 LLM 自動摘要舊對話，可減少 80% Token 使用，大幅降低長時間對話成本，非常適合客戶支援、研究助理等場景。
+
+🏷️ `context-compaction`, `token-optimization`, `deployment`, `cloud-run`, `agent-engine`, `production`, `architecture`
+
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結：deploy ai agents](./workspace/notes/google-adk-training-hub/blog/2025-10-17-deploy-ai-agents.md)
+  - [文件連結：context compaction](./workspace/notes/google-adk-training-hub/blog/2025-10-19-til-context-compaction.md)
+  - [Context Compaction Agent](./workspace/python/agents/context-compaction-agent/)
+
+- **參考資源**
+  - [Deploy Your AI Agent in 5 Minutes (Seriously)](https://raphaelmansuy.github.io/adk_training/blog/deploy-ai-agents-5-minutes)
+  - [TIL: Context Compaction with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-context-compaction)
 
 </details>
 </details>

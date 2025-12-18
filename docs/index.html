@@ -2900,6 +2900,46 @@
           labels: ['interactions api', 'gemini', 'stateful', 'streaming'],
           completed: false,
         },
+        {
+          day: 55,
+          title: 'AI 代理部署與優化指南',
+          description:
+            'AI 代理部署與優化指南：部署 AI 代理比想像簡單，平台已處理安全性。Cloud Run 適合新創（約 $40/月），Agent Engine 適合企業合規（$50/月），GKE 適合 Kubernetes 環境。上下文壓縮技術透過 LLM 自動摘要舊對話，可減少 80% Token 使用，大幅降低長時間對話成本，非常適合客戶支援、研究助理等場景。',
+          docs: [
+            {
+              text: '文件連結：deploy ai agents',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/blog/2025-10-17-deploy-ai-agents.md',
+            },
+            {
+              text: '文件連結：context compaction',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/blog/2025-10-19-til-context-compaction.md',
+            },
+            {
+              text: 'Context Compaction Agent',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/context-compaction-agent/',
+            },
+          ],
+          refs: [
+            {
+              text: 'Deploy Your AI Agent in 5 Minutes (Seriously)',
+              url: 'https://raphaelmansuy.github.io/adk_training/blog/deploy-ai-agents-5-minutes',
+            },
+            {
+              text: 'TIL: Context Compaction with Google ADK 1.16',
+              url: 'https://raphaelmansuy.github.io/adk_training/blog/til-context-compaction',
+            },
+          ],
+          labels: [
+            'context-compaction',
+            'token-optimization',
+            'deployment',
+            'cloud-run',
+            'agent-engine',
+            'production',
+            'architecture',
+          ],
+          completed: false,
+        },
       ];
 
       // 設定與狀態

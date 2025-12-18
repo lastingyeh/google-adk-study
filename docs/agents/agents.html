@@ -1812,6 +1812,23 @@
             },
           ],
         },
+        {
+          name: 'context_compaction_agent',
+          path: 'workspace/python/agents/context-compaction-agent',
+          type: 'Agent',
+          description: '展示長對話上下文壓縮功能的代理',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'summarize_text',
+              description: '用於摘要文字區塊的實用工具',
+            },
+            {
+              name: 'calculate_complexity',
+              description: '分析問題複雜度以決定回應深度',
+            },
+          ],
+        },
       ];
       // DOM 元素
       const agentsGrid = document.getElementById('agents-grid');
