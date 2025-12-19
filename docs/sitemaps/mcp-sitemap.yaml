@@ -1,0 +1,145 @@
+clients:
+  - https://modelcontextprotocol.io/clients
+antitrust:
+  - https://modelcontextprotocol.io/community/antitrust
+communication:
+  - https://modelcontextprotocol.io/community/communication
+governance:
+  - https://modelcontextprotocol.io/community/governance
+sep-guidelines:
+  - https://modelcontextprotocol.io/community/sep-guidelines
+working-interest-groups:
+  - https://modelcontextprotocol.io/community/working-interest-groups
+roadmap:
+  - https://modelcontextprotocol.io/development/roadmap
+develop:
+  - https://modelcontextprotocol.io/docs/develop/build-client
+  - https://modelcontextprotocol.io/docs/develop/build-server
+  - https://modelcontextprotocol.io/docs/develop/connect-local-servers
+  - https://modelcontextprotocol.io/docs/develop/connect-remote-servers
+getting-started:
+  - https://modelcontextprotocol.io/docs/getting-started/intro
+learn:
+  - https://modelcontextprotocol.io/docs/learn/architecture
+  - https://modelcontextprotocol.io/docs/learn/client-concepts
+  - https://modelcontextprotocol.io/docs/learn/server-concepts
+sdk:
+  - https://modelcontextprotocol.io/docs/sdk
+tools:
+  - https://modelcontextprotocol.io/docs/tools/inspector
+tutorials:
+  - https://modelcontextprotocol.io/docs/tutorials/security/authorization
+examples:
+  - https://modelcontextprotocol.io/examples
+'2024-11-05':
+  - https://modelcontextprotocol.io/specification/2024-11-05/architecture
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/messages
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/transports
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping
+  - https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress
+  - https://modelcontextprotocol.io/specification/2024-11-05/client/roots
+  - https://modelcontextprotocol.io/specification/2024-11-05/client/sampling
+  - https://modelcontextprotocol.io/specification/2024-11-05
+  - https://modelcontextprotocol.io/specification/2024-11-05/server
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/prompts
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/resources
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/tools
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging
+  - https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination
+'2025-03-26':
+  - https://modelcontextprotocol.io/specification/2025-03-26/architecture
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/transports
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress
+  - https://modelcontextprotocol.io/specification/2025-03-26/changelog
+  - https://modelcontextprotocol.io/specification/2025-03-26/client/roots
+  - https://modelcontextprotocol.io/specification/2025-03-26/client/sampling
+  - https://modelcontextprotocol.io/specification/2025-03-26
+  - https://modelcontextprotocol.io/specification/2025-03-26/server
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/prompts
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/resources
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/tools
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging
+  - https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination
+'2025-06-18':
+  - https://modelcontextprotocol.io/specification/2025-06-18/architecture
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping
+  - https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress
+  - https://modelcontextprotocol.io/specification/2025-06-18/changelog
+  - https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation
+  - https://modelcontextprotocol.io/specification/2025-06-18/client/roots
+  - https://modelcontextprotocol.io/specification/2025-06-18/client/sampling
+  - https://modelcontextprotocol.io/specification/2025-06-18
+  - https://modelcontextprotocol.io/specification/2025-06-18/schema
+  - https://modelcontextprotocol.io/specification/2025-06-18/server
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/prompts
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/resources
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/tools
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging
+  - https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination
+'2025-11-25':
+  - https://modelcontextprotocol.io/specification/2025-11-25/architecture
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress
+  - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks
+  - https://modelcontextprotocol.io/specification/2025-11-25/changelog
+  - https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation
+  - https://modelcontextprotocol.io/specification/2025-11-25/client/roots
+  - https://modelcontextprotocol.io/specification/2025-11-25/client/sampling
+  - https://modelcontextprotocol.io/specification/2025-11-25
+  - https://modelcontextprotocol.io/specification/2025-11-25/schema
+  - https://modelcontextprotocol.io/specification/2025-11-25/server
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/prompts
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/resources
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/tools
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging
+  - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination
+draft:
+  - https://modelcontextprotocol.io/specification/draft/architecture
+  - https://modelcontextprotocol.io/specification/draft/basic/authorization
+  - https://modelcontextprotocol.io/specification/draft/basic
+  - https://modelcontextprotocol.io/specification/draft/basic/lifecycle
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+  - https://modelcontextprotocol.io/specification/draft/basic/transports
+  - https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation
+  - https://modelcontextprotocol.io/specification/draft/basic/utilities/ping
+  - https://modelcontextprotocol.io/specification/draft/basic/utilities/progress
+  - https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks
+  - https://modelcontextprotocol.io/specification/draft/changelog
+  - https://modelcontextprotocol.io/specification/draft/client/elicitation
+  - https://modelcontextprotocol.io/specification/draft/client/roots
+  - https://modelcontextprotocol.io/specification/draft/client/sampling
+  - https://modelcontextprotocol.io/specification/draft
+  - https://modelcontextprotocol.io/specification/draft/schema
+  - https://modelcontextprotocol.io/specification/draft/server
+  - https://modelcontextprotocol.io/specification/draft/server/prompts
+  - https://modelcontextprotocol.io/specification/draft/server/resources
+  - https://modelcontextprotocol.io/specification/draft/server/tools
+  - https://modelcontextprotocol.io/specification/draft/server/utilities/completion
+  - https://modelcontextprotocol.io/specification/draft/server/utilities/logging
+  - https://modelcontextprotocol.io/specification/draft/server/utilities/pagination
+versioning:
+  - https://modelcontextprotocol.io/specification/versioning

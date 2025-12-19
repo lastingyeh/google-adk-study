@@ -213,3 +213,6 @@ Thumbs.db
 
 # Refs
 refs/
+
+# Node modules
+node_modules/
