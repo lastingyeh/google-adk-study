@@ -479,9 +479,9 @@ Cloud Run. You're done. Deploy now. (Cloud Run。您完成了。現在部署。)
 
 **使用 TIL 優化您的部署：**
 
-- **[TIL: 暫停與恢復呼叫](/blog/til-pause-resume)** -
+- **[TIL: 暫停與恢復呼叫](./2025-10-20-til-pause-resume.md)** -
   建立彈性、容錯的工作流程
-- **[TIL: 上下文壓縮](/blog/til-context-compaction)** -
+- **[TIL: 上下文壓縮](./2025-10-19-til-context-compaction.md)** -
   降低長時間運行的生產代理成本
 
 **相關教學：**

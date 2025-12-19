@@ -44,3 +44,6 @@
 | 40   | 整合       | [pack-adk-a2a-agent](./pack-adk-a2a-agent)                   | 一個可以提供有關天氣和時間資訊的代理程式，支援 A2A 與 FastAPI 整合。                                   | A2A, FastAPI, Telemetry, Weather/Time Tools                                    | A2A, FastAPI, Agent-to-Agent, Weather, Time             |
 | 41   | 進階互動   | [interactions-api-basic](./interactions-api-basic)           | Google Interactions API 基礎範例，展示有狀態對話、串流與工具整合。                                     | Interactions API, Stateful Conversation, Streaming, Function Calling           | Interactions API, Gemini, Stateful, Streaming           |
 | 42   | 核心架構   | [context-compaction-agent](./context-compaction-agent)       | 展示 Context Compaction (上下文壓縮) 的代理，自動摘要舊的對話歷史記錄以減少 Token 使用量。             | Context Compaction, Token Optimization, Summarization                          | Context Compaction, Optimization, Token Management      |
+| 43   | 工具       | [pause-resume-agent](./pause-resume-agent)                   | 展示 ADK 1.16.0 中暫停與恢復調用的 Agent，具備狀態檢查點與恢復提示功能。                               | ResumabilityConfig, 檢查點 (Checkpoint), 恢復提示 (Resumption Hint)              | Pause, Resume, Checkpoint, Long-running Workflow        |
+
+[回到首頁](../../../README.md)

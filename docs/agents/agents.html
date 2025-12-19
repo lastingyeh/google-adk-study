@@ -782,18 +782,18 @@
       // 代理資料
       const agentsData = [
         {
-          name: 'hello_assistant',
+          name: 'hello-agent',
           path: 'workspace/python/agents/hello-agent',
           type: 'Agent',
-          description: '一個用於一般對話的友善 AI 助理',
+          description: '第一個 ADK 代理，使用 Gemini 2.0 Flash 驅動的友善互動型對話助理。',
           model: 'gemini-2.0-flash',
           tools: [],
         },
         {
-          name: 'finance_assistant',
+          name: 'finance-assistant',
           path: 'workspace/python/agents/finance-assistant',
           type: 'Agent',
-          description: '一個財務計算助理',
+          description: '個人財務助理，可計算複利、貸款支付和儲蓄目標。',
           model: 'gemini-2.0-flash',
           tools: [
             {
@@ -811,10 +811,23 @@
           ],
         },
         {
-          name: 'BlogCreationPipeline',
+          name: 'chuck-norris-agent',
+          path: 'workspace/python/agents/chuck-norris-agent',
+          type: 'Agent',
+          description: '展示 OpenAPI 工具整合的幽默代理，提供笑話與搜索功能。',
+          model: 'gemini-2.0-flash',
+          toolsets: [
+            {
+              name: 'chuck_norris_toolset',
+              type: 'OpenAPIToolset',
+            },
+          ],
+        },
+        {
+          name: 'blog-pipeline',
           path: 'workspace/python/agents/blog-pipeline',
           type: 'SequentialAgent',
-          description: '從研究到發布的完整部落格文章創建流程',
+          description: '循序工作流程的部落格文章創建管線，按嚴格順序串連多個代理。',
           sub_agents: [
             {
               name: 'researcher',
@@ -835,60 +848,36 @@
           ],
         },
         {
-          name: 'chuck_norris_agent',
-          path: 'workspace/python/agents/chuck-norris-agent',
-          type: 'Agent',
-          description: '使用 OpenAPI 工具的 Chuck Norris 笑話助理',
-          model: 'gemini-2.0-flash',
-          toolsets: [
+          name: 'travel-planner',
+          path: 'workspace/python/agents/travel-planner',
+          type: 'ParallelAgent',
+          description: '平行處理旅遊規劃系統，同時搜尋航班、飯店和活動並整合行程。',
+          sub_agents: [
             {
-              name: 'chuck_norris_toolset',
-              type: 'OpenAPIToolset',
+              name: 'ParallelSearch',
+              type: 'ParallelAgent',
+              sub_agents: [
+                {
+                  name: 'flight_finder',
+                },
+                {
+                  name: 'hotel_finder',
+                },
+                {
+                  name: 'activity_finder',
+                },
+              ],
+            },
+            {
+              name: 'itinerary_builder',
             },
           ],
         },
         {
-          name: 'FinancialCalculator',
-          path: 'workspace/python/agents/code-calculator',
-          type: 'Agent',
-          description: '具備 Python 程式碼執行能力的專業財務計算機',
-          model: 'gemini-2.0-flash',
-          capabilities: ['BuiltInCodeExecutor'],
-        },
-        {
-          name: 'content_moderator',
-          path: 'workspace/python/agents/content-moderator',
-          type: 'Agent',
-          description: '具備安全護欄的內容審核助理',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'generate_text',
-              description: '根據主題和字數生成文本',
-            },
-            {
-              name: 'check_grammar',
-              description: '檢查所提供文本的語法',
-            },
-            {
-              name: 'get_usage_stats',
-              description: '返回工具上下文的使用統計數據',
-            },
-          ],
-          callbacks: [
-            'before_agent_callback',
-            'after_agent_callback',
-            'before_model_callback',
-            'after_model_callback',
-            'before_tool_callback',
-            'after_tool_callback',
-          ],
-        },
-        {
-          name: 'ContentPublishingSystem',
+          name: 'content-publisher',
           path: 'workspace/python/agents/content-publisher',
           type: 'SequentialAgent',
-          description: '具有平行研究和順序創建功能的完整內容發布系統',
+          description: '結合平行研究與順序創作的多代理內容發布系統。',
           sub_agents: [
             {
               name: 'ParallelResearch',
@@ -923,10 +912,303 @@
           ],
         },
         {
-          name: 'customer_support',
+          name: 'essay-refiner',
+          path: 'workspace/python/agents/essay-refiner',
+          type: 'SequentialAgent',
+          description: '具備自我批判與迭代精煉能力的循環代理系統，用於提升文章品質。',
+          sub_agents: [
+            {
+              name: 'InitialWriter',
+            },
+            {
+              name: 'RefinementLoop',
+              type: 'LoopAgent',
+              sub_agents: [
+                {
+                  name: 'Critic',
+                },
+                {
+                  name: 'Refiner',
+                  tools: ['exit_loop'],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: 'personal-tutor',
+          path: 'workspace/python/agents/personal-tutor',
+          type: 'Agent',
+          description: '個人學習導師，展示多層次狀態與記憶管理能力。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'set_user_preferences',
+              description: '設定用戶的學習偏好',
+            },
+            {
+              name: 'record_topic_completion',
+              description: '記錄學習主題的完成情況',
+            },
+            {
+              name: 'get_user_progress',
+              description: '檢索用戶的當前進度',
+            },
+            {
+              name: 'start_learning_session',
+              description: '開始新的學習會話',
+            },
+            {
+              name: 'calculate_quiz_grade',
+              description: '計算測驗的成績',
+            },
+            {
+              name: 'search_past_lessons',
+              description: '搜尋過去的課程',
+            },
+          ],
+        },
+        {
+          name: 'content-moderator',
+          path: 'workspace/python/agents/content-moderator',
+          type: 'Agent',
+          description: '內容審核系統，展示回呼機制與防護措施以過濾不當內容。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'generate_text',
+              description: '根據主題和字數生成文本',
+            },
+            {
+              name: 'check_grammar',
+              description: '檢查所提供文本的語法',
+            },
+            {
+              name: 'get_usage_stats',
+              description: '返回工具上下文的使用統計數據',
+            },
+          ],
+          callbacks: [
+            'before_agent_callback',
+            'after_agent_callback',
+            'before_model_callback',
+            'after_model_callback',
+            'before_tool_callback',
+            'after_tool_callback',
+          ],
+        },
+        {
+          name: 'support-agent',
+          path: 'workspace/python/agents/support-agent',
+          type: 'Agent',
+          description: '客戶支援代理，展示 ADK 代理的全面測試模式與評估框架。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'search_knowledge_base',
+              description: '在知識庫中搜尋解決方案',
+            },
+            {
+              name: 'create_ticket',
+              description: '創建新的支援工單',
+            },
+            {
+              name: 'check_ticket_status',
+              description: '檢查現有工單的狀態',
+            },
+          ],
+        },
+        {
+          name: 'grounding-agent',
+          path: 'workspace/python/agents/grounding-agent',
+          type: 'Agent',
+          description: '使用 Google 搜尋與地圖功能的 Grounding 代理，提供即時資訊。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'google_search',
+              description: '執行 Google 搜尋',
+            },
+            {
+              name: 'google_maps_grounding (Conditional)',
+              description: '使用 Google 地圖數據提供 grounding',
+            },
+            {
+              name: 'analyze_search_results',
+              description: '分析搜尋結果',
+            },
+            {
+              name: 'save_research_findings',
+              description: '保存研究發現',
+            },
+          ],
+        },
+        {
+          name: 'strategic-solver',
+          path: 'workspace/python/agents/strategic-solver',
+          type: 'Agent',
+          description: '策略規劃代理，展示不同類型的規劃器以解決複雜商業問題。',
+          model: 'gemini-2.0-flash',
+          planner: 'PlanReActPlanner',
+          tools: [
+            {
+              name: 'analyze_market',
+              description: '分析市場趨勢和數據',
+            },
+            {
+              name: 'calculate_roi',
+              description: '計算投資回報率 (ROI)',
+            },
+            {
+              name: 'assess_risk',
+              description: '評估潛在的業務風險',
+            },
+            {
+              name: 'save_strategy_report',
+              description: '保存生成的策略報告',
+            },
+          ],
+        },
+        {
+          name: 'code-calculator',
+          path: 'workspace/python/agents/code-calculator',
+          type: 'Agent',
+          description: '金融計算器，具備編寫並執行 Python 程式碼以進行精確計算的能力。',
+          model: 'gemini-2.0-flash',
+          capabilities: ['BuiltInCodeExecutor'],
+        },
+        {
+          name: 'streaming-agent',
+          path: 'workspace/python/agents/streaming-agent',
+          type: 'Agent',
+          description: '展示即時串流回應與 SSE 技術的聊天代理，模擬即時互動體驗。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'format_streaming_info',
+              description: '格式化用於串流回應的資訊',
+            },
+            {
+              name: 'analyze_streaming_performance',
+              description: '分析串流性能指標',
+            },
+          ],
+        },
+        {
+          name: 'voice-assistant',
+          path: 'workspace/python/agents/voice-assistant',
+          type: 'Agent',
+          description: '即時語音互動助理，使用 Live API 進行雙向語音串流。',
+          model: 'gemini-2.0-flash-live-001',
+          capabilities: ['音訊錄製/播放', 'Live API 串流'],
+        },
+        {
+          name: 'mcp-agent',
+          path: 'workspace/python/agents/mcp-agent',
+          type: 'Agent',
+          description: '整合 Model Context Protocol (MCP) 的代理，可操作檔案系統與外部資源。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'McpToolset (filesystem)',
+              description: '透過 MCP 提供對檔案系統操作的存取',
+            },
+          ],
+        },
+        {
+          name: 'a2a-orchestrator',
+          path: 'workspace/python/agents/a2a-orchestrator',
+          type: 'Agent',
+          description: '代理對代理 (Agent-to-Agent) 通訊協調器，協調遠端特化代理。',
+          model: 'gemini-2.0-flash',
+          sub_agents: [
+            {
+              name: 'research_specialist',
+              type: 'RemoteA2aAgent',
+            },
+            {
+              name: 'data_analyst',
+              type: 'RemoteA2aAgent',
+            },
+            {
+              name: 'content_writer',
+              type: 'RemoteA2aAgent',
+            },
+          ],
+          tools: [
+            {
+              name: 'check_agent_availability',
+              description: '檢查特定代理是否可用',
+            },
+            {
+              name: 'log_coordination_step',
+              description: '記錄協調過程中的一個步驟',
+            },
+          ],
+        },
+        {
+          name: 'observability-agent',
+          path: 'workspace/python/agents/observability-agent',
+          type: 'Agent',
+          description: '具備全面可觀測性、事件追蹤與監控的客戶服務系統。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'check_order_status',
+              description: '檢查特定訂單的狀態',
+            },
+            {
+              name: 'process_refund',
+              description: '處理訂單的退款',
+            },
+            {
+              name: 'check_inventory',
+              description: '檢查產品的庫存可用性',
+            },
+          ],
+        },
+        {
+          name: 'artifact-agent',
+          path: 'workspace/python/agents/artifact-agent',
+          type: 'Agent',
+          description: '文件處理代理，展示 Artifacts 的儲存、版本控制與檢索功能。',
+          model: 'gemini-1.5-flash',
+          tools: [
+            {
+              name: 'extract_text_tool',
+              description: '從文件中提取文本',
+            },
+            {
+              name: 'summarize_document_tool',
+              description: '總結文件的內容',
+            },
+            {
+              name: 'translate_document_tool',
+              description: '將文件翻譯成另一種語言',
+            },
+            {
+              name: 'create_final_report_tool',
+              description: '從處理過的數據創建最終報告',
+            },
+            {
+              name: 'list_artifacts_tool',
+              description: '列出所有可用的 artifact',
+            },
+            {
+              name: 'load_artifact_tool',
+              description: '載入特定的 artifact',
+            },
+            {
+              name: 'load_artifacts_tool',
+              description: '載入多個 artifact',
+            },
+          ],
+        },
+        {
+          name: 'customer-support',
           path: 'workspace/python/agents/customer-support',
           type: 'Agent',
-          description: '具備多種工具的客戶支援代理 (從 YAML 載入)',
+          description: '使用 YAML 進行宣告式設定的客戶支援代理，無需撰寫 Python 程式碼。',
           model: 'gemini-2.0-flash',
           tools: [
             {
@@ -976,119 +1258,39 @@
           ],
         },
         {
-          name: 'customer_support_agent',
-          path: 'workspace/python/agents/customer-support-agent',
+          name: 'vision-catalog-agent',
+          path: 'workspace/python/agents/vision-catalog-agent',
           type: 'Agent',
-          description:
-            '整合 AG-UI 的客戶支援 ADK 代理人，提供客戶支援功能，具備知識庫搜尋、訂單狀態查詢和支援工單建立的工具。',
+          description: '多模態視覺代理，用於產品目錄分析與行銷內容生成。',
           model: 'gemini-2.0-flash-exp',
           tools: [
             {
-              name: 'search_knowledge_base',
-              description: '搜尋知識庫以尋找相關資訊',
+              name: 'list_sample_images',
+              description: '列出可供處理的範例圖片',
             },
             {
-              name: 'lookup_order_status',
-              description: '查詢客戶訂單的狀態',
+              name: 'generate_product_mockup',
+              description: '生成產品的視覺模型',
             },
             {
-              name: 'create_support_ticket',
-              description: '為複雜問題建立支援工單',
+              name: 'analyze_uploaded_image',
+              description: '分析用戶上傳的圖片',
             },
             {
-              name: 'get_product_details',
-              description: '從資料庫獲取產品詳情',
+              name: 'analyze_product_image',
+              description: '分析產品圖片以獲取詳細資訊',
+            },
+            {
+              name: 'compare_product_images',
+              description: '比較兩張產品圖片',
             },
           ],
         },
         {
-          name: 'lead_qualifier',
-          path: 'workspace/python/agents/enterprise-agent',
-          type: 'Agent',
-          description: '企業銷售潛在客戶資格鑑定代理',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'check_company_size',
-              description: '檢查公司規模',
-            },
-            {
-              name: 'score_lead',
-              description: '根據標準對銷售潛在客戶進行評分',
-            },
-            {
-              name: 'get_competitive_intel',
-              description: '收集競爭情報',
-            },
-          ],
-        },
-        {
-          name: 'EssayRefinementSystem',
-          path: 'workspace/python/agents/essay-refiner',
-          type: 'SequentialAgent',
-          description: '完整的論文寫作與精煉系統',
-          sub_agents: [
-            {
-              name: 'InitialWriter',
-            },
-            {
-              name: 'RefinementLoop',
-              type: 'LoopAgent',
-              sub_agents: [
-                {
-                  name: 'Critic',
-                },
-                {
-                  name: 'Refiner',
-                  tools: ['exit_loop'],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'advanced_grounding_agent',
-          path: 'workspace/python/agents/grounding-agent',
-          type: 'Agent',
-          description: '具有搜尋、分析和條件地圖工具的高級 grounding 代理',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'google_search',
-              description: '執行 Google 搜尋',
-            },
-            {
-              name: 'google_maps_grounding (Conditional)',
-              description: '使用 Google 地圖數據提供 grounding',
-            },
-            {
-              name: 'analyze_search_results',
-              description: '分析搜尋結果',
-            },
-            {
-              name: 'save_research_findings',
-              description: '保存研究發現',
-            },
-          ],
-        },
-        {
-          name: 'mcp_file_assistant',
-          path: 'workspace/python/agents/mcp-agent',
-          type: 'Agent',
-          description: '透過 MCP 存取檔案系統的 AI 助理',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'McpToolset (filesystem)',
-              description: '透過 MCP 提供對檔案系統操作的存取',
-            },
-          ],
-        },
-        {
-          name: 'model_selector_agent',
+          name: 'model-selector',
           path: 'workspace/python/agents/model-selector',
           type: 'Agent',
-          description: '用於選擇和比較 AI 模型的專家代理',
+          description: '模型選擇與最佳化代理，協助比較與推薦適合的使用情境模型。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1102,118 +1304,10 @@
           ],
         },
         {
-          name: 'multi_llm_agent',
-          path: 'workspace/python/agents/multi-llm-agent',
-          type: 'Agent',
-          description: '透過 LiteLLM 支援 OpenAI、Claude 等的多 LLM 代理',
-          model: 'openai/gpt-4o-mini',
-          tools: [
-            {
-              name: 'calculate_square',
-              description: '計算一個數字的平方',
-            },
-            {
-              name: 'get_weather',
-              description: '獲取特定城市的天氣',
-            },
-            {
-              name: 'analyze_sentiment',
-              description: '分析文本的情感',
-            },
-          ],
-        },
-        {
-          name: 'customer_service',
-          path: 'workspace/python/agents/observability-agent',
-          type: 'Agent',
-          description: '具有事件追蹤功能的客戶服務代理',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'check_order_status',
-              description: '檢查特定訂單的狀態',
-            },
-            {
-              name: 'process_refund',
-              description: '處理訂單的退款',
-            },
-            {
-              name: 'check_inventory',
-              description: '檢查產品的庫存可用性',
-            },
-          ],
-        },
-        {
-          name: 'observability_plugins_agent',
-          path: 'workspace/python/agents/observability-plugins-agent',
-          type: 'Agent',
-          description: '具有全面可觀測性外掛的生產助理',
-          model: 'gemini-2.5-flash',
-          plugins: [
-            'MetricsCollectorPlugin',
-            'AlertingPlugin',
-            'PerformanceProfilerPlugin',
-          ],
-        },
-        {
-          name: 'personal_tutor',
-          path: 'workspace/python/agents/personal-tutor',
-          type: 'Agent',
-          description: '追蹤用戶進度和偏好的個人家教',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'set_user_preferences',
-              description: '設定用戶的學習偏好',
-            },
-            {
-              name: 'record_topic_completion',
-              description: '記錄學習主題的完成情況',
-            },
-            {
-              name: 'get_user_progress',
-              description: '檢索用戶的當前進度',
-            },
-            {
-              name: 'start_learning_session',
-              description: '開始新的學習會話',
-            },
-            {
-              name: 'calculate_quiz_grade',
-              description: '計算測驗的成績',
-            },
-            {
-              name: 'search_past_lessons',
-              description: '搜尋過去的課程',
-            },
-          ],
-        },
-        {
-          name: 'production_deployment_agent',
-          path: 'workspace/python/agents/production-agent',
-          type: 'Agent',
-          description: '關於生產部署策略的專家',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'check_deployment_status',
-              description: '檢查部署狀態',
-            },
-            {
-              name: 'get_deployment_options',
-              description: '獲取可用的部署選項',
-            },
-            {
-              name: 'get_best_practices',
-              description: '檢索部署最佳實踐',
-            },
-          ],
-        },
-        {
-          name: 'software_bug_assistant',
+          name: 'software-bug-assistant',
           path: 'workspace/python/agents/software-bug-assistant',
           type: 'Agent',
-          description: '軟體錯誤助理',
+          description: '軟體錯誤追蹤與管理助手，整合企業級資料庫與向量搜尋。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1239,167 +1333,64 @@
           ],
         },
         {
-          name: 'plan_react_strategic_solver',
-          path: 'workspace/python/agents/strategic-solver',
-          type: 'Agent',
-          description: '使用 PlanReActPlanner 的策略性業務顧問',
-          model: 'gemini-2.0-flash',
-          planner: 'PlanReActPlanner',
+          name: 'youtube-shorts-assistant',
+          path: 'workspace/python/agents/youtube-shorts-assistant',
+          type: 'LlmAgent',
+          description: '自動化 YouTube Shorts 短影音內容創作的多代理系統。',
+          model: 'gemini-2.0-flash-001',
           tools: [
             {
-              name: 'analyze_market',
-              description: '分析市場趨勢和數據',
+              name: 'scriptwriter_agent (AgentTool)',
+              description: '負責撰寫影片腳本的代理',
             },
             {
-              name: 'calculate_roi',
-              description: '計算投資回報率 (ROI)',
+              name: 'visualizer_agent (AgentTool)',
+              description: '負責創建視覺概念的代理',
             },
             {
-              name: 'assess_risk',
-              description: '評估潛在的業務風險',
-            },
-            {
-              name: 'save_strategy_report',
-              description: '保存生成的策略報告',
+              name: 'formatter_agent (AgentTool)',
+              description: '負責格式化最終內容的代理',
             },
           ],
         },
         {
-          name: 'streaming_assistant',
-          path: 'workspace/python/agents/streaming-agent',
+          name: 'production-agent',
+          path: 'workspace/python/agents/production-agent',
           type: 'Agent',
-          description: '提供即時串流回應的樂於助人的助理',
+          description: '展示 ADK 代理部署策略和最佳實務的生產部署代理。',
           model: 'gemini-2.0-flash',
           tools: [
             {
-              name: 'format_streaming_info',
-              description: '格式化用於串流回應的資訊',
+              name: 'check_deployment_status',
+              description: '檢查部署狀態',
             },
             {
-              name: 'analyze_streaming_performance',
-              description: '分析串流性能指標',
+              name: 'get_deployment_options',
+              description: '獲取可用的部署選項',
+            },
+            {
+              name: 'get_best_practices',
+              description: '檢索部署最佳實踐',
             },
           ],
         },
         {
-          name: 'support_agent',
-          path: 'workspace/python/agents/support-agent',
+          name: 'observability-plugins-agent',
+          path: 'workspace/python/agents/observability-plugins-agent',
           type: 'Agent',
-          description: '具有知識庫搜尋和工單創建功能的客戶支援代理',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'search_knowledge_base',
-              description: '在知識庫中搜尋解決方案',
-            },
-            {
-              name: 'create_ticket',
-              description: '創建新的支援工單',
-            },
-            {
-              name: 'check_ticket_status',
-              description: '檢查現有工單的狀態',
-            },
+          description: '企業級可觀測性系統，展示 ADK 的外掛程式架構。',
+          model: 'gemini-2.5-flash',
+          plugins: [
+            'MetricsCollectorPlugin',
+            'AlertingPlugin',
+            'PerformanceProfilerPlugin',
           ],
         },
         {
-          name: 'third_party_agent',
-          path: 'workspace/python/agents/third-party-agent',
-          type: 'Agent',
-          description: '整合第三方工具 (LangChain, CrewAI) 的代理',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'create_wikipedia_tool',
-              description: '創建一個用於 Wikipedia 搜尋的工具',
-            },
-            {
-              name: 'create_web_search_tool',
-              description: '創建一個用於一般網路搜尋的工具',
-            },
-            {
-              name: 'create_directory_read_tool',
-              description: '創建一個用於讀取目錄內容的工具',
-            },
-            {
-              name: 'create_file_read_tool',
-              description: '創建一個用於讀取檔案內容的工具',
-            },
-          ],
-        },
-        {
-          name: 'a2a_orchestrator',
-          path: 'workspace/python/agents/a2a-orchestrator',
-          type: 'Agent',
-          description: '使用 ADK A2A 協調遠端代理的協調器代理',
-          model: 'gemini-2.0-flash',
-          sub_agents: [
-            {
-              name: 'research_specialist',
-              type: 'RemoteA2aAgent',
-            },
-            {
-              name: 'data_analyst',
-              type: 'RemoteA2aAgent',
-            },
-            {
-              name: 'content_writer',
-              type: 'RemoteA2aAgent',
-            },
-          ],
-          tools: [
-            {
-              name: 'check_agent_availability',
-              description: '檢查特定代理是否可用',
-            },
-            {
-              name: 'log_coordination_step',
-              description: '記錄協調過程中的一個步驟',
-            },
-          ],
-        },
-        {
-          name: 'artifact_agent',
-          path: 'workspace/python/agents/artifact-agent',
-          type: 'Agent',
-          description: '具有 artifact 儲存和版本控制功能的文件處理代理',
-          model: 'gemini-1.5-flash',
-          tools: [
-            {
-              name: 'extract_text_tool',
-              description: '從文件中提取文本',
-            },
-            {
-              name: 'summarize_document_tool',
-              description: '總結文件的內容',
-            },
-            {
-              name: 'translate_document_tool',
-              description: '將文件翻譯成另一種語言',
-            },
-            {
-              name: 'create_final_report_tool',
-              description: '從處理過的數據創建最終報告',
-            },
-            {
-              name: 'list_artifacts_tool',
-              description: '列出所有可用的 artifact',
-            },
-            {
-              name: 'load_artifact_tool',
-              description: '載入特定的 artifact',
-            },
-            {
-              name: 'load_artifacts_tool',
-              description: '載入多個 artifact',
-            },
-          ],
-        },
-        {
-          name: 'best_practices_agent',
+          name: 'best-practices-agent',
           path: 'workspace/python/agents/best-practices-agent',
           type: 'Agent',
-          description: '展示最佳實踐的生產就緒代理',
+          description: '展示建置生產就緒代理的完整最佳實踐，包含安全性與可靠性模式。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1433,126 +1424,102 @@
           ],
         },
         {
-          name: 'TravelPlanningSystem',
-          path: 'workspace/python/agents/travel-planner',
-          type: 'SequentialAgent',
-          description: '具有平行搜尋功能的完整旅行規劃系統',
-          sub_agents: [
-            {
-              name: 'ParallelSearch',
-              type: 'ParallelAgent',
-              sub_agents: [
-                {
-                  name: 'flight_finder',
-                },
-                {
-                  name: 'hotel_finder',
-                },
-                {
-                  name: 'activity_finder',
-                },
-              ],
-            },
-            {
-              name: 'itinerary_builder',
-            },
-          ],
-        },
-        {
-          name: 'vision_catalog_coordinator',
-          path: 'workspace/python/agents/vision-catalog-agent',
+          name: 'enterprise-agent',
+          path: 'workspace/python/agents/enterprise-agent',
           type: 'Agent',
-          description: '多模態視覺產品目錄協調器',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'list_sample_images',
-              description: '列出可供處理的範例圖片',
-            },
-            {
-              name: 'generate_product_mockup',
-              description: '生成產品的視覺模型',
-            },
-            {
-              name: 'analyze_uploaded_image',
-              description: '分析用戶上傳的圖片',
-            },
-            {
-              name: 'analyze_product_image',
-              description: '分析產品圖片以獲取詳細資訊',
-            },
-            {
-              name: 'compare_product_images',
-              description: '比較兩張產品圖片',
-            },
-          ],
-        },
-        {
-          name: 'voice_assistant',
-          path: 'workspace/python/agents/voice-assistant',
-          type: 'Agent',
-          description: '支援 Live API 的即時語音助理',
-          model: 'gemini-2.0-flash-live-001',
-          capabilities: ['音訊錄製/播放', 'Live API 串流'],
-        },
-        {
-          name: 'youtube_shorts_agent',
-          path: 'workspace/python/agents/youtube-shorts-assistant',
-          type: 'LlmAgent',
-          description: '用於創建 YouTube Short 影片的代理',
-          model: 'gemini-2.0-flash-001',
-          tools: [
-            {
-              name: 'scriptwriter_agent (AgentTool)',
-              description: '負責撰寫影片腳本的代理',
-            },
-            {
-              name: 'visualizer_agent (AgentTool)',
-              description: '負責創建視覺概念的代理',
-            },
-            {
-              name: 'formatter_agent (AgentTool)',
-              description: '負責格式化最終內容的代理',
-            },
-          ],
-        },
-        {
-          name: 'gepa_optimization_agent',
-          path: 'workspace/python/agents/gepa-optimization-agent',
-          type: 'Agent',
-          description:
-            '一個客服代理，展示了如何使用 GEPA（遺rac遺傳演算法-帕雷托提示最佳化）來自動優化 LLM 代理的提示詞。',
+          description: '使用 Gemini Enterprise 在企業規模部署和管理的 ADK 代理。',
           model: 'gemini-2.0-flash',
           tools: [
             {
-              name: 'verify_customer_identity',
-              description: '檢查訂單 ID + 電子郵件',
+              name: 'check_company_size',
+              description: '檢查公司規模',
             },
             {
-              name: 'check_return_policy',
-              description: '驗證 30 天退貨期限',
+              name: 'score_lead',
+              description: '根據標準對銷售潛在客戶進行評分',
             },
             {
-              name: 'process_refund',
-              description: '驗證後執行退款',
+              name: 'get_competitive_intel',
+              description: '收集競爭情報',
             },
           ],
         },
         {
-          name: 'ui_integration_agent',
-          path: 'workspace/python/agents/ui-integration',
+          name: 'third-party-agent',
+          path: 'workspace/python/agents/third-party-agent',
           type: 'Agent',
-          description:
-            '一個最小化的實作，示範如何使用 AG-UI 協定 (AG-UI Protocol) 將 ADK 代理與 React UI 整合。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [],
+          description: '展示如何將第三方框架工具 (LangChain, CrewAI) 整合到 ADK 代理中。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'create_wikipedia_tool',
+              description: '創建一個用於 Wikipedia 搜尋的工具',
+            },
+            {
+              name: 'create_web_search_tool',
+              description: '創建一個用於一般網路搜尋的工具',
+            },
+            {
+              name: 'create_directory_read_tool',
+              description: '創建一個用於讀取目錄內容的工具',
+            },
+            {
+              name: 'create_file_read_tool',
+              description: '創建一個用於讀取檔案內容的工具',
+            },
+          ],
         },
         {
-          name: 'data_analyst',
+          name: 'multi-llm-agent',
+          path: 'workspace/python/agents/multi-llm-agent',
+          type: 'Agent',
+          description: '透過 LiteLLM 整合多種 LLM (OpenAI, Claude, Ollama) 的代理。',
+          model: 'openai/gpt-4o-mini',
+          tools: [
+            {
+              name: 'calculate_square',
+              description: '計算一個數字的平方',
+            },
+            {
+              name: 'get_weather',
+              description: '獲取特定城市的天氣',
+            },
+            {
+              name: 'analyze_sentiment',
+              description: '分析文本的情感',
+            },
+          ],
+        },
+        {
+          name: 'customer-support-agent',
+          path: 'workspace/python/agents/customer-support-agent',
+          type: 'Agent',
+          description: '整合 Next.js 前端與 AG-UI 的客戶支援代理，展示生成式 UI 與人機協作功能。',
+          model: 'gemini-2.0-flash-exp',
+          tools: [
+            {
+              name: 'search_knowledge_base',
+              description: '搜尋知識庫以尋找相關資訊',
+            },
+            {
+              name: 'lookup_order_status',
+              description: '查詢客戶訂單的狀態',
+            },
+            {
+              name: 'create_support_ticket',
+              description: '為複雜問題建立支援工單',
+            },
+            {
+              name: 'get_product_details',
+              description: '從資料庫獲取產品詳情',
+            },
+          ],
+        },
+        {
+          name: 'data-analysis-dashboard',
           path: 'workspace/python/agents/data-analysis-dashboard/agent',
           type: 'Agent',
-          description:
-            '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
+          description: '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
           model: 'gemini-2.0-flash-exp',
           tools: [
             {
@@ -1570,10 +1537,10 @@
           ],
         },
         {
-          name: 'data_analysis_agent',
+          name: 'data-analysis-agent',
           path: 'workspace/python/agents/data-analysis-agent',
           type: 'Agent',
-          description: '整合 Streamlit 與 ADK 的資料分析助理',
+          description: '整合 Streamlit 與 ADK 的資料分析助理，實現檔案分析、圖表生成與對話。',
           model: 'gemini-2.0-flash',
           tools: [
             {
@@ -1595,10 +1562,10 @@
           ],
         },
         {
-          name: 'support_bot',
+          name: 'support-bot',
           path: 'workspace/python/agents/support-bot',
           type: 'Agent',
-          description: '協助處理公司政策與問題的團隊支援助理',
+          description: '協助處理公司政策與問題的團隊支援助理。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1612,11 +1579,10 @@
           ],
         },
         {
-          name: 'pubsub_processor',
+          name: 'pubsub-agent',
           path: 'workspace/python/agents/pubsub-agent',
           type: 'Agent',
-          description:
-            '整合 Pub/Sub 與 ADK 建構的事件驅動文件處理協調者，負責將文件路由到專門的分析器。',
+          description: '整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1638,11 +1604,10 @@
           ],
         },
         {
-          name: 'commerce_agent_e2e',
+          name: 'commerce-agent-e2e',
           path: 'workspace/python/agents/commerce-agent-e2e',
           type: 'Agent',
-          description:
-            '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
+          description: '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1660,11 +1625,10 @@
           ],
         },
         {
-          name: 'policy_navigator',
+          name: 'policy-navigator',
           path: 'workspace/python/agents/policy-navigator',
           type: 'Agent',
-          description:
-            '企業合規與政策導航器，利用 File Search 構建 RAG，實作文件管理、搜尋專家、合規顧問與報告產生器等多代理人協作。',
+          description: '企業合規與政策導航器，利用 File Search 構建 RAG，具自動引用與多代理功能，低成本高效解決企業政策查詢。',
           model: 'gemini-2.0-flash',
           sub_agents: [
             {
@@ -1720,11 +1684,10 @@
           ],
         },
         {
-          name: 'mcp_a2a_master_agent',
+          name: 'mcp-a2a-master',
           path: 'workspace/python/agents/mcp-a2a-master/',
           type: 'Agent',
-          description:
-            '整合 cmd 與 MCP 的 A2A 主協調者代理，展示跨代理通訊與協作。',
+          description: 'MCP A2A 多代理系統實戰課程，建構主機代理協調多個專業代理的可擴展架構。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1747,11 +1710,10 @@
           ],
         },
         {
-          name: 'math_agent_otel',
+          name: 'math-agent-otel',
           path: 'workspace/python/agents/math-agent-otel',
           type: 'Agent',
-          description:
-            '具有 OpenTelemetry 儀表化的 ADK 數學代理，展示使用 Jaeger 後端的分散式追蹤與結構化日誌。',
+          description: '具有 OpenTelemetry 儀表化的 ADK 數學代理,展示分散式追蹤與結構化日誌。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1773,11 +1735,10 @@
           ],
         },
         {
-          name: 'pack_adk_a2a_agent',
+          name: 'pack-adk-a2a-agent',
           path: 'workspace/python/agents/pack-adk-a2a-agent',
           type: 'Agent',
-          description:
-            '一個可以提供有關天氣和時間資訊的代理程式，並支援 A2A 通訊。',
+          description: '一個可以提供有關天氣和時間資訊的代理程式，支援 A2A 與 FastAPI 整合。',
           model: 'gemini-3-pro-preview',
           tools: [
             {
@@ -1791,11 +1752,10 @@
           ],
         },
         {
-          name: 'interactions_api_basic',
+          name: 'interactions-api-basic',
           path: 'workspace/python/agents/interactions-api-basic',
           type: 'Agent',
-          description:
-            '展示 Google Interactions API 的基礎功能，包含有狀態對話、Gemini 模型互動、串流回應與 Function Calling。',
+          description: 'Google Interactions API 基礎範例，展示有狀態對話、串流與工具整合。',
           model: 'gemini-2.5-flash',
           tools: [
             {
@@ -1813,10 +1773,10 @@
           ],
         },
         {
-          name: 'context_compaction_agent',
+          name: 'context-compaction-agent',
           path: 'workspace/python/agents/context-compaction-agent',
           type: 'Agent',
-          description: '展示長對話上下文壓縮功能的代理',
+          description: '展示 Context Compaction (上下文壓縮) 的代理，自動摘要舊的對話歷史記錄以減少 Token 使用量。',
           model: 'gemini-2.0-flash',
           tools: [
             {
@@ -1826,6 +1786,27 @@
             {
               name: 'calculate_complexity',
               description: '分析問題複雜度以決定回應深度',
+            },
+          ],
+        },
+        {
+          name: 'pause-resume-agent',
+          path: 'workspace/python/agents/pause-resume-agent',
+          type: 'Agent',
+          description: '展示 ADK 1.16.0 中暫停與恢復調用的 Agent，具備狀態檢查點與恢復提示功能。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'process_data_chunk',
+              description: '模擬處理資料塊。',
+            },
+            {
+              name: 'validate_checkpoint',
+              description: '驗證恢復時的檢查點完整性。',
+            },
+            {
+              name: 'get_resumption_hint',
+              description: '提供關於從何處恢復的提示。',
             },
           ],
         },

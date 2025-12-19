@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pause-resume-agent"
+version = "0.1.0"
+description = "TIL：使用 Google ADK 1.16.0 實現暫停與恢復調用 - 演示 Agent 狀態檢查點與可恢復調用"
+requires-python = ">=3.9"
+dependencies = [
+    "google-adk>=1.16.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pause_resume_agent*"]
+
+# 重點摘要
+# - 核心概念：專案的封裝與建置配置，定義專案中繼資料。
+# - 關鍵技術：
+#   - setuptools：建置後端。
+#   - project.dependencies：指定核心執行環境。
+# - 重要結論：採用標準的 Python 專案結構，確保套件可以透過 pip install -e . 進行可編輯安裝。
+# - 行動項目：確認 Python 版本至少為 3.9。

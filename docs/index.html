@@ -724,7 +724,7 @@
       .description-content p {
         font-size: 15.5px;
         line-height: 1.9;
-        color: #1a1a1a;
+        color: #667eea;
         margin: 0;
         position: relative;
         z-index: 1;
@@ -2938,6 +2938,30 @@
             'production',
             'architecture',
           ],
+          completed: false,
+        },
+        {
+          day: 56,
+          title: 'ADK 暫停與恢復調用功能',
+          description:
+            'ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查點並恢復執行，支援容錯、人機互動與長時間任務，透過 ResumabilityConfig 啟用自動狀態管理。',
+          docs: [
+            {
+              text: '文件連結',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/notes/google-adk-training-hub/blog/2025-10-20-til-pause-resume.md',
+            },
+            {
+              text: 'Pause Resume Agent',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/pause-resume-agent/',
+            },
+          ],
+          refs: [
+            {
+              text: 'TIL: Context Compaction with Google ADK 1.16',
+              url: 'https://raphaelmansuy.github.io/adk_training/blog/til-pause-resume',
+            },
+          ],
+          labels: ['pause-resume', 'adk', 'fault-tolerance', 'state', 'context'],
           completed: false,
         },
       ];

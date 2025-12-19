@@ -635,9 +635,9 @@ for event in execution_events:
 
 ADK 處理工作流程中代理之間的錯誤傳播：
 
-- <div style='text-align: left;'> `SequentialAgent` 中的錯誤會停止執行並向上傳播</div>
-- <div style='text-align: left;'> `ParallelAgent` 會在其他分支失敗時繼續執行成功的分支</div>
-- <div style='text-align: left;'> `RemoteA2aAgent` 自動處理網路錯誤和逾時</div>
+- `SequentialAgent` 中的錯誤會停止執行並向上傳播
+- `ParallelAgent` 會在其他分支失敗時繼續執行成功的分支
+- `RemoteA2aAgent` 自動處理網路錯誤和逾時
 
 ### 工具結果快取 (Tool Result Caching)
 
@@ -647,9 +647,9 @@ ADK 可能會在調用上下文中快取工具結果以提升效能。雖然並�
 
 ADK 提供自動狀態管理：
 
-- <div style='text-align: left;'> 每個代理透過 `InvocationContext` 獲得自己的狀態範圍</div>
-- <div style='text-align: left;'> 狀態透過 `output_key` 和插值在代理之間流動</div>
-- <div style='text-align: left;'> 自動清理可防止調用之間的狀態污染</div>
+- 每個代理透過 `InvocationContext` 獲得自己的狀態範圍
+- 狀態透過 `output_key` 和插值在代理之間流動
+- 自動清理可防止調用之間的狀態污染
 
 ## 決策框架：單一 vs 多代理 (Decision Framework: Single vs Multi-Agent)
 

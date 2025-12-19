@@ -1030,4 +1030,25 @@ AI 代理部署與優化指南：部署 AI 代理比想像簡單，平台已處�
   - [TIL: Context Compaction with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-context-compaction)
 
 </details>
+
+#### 🕗 Day 56
+
+<details>
+<summary>
+ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查點並恢復執行，支援容錯、人機互動與長時間任務，透過 ResumabilityConfig 啟用自動狀態管理。
+
+🏷️ `pause-resume`, `adk`, `fault-tolerance`, `state`, `context`
+
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-20-til-pause-resume.md)
+
+  - [Pause Resume Agent](./workspace/python/agents/pause-resume-agent/)
+
+- **參考資源**
+  - [TIL: Context Compaction with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-pause-resume)
+
+</details>
 </details>

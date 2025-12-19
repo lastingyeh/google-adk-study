@@ -373,7 +373,6 @@ graph LR
 
 **完整管線：**
 
-<div style='text-align: left;'>
 1. 開發者使用 ADK 建構代理
 2. 開發者部署到 Vertex AI Agent Engine
 3. 管理員在 Gemini Enterprise 中設定：
@@ -383,7 +382,6 @@ graph LR
 4. 終端使用者在入口網站中發現代理
 5. 終端使用者使用具有企業資料的代理
 6. 系統記錄每次互動以符合合規性
-</div>
 
 ### 入口網站 vs. 替代方案 (Portal vs. Alternatives)
 
@@ -665,7 +663,6 @@ graph TD
 
     Q4 -- 否 --> Res4[標準 GEMINI]
     Q4 -- 是 --> Res5[<div style='text-align: left;'>GEMINI ENTERPRISE <br/>✓ 完整合規性<br/>✓ 稽核日誌<br/>✓ 企業級 SLA</div>]
-
 ```
 
 ## 遷移路徑：從標準到企業 (Migration Path)

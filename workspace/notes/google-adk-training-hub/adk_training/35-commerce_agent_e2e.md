@@ -601,8 +601,6 @@ async def test_multi_user_session_isolation():
 
 一旦執行，進行互動式測試：
 
-<div style='text-align: left;'>
-
 1. **測試偏好工作流程**：
    - 開啟 http://localhost:8000
    - 從下拉選單選擇 "commerce_agent"
@@ -626,8 +624,6 @@ async def test_multi_user_session_isolation():
    - 輸入："Recommend something for me"
    - Agent 應參考已儲存的運動/預算/經驗 ✅
    - 推薦應針對初學者等級量身打造
-
-</div>
 
 **關於多用戶測試的注意事項**：`adk web` UI 沒有 User ID 輸入。要測試多用戶隔離，請直接使用 API 端點 (參閱 `docs/TESTING_WITH_USER_IDENTITIES.md` 或執行 `make test-guide`)。
 
@@ -964,8 +960,6 @@ adk deploy agent_engine \
 
 當發生以下情況時，您就知道一切正常：
 
-<div style='text-align: left;'>
-
 - ✅ 所有 14+ 測試通過 (`make test`)
 - ✅ Agent 啟動無錯誤 (`make dev`)
 - ✅ Agent 出現在 [http://localhost:8000](http://localhost:8000) 的下拉選單中
@@ -976,8 +970,6 @@ adk deploy agent_engine \
 - ✅ Grounding metadata 出現在伺服器日誌 (終端機) 中
 - ✅ 產品推薦包含 Decathlon 連結
 - ✅ 無 "site: operator" 問題 (若使用 Vertex AI)
-
-</div>
 
 ## 常見問題與解決方案 (Common Issues & Solutions)
 

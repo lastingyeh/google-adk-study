@@ -281,10 +281,10 @@ gcloud compute ssh --zone=us-central1-a instance-name -- \
 
 在 Cloud Trace Explorer 中：
 
-<div style='text-align: left;'> 1. 選擇你的服務名稱 (`adk-agent`)</div>
-<div style='text-align: left;'> 2. 依 span 名稱篩選：`call_llm`、`execute_tool` 等</div>
-<div style='text-align: left;'> 3. 以微秒精度檢視追蹤</div>
-<div style='text-align: left;'> 4. 點擊「GenAI」標籤以查看 LLM 事件、工具呼叫和推理</div>
+1. 選擇你的服務名稱 (`adk-agent`)
+2. 依 span 名稱篩選：`call_llm`、`execute_tool` 等
+3. 以微秒精度檢視追蹤
+4. 點擊「GenAI」標籤以查看 LLM 事件、工具呼叫和推理
 
 ### 存取控制 (Access Control)
 
@@ -334,7 +334,7 @@ A: 可以。透過更改 endpoint，匯出到 Google Cloud Trace (GCP 推薦)、
 
 這篇部落格文章是高層次的「為什麼」。如需包含測試的完整工作範例，請參閱：
 
-📚 **[OpenTelemetry + ADK + Jaeger Tutorial](https://github.com/raphaelmansuy/adk_training/tree/main/til_implementation/til_opentelemetry_jaeger_20251118)**
+📚 **[OpenTelemetry + ADK + Jaeger Tutorial](../../../python/agents/math-agent-otel/)**
 
 - 42 個單元測試
 - 展示了兩種方法
