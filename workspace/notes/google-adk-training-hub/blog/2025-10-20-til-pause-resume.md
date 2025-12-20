@@ -642,13 +642,13 @@ ADK v1.16.0 中的暫停與恢復調用透過以下方式實現了 **具備韌�
 
 ### ADK 官方文件 (ADK Official Documentation)
 
-- **[暫停與恢復調用 (Pause & Resume Invocations)](./2025-10-20-til-pause-resume.md)** -
+- **[暫停與恢復調用 (Pause & Resume Invocations)](https://google.github.io/adk-docs/runtime/resume/)** -
   包含 API 參考的 ADK 官方文件。
 
-- **[狀態管理 (State Management)](../../google-adk-training-hub/agent-architecture.md)** -
+- **[狀態管理 (State Management)](https://google.github.io/adk-docs/sessions/state/)** -
   完整的狀態管理模式與最佳實踐。
 
-- **[ResumabilityConfig](../../../python/agents/pause-resume-agent/app.py)** -
+- **[ResumabilityConfig](https://github.com/google/adk-python/blob/main/src/google/adk/apps/app.py)** -
   原始碼與實現細節。
 
 ### 相關資源與模式 (Related Resources & Patterns)

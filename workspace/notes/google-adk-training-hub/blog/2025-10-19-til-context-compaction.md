@@ -369,7 +369,7 @@ Token成長比較：8 次互動
 
 - **[TIL: 暫停與恢復調用 (TIL: Pause and Resume Invocations)](./2025-10-20-til-pause-resume.md)** - 絕佳組合！結合檢查點 (checkpointing) 與上下文壓縮，以進行完整的長時間執行工作流程狀態管理。使用暫停/恢復在里程碑建立檢查點，然後使用上下文壓縮來管理跨恢復工作階段的Token成長。
 
-- (未完成) **[TIL: 評估工具使用品質 (TIL: Evaluating Tool Use Quality)](../blog/til-tool-use-quality.md)** - 在使用上下文壓縮優化Token使用量後，測量您的代理是否有效地使用正確的工具。驗證您的代理品質在壓縮上下文後仍保持高水準。
+- **[TIL: 評估工具使用品質 (TIL: Evaluating Tool Use Quality)](./2025-10-21-til-tool-use-quality.md)** - 在使用上下文壓縮優化Token使用量後，測量您的代理是否有效地使用正確的工具。驗證您的代理品質在壓縮上下文後仍保持高水準。
 
 - **[返回 TIL 索引 (Back to TIL Index)](./README.md)** - 瀏覽所有快速學習指南
 

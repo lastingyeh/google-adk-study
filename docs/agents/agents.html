@@ -1810,6 +1810,32 @@
             },
           ],
         },
+        {
+          name: 'tool-use-evaluator',
+          path: 'workspace/python/agents/tool-use-evaluator',
+          type: 'Agent',
+          description:
+            '用於展示工具使用品質 (tool use quality) 評估的代理，展示了良好的工具排序、工具效率與錯誤恢復。',
+          model: 'gemini-2.0-flash',
+          tools: [
+            {
+              name: 'analyze_data',
+              description: '分析資料集 (模擬)',
+            },
+            {
+              name: 'extract_features',
+              description: '從分析數據中提取特徵',
+            },
+            {
+              name: 'validate_quality',
+              description: '驗證特徵品質 (模擬)',
+            },
+            {
+              name: 'apply_model',
+              description: '將機器學習 (ML) 模型應用於特徵',
+            },
+          ],
+        },
       ];
       // DOM 元素
       const agentsGrid = document.getElementById('agents-grid');

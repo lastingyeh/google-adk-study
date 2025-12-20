@@ -1,0 +1,188 @@
+{
+  "eval_set_id": "tool_use_quality_evaluation",
+  "name": "工具使用品質評估",
+  "description": "評估代理工具的排序和品質",
+  "eval_cases": [
+    {
+      "eval_id": "good_sequence_complete_pipeline",
+      "conversation": [
+        {
+          "invocation_id": "inv-001",
+          "user_content": {
+            "parts": [
+              {
+                "text": "分析銷售資料集並應用預測模型"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "我已經分析了銷售資料集，提取了特徵，驗證了品質，並應用了預測模型。該模型在特徵上達到了 87% 的準確率。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call-001",
+                "name": "analyze_data",
+                "args": {
+                  "dataset": "sales_dataset"
+                }
+              },
+              {
+                "id": "call-002",
+                "name": "extract_features",
+                "args": {
+                  "data": {
+                    "type": "analysis_result"
+                  }
+                }
+              },
+              {
+                "id": "call-003",
+                "name": "validate_quality",
+                "args": {
+                  "features": {
+                    "type": "features"
+                  }
+                }
+              },
+              {
+                "id": "call-004",
+                "name": "apply_model",
+                "args": {
+                  "features": {
+                    "type": "validated_features"
+                  },
+                  "model": "random_forest"
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "tool_use_evaluator",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "bad_sequence_skipped_validation",
+      "conversation": [
+        {
+          "invocation_id": "inv-002",
+          "user_content": {
+            "parts": [
+              {
+                "text": "處理客戶資料集以進行建模"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "我已經提取了特徵並應用了模型。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call-101",
+                "name": "extract_features",
+                "args": {
+                  "data": {
+                    "type": "raw_data"
+                  }
+                }
+              },
+              {
+                "id": "call-102",
+                "name": "apply_model",
+                "args": {
+                  "features": {
+                    "type": "features"
+                  },
+                  "model": "linear_regression"
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "tool_use_evaluator",
+        "user_id": "test_user",
+        "state": {}
+      }
+    },
+    {
+      "eval_id": "good_sequence_proper_analysis",
+      "conversation": [
+        {
+          "invocation_id": "inv-003",
+          "user_content": {
+            "parts": [
+              {
+                "text": "分析並準備機器學習用的資料集"
+              }
+            ],
+            "role": "user"
+          },
+          "final_response": {
+            "parts": [
+              {
+                "text": "資料集已分析並準備好，具備已驗證的特徵，可隨時進行建模。"
+              }
+            ],
+            "role": "model"
+          },
+          "intermediate_data": {
+            "tool_uses": [
+              {
+                "id": "call-201",
+                "name": "analyze_data",
+                "args": {
+                  "dataset": "customer_data"
+                }
+              },
+              {
+                "id": "call-202",
+                "name": "extract_features",
+                "args": {
+                  "data": {
+                    "type": "analysis"
+                  }
+                }
+              },
+              {
+                "id": "call-203",
+                "name": "validate_quality",
+                "args": {
+                  "features": {
+                    "type": "extracted_features"
+                  }
+                }
+              }
+            ],
+            "intermediate_responses": []
+          }
+        }
+      ],
+      "session_input": {
+        "app_name": "tool_use_evaluator",
+        "user_id": "test_user",
+        "state": {}
+      }
+    }
+  ]
+}

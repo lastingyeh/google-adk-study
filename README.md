@@ -1044,11 +1044,30 @@ ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查�
 - **詳細說明**：
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-20-til-pause-resume.md)
-
   - [Pause Resume Agent](./workspace/python/agents/pause-resume-agent/)
 
 - **參考資源**
   - [TIL: Context Compaction with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-pause-resume)
+
+</details>
+
+#### 🕗 Day 57
+
+<details>
+<summary>
+本文介紹如何使用 Google ADK 1.16 評估 AI 代理的工具使用品質，分析其選擇、順序與效率，而不只看最終結果。
+
+🏷️ `evaluation`, `adk`, `tool-use-quality`, `quality-assurance`
+
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-21-til-tool-use-quality.md)
+  - [Tool Use Evaluator](./workspace/python/agents/tool-use-evaluator/)
+
+- **參考資源**
+  - [TIL: Evaluating Tool Use Quality with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-tool-use-quality)
 
 </details>
 </details>

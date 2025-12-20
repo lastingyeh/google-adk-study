@@ -1,0 +1,37 @@
+{
+  "criteria": {
+    "rubric_based_tool_use_quality_v1": {
+      "threshold": 0.7,
+      "judge_model_options": {
+        "judge_model": "gemini-2.5-flash",
+        "num_samples": 3
+      },
+      "rubrics": [
+        {
+          "rubric_id": "proper_tool_order",
+          "rubric_content": {
+            "text_property": "代理在 extract_features 之前呼叫 analyze_data。這遵守了工具依賴關係。"
+          }
+        },
+        {
+          "rubric_id": "complete_pipeline",
+          "rubric_content": {
+            "text_property": "對於完整的分析，代理應該呼叫：analyze \u2192 extract \u2192 validate \u2192 apply (全部 4 個步驟)"
+          }
+        },
+        {
+          "rubric_id": "validation_before_model",
+          "rubric_content": {
+            "text_property": "代理在應用模型之前驗證特徵品質"
+          }
+        },
+        {
+          "rubric_id": "no_tool_failures",
+          "rubric_content": {
+            "text_property": "所有工具呼叫皆成功且具有適當的參數 (無錯誤或缺少參數)"
+          }
+        }
+      ]
+    }
+  }
+}

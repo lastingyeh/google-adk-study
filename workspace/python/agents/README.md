@@ -45,5 +45,6 @@
 | 41   | 進階互動   | [interactions-api-basic](./interactions-api-basic)           | Google Interactions API 基礎範例，展示有狀態對話、串流與工具整合。                                     | Interactions API, Stateful Conversation, Streaming, Function Calling           | Interactions API, Gemini, Stateful, Streaming           |
 | 42   | 核心架構   | [context-compaction-agent](./context-compaction-agent)       | 展示 Context Compaction (上下文壓縮) 的代理，自動摘要舊的對話歷史記錄以減少 Token 使用量。             | Context Compaction, Token Optimization, Summarization                          | Context Compaction, Optimization, Token Management      |
 | 43   | 工具       | [pause-resume-agent](./pause-resume-agent)                   | 展示 ADK 1.16.0 中暫停與恢復調用的 Agent，具備狀態檢查點與恢復提示功能。                               | ResumabilityConfig, 檢查點 (Checkpoint), 恢復提示 (Resumption Hint)              | Pause, Resume, Checkpoint, Long-running Workflow        |
+| 44   | 控制與測試 | [tool-use-evaluator](./tool-use-evaluator)                   | 用於展示工具使用品質 (tool use quality) 評估的代理。                                   | Tool Use Quality, Sequential Thinking, Quality Evaluation                      | Tool Use, Quality, Evaluation, Testing                  |
 
 [回到首頁](../../../README.md)
