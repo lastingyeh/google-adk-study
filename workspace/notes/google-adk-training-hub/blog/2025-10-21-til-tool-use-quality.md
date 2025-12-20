@@ -187,12 +187,12 @@ graph TB
 
 #### 3. 與其他指標的區別 (Distinction from Other Metrics)
 
-| 指標 | 評估內容 | 範例 |
-| :--- | :--- | :--- |
-| **最終回應品質 (Final Response Quality)** | 答案是否正確？ | 「報告是否準確？」 |
-| **工具使用品質 (Tool Use Quality)** | 代理是否良好地使用工具？ | 「代理是否查詢了正確的資料庫？」 |
-| **安全性評估器 (Safety Evaluator)** | 是否安全/合規？ | 「代理是否違反了護欄規則？」 |
-| **軌跡評估 (Trajectory)** | 完整執行路徑 | 「整個推理過程是否穩健？」 |
+| 指標                                      | 評估內容                 | 範例                             |
+| :---------------------------------------- | :----------------------- | :------------------------------- |
+| **最終回應品質 (Final Response Quality)** | 答案是否正確？           | 「報告是否準確？」               |
+| **工具使用品質 (Tool Use Quality)**       | 代理是否良好地使用工具？ | 「代理是否查詢了正確的資料庫？」 |
+| **安全性評估器 (Safety Evaluator)**       | 是否安全/合規？          | 「代理是否違反了護欄規則？」     |
+| **軌跡評估 (Trajectory)**                 | 完整執行路徑             | 「整個推理過程是否穩健？」       |
 
 **關鍵區別**：工具使用關注的是**過程**，而非結果。
 
@@ -316,12 +316,12 @@ result = evaluator.evaluate(
 )
 ```
 
-| 參數 | 類型 | 用途 |
-| :--- | :--- | :--- |
-| `metric` | Enum | 設置為 `PrebuiltMetrics.RUBRIC_BASED_TOOL_USE_QUALITY_V1` |
-| `threshold` | float | 通過/失敗的最低分數 (0-1) |
-| `name` | str | 易於閱讀的標準名稱 |
-| `description` | str | 您正在評估的內容 |
+| 參數          | 類型  | 用途                                                      |
+| :------------ | :---- | :-------------------------------------------------------- |
+| `metric`      | Enum  | 設置為 `PrebuiltMetrics.RUBRIC_BASED_TOOL_USE_QUALITY_V1` |
+| `threshold`   | float | 通過/失敗的最低分數 (0-1)                                 |
+| `name`        | str   | 易於閱讀的標準名稱                                        |
+| `description` | str   | 您正在評估的內容                                          |
 
 ### 專業技巧 (Pro Tips)
 
@@ -662,7 +662,7 @@ graph TD
 
 ## 程式碼實現 (Code Implementation)
 
-- [til-rubric-based-tool-use-quality](../../../python/agents/til-rubric-based-tool-use-quality/)
+- [tool-use-evaluator](../../../python/agents/tool-use-evaluator/)
 
 ---
 
