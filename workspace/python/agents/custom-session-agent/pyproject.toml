@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "custom-session-agent"
+version = "0.1.0"
+description = "自定義會話服務 TIL 實作 - Google ADK 1.17+"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "ADK Training", email = "training@example.com"}
+]
+keywords = ["adk", "sessions", "redis", "mongodb", "til"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+    "google-adk>=1.17.0",
+    "google-genai>=1.41.0",
+    "redis>=5.0.0",
+    "pymongo>=4.6.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "pytest-watch>=4.2.0",
+]
+
+[tool.setuptools]
+packages = ["custom_session_agent"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --strict-markers"
+
+[tool.coverage.run]
+source = ["custom_session_agent"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
+
+# ### 重點摘要
+# - **核心概念**：Python 專案中介數據與打包配置。
+# - **關鍵技術**：pyproject.toml (PEP 518/621), setuptools。
+# - **重要結論**：定義了專案所需的依賴項（如 google-adk, redis）以及開發測試工具。
+# - **行動項目**：執行 `pip install -e .` 以可編輯模式安裝專案。

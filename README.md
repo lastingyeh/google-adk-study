@@ -1070,4 +1070,24 @@ ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查�
   - [TIL: Evaluating Tool Use Quality with Google ADK 1.16](https://raphaelmansuy.github.io/adk_training/blog/til-tool-use-quality)
 
 </details>
+
+#### 🕗 Day 58
+
+<details>
+<summary>
+Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與分散式部署問題。開發者只需繼承 `BaseSessionService` 並註冊服務，即可實現生產級別的對話狀態管理，無需修改核心代碼。
+
+🏷️ `custom-session-services`, `adk`, `storage-backends`, `redis`
+
+</summary>
+
+- **詳細說明**：
+
+  - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-23-til-custom-session-services.md)
+  - [Custom Session Agent](./workspace/python/agents/custom-session-agent/)
+
+- **參考資源**
+  - [TIL: Registering Custom Session Services in Google ADK 1.17](https://raphaelmansuy.github.io/adk_training/blog/til-custom-session-services)
+
+</details>
 </details>

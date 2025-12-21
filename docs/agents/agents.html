@@ -1836,6 +1836,32 @@
             },
           ],
         },
+        {
+          name: 'custom-session-agent',
+          path: 'workspace/python/agents/custom-session-agent',
+          type: 'Agent',
+          description:
+            '演示 ADK 中自定義會話服務註冊模式，將 Redis 註冊並作為自定義會話存儲後端。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'describe_session_info',
+              description: '描述會話資訊的工具',
+            },
+            {
+              name: 'test_session_persistence',
+              description: '測試跨請求會話持久化的工具',
+            },
+            {
+              name: 'show_service_registry_info',
+              description: '顯示服務註冊表資訊的工具',
+            },
+            {
+              name: 'get_session_backend_guide',
+              description: '提供 Redis 作為會話後端的指南工具',
+            },
+          ],
+        },
       ];
       // DOM 元素
       const agentsGrid = document.getElementById('agents-grid');

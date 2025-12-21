@@ -1,0 +1,75 @@
+"""測試匯入和基本模組結構。"""
+
+import pytest
+
+
+class TestImports:
+    """測試是否可以匯入所有需要的模組。"""
+
+    def test_agent_module_imports(self):
+        """測試是否可以匯入代理模組。"""
+        try:
+            import custom_session_agent.agent
+            assert hasattr(custom_session_agent.agent, "root_agent")
+        except ImportError:
+            pytest.skip("ADK not installed")
+
+    def test_custom_session_service_demo_exists(self):
+        """測試 CustomSessionServiceDemo 類別是否存在。"""
+        try:
+            from custom_session_agent.agent import CustomSessionServiceDemo
+            assert CustomSessionServiceDemo is not None
+        except ImportError:
+            pytest.skip("ADK not installed")
+
+    def test_tool_functions_exist(self):
+        """測試所有工具函式是否已定義。"""
+        try:
+            from custom_session_agent.agent import (
+                describe_session_info,
+                test_session_persistence,
+                show_service_registry_info,
+                get_session_backend_guide,
+            )
+            assert callable(describe_session_info)
+            assert callable(test_session_persistence)
+            assert callable(show_service_registry_info)
+            assert callable(get_session_backend_guide)
+        except ImportError:
+            pytest.skip("ADK not installed")
+
+
+class TestEnvConfig:
+    """測試環境配置。"""
+
+    def test_env_example_exists(self):
+        """測試 .env.example 檔案是否存在。"""
+        import os
+        env_example_path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            ".env.example"
+        )
+        assert os.path.exists(env_example_path), ".env.example should exist"
+
+    def test_env_contains_required_vars(self):
+        """測試 .env.example 是否包含必要的 Redis 變數。"""
+        import os
+        env_example_path = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            ".env.example"
+        )
+        with open(env_example_path, "r") as f:
+            content = f.read()
+
+        # Redis-focused environment variables
+        required_vars = [
+            "GOOGLE_API_KEY",
+            "REDIS_HOST",
+            "REDIS_PORT",
+            "SESSION_SERVICE_URI",
+        ]
+
+        for var in required_vars:
+            assert var in content, f"{var} should be in .env.example"

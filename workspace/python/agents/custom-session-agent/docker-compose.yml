@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Redis 服務容器
+  redis:
+    image: redis:7-alpine
+    container_name: adk-redis-session
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes # 啟用 AOF 持久化
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  # 定義持久化數據卷
+  redis_data:
+    driver: local
+
+# 重點摘要
+# 核心概念：容器化基礎設施配置。
+# 關鍵技術：Docker Compose, Redis Stack, Alpine Linux。
+# 重要結論：使用輕量級的 Alpine Redis 映像檔，並透過 appendonly yes 確保數據持久化。
+# 行動項目：執行 docker-compose up -d 啟動服務。
