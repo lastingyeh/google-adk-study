@@ -507,7 +507,7 @@ pytest tests/ -v
 
 - **[TIL: 上下文壓縮 (Context Compaction)](../blog/2025-10-19-til-context-compaction.md)** - 優化長對話中的記憶體使用（與持久化對話配合良好！）
 - **[TIL: 暫停與恢復調用 (Pause and Resume Invocations)](../blog/2025-10-20-til-pause-resume.md)** - 檢查點代理程式執行狀態
-- **[返回 TIL 索引 (/blog/tags/til)](../blog/README.md)** - 瀏覽所有快速學習指南
+- **[返回 TIL 索引 (/blog/README.md)](../blog/README.md)** - 瀏覽所有快速學習指南
 
 ### 相關 ADK 教學 (Related ADK Tutorials)
 

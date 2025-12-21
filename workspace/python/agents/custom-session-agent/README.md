@@ -555,7 +555,7 @@ python your_agent.py web agents/ \
 
 ## 參考資料
 
-- **TIL 文件**: `../../../notes/google-adk-training-hub/blog/2025-10-23-til-custom-session-services.md`
+- **TIL 文件**: [2025-10-23-til-custom-session-services.md](../../../notes/google-adk-training-hub/blog/2025-10-23-til-custom-session-services.md)
 - **Google ADK**: https://github.com/google/adk-python
 - **Redis 文件**: https://redis.io/documentation
 - **MongoDB 文件**: https://docs.mongodb.com
