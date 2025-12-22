@@ -1,0 +1,127 @@
+Category,Page Name,URL
+ADK 文件 (Adk Docs),ADK 文件 (Adk Docs),https://google.github.io/adk-docs/
+社群 (Community),社群 (Community),https://google.github.io/adk-docs/community/
+貢獻指南 (Contributing Guide),貢獻指南 (Contributing Guide),https://google.github.io/adk-docs/contributing-guide/
+發布說明 (Release Notes),發布說明 (Release Notes),https://google.github.io/adk-docs/release-notes/
+A2A (A2a),A2A (A2a),https://google.github.io/adk-docs/a2a/
+A2A (A2a),介紹 (Intro),https://google.github.io/adk-docs/a2a/intro/
+A2A (A2a),快速入門：使用 Go (Quickstart Consuming Go),https://google.github.io/adk-docs/a2a/quickstart-consuming-go/
+A2A (A2a),快速入門：使用 (Quickstart Consuming),https://google.github.io/adk-docs/a2a/quickstart-consuming/
+A2A (A2a),快速入門：公開 Go (Quickstart Exposing Go),https://google.github.io/adk-docs/a2a/quickstart-exposing-go/
+A2A (A2a),快速入門：公開 (Quickstart Exposing),https://google.github.io/adk-docs/a2a/quickstart-exposing/
+代理 (Agents),代理 (Agents),https://google.github.io/adk-docs/agents/
+代理 (Agents),設定 (Config),https://google.github.io/adk-docs/agents/config/
+代理 (Agents),自訂代理 (Custom Agents),https://google.github.io/adk-docs/agents/custom-agents/
+代理 (Agents),LLM 代理 (Llm Agents),https://google.github.io/adk-docs/agents/llm-agents/
+代理 (Agents),模型 (Models),https://google.github.io/adk-docs/agents/models/
+代理 (Agents),多代理 (Multi Agents),https://google.github.io/adk-docs/agents/multi-agents/
+代理 (Agents),工作流代理 (Workflow Agents),https://google.github.io/adk-docs/agents/workflow-agents/
+代理 (Agents),循環代理 (Loop Agents),https://google.github.io/adk-docs/agents/workflow-agents/loop-agents/
+代理 (Agents),平行代理 (Parallel Agents),https://google.github.io/adk-docs/agents/workflow-agents/parallel-agents/
+代理 (Agents),順序代理 (Sequential Agents),https://google.github.io/adk-docs/agents/workflow-agents/sequential-agents/
+API 參考 (Api Reference),API 參考 (Api Reference),https://google.github.io/adk-docs/api-reference/
+API 參考 (Api Reference),REST (Rest),https://google.github.io/adk-docs/api-reference/rest/
+應用程式 (Apps),應用程式 (Apps),https://google.github.io/adk-docs/apps/
+成品 (Artifacts),成品 (Artifacts),https://google.github.io/adk-docs/artifacts/
+回調 (Callbacks),回調 (Callbacks),https://google.github.io/adk-docs/callbacks/
+回調 (Callbacks),設計模式與最佳實踐 (Design Patterns And Best Practices),https://google.github.io/adk-docs/callbacks/design-patterns-and-best-practices/
+回調 (Callbacks),回調類型 (Types Of Callbacks),https://google.github.io/adk-docs/callbacks/types-of-callbacks/
+上下文 (Context),上下文 (Context),https://google.github.io/adk-docs/context/
+上下文 (Context),快取 (Caching),https://google.github.io/adk-docs/context/caching/
+上下文 (Context),壓縮 (Compaction),https://google.github.io/adk-docs/context/compaction/
+部署 (Deploy),部署 (Deploy),https://google.github.io/adk-docs/deploy/
+部署 (Deploy),Cloud Run (Cloud Run),https://google.github.io/adk-docs/deploy/cloud-run/
+部署 (Deploy),GKE (Gke),https://google.github.io/adk-docs/deploy/gke/
+部署 (Deploy),代理引擎 (Agent Engine),https://google.github.io/adk-docs/deploy/agent-engine/
+部署 (Deploy),ASP (Asp),https://google.github.io/adk-docs/deploy/agent-engine/asp/
+部署 (Deploy),部署 (Deploy),https://google.github.io/adk-docs/deploy/agent-engine/deploy/
+部署 (Deploy),測試 (Test),https://google.github.io/adk-docs/deploy/agent-engine/test/
+評估 (Evaluate),評估 (Evaluate),https://google.github.io/adk-docs/evaluate/
+評估 (Evaluate),標準 (Criteria),https://google.github.io/adk-docs/evaluate/criteria/
+評估 (Evaluate),用戶模擬 (User Sim),https://google.github.io/adk-docs/evaluate/user-sim/
+事件 (Events),事件 (Events),https://google.github.io/adk-docs/events/
+入門 (Get Started),入門 (Get Started),https://google.github.io/adk-docs/get-started/
+入門 (Get Started),關於 (About),https://google.github.io/adk-docs/get-started/about/
+入門 (Get Started),Go (Go),https://google.github.io/adk-docs/get-started/go/
+入門 (Get Started),安裝 (Installation),https://google.github.io/adk-docs/get-started/installation/
+入門 (Get Started),Java (Java),https://google.github.io/adk-docs/get-started/java/
+入門 (Get Started),Python (Python),https://google.github.io/adk-docs/get-started/python/
+入門 (Get Started),快速入門 (Quickstart),https://google.github.io/adk-docs/get-started/quickstart/
+入門 (Get Started),TypeScript (Typescript),https://google.github.io/adk-docs/get-started/typescript/
+入門 (Get Started),串流 (Streaming),https://google.github.io/adk-docs/get-started/streaming/
+入門 (Get Started),快速入門：串流 Java (Quickstart Streaming Java),https://google.github.io/adk-docs/get-started/streaming/quickstart-streaming-java/
+入門 (Get Started),快速入門：串流 (Quickstart Streaming),https://google.github.io/adk-docs/get-started/streaming/quickstart-streaming/
+接地 (Grounding),Google 搜尋接地 (Google_search_grounding),https://google.github.io/adk-docs/grounding/google_search_grounding/
+接地 (Grounding),Vertex AI 搜尋接地 (Vertex_ai_search_grounding),https://google.github.io/adk-docs/grounding/vertex_ai_search_grounding/
+MCP (Mcp),MCP (Mcp),https://google.github.io/adk-docs/mcp/
+可觀測性 (Observability),AgentOps (Agentops),https://google.github.io/adk-docs/observability/agentops/
+可觀測性 (Observability),Arize Ax (Arize Ax),https://google.github.io/adk-docs/observability/arize-ax/
+可觀測性 (Observability),BigQuery 代理分析 (Bigquery Agent Analytics),https://google.github.io/adk-docs/observability/bigquery-agent-analytics/
+可觀測性 (Observability),Cloud Trace (Cloud Trace),https://google.github.io/adk-docs/observability/cloud-trace/
+可觀測性 (Observability),Freeplay (Freeplay),https://google.github.io/adk-docs/observability/freeplay/
+可觀測性 (Observability),日誌 (Logging),https://google.github.io/adk-docs/observability/logging/
+可觀測性 (Observability),MLflow (Mlflow),https://google.github.io/adk-docs/observability/mlflow/
+可觀測性 (Observability),Monocle (Monocle),https://google.github.io/adk-docs/observability/monocle/
+可觀測性 (Observability),Phoenix (Phoenix),https://google.github.io/adk-docs/observability/phoenix/
+可觀測性 (Observability),Weave (Weave),https://google.github.io/adk-docs/observability/weave/
+插件 (Plugins),插件 (Plugins),https://google.github.io/adk-docs/plugins/
+插件 (Plugins),反思與重試 (Reflect And Retry),https://google.github.io/adk-docs/plugins/reflect-and-retry/
+執行環境 (Runtime),執行環境 (Runtime),https://google.github.io/adk-docs/runtime/
+執行環境 (Runtime),API 伺服器 (Api Server),https://google.github.io/adk-docs/runtime/api-server/
+執行環境 (Runtime),恢復 (Resume),https://google.github.io/adk-docs/runtime/resume/
+執行環境 (Runtime),執行設定 (Runconfig),https://google.github.io/adk-docs/runtime/runconfig/
+安全 (Safety),安全 (Safety),https://google.github.io/adk-docs/safety/
+會話 (Sessions),會話 (Sessions),https://google.github.io/adk-docs/sessions/
+會話 (Sessions),快速模式 (Express Mode),https://google.github.io/adk-docs/sessions/express-mode/
+會話 (Sessions),記憶體 (Memory),https://google.github.io/adk-docs/sessions/memory/
+會話 (Sessions),倒帶 (Rewind),https://google.github.io/adk-docs/sessions/rewind/
+會話 (Sessions),會話 (Session),https://google.github.io/adk-docs/sessions/session/
+會話 (Sessions),狀態 (State),https://google.github.io/adk-docs/sessions/state/
+串流 (Streaming),串流 (Streaming),https://google.github.io/adk-docs/streaming/
+串流 (Streaming),設定 (Configuration),https://google.github.io/adk-docs/streaming/configuration/
+串流 (Streaming),串流工具 (Streaming Tools),https://google.github.io/adk-docs/streaming/streaming-tools/
+串流 (Streaming),第一部分 (Part1),https://google.github.io/adk-docs/streaming/dev-guide/part1/
+串流 (Streaming),第二部分 (Part2),https://google.github.io/adk-docs/streaming/dev-guide/part2/
+串流 (Streaming),第三部分 (Part3),https://google.github.io/adk-docs/streaming/dev-guide/part3/
+串流 (Streaming),第四部分 (Part4),https://google.github.io/adk-docs/streaming/dev-guide/part4/
+串流 (Streaming),第五部分 (Part5),https://google.github.io/adk-docs/streaming/dev-guide/part5/
+工具 (Tools),工具 (Tools),https://google.github.io/adk-docs/tools/
+工具 (Tools),限制 (Limitations),https://google.github.io/adk-docs/tools/limitations/
+工具 (Tools),Gemini API (Gemini Api),https://google.github.io/adk-docs/tools/gemini-api/
+工具 (Tools),程式碼執行 (Code Execution),https://google.github.io/adk-docs/tools/gemini-api/code-execution/
+工具 (Tools),電腦使用 (Computer Use),https://google.github.io/adk-docs/tools/gemini-api/computer-use/
+工具 (Tools),Google 搜尋 (Google Search),https://google.github.io/adk-docs/tools/gemini-api/google-search/
+工具 (Tools),Google Cloud (Google Cloud),https://google.github.io/adk-docs/tools/google-cloud/
+工具 (Tools),API 註冊表 (Api Registry),https://google.github.io/adk-docs/tools/google-cloud/api-registry/
+工具 (Tools),Apigee API Hub (Apigee Api Hub),https://google.github.io/adk-docs/tools/google-cloud/apigee-api-hub/
+工具 (Tools),應用程式整合 (Application Integration),https://google.github.io/adk-docs/tools/google-cloud/application-integration/
+工具 (Tools),BigQuery (Bigquery),https://google.github.io/adk-docs/tools/google-cloud/bigquery/
+工具 (Tools),Bigtable (Bigtable),https://google.github.io/adk-docs/tools/google-cloud/bigtable/
+工具 (Tools),程式碼執行代理引擎 (Code Exec Agent Engine),https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/
+工具 (Tools),GKE 程式碼執行器 (Gke Code Executor),https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
+工具 (Tools),資料庫 MCP 工具箱 (Mcp Toolbox For Databases),https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
+工具 (Tools),Spanner (Spanner),https://google.github.io/adk-docs/tools/google-cloud/spanner/
+工具 (Tools),Vertex AI RAG 引擎 (Vertex Ai Rag Engine),https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/
+工具 (Tools),Vertex AI 搜尋 (Vertex Ai Search),https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/
+工具 (Tools),第三方 (Third Party),https://google.github.io/adk-docs/tools/third-party/
+工具 (Tools),Ag UI (Ag Ui),https://google.github.io/adk-docs/tools/third-party/ag-ui/
+工具 (Tools),Atlassian (Atlassian),https://google.github.io/adk-docs/tools/third-party/atlassian/
+工具 (Tools),GitHub (Github),https://google.github.io/adk-docs/tools/third-party/github/
+工具 (Tools),GitLab (Gitlab),https://google.github.io/adk-docs/tools/third-party/gitlab/
+工具 (Tools),Hugging Face (Hugging Face),https://google.github.io/adk-docs/tools/third-party/hugging-face/
+工具 (Tools),Linear (Linear),https://google.github.io/adk-docs/tools/third-party/linear/
+工具 (Tools),n8n (N8n),https://google.github.io/adk-docs/tools/third-party/n8n/
+工具 (Tools),Notion (Notion),https://google.github.io/adk-docs/tools/third-party/notion/
+工具 (Tools),PayPal (Paypal),https://google.github.io/adk-docs/tools/third-party/paypal/
+工具 (Tools),Qdrant (Qdrant),https://google.github.io/adk-docs/tools/third-party/qdrant/
+自訂工具 (Tools Custom),自訂工具 (Tools Custom),https://google.github.io/adk-docs/tools-custom/
+自訂工具 (Tools Custom),驗證 (Authentication),https://google.github.io/adk-docs/tools-custom/authentication/
+自訂工具 (Tools Custom),確認 (Confirmation),https://google.github.io/adk-docs/tools-custom/confirmation/
+自訂工具 (Tools Custom),函數工具 (Function Tools),https://google.github.io/adk-docs/tools-custom/function-tools/
+自訂工具 (Tools Custom),MCP 工具 (Mcp Tools),https://google.github.io/adk-docs/tools-custom/mcp-tools/
+自訂工具 (Tools Custom),OpenAPI 工具 (Openapi Tools),https://google.github.io/adk-docs/tools-custom/openapi-tools/
+自訂工具 (Tools Custom),效能 (Performance),https://google.github.io/adk-docs/tools-custom/performance/
+教學 (Tutorials),教學 (Tutorials),https://google.github.io/adk-docs/tutorials/
+教學 (Tutorials),代理團隊 (Agent Team),https://google.github.io/adk-docs/tutorials/agent-team/
+教學 (Tutorials),使用 AI 寫程式 (Coding With Ai),https://google.github.io/adk-docs/tutorials/coding-with-ai/
+視覺化建構器 (Visual Builder),視覺化建構器 (Visual Builder),https://google.github.io/adk-docs/visual-builder/

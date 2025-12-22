@@ -1,18 +1,36 @@
 {
   "name": "google-adk-study",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "## 概述",
   "main": "index.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "sitemap": "node scripts/sitemap.js all"
+    "build": "tsc",
+    "test": "ts-node scripts/test-sitemap.ts",
+    "sitemap": "ts-node scripts/sitemap.ts",
+    "sitemap:adk": "ts-node scripts/sitemap.ts fetch https://google.github.io/adk-docs/sitemap.xml -f yaml -o adk-sitemap.yaml",
+    "sitemap:adk:csv": "ts-node scripts/sitemap.ts fetch https://google.github.io/adk-docs/sitemap.xml -f csv -o adk-sitemap.csv",
+    "sitemap:adk:md": "ts-node scripts/sitemap.ts fetch https://google.github.io/adk-docs/sitemap.xml -f md --name 'Google ADK' --url 'https://google.github.io/adk-docs' -o adk-sitemap.md",
+    "sitemap:a2a": "ts-node scripts/sitemap.ts fetch https://a2a-protocol.org/latest/sitemap.xml -f yaml -o a2a-sitemap.yaml",
+    "sitemap:a2a:csv": "ts-node scripts/sitemap.ts fetch https://a2a-protocol.org/latest/sitemap.xml -f csv -o a2a-sitemap.csv",
+    "sitemap:a2a:md": "ts-node scripts/sitemap.ts fetch https://a2a-protocol.org/latest/sitemap.xml -f md --name 'A2A Protocol' --url 'https://a2a-protocol.org' -o a2a-sitemap.md",
+    "sitemap:mcp": "ts-node scripts/sitemap.ts fetch https://modelcontextprotocol.io/sitemap.xml -f yaml -o mcp-sitemap.yaml",
+    "sitemap:mcp:csv": "ts-node scripts/sitemap.ts fetch https://modelcontextprotocol.io/sitemap.xml -f csv -o mcp-sitemap.csv",
+    "sitemap:mcp:md": "ts-node scripts/sitemap.ts fetch https://modelcontextprotocol.io/sitemap.xml -f md --name 'Model Context Protocol' --url 'https://modelcontextprotocol.io' -o mcp-sitemap.md"
   },
   "author": "lastingyeh",
   "license": "ISC",
   "dependencies": {
     "js-yaml": "^4.1.1",
     "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.19.27",
+    "@types/xml2js": "^0.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
   }
 }

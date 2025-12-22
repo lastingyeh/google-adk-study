@@ -1090,4 +1090,26 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [TIL: Registering Custom Session Services in Google ADK 1.17](https://raphaelmansuy.github.io/adk_training/blog/til-custom-session-services)
 
 </details>
+
+#### 🕗 Day 59
+
+<details>
+<summary>
+彙整 Google ADK、A2A Protocol 與 Model Context Protocol (MCP) 的官方網站地圖，提供完整的文檔結構視圖。這些資源涵蓋了 API 參考、教學指南、規範文件與最佳實踐，協助開發者快速定位所需資訊並建立宏觀的技術視野。
+
+🏷️ `sitemap`, `documentation`, `resources`, `adk`, `a2a`, `mcp`
+
+</summary>
+
+- **詳細說明**：
+  - [Google ADK Site Map](./docs/sitemaps/adk-sitemap.md)
+  - [A2A Protocol Site Map](./docs/sitemaps/a2a-sitemap.md)
+  - [Model Context Protocol Site Map](./docs/sitemaps/mcp-sitemap.md)
+
+- **參考資源**
+  - [Google ADK Docs](https://google.github.io/adk-docs/)
+  - [A2A Protocol](https://a2a-protocol.org/)
+  - [Model Context Protocol](https://modelcontextprotocol.io/)
+
+</details>
 </details>
