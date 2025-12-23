@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adk_interactions_integration"
+version = "0.1.0"
+description = "ADK 與 Gemini Interactions API 整合 - 結合 ADK 代理模式與 Interactions 後端"
+requires-python = ">=3.10"
+dependencies = [
+    "google-adk>=1.18.0",
+    "google-genai>=1.55.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["adk_interactions_agent*"]
+
+# 重點摘要
+#
+# - **核心概念**：Python 專案設定檔，定義專案中繼資料與依賴關係。
+# - **關鍵技術**：setuptools, google-adk, google-genai。
+# - **重要結論**：專案相依於 `google-adk` 和 `google-genai` 兩個核心套件。
+# - **行動項目**：無。

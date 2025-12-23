@@ -1,0 +1,13 @@
+google-adk>=1.18.0
+google-genai>=1.55.0
+python-dotenv>=1.0.0
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-asyncio>=0.21.0
+
+# 重點摘要
+#
+# - **核心概念**：定義專案運作所需的 Python 套件清單。
+# - **關鍵技術**：google-adk, google-genai, pytest。
+# - **重要結論**：包含執行環境與開發/測試環境所需的所有套件。
+# - **行動項目**：執行 `pip install -r requirements.txt` 進行安裝。

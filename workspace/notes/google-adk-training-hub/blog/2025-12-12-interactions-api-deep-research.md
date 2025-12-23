@@ -618,6 +618,21 @@ Interactions API 處於 **public beta** 階段。功能和結構描述可能會�
 | 數小時的背景任務 (Multi-hour background tasks) | **Interactions API**       |
 | MCP 伺服器整合 (MCP server integration)        | **Interactions API**       |
 
+## 親自動手試試 (Try It Yourself)
+
+我們在 `workspace/python/agents` 目錄中建立了完整的實作範例：
+
+- [基本互動：簡單對話與狀態管理](../../../python/agents/interactions-api-basic/)
+- [Deep Research Agent：具備進度串流的自主研究](../../../python/agents/deep-research-agent/)
+- [ADK 整合：在 Google ADK 中使用 Interactions API](../../../python/agents/adk-interactions-integration/)
+
+每個範例都包含：
+
+- ✅ 可運作的 Python 程式碼
+- ✅ 完整的測試 (`make test`)
+- ✅ 互動式展示 (`make demo`)
+- ✅ 包含設定與開發指令的 Makefile
+
 ## 資源 (Resources)
 
 - [Interactions API 文件](https://ai.google.dev/gemini-api/docs/interactions)
@@ -635,12 +650,6 @@ Interactions API 代表了我們建構 AI 應用程式方式的重大演進。�
 - **統一存取**，同時支援模型與專門代理 (如 Deep Research)
 - **原生工具整合**，支援 MCP、Google Search 等
 
-...開發者現在可以使用更少的樣板程式碼和更好的可靠性來建構複雜的 AI 系統。
+> 開發者現在可以使用更少的樣板程式碼和更好的可靠性來建構複雜的 AI 系統。
 
 無論您是在建構研究助理、多輪客戶支援代理，還是複雜的代理工作流程，Interactions API 都為下一代 AI 應用程式提供了基礎。
-
----
-
-## 程式碼實現 (Code Implementation)
-
-- interactions-api-basic：[程式碼連結](../../../python/agents/interactions-api-basic/)

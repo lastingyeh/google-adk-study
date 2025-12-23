@@ -583,7 +583,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 </details>
 </details>
 
-### 🗓️ 第 31 天 ~：進階應用與企業級實踐
+### 🗓️ 第 31-60 天：應用整合
 
 <details>
 <summary>第二階段：深入探討進階主題，如程式碼執行、視覺化建構、即時串流、A2A 通訊、多模態、生產部署及第三方框架整合。
@@ -1120,6 +1120,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 </summary>
 
 - **詳細說明**：
+
   - [Google ADK Site Map](./docs/sitemaps/adk-sitemap.md)
   - [A2A Protocol Site Map](./docs/sitemaps/a2a-sitemap.md)
   - [Model Context Protocol Site Map](./docs/sitemaps/mcp-sitemap.md)
@@ -1128,6 +1129,28 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Google ADK Docs](https://google.github.io/adk-docs/)
   - [A2A Protocol](https://a2a-protocol.org/)
   - [Model Context Protocol](https://modelcontextprotocol.io/)
+
+</details>
+
+#### 🕗 Day 60
+
+<details>
+<summary>
+本指南介紹 Google Deep Research Agent 與 Interactions API 的整合應用。透過 ADK 框架，開發者可實現長時程背景研究、伺服器端狀態管理及串流思考摘要。這不僅降低了對話負載，更能無縫委派複雜任務，顯著提升 AI 代理的自主研究與分析能力。
+
+🏷️ `deep-search`, `interactions-api`, `gemini`, `state`, `vertex-ai`, `streaming`, `genai`
+
+</summary>
+
+- **詳細說明**：
+  - [Deep Research Agent](./workspace/python/agents/deep-research-agent/)
+  - [ADK Interactions Integration](./workspace/python/agents/adk-interactions-integration/)
+
+- **參考資源**
+  - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent
+    ](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
+  - [Google ADK Docs](https://google.github.io/adk-docs/)
+  - [[Code Wiki] adk-python](https://codewiki.google/github.com/google/adk-python)
 
 </details>
 </details>

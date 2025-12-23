@@ -1862,6 +1862,44 @@
             },
           ],
         },
+        {
+          name: 'adk-interactions-integration',
+          path: 'workspace/python/agents/adk-interactions-integration',
+          type: 'Agent',
+          description: '一個展示 Interactions API 整合的 ADK 代理，具備天氣、計算和搜尋工具。',
+          model: 'gemini-2.5-flash',
+          tools: [
+            {
+              name: 'get_current_weather',
+              description: '取得任何地點的天氣資訊',
+            },
+            {
+              name: 'calculate_expression',
+              description: '執行數學運算',
+            },
+            {
+              name: 'search_knowledge_base',
+              description: '搜尋資訊',
+            },
+          ],
+        },
+        {
+          name: 'deep-research-agent',
+          path: 'workspace/python/agents/deep-research-agent',
+          type: 'DeepResearchAgent',
+          description: '深度研究代理 (Deep Research Agent) 的高階介面。支援背景研究任務、輪詢完成狀態、串流結果與進度更新。',
+          model: 'deep-research-pro-preview-12-2025',
+          tools: [
+            {
+              name: 'research',
+              description: '執行完整的研究任務並返回結果',
+            },
+            {
+              name: 'follow_up',
+              description: '針對已完成的研究提出後續問題',
+            },
+          ],
+        },
       ];
       // DOM 元素
       const agentsGrid = document.getElementById('agents-grid');
