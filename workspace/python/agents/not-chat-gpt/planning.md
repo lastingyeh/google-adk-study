@@ -2,7 +2,7 @@
 
 ## 📋 專案概述
 
-使用 Google ADK + Gemini 2.0 建構一個類 ChatGPT 的對話式 AI 系統，具備多輪對話、工具呼叫、串流回應、思考模式切換等核心功能。
+使用 Google ADK + Gemini 2.0 建構一個類 ChatGPT 的對話式 AI 系統，具備多輪對話、工具呼叫、串流回應、思考模式切換、圖片分析等核心功能。
 
 ## 🎯 核心需求分析
 
@@ -15,6 +15,7 @@
 - ✅ 串流式回應（SSE）
 - ✅ 對話歷史持久化
 - ✅ 思考模式切換（Thinking Mode Toggle）
+- ✅ 對話匯出 (Markdown/JSON)
 
 #### 技術實現
 
@@ -22,6 +23,7 @@
 - **Streaming**: 參考 Day 23 (streaming-agent)
 - **Memory**: 使用 ADK Session State with user/app/temp 前綴
 - **Thinking Mode**: 參考 Day 20 (strategic-solver) 使用 BuiltInPlanner 與 ThinkingConfig
+- **Export**: 參考 Day 32 Streamlit 匯出範例
 
 ---
 
@@ -32,13 +34,18 @@
 - ✅ 網路搜尋（Google Search Grounding）
 - ✅ 程式碼執行（Code Execution）
 - ✅ 檔案處理（Upload/Analysis）
-- ⬜ 圖片分析（Multimodal Vision）
+- ✅ 圖片分析（Multimodal Vision）
+- ✅ 語音輸入/輸出
+- ✅ 引用來源顯示
 
 #### 技術實現
 
-- **Google Search**: 參考 Day 7 (grounding-agent)
+- **Google Search**: 參考 Day 7 (grounding-agent) + 顯示 `groundingChunks`
 - **Code Execution**: 參考 Day 21 (code-calculator)
 - **File Handling**: 參考 Day 26 (artifact-agent)
+- **Image Analysis**: 參考 Day 28 (vision-catalog-agent)
+- **Voice I/O**: 參考 Day 23 (voice-assistant + Live API)
+- **Citations**: Google Search 內建引用元資料
 
 ---
 
@@ -50,8 +57,10 @@
 - ✅ 即時串流顯示
 - ✅ 對話管理（新增、刪除、切換）
 - ✅ Markdown 渲染
-- ⬜ 程式碼高亮
-- ✅ **模式切換控制（思考模式 💭 / 標準模式 💬）**
+- ✅ 程式碼高亮
+- ✅ 模式切換控制（思考模式 💭 / 標準模式 💬
+- ✅ 圖片拖放上傳
+- ✅ 自訂指令設定
 
 #### 技術實現
 
@@ -60,6 +69,9 @@
   - Option B: Next.js 15 + CopilotKit (Day 39)
 - **Streaming UI**: SSE with EventSource API
 - **Mode Selector**: Toggle Switch + 模式狀態顯示
+- **Code Highlight**: highlight.js 或 prism.js
+- **Image Upload**: AG-UI 拖放 + Day 28 Vision API
+- **Custom Instructions**: Session State `user:custom_instruction`
 
 ---
 
@@ -70,13 +82,18 @@
 - ✅ 狀態持久化（Redis/PostgreSQL）
 - ✅ 錯誤處理與重試
 - ✅ 監控與日誌（OpenTelemetry）
-- ⬜ 速率限制與配額管理
+- ✅ 速率限制與配額管理
+- ✅ 長期記憶管理
+- ✅ 上下文壓縮
 
 #### 技術實現
 
 - **Session Storage**: 參考 Day 58 (custom-session-agent)
 - **Monitoring**: 參考 Day 47 (math-agent-otel)
 - **Deployment**: 參考 Day 31 (Cloud Run/Agent Engine)
+- **Rate Limiting**: FastAPI 中介層 + Redis
+- **Long-term Memory**: PostgreSQL + 向量資料庫（未來）
+- **Context Compaction**: 參考 Day 55
 
 ---
 
@@ -85,38 +102,48 @@
 ### 系統架構圖
 
 ```text
-┌─────────────────┐
-│   Frontend      │
-│  React Vite     │ ◄─── AG-UI Protocol
-│  + AG-UI SDK    │
-│  + Mode Toggle  │ ◄─── 思考模式切換器 (💭/💬)
-└────────┬────────┘
-         │ HTTP/SSE
-         │ thinking_mode: bool
-         ▼
-┌─────────────────┐
-│   Backend API   │
-│   FastAPI       │
-│  + Mode Config  │ ◄─── ThinkingConfig 動態設定
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐      ┌──────────────┐
-│   ADK Agent     │◄────►│  Gemini 2.0  │
-│  Core Engine    │      │  Flash/Pro   │
-│ + BuiltInPlanner│◄────►│  + Thinking  │
-└────────┬────────┘      └──────────────┘
-         │
-    ┌────┴────┐
-    │         │
-    ▼         ▼
-┌────────┐ ┌────────┐
-│ Tools  │ │Session │
-│Google  │ │ Store  │
-│Search  │ │ SQLite │
-│Code    │ │  /     │
-│Execute │ │ Redis  │
-└────────┘ └────────┘
+┌─────────────────────────────────────┐
+│           Frontend                  │
+│        React Vite                   │
+│   + AG-UI Protocol                  │
+│   + Mode Toggle (💭/💬)             │
+│   + Image Upload 📷                 │
+│   + Voice I/O 🎤                    │
+│   + Code Highlight                  │
+└──────────────┬──────────────────────┘
+               │ HTTP/SSE
+               │ thinking_mode: bool
+               │ image_data: base64
+               ▼
+┌──────────────────────────────────────┐
+│        Backend API                   │
+│         FastAPI                      │
+│   + Mode Config                      │
+│   + Rate Limiting                    │
+│   + Export Service                   │
+└──────────────┬───────────────────────┘
+               │
+               ▼
+┌──────────────────────────────────────┐      ┌──────────────┐
+│        ADK Agent                     │◄────►│  Gemini 2.0  │
+│      Core Engine                     │      │  Flash/Pro   │
+│   + BuiltInPlanner                   │◄────►│  + Thinking  │
+│   + Vision API                       │      │  + Vision    │
+│   + Live API (Voice)                 │      │  + Live API  │
+└──────────────┬───────────────────────┘      └──────────────┘
+               │
+    ┌──────────┴──────────┐
+    │                     │
+    ▼                     ▼
+┌─────────┐         ┌──────────────┐
+│  Tools  │         │   Session    │
+│ Google  │         │    Store     │
+│ Search  │         │              │
+│  Code   │         │  SQLite /    │
+│ Execute │         │  PostgreSQL  │
+│ Vision  │         │   + Redis    │
+│ Artifact│         │              │
+└─────────┘         └──────────────┘
 ```
 
 ### 技術棧選型
@@ -639,7 +666,7 @@ adk evaluate agents/conversation_agent.py --eval-set tests/eval_set.json
 | Google Search  | Day 7    | grounding-agent         | Grounding                      |
 | Code Execution | Day 21   | code-calculator         | BuiltInCodeExecutor            |
 | 檔案處理       | Day 26   | artifact-agent          | Artifact Tool                  |
-| React UI       | Day 40   | data-analysis-dashboard | React Vite + AG-UI             |
+| Vision API     | Day 28   | vision-catalog-agent    | Vision API                     |
 | Redis Session  | Day 58   | custom-session-agent    | BaseSessionService             |
 | 監控           | Day 47   | math-agent-otel         | OpenTelemetry                  |
 | 部署           | Day 31   | production-agent        | Cloud Run                      |
