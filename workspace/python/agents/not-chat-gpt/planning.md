@@ -71,6 +71,45 @@
 
 ---
 
+### 2.5 知識庫整合（Agentic RAG）
+
+#### 功能需求
+
+- ✅ 文檔上傳與索引（PDF/Word/Markdown/TXT）
+- ✅ 智慧文檔問答（Gemini File Search）
+- ✅ 引用來源追蹤（Citations with Page Numbers）
+- ✅ 文檔管理（列表/刪除/更新）
+- ✅ 多文檔聯合查詢
+- ✅ 相關性控制（Relevance Threshold）
+
+#### 技術實現
+
+- **File Search**: 參考 Day 45 (policy-navigator) 使用 Gemini File Search API
+- **Document Upload**: 參考 Day 26 (artifact-agent) 檔案處理流程
+- **Index Management**: Session State 儲存文檔元資料（文件ID、上傳時間、大小）
+- **Citations**: 自動提取 `groundingMetadata` 中的引用來源與頁碼
+- **Query Optimization**: 結合 Google Search (即時資訊) + File Search (私有知識)
+
+#### 典型使用場景
+
+1. **個人知識庫** 📚: 上傳學習筆記、研究論文，快速查詢與整理
+2. **文檔問答** 📄: 上傳合約、手冊，AI 協助提取關鍵資訊
+3. **程式碼理解** 💻: 上傳技術文檔，協助理解架構與 API
+4. **學習助手** 🎓: 上傳教材，生成摘要與測驗問題
+
+#### 技術優勢（Gemini File Search vs 傳統 RAG）
+
+| 特性 | Gemini File Search | 傳統 RAG (ChromaDB) |
+|------|-------------------|---------------------|
+| **基礎設施** | ✅ 零配置，雲端託管 | ❌ 需部署向量資料庫 |
+| **引用品質** | ✅ 自動提取頁碼與上下文 | ⚠️ 需手動實作 |
+| **多文檔查詢** | ✅ 原生支援 | ⚠️ 需自行整合 |
+| **成本** | 💰 中等（按查詢計費） | 💰💰 高（基礎設施+維護） |
+| **維護** | ✅ Google 管理 | ❌ 自行維護 |
+| **擴展性** | ⚠️ 綁定 Google 生態 | ✅ 完全控制 |
+
+---
+
 ### 3. 使用者介面
 
 #### 功能需求
@@ -80,8 +119,10 @@
 - ✅ 對話管理（新增、刪除、切換）
 - ✅ Markdown 渲染
 - ✅ 程式碼高亮
-- ✅ 模式切換控制（思考模式 💭 / 標準模式 💬
+- ✅ 模式切換控制（思考模式 💭 / 標準模式 💬）
 - ✅ 圖片拖放上傳
+- ✅ 文檔管理面板（上傳/列表/刪除）📚
+- ✅ 引用來源顯示（Citations Badge）
 - ✅ 自訂指令設定
 
 #### 技術實現
@@ -231,6 +272,27 @@
         "safety_message": true,
         "audit_logged": true
       }
+    },
+    {
+      "id": "rag_document_query_001",
+      "category": "rag",
+      "input": "根據上傳的文檔，公司的休假政策是什麼？",
+      "expected_behavior": {
+        "uses_tool": "file_search",
+        "has_citations": true,
+        "citation_has_page_number": true,
+        "response_accurate": true
+      }
+    },
+    {
+      "id": "rag_multi_document_001",
+      "category": "rag",
+      "input": "比較文檔 A 和文檔 B 中的差異",
+      "expected_behavior": {
+        "uses_tool": "file_search",
+        "references_multiple_docs": true,
+        "has_citations": true
+      }
     }
   ]
 }
@@ -291,6 +353,7 @@
 │   + BuiltInPlanner                   │◄────►│  + Thinking  │
 │   + Vision API                       │      │  + Vision    │
 │   + Live API (Voice)                 │      │  + Live API  │
+│   + File Search Tool 📚               │      │  + File API  │
 │   + AgentCallbacks                   │      └──────────────┘
 └──────────────┬───────────────────────┘
                │
@@ -305,6 +368,10 @@
 │ Execute │         │  PostgreSQL  │
 │ Vision  │         │   + Redis    │
 │ Artifact│         │              │
+│ [NEW]   │         │  + Document  │
+│ File    │         │    Index     │
+│ Search  │         │  + Citations │
+│ 📚      │         │    Metadata  │
 └─────────┘         └──────────────┘
                │
                ▼
@@ -365,6 +432,31 @@
 - Day 23: streaming-agent
 - Day 58: custom-session-agent
 - Day 19: support-agent (Testing & Evaluation)
+
+---
+
+#### Week 2.5: 知識庫整合 (Agentic RAG) 📚
+
+**目標**: 實現文檔問答與知識管理
+
+- [ ] Gemini File Search API 整合
+- [ ] 文檔上傳與索引管理
+- [ ] 引用來源追蹤與顯示（Citations）
+- [ ] 文檔清單與刪除功能
+- [ ] 多文檔聯合查詢測試
+- [ ] RAG 評估測試案例
+
+**參考專案**:
+
+- Day 45: policy-navigator (File Search RAG)
+- Day 26: artifact-agent (File Management)
+
+**預期成果**:
+
+- ✅ 支援 PDF/Word/Markdown/TXT 上傳
+- ✅ 自動提取引用來源與頁碼
+- ✅ 文檔管理介面（列表/刪除）
+- ✅ RAG 測試覆蓋率 > 80%
 
 ---
 
@@ -448,6 +540,7 @@
 2. **工具能力**
    - Google Search
    - Code Execution
+   - Agentic RAG (文檔問答) 📚
 
 3. **使用者介面**
    - Web 聊天介面
@@ -460,8 +553,8 @@
 
 #### 🔄 下一版本 (P1)
 
-1. 檔案上傳與分析
-2. 圖片辨識（Multimodal）
+1. 圖片辨識（Multimodal）
+2. 進階 RAG 功能（向量檢索、Reranking）
 3. Redis Session Storage
 4. OpenTelemetry 監控
 
@@ -570,7 +663,8 @@ not-chat-gpt/
 │   │   ├── __init__.py
 │   │   ├── google_search.py
 │   │   ├── code_executor.py
-│   │   └── file_handler.py
+│   │   ├── file_handler.py
+│   │   └── file_search.py             # 新增：Gemini File Search RAG
 │   ├── guardrails/                    # 新增：安全防護層
 │   │   ├── __init__.py
 │   │   ├── safety_callbacks.py        # AgentCallbacks 實作
@@ -582,7 +676,8 @@ not-chat-gpt/
 │   ├── services/
 │   │   ├── __init__.py
 │   │   ├── session_service.py
-│   │   └── redis_session_service.py
+│   │   ├── redis_session_service.py
+│   │   └── document_service.py        # 新增：文檔索引管理
 │   ├── config/
 │   │   ├── __init__.py
 │   │   ├── mode_config.py             # 思考模式配置
@@ -598,7 +693,9 @@ not-chat-gpt/
 │   │   │   ├── ConversationView.tsx
 │   │   │   ├── MessageList.tsx
 │   │   │   ├── InputBox.tsx
-│   │   │   └── ModeSelector.tsx
+│   │   │   ├── ModeSelector.tsx
+│   │   │   ├── DocumentPanel.tsx      # 新增：文檔管理面板
+│   │   │   └── CitationBadge.tsx      # 新增：引用來源標籤
 │   │   ├── services/
 │   │   │   └── api.ts
 │   │   ├── App.tsx
@@ -611,6 +708,7 @@ not-chat-gpt/
 │   ├── test_tools.py
 │   ├── test_guardrails.py             # 安全測試
 │   ├── test_session.py
+│   ├── test_rag.py                    # 新增：RAG 功能測試
 │   ├── test_workflow_integration.py   # 新增：工作流程整合測試
 │   ├── test_performance.py            # 新增：效能測試
 │   ├── test_evaluation.py             # 新增：AgentEvaluator 測試
@@ -632,61 +730,6 @@ not-chat-gpt/
 
 ---
 
-### 環境設定
-
-```bash
-# 後端
-cd backend
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-
-# 設定環境變數
-export GOOGLE_API_KEY="your-api-key"
-export PROJECT_ID="your-project-id"
-
-# 前端
-cd frontend
-npm install
-```
-
----
-
-### 開發工作流程
-
-#### 1. 後端開發
-
-```bash
-# 啟動 ADK Web 伺服器
-cd backend
-adk web agents/conversation_agent.py
-
-# 或使用 FastAPI
-uvicorn main:app --reload
-```
-
-#### 2. 前端開發
-
-```bash
-cd frontend
-npm run dev
-```
-
-#### 3. 測試
-
-```bash
-# 單元測試
-pytest tests/
-
-# 整合測試
-pytest tests/ -m integration
-
-# 評估測試
-adk evaluate agents/conversation_agent.py --eval-set tests/eval_set.json
-```
-
----
-
 ## 📚 參考資源對照表
 
 | 功能模組       | 參考 Day | 專案名稱             | 核心技術                       |
@@ -699,6 +742,7 @@ adk evaluate agents/conversation_agent.py --eval-set tests/eval_set.json
 | Google Search  | Day 7    | grounding-agent      | Grounding                      |
 | Code Execution | Day 21   | code-calculator      | BuiltInCodeExecutor            |
 | 檔案處理       | Day 26   | artifact-agent       | Artifact Tool                  |
+| Agentic RAG    | Day 45   | policy-navigator     | Gemini File Search             |
 | Vision API     | Day 28   | vision-catalog-agent | Vision API                     |
 | Redis Session  | Day 58   | custom-session-agent | BaseSessionService             |
 | 監控           | Day 47   | math-agent-otel      | OpenTelemetry                  |
@@ -722,173 +766,3 @@ adk evaluate agents/conversation_agent.py --eval-set tests/eval_set.json
    - Guardrails 攔截率 100%
    - 工具使用準確率 > 85%
 5. **文檔完整性**: API 文檔 + 部署文檔 + 測試文檔
-
----
-
-## 📝 常見問題 (FAQ)
-
-### Q1: 為何不使用 LangChain？
-
-**A**: ADK 是 Google 官方框架，與 Gemini 整合更深，且有以下優勢：
-
-- 原生支援 Gemini 2.0 進階功能（Thinking、Grounding）
-- 更好的 Agent Engine 整合
-- 官方長期支援
-
-### Q2: 如何處理長對話的 Context Window 限制？
-
-**A**: 使用 Day 55 的 Context Compaction 技術：透過 LLM 自動摘要舊對話，可減少 80% Token 使用
-
-### Q3: 如何估算使用成本？
-
-**A**: Gemini 2.0 Flash 定價（2024）：
-
-- Input: $0.075 / 1M tokens
-- Output: $0.30 / 1M tokens
-
-假設每次對話 1000 tokens：
-
-- 每次成本 ≈ $0.000375
-- 1000 次對話 ≈ $0.375
-
----
-
-### Q4: 思考模式會增加多少成本？
-
-**A**: 思考模式會產生額外的內部推理 tokens，實測數據：
-
-#### 範例場景：複雜數學問題
-
-- 標準模式：
-  - Input: 100 tokens
-  - Output: 500 tokens
-  - 成本: $0.000375
-  
-- 思考模式：
-  - Input: 100 tokens
-  - Thinking: 300 tokens (內部推理，不計費)
-  - Output: 500 tokens
-  - 成本: $0.000375 (相同！)
-
-**重點**: Gemini 2.0 的內建思考功能 **不額外收費**，僅計算最終輸出 tokens！
-
-**建議策略**：
-
-1. 預設使用標準模式（快速回應）
-2. 複雜問題時自動提示切換思考模式
-3. 允許使用者隨時切換模式
-
----
-
-### Q5: 如何判斷何時該使用思考模式？
-
-**A**: 提供三種判斷策略：
-
-**1. 關鍵詞檢測（啟發式）**: 檢測「為什麼」、「如何」、「解釋」等關鍵詞
-
-**2. 問題長度判斷**: 超過 50 字的問題通常較複雜
-
-**3. 內容類型檢測**: 包含程式碼、數學公式或資料結構
-
-**最佳實踐**：結合三種策略 + 使用者手動控制
-
----
-
-### Q6: 思考模式的思考過程該如何顯示？
-
-**A**: 提供三種顯示策略：
-
-**1. 完整顯示（適合教學場景）**: 顯示完整思考過程
-
-**2. 摘要顯示（適合一般使用）**: 僅顯示關鍵思考步驟
-
-**3. 隱藏顯示（適合追求速度）**: 僅返回最終結果
-
----
-
-### Q7: 如何確保代理不會產生違反公司政策的內容？
-
-**A**: 使用 ADK 的 AgentCallbacks 機制實作多層安全防護：
-
-**1. 請求前檢查 (before_model_request)**: 檢查惡意意圖與過濾敏感資訊
-
-**2. 工具執行前驗證 (before_tool_execution)**: 檢查工具使用權限與參數安全性
-
-**3. 回應後審核 (after_model_response)**: 內容審核與移除機密資訊
-
-**最佳實踐**：
-
-| 防護層級      | 檢查項目           | 實作位置              | 範例                      |
-| ------------- | ------------------ | --------------------- | ----------------- |
-| 🛡️ L1 請求過濾 | 惡意意圖、PII      | before_model_request  | "請提供管理員密碼" → 拒絕 |
-| 🛡️ L2 工具管控 | 權限驗證、參數檢查 | before_tool_execution | 禁止存取 competitor.com   |
-| 🛡️ L3 輸出審核 | 內容審核、資訊過濾 | after_model_response  | 自動移除內部文件編號      |
-| 🛡️ L4 審計追蹤 | 所有安全事件記錄   | 全生命週期            | 記錄所有被攔截的請求      |
-
-**實作範例**：參考 Day 18 (content-moderator) 的完整實作。
-
----
-
-### Q8: 如何自訂公司專屬的安全規範？
-
-**A**: 透過配置文件與規則引擎實現靈活的規範管理：
-
-**1. YAML 配置（security_config.yaml）**: 定義禁止主題、PII 模式、工具白名單等
-
-**2. 動態規則引擎**: 載入規則並評估是否違反規範
-
-**3. 規範更新流程**:
-
-- 透過 Git 版本控制規範配置
-- 支援即時重載（無需重啟服務）
-- 提供規範測試工具驗證規則有效性
-
----
-
-### Q9: 如何有效測試 AI Agent 的品質？
-
-**A**: 使用 Google ADK 的 AgentEvaluator 進行系統性評估：
-
-**1. 建立評估數據集 (eval_set.json)**: 定義測試案例與預期行為
-
-**2. 執行評估測試**: 使用 AgentEvaluator 分析準確率與工具使用正確率
-
-**3. 整合 CI/CD**: 透過 GitHub Actions 自動執行評估
-
-**測試層級**：
-
-| 測試類型 | 覆蓋率目標 | 執行頻率 | 測試工具       |
-| -------- | ---------- | -------- | -------------- |
-| 單元測試 | > 70%      | 每次提交 | pytest         |
-| 整合測試 | > 60%      | 每日     | pytest + ADK   |
-| 評估測試 | 100%       | 每次發布 | AgentEvaluator |
-| 效能測試 | N/A        | 每週     | locust/k6      |
-
----
-
-### Q10: 如何確保 Agent 的回應品質穩定？
-
-**A**: 建立完整的評估與監控機制：
-
-**1. 自動化評估流程**: 測試回應準確度、思考模式品質、安全防護效果
-
-**2. 生產環境監控**: 記錄關鍵指標（回應時間、Token 使用、工具呼叫、安全攔截、用戶反饋）
-
-**3. 回歸測試**:
-
-- 每次發布前執行完整評估數據集
-- 確保新功能不影響既有品質
-- 追蹤品質趨勢圖表
-
----
-
-## 📅 版本歷史
-
-| 版本 | 日期       | 變更內容                        |
-| ---- | ---------- | ------------------------------- |
-| 0.1  | 2024-01-XX | 初始規劃                        |
-| 0.2  | 2024-01-XX | 新增技術決策記錄                |
-| 0.3  | 2024-01-XX | 新增思考模式切換功能規劃        |
-| 0.4  | 2024-01-XX | 新增安全防護層規劃 (Guardrails) |
-| 0.5  | 2024-01-XX | 新增非功能性需求與測試評估框架  |
-| 0.6  | 2024-01-XX | 移除實作細節，專注規劃架構      |
