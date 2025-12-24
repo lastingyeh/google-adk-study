@@ -1167,6 +1167,14 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 <summary>
 參考官方 Visual Builder for agents 規格定義，定義 YAML 格式的規範設計與範本提供 `Agent Marketplace` 頁面功能整合與未來支援 `Visual Builder` 標準化。
 
+```
+已完成進度 (4/49)
+- A2a Orchestrator
+- ADK Interactions Agent
+- Artifact Agent
+- Best Practices Agent
+```
+
 🏷️ `yaml`, `visual-builder`, `template`, `marketplace`, `agents`
 
 </summary>

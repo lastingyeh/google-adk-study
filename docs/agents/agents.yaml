@@ -117,4 +117,44 @@ agents:
         report,
       ]
     sub_agents: []
-  
+  - name: Best Practices Agent
+    description: 展示安全性、效能、可靠性和可觀測性最佳實踐的生產就緒代理。
+    code_ref: workspace/python/agents/best-practices-agent
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: validate_input_tool
+        type: FunctionTool
+        description: 透過綜合檢查驗證使用者輸入。
+      - name: retry_with_backoff_tool
+        type: FunctionTool
+        description: 執行具有重試邏輯和指數退避的操作。
+      - name: circuit_breaker_call_tool
+        type: FunctionTool
+        description: 使用斷路器保護呼叫外部服務。
+      - name: cache_operation_tool
+        type: FunctionTool
+        description: 執行快取操作以進行效能最佳化。
+      - name: batch_process_tool
+        type: FunctionTool
+        description: 批次處理多個項目以提升效率。
+      - name: health_check_tool
+        type: FunctionTool
+        description: 執行綜合健康檢查。
+      - name: get_metrics_tool
+        type: FunctionTool
+        description: 取得當前系統指標。
+    config: []
+    server-port: 8000
+    tags:
+      - security
+      - validation
+      - reliability
+      - resilience
+      - performance
+      - observability
+      - monitoring
+      - circuit-breaker
+      - cache
+      - batch-processing
+    sub_agents: []
