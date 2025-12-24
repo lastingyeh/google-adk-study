@@ -301,22 +301,22 @@ async def list_artifacts_tool(tool_context: ToolContext) -> Dict[str, Any]:
 
 async def load_artifact_tool(filename: str, tool_context: ToolContext, version: Optional[int] = None) -> Dict[str, Any]:
     """
-    按檔名和可選的版本號載入特定Artifacts。
+    按檔名和可選的版本號載入特定Artifact。
 
     Args:
-        filename: 要載入的Artifacts名稱。
-        tool_context: 用於Artifacts操作的工具上下文。
+        filename: 要載入的Artifact名稱。
+        tool_context: 用於Artifact操作的工具上下文。
         version: 要載入的特定版本（可選 - 若未指定則載入最新版本）。
 
     Returns:
-        包含狀態、報告和Artifacts內容的字典。
+        包含狀態、報告和Artifact內容的字典。
     """
     try:
         if not filename:
             return {
                 'status': 'error',
                 'error': '未提供檔名',
-                'report': '請指定要載入的Artifacts檔名'
+                'report': '請指定要載入的Artifact檔名'
             }
 
         # 從Artifacts服務中載入Artifacts

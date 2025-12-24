@@ -1,3 +1,4 @@
+version: 1.0
 agents:
   - name: <AGENT_NAME>
     description: <DESCRIPTION>
