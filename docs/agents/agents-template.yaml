@@ -1,0 +1,25 @@
+agents:
+  - name: <AGENT_NAME>
+    description: <DESCRIPTION>
+    code_ref: <SAMPLE_CODE_REFERENCE>
+    type: <AGENT_TYPE> # e.g., Agent, RemoteA2aAgent
+    model: [<MODEL_NAME>] # e.g., gemini-2.0-flash
+    tools:
+      - name: <TOOL_NAME>
+        type: <TOOL_TYPE> # e.g., FunctionTool
+        description: <TOOL_DESCRIPTION>
+    config: [<CONFIG_PARAMETER_1>, <CONFIG_PARAMETER_2>] # e.g., temperature, max_output_tokens
+    server-port: <PORT_NUMBER>
+    tags: [<TAG_1>, <TAG_2>]
+    sub_agents:
+      - name: <SUB_AGENT_NAME>
+        description: <SUB_AGENT_DESCRIPTION>
+        type: <SUB_AGENT_TYPE>
+        model: [<SUB_AGENT_MODEL>]
+        tools:
+          - name: <SUB_AGENT_TOOL_NAME>
+            type: <SUB_AGENT_TOOL_TYPE>
+            description: <SUB_AGENT_TOOL_DESCRIPTION>
+        config: [<SUB_AGENT_CONFIG_PARAMETER>]
+        server-port: <SUB_AGENT_PORT>
+        tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]

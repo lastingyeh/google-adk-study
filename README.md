@@ -583,7 +583,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 </details>
 </details>
 
-### 🗓️ 第 31-60 天：應用整合
+### 🗓️ 第 31-60 天：進階功能延伸整合
 
 <details>
 <summary>第二階段：深入探討進階主題，如程式碼執行、視覺化建構、即時串流、A2A 通訊、多模態、生產部署及第三方框架整合。
@@ -1153,4 +1153,30 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [[Code Wiki] adk-python](https://codewiki.google/github.com/google/adk-python)
 
 </details>
+</details>
+
+### 🗓️ 第 61 天 ~ ：檢視與標準化設計
+
+<details>
+<summary>第三階段：檢視前60天所學內容，進行標準化設計與實作。
+</summary>
+
+#### 🕗 Day 61
+
+<details>
+<summary>
+參考官方 Visual Builder for agents 規格定義，定義 YAML 格式的規範設計與範本提供 `Agent Marketplace` 頁面功能整合與未來支援 `Visual Builder` 標準化。
+
+🏷️ `yaml`, `visual-builder`, `template`, `marketplace`, `agents`
+
+</summary>
+
+- **詳細說明**：
+  - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
+  - [agents.yaml 連結](./docs/agents/agents.yaml)
+- **參考資源**
+  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+
+</details>
+
 </details>

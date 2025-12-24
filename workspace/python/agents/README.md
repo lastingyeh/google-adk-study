@@ -49,5 +49,3 @@
 | 45   | 狀態與記憶 | [custom-session-agent](./custom-session-agent)               | 演示 ADK 中自定義會話服務註冊模式，將 Redis 註冊並作為自定義會話存儲後端。             | BaseSessionService, Redis Backend, Service Registry, Session Persistence       | Custom Session, Redis, Persistence, Service Registry    |
 | 46   | 整合       | [adk-interactions-integration](./adk-interactions-integration) | 一個展示 Interactions API 整合的 ADK 代理，具備天氣、計算和搜尋工具。 | Interactions API, 伺服器端狀態, 背景執行                                | Interactions API, ADK Agent, State Management           |
 | 47   | 應用       | [deep-research-agent](./deep-research-agent)                 | 深度研究代理 (Deep Research Agent) 的高階介面，支援長時程研究任務。     | Deep Research, 背景執行, 輪詢狀態, 串流更新                                    | Deep Research, Interactions API, Vertex AI              |
-
-[回到首頁](../../../README.md)
