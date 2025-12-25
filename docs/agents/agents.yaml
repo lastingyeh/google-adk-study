@@ -158,3 +158,291 @@ agents:
       - cache
       - batch-processing
     sub_agents: []
+  - name: Blog Creation Pipeline
+    description: 從研究到發布的完整部落格文章創建流水線。
+    code_ref: workspace/python/agents/blog-pipeline
+    type: SequentialAgent
+    model: []
+    tools: []
+    config: []
+    server-port: 8000
+    tags: [sequential-workflow, pipeline, blog-creation]
+    sub_agents:
+      - name: researcher
+        description: 研究主題並收集關鍵資訊。
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: research_findings
+        tags: [research]
+      - name: writer
+        description: 根據研究結果撰寫部落格文章草稿。
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: draft_post
+        tags: [writing, drafting]
+      - name: editor
+        description: 審閱部落格文章草稿並提供編輯回饋。
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: editorial_feedback
+        tags: [editing, review]
+      - name: formatter
+        description: 應用編輯回饋並格式化最終部落格文章。
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: final_post
+        tags: [formatting, markdown]
+  - name: Chuck Norris Agent
+    description: 查克·諾里斯笑話助理，可以使用 OpenAPI 工具從查克·諾里斯 API 檢索笑話/事實。
+    code_ref: workspace/python/agents/chuck-norris-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: get_random_joke
+        type: OpenAPITool
+        description: 取得隨機的查克·諾里斯笑話
+      - name: search_jokes
+        type: OpenAPITool
+        description: 搜尋笑話
+      - name: get_categories
+        type: OpenAPITool
+        description: 取得所有笑話類別
+    config: []
+    server-port: 8000
+    tags: [openapi, jokes, chuck-norris, open-api-toolset]
+    sub_agents: []
+  - name: Financial Calculator
+    description: 具備 Python 程式碼執行能力的專業金融計算器
+    code_ref: workspace/python/agents/code-calculator
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools: []
+    code_executor:
+      name: builtin-code-executor
+      type: BuiltInCodeExecutor
+      description: 使用內建的 Python 程式碼執行器來進行精確的金融計算。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags:
+      [financial-calculator, builtin-code-executor, python, precise-computation]
+    sub_agents: []
+  - name: Commerce Agent
+    description: 一位個人運動購物禮賓，使用 Google Search Grounding 與儲存的使用者偏好來提供專家級產品推薦。此代理還展示了使用 SQLite 的會話持久性。
+    code_ref: workspace/python/agents/commerce-agent-e2e
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: search_products
+        type: AgentTool
+        description: 使用帶有 Grounding 的 Google Search 搜尋體育產品。
+      - name: save_preferences
+        type: FunctionTool
+        description: 為個人化推薦儲存使用者偏好 (運動、預算、經驗水平)。
+      - name: get_preferences
+        type: FunctionTool
+        description: 檢索已儲存的使用者偏好。
+    config: []
+    server-port: 8000
+    tags:
+      - commerce
+      - google-search
+      - preferences
+      - session-persistence
+      - sqlite
+      - agent-tool
+    sub_agents:
+      - name: Product Search Agent
+        description: 使用帶有 Grounding 的 Google Search 搜尋體育產品。
+        type: Agent
+        model: [gemini-2.5-flash]
+        tools:
+          - name: google_search
+            type: GoogleSearchAgentTool
+            description: 一個包裝了僅使用 google_search 工具的子代理的工具。
+        config: []
+        server-port: none
+        tags: [google-search, search_products, grounding]
+  - name: Content Moderator
+    description: 具備安全防護、驗證與監控功能的內容審查助理，展示適用於生產環境的回呼模式。
+    code_ref: workspace/python/agents/content-moderator
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: generate_text
+        type: FunctionTool
+        description: 依指定主題與字數生成文字（示範版未串接真正模型）。
+      - name: check_grammar
+        type: FunctionTool
+        description: 檢查語法並提供可能錯誤數（簡化示範：每 10 個字視為 1 個潛在問題）。
+      - name: get_usage_stats
+        type: FunctionTool
+        description: 從狀態（state）中取得使用者統計資料，示範回呼如何累積指標。
+    config: []
+    before_agent_callback:
+      - name: before_agent_callback
+        type: BeforeAgentCallback
+        description: 1.[Before Agent]-這是最早執行的回呼，用於全域檢查與初始化。
+    before_model_callback:
+      - name: before_model_callback
+        type: BeforeModelCallback
+        description: 2.[Before Model]-這是內容安全的核心檢查點，可攔截不當請求並修改提示詞。
+    before_tool_callback:
+      - name: before_tool_callback
+        type: BeforeToolCallback
+        description: 3.[Before Tool]-工具層級的安全閘門，確保參數合法且使用量在限制內。
+    after_tool_callback:
+      - name: after_tool_callback
+        type: AfterToolCallback
+        description: 4.[After Tool]-工具結果的後處理與記錄點。
+    after_model_callback:
+      - name: after_model_callback
+        type: AfterModelCallback
+        description: 5.[After Model]-這是輸出過濾的關鍵點，確保回應內容符合隱私與安全標準。
+    after_agent_callback:
+      - name: after_agent_callback
+        type: AfterAgentCallback
+        description: 6.[After Agent]-最後執行的回呼，用於收尾與最終修改。
+    server-port: 8000
+    output_key: last_response
+    tags:
+      - callbacks
+      - guardrails
+      - validation
+      - logging
+      - pii-removal
+      - metrics-tracking
+      - security
+      - content-moderation
+    sub_agents: []
+  - name: Content Publishing System
+    description: 完整的內容發布系統，具有並行研究和循序創作功能
+    code_ref: workspace/python/agents/content-publisher
+    type: SequentialAgent
+    model: []
+    tools: []
+    config: []
+    server-port: 8000
+    tags:
+      [multi-agent, sequential-workflow, parallel-research, content-creation]
+    sub_agents:
+      - name: ParallelResearch
+        description: 同時執行所有研究管線
+        type: ParallelAgent
+        model: []
+        tools: []
+        config: []
+        tags: [parallel-research, pipeline]
+        sub_agents:
+          - name: NewsPipeline
+            description: 取得並總結新聞
+            type: SequentialAgent
+            model: []
+            tools: []
+            config: []
+            tags: [news, research, pipeline]
+            sub_agents:
+              - name: news_fetcher
+                description: 使用 Google 搜尋取得最新新聞文章
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools:
+                  - name: google_search
+                    type: GoogleSearchTool
+                    description: 執行 Google 搜尋
+                config: []
+                output_key: raw_news
+                tags: [news, research, fetch]
+              - name: news_summarizer
+                description: 總結關鍵新聞要點
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools: []
+                config: []
+                output_key: news_summary
+                tags: [news, research, summary]
+          - name: SocialPipeline
+            description: 監控並分析社群媒體
+            type: SequentialAgent
+            model: []
+            tools: []
+            config: []
+            tags: [social-media, research, pipeline]
+            sub_agents:
+              - name: social_monitor
+                description: 使用 Google 搜尋監控社群媒體趨勢
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools:
+                  - name: google_search
+                    type: GoogleSearchTool
+                    description: 執行 Google 搜尋
+                config: []
+                output_key: raw_social
+                tags: [social-media, research, monitor]
+              - name: sentiment_analyzer
+                description: 分析社群情緒
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools: []
+                config: []
+                output_key: social_insights
+                tags: [social-media, research, sentiment-analysis]
+          - name: ExpertPipeline
+            description: 尋找並提取專家意見
+            type: SequentialAgent
+            model: []
+            tools: []
+            config: []
+            tags: [expert, research, pipeline]
+            sub_agents:
+              - name: expert_finder
+                description: 使用 Google 搜尋尋找專家意見
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools:
+                  - name: google_search
+                    type: GoogleSearchTool
+                    description: 執行 Google 搜尋
+                config: []
+                output_key: raw_experts
+                tags: [expert, research, find]
+              - name: quote_extractor
+                description: 提取可引用的見解
+                type: Agent
+                model: [gemini-2.0-flash]
+                tools: []
+                config: []
+                output_key: expert_quotes
+                tags: [expert, research, extract]
+      - name: article_writer
+        description: 從所有研究撰寫文章草稿
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: draft_article
+        tags: [writing, drafting]
+      - name: article_editor
+        description: 編輯文章以提升清晰度和影響力
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: edited_article
+        tags: [editing, review]
+      - name: article_formatter
+        description: 格式化文章以供發布
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: published_article
+        tags: [formatting, markdown]

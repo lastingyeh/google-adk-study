@@ -17,8 +17,10 @@
 
 # 匯入 ADK 核心 Agent 類別
 from google.adk.agents import Agent
+
 # 匯入內建的程式碼執行器，允許代理在模型環境中執行 Python 程式碼
 from google.adk.code_executors import BuiltInCodeExecutor
+
 # 匯入 Gemini 的組態類型
 from google.genai import types
 
@@ -107,7 +109,7 @@ financial_calculator = Agent(
       - 驗證本金金額為正數
 
       永遠為了準確性而執行程式碼。絕不對金融計算進行近似。
-    """.strip(),
+      """.strip(),
     # 啟用內建的程式碼執行器
     code_executor=BuiltInCodeExecutor(),  # 啟用程式碼執行
     # 設定內容生成參數

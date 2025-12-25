@@ -9,7 +9,7 @@ from google.adk.tools.google_search_tool import google_search
 _search_agent = Agent(
     model="gemini-2.5-flash",
     name="sports_product_search",
-    description="使用帶有接地的 Google Search 搜尋體育產品",
+    description="使用帶有 Grounding 的 Google Search 搜尋體育產品",
     instruction="""搜尋體育產品並提供詳細資訊與購買連結。
 
     搜尋時：
@@ -41,4 +41,3 @@ _search_agent = Agent(
 
 # 匯出為 AgentTool 以供主代理人使用
 search_products = AgentTool(agent=_search_agent)
-

@@ -211,13 +211,13 @@ async def create_final_report_tool(tool_context: ToolContext) -> Dict[str, Any]:
         # 建立報告內容
         report_content = """# 文件處理最終報告
 
-## 處理摘要
+    ## 處理摘要
 
-本報告結合了當前會話中的所有文件處理Artifacts。
+    本報告結合了當前會話中的所有文件處理Artifacts。
 
-## 已處理的Artifacts
+    ## 已處理的Artifacts
 
-"""
+    """
 
         artifacts_list = []
         for filename in all_artifacts:
@@ -228,17 +228,17 @@ async def create_final_report_tool(tool_context: ToolContext) -> Dict[str, Any]:
                     artifacts_list.append(filename)
 
         report_content += """
-## 建議
+        ## 建議
 
-所有文件處理已成功完成。Artifacts均已版本化並
-可供將來參考。
+        所有文件處理已成功完成。Artifacts均已版本化並
+        可供將來參考。
 
-## 後續步驟
+        ## 後續步驟
 
-- 檢閱個別Artifacts以獲取詳細內容
-- 如有需要，生成額外的翻譯
-- 封存或匯出最終結果
-"""
+        - 檢閱個別Artifacts以獲取詳細內容
+        - 如有需要，生成額外的翻譯
+        - 封存或匯出最終結果
+        """
 
         # 創建Artifacts部分
         report_part = types.Part.from_text(text=report_content)

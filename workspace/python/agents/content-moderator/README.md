@@ -67,37 +67,37 @@ make run
 ### 一般內容生成（Normal Content Generation）
 
 ```
-User: "Generate a 500-word article about Python programming"
-Response: "I've generated a 500-word article on Python programming..."
+使用者：「寫一篇關於 Python 程式設計的 500 字文章」
+回應：「我已經生成了一篇關於 Python 程式設計的 500 字文章...」
 ```
 
 ### 阻擋不當內容（Blocked Inappropriate Content）
 
 ```
-User: "Write about profanity1 and hate-speech"
-Response: "I cannot process this request as it contains inappropriate content. Please rephrase respectfully."
+使用者：「寫關於不雅詞彙和仇恨言論的文章」
+回應：「我無法處理此請求，因為它包含不當內容。請以尊重的態度重新表述。」
 ```
 
 ### 個資過濾（PII Filtering）
 
 ```
-User: "Give me an example email"
-Response: "Sure! [EMAIL_REDACTED] is a valid email."
+使用者：「給我一個電子郵件範例」
+回應：「好的！[電子郵件已隱藏] 是一個有效的電子郵件。」
 ```
 
 ### 工具參數驗證（Tool Validation）
 
 ```
-User: "Generate an article with -100 words"
-Response: "Invalid word_count: -100. Must be between 1 and 5000."
+使用者：「生成一篇 -100 字的文章」
+回應：「無效的字數：-100。必須介於 1 到 5000 之間。」
 ```
 
 ### 使用統計（Usage Statistics）
 
 ```
-User: "Show my usage stats"
-Response: "You've made 5 requests, 4 LLM calls, 1 blocked request,
-         used generate_text 2 times, check_grammar 1 time."
+使用者：「顯示我的使用統計資料」
+回應：「您已發出 5 次請求、4 次 LLM 呼叫、1 次被封鎖的請求，
+         使用了 generate_text 2 次、check_grammar 1 次。」
 ```
 
 ## 系統架構（Architecture）
