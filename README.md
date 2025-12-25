@@ -1187,4 +1187,32 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </details>
 
+#### 🕗 Day 62
+
+<details>
+<summary>
+努力更新 agents.yaml (➕ 6) 🏃🏻。
+
+```
+已完成進度 (10/49)
+- Blog Creation Pipeline
+- Chuck Norris Agent
+- Financial Calculator
+- Commerce Agent
+- Content Moderator
+- Content Publishing System
+```
+
+🏷️ `yaml`, `visual-builder`, `template`, `marketplace`, `agents`
+
+</summary>
+
+- **詳細說明**：
+  - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
+  - [agents.yaml 連結](./docs/agents/agents.yaml)
+- **參考資源**
+  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+
+</details>
+
 </details>

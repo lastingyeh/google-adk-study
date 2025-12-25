@@ -2,21 +2,61 @@ version: 1.0
 agents:
   - name: <AGENT_NAME>
     description: <DESCRIPTION>
-    code_ref: <SAMPLE_CODE_REFERENCE>
-    type: <AGENT_TYPE> # e.g., Agent, RemoteA2aAgent
-    model: [<MODEL_NAME>] # e.g., gemini-2.0-flash
+    code_ref: <SAMPLE_CODE_REFERENCE> # e.g., workspace/python/agents/my-agent
+    type: <AGENT_TYPE> # e.g., Agent, SequentialAgent, ParallelAgent, RemoteA2aAgent
+    model: [<MODEL_NAME>] # e.g., gemini-2.0-flash. Leave empty [] for container agents like SequentialAgent.
+
+    # Optional: Output key for pipeline steps (e.g., in SequentialAgent)
+    # output_key: <OUTPUT_KEY_NAME>
+
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # e.g., FunctionTool
+        type: <TOOL_TYPE> # e.g., FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool
         description: <TOOL_DESCRIPTION>
+
+    # Optional: Code Execution Configuration
+    # code_executor:
+    #   name: builtin-code-executor
+    #   type: BuiltInCodeExecutor
+    #   description: Description of the executor
+
     config: [<CONFIG_PARAMETER_1>, <CONFIG_PARAMETER_2>] # e.g., temperature, max_output_tokens
-    server-port: <PORT_NUMBER>
-    tags: [<TAG_1>, <TAG_2>]
+
+    # Optional: Callbacks (Lifecycle hooks)
+    # before_agent_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: BeforeAgentCallback
+    #     description: <DESCRIPTION>
+    # before_model_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: BeforeModelCallback
+    #     description: <DESCRIPTION>
+    # before_tool_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: BeforeToolCallback
+    #     description: <DESCRIPTION>
+    # after_tool_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: AfterToolCallback
+    #     description: <DESCRIPTION>
+    # after_model_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: AfterModelCallback
+    #     description: <DESCRIPTION>
+    # after_agent_callback:
+    #   - name: <CALLBACK_NAME>
+    #     type: AfterAgentCallback
+    #     description: <DESCRIPTION>
+
+    server-port: <PORT_NUMBER> # e.g., 8000, 8001, or "none"
+    tags: [<TAG_1>, <TAG_2>] # e.g., a2a, orchestrator, fastapi
+
     sub_agents:
       - name: <SUB_AGENT_NAME>
         description: <SUB_AGENT_DESCRIPTION>
         type: <SUB_AGENT_TYPE>
         model: [<SUB_AGENT_MODEL>]
+        # output_key: <SUB_AGENT_OUTPUT_KEY>
         tools:
           - name: <SUB_AGENT_TOOL_NAME>
             type: <SUB_AGENT_TOOL_TYPE>
@@ -24,3 +64,4 @@ agents:
         config: [<SUB_AGENT_CONFIG_PARAMETER>]
         server-port: <SUB_AGENT_PORT>
         tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]
+        # sub_agents: [] # Can be nested recursively
