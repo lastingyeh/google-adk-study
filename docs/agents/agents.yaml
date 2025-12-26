@@ -322,7 +322,7 @@ agents:
       - security
       - content-moderation
     sub_agents: []
-  - name: Content Publishing System
+  - name: Content Publisher
     description: 完整的內容發布系統，具有並行研究和循序創作功能
     code_ref: workspace/python/agents/content-publisher
     type: SequentialAgent
@@ -446,3 +446,313 @@ agents:
         config: []
         output_key: published_article
         tags: [formatting, markdown]
+  - name: Context Compaction Agent
+    description: 展示長對話上下文壓縮功能的代理
+    code_ref: workspace/python/agents/context-compaction-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: summarize_text
+        type: FunctionTool
+        description: 用於摘要文字區塊的實用工具。
+      - name: calculate_complexity
+        type: FunctionTool
+        description: 分析問題複雜度以決定回應深度。
+    config: []
+    server-port: 8000
+    tags: [context-compaction, conversation-summary, token-optimization]
+    sub_agents: []
+  - name: Custom Session Agent
+    description: 演示 ADK 中自定義會話服務註冊模式
+    code_ref: workspace/python/agents/custom-session-agent
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: describe_session_info
+        type: FunctionTool
+        description: 描述會話資訊的工具。
+      - name: test_session_persistence
+        type: FunctionTool
+        description: 測試跨請求會話持久化的工具。
+      - name: show_service_registry_info
+        type: FunctionTool
+        description: 顯示服務註冊表資訊的工具。
+      - name: get_session_backend_guide
+        type: FunctionTool
+        description: 提供 Redis 作為會話後端的指南工具。
+    config: []
+    server-port: 8000
+    tags:
+      - custom-session-service
+      - redis
+      - service-registry
+      - factory-pattern
+      - BaseSessionService
+    sub_agents: []
+  - name: Customer Support
+    description: 具備各種工具的客戶支援代理人
+    code_ref: workspace/python/agents/customer-support
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: check_customer_status
+        type: FunctionTool
+        description: 檢查客戶是否為高級會員
+      - name: log_interaction
+        type: FunctionTool
+        description: 記錄客戶互動以供存檔
+      - name: get_order_status
+        type: FunctionTool
+        description: 透過 ID 取得訂單狀態
+      - name: track_shipment
+        type: FunctionTool
+        description: 取得運送追蹤資訊
+      - name: cancel_order
+        type: FunctionTool
+        description: 取消訂單（需要授權）
+      - name: search_knowledge_base
+        type: FunctionTool
+        description: 搜尋技術文件
+      - name: run_diagnostic
+        type: FunctionTool
+        description: 執行診斷測試
+      - name: create_ticket
+        type: FunctionTool
+        description: 建立支援工單以進行升級處理
+      - name: get_billing_history
+        type: FunctionTool
+        description: 檢索帳單歷史記錄
+      - name: process_refund
+        type: FunctionTool
+        description: 處理退款（金額超過 $100 需要批准）
+      - name: update_payment_method
+        type: FunctionTool
+        description: 更新儲存的付款方式
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags: [customer-support, tools, yaml-config, visual-agent-builder]
+    sub_agents: []
+  - name: Customer Support Agent (AG-UI)
+    description: 整合 AG-UI 的客戶支援 ADK 代理人。提供知識庫搜尋、訂單狀態查詢、支援工單建立、產品詳情查詢及退款處理（需人機協作）等功能。
+    code_ref: workspace/python/agents/customer-support-agent
+    type: Agent
+    model: [gemini-2.0-flash-exp]
+    tools:
+      - name: search_knowledge_base
+        type: FunctionTool
+        description: 搜尋知識庫以尋找相關資訊。
+      - name: lookup_order_status
+        type: FunctionTool
+        description: 查詢客戶訂單的狀態。
+      - name: create_support_ticket
+        type: FunctionTool
+        description: 為複雜問題建立支援工單。
+      - name: get_product_details
+        type: FunctionTool
+        description: 從資料庫獲取產品詳情以生成產品卡片。
+      - name: process_refund
+        type: FunctionTool
+        description: 處理訂單退款（需要前端使用者批准的人機協作）。
+    config: []
+    server-port: 8000
+    tags: [customer-support, ag-ui, fastapi, uvicorn, generative-ui, nextjs]
+    sub_agents: []
+  - name: Data Analysis Agent
+    description: 具備視覺化與分析能力的智慧資料分析助理。
+    code_ref: workspace/python/agents/data-analysis-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: analysis_agent
+        type: AgentTool
+        description: 具備統計工具的資料分析與見解代理。
+        model: [gemini-2.0-flash]
+        tools:
+          - name: analyze_column
+            type: FunctionTool
+            description: 分析資料集中的特定欄位。
+          - name: calculate_correlation
+            type: FunctionTool
+            description: 計算兩個數值欄位之間的關聯性。
+          - name: filter_data
+            type: FunctionTool
+            description: 依條件過濾資料集。
+          - name: get_dataset_summary
+            type: FunctionTool
+            description: 取得目前資料集的摘要資訊。
+        tags: [data-analysis, statistics, insights]
+      - name: visualization_agent
+        type: AgentTool
+        description: 使用 Python 程式碼執行生成資料視覺化。
+        model: [gemini-2.0-flash]
+        tools: []
+        code_executor:
+          name: builtin-code-executor
+          type: BuiltInCodeExecutor
+          description: 使用內建的 Python 程式碼執行器來編寫生成並顯示視覺化的 Python 程式碼。
+        config: []
+        tags: [data-visualization, code-executor, python]
+    config: []
+    server-port: 8000
+    tags:
+      [
+        data-analysis,
+        orchestrator,
+        visualization,
+        code-executor,
+        data-visualization,
+        statistics,
+      ]
+    sub_agents: []
+  - name: Data Analysis Dashboard
+    description: 整合 pandas 工具與 AG-UI 的數據分析 ADK Agent。提供 CSV 數據載入、統計分析及圖表生成功能，並透過 AG-UI 協議與 Vite+React 前端整合。
+    code_ref: workspace/python/agents/data-analysis-dashboard
+    type: Agent
+    model: [gemini-2.0-flash-exp]
+    tools:
+      - name: load_csv_data
+        type: FunctionTool
+        description: 將 CSV 數據載入記憶體以進行分析。
+      - name: analyze_data
+        type: FunctionTool
+        description: 對載入的數據集執行統計分析。
+      - name: create_chart
+        type: FunctionTool
+        description: 生成視覺化圖表數據。
+    config: []
+    server-port: 8000
+    tags:
+      [
+        data-analysis,
+        dashboard,
+        pandas,
+        ag-ui,
+        fastapi,
+        visualization,
+        reactjs,
+        uvicorn,
+      ]
+    sub_agents: []
+  - name: Deep Research Agent
+    description: 提供高階介面，用於啟動背景研究任務、輪詢完成狀態、串流結果以及進行後續提問。
+    code_ref: workspace/python/agents/deep-research-agent
+    type: Agent
+    model: [gemini-3-pro-preview]
+    tools:
+      - name: research
+        type: FunctionTool
+        description: 執行完整的研究任務並返回結果。
+      - name: research_with_format
+        type: FunctionTool
+        description: 使用特定的輸出格式執行研究。
+      - name: follow_up
+        type: FunctionTool
+        description: 針對已完成的研究提出後續問題。
+    config: [api_key]
+    server-port: none
+    tags:
+      - deep-research
+      - interactions-api
+      - google-genai
+      - vertex-ai
+      - background-task
+      - polling
+      - genai-client-interactions
+      - background
+    sub_agents: []
+  - name: Enterprise Lead Qualifier
+    description: 具備公司情報和評分功能的企業銷售潛在客戶資格審查 Agent，用於企業規模的 Agent 管理、治理、編排與協作。
+    code_ref: workspace/python/agents/enterprise-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: check_company_size
+        type: FunctionTool
+        description: 從企業資料庫查詢公司規模，可整合 CRM 系統或公司情報 API。
+      - name: score_lead
+        type: FunctionTool
+        description: 根據公司規模、產業和預算等資格標準，將銷售潛在客戶評分 0-100。
+      - name: get_competitive_intel
+        type: FunctionTool
+        description: 獲取將公司與競爭對手比較的競爭情報，可整合市場情報平台。
+    config: []
+    server-port: 8000
+    tags:
+      - enterprise
+      - sales
+      - lead-qualification
+      - crm
+      - gemini-enterprise
+      - production-ready
+    sub_agents: []
+  - name: Essay Refinement System
+    description: 一個完整的論文寫作和精煉系統，首先創建初稿，然後通過評論家-精煉者循環進行迭代改進。
+    code_ref: workspace/python/agents/essay-refiner
+    type: SequentialAgent
+    model: []
+    tools: []
+    config: []
+    server-port: 8000
+    tags:
+      [multi-agent, sequential-workflow, loop-agent, writing, refinement, essay]
+    sub_agents:
+      - name: InitialWriter
+        description: 撰寫論文的第一版草稿。
+        type: Agent
+        model: [gemini-2.0-flash]
+        tools: []
+        config: []
+        output_key: current_essay
+        tags: [writing, drafting]
+      - name: RefinementLoop
+        description: 迭代評估和改進論文，直到滿足品質標準為止。
+        type: LoopAgent
+        model: []
+        tools: []
+        config: [max_iterations]
+        tags: [loop, iterative-improvement, quality-control]
+        sub_agents:
+          - name: Critic
+            description: 評估論文品質並提供具體的回饋。
+            type: Agent
+            model: [gemini-2.0-flash]
+            tools: []
+            config: []
+            output_key: critique
+            tags: [evaluation, feedback, critique]
+          - name: Refiner
+            description: 根據評論者的回饋改進論文，或在論文被批准時退出循環。
+            type: Agent
+            model: [gemini-2.0-flash]
+            tools:
+              - name: exit_loop
+                type: FunctionTool
+                description: 當論文被批准時，發出信號以終止精煉循環。
+            config: []
+            output_key: current_essay
+            tags: [refinement, editing, exit-condition]
+  - name: Finance Assistant
+    description: |
+      一個財務計算助手，可以協助：
+      - 投資的複利計算
+      - 抵押貸款或其他貸款的還款計算
+      - 達到財務目標的每月儲蓄計算
+      我可以同時執行多項計算以供比較。
+      所有計算都包含詳細說明和格式化報告。
+    code_ref: workspace/python/agents/finance-assistant
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: calculate_compound_interest
+        type: FunctionTool
+        description: 計算儲蓄或投資的複利。
+      - name: calculate_loan_payment
+        type: FunctionTool
+        description: 使用標準攤銷公式計算每月貸款還款。
+      - name: calculate_monthly_savings
+        type: FunctionTool
+        description: 計算達到財務目標所需的每月儲蓄。
+    config: []
+    server-port: 8000
+    tags: [finance, calculator, investment, loan, savings, asyncio, parallel]
+    sub_agents: []

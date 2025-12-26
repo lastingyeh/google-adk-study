@@ -7,7 +7,7 @@ name = "custom-session-agent"
 version = "0.1.0"
 description = "自定義會話服務 TIL 實作 - Google ADK 1.17+"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 authors = [
     {name = "ADK Training", email = "training@example.com"}
 ]
