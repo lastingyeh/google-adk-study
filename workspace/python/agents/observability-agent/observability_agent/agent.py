@@ -1,17 +1,3 @@
-"""
-教學 18：事件與可觀測性
-具備全面事件追蹤的客戶服務代理程式
-
-此模組展示：
-- 事件追蹤與記錄
-- 指標收集
-- 即時監控
-- 上報處理
-- 使用 EventActions 進行狀態管理
-
-基於 Google ADK 官方的 Event 與 EventActions 實作。
-"""
-
 import asyncio
 import logging
 from datetime import datetime

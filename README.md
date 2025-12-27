@@ -1215,7 +1215,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </details>
 
-#### 🕗 Day 62
+#### 🕗 Day 63
 
 <details>
 <summary>
@@ -1246,5 +1246,38 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
+
+#### 🕗 Day 64
+
+<details>
+<summary>
+努力更新 agents.yaml (➕ 10) 🏃🏻。
+
+```
+已完成進度 (30/49)
+- GEPA Optimization Agent
+- Grounding Agent
+- Hello Agent
+- Interactions API Basic Agent
+- Math Agent (OTel)
+- Host Agent (MCP/A2A)
+- MCP File Assistant
+- Model Selector Agent
+- Multi-LLM Agent
+- Observability Agent
+```
+
+🏷️ `yaml`, `visual-builder`, `template`, `marketplace`, `agents`
+
+</summary>
+
+- **詳細說明**：
+  - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
+  - [agents.yaml 連結](./docs/agents/agents.yaml)
+- **參考資源**
+  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+
+</details>
+
 
 </details>

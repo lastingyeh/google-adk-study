@@ -136,7 +136,7 @@ GEPA 會識別這些失敗模式，並演化提示以防止其發生。
 ## 📁 專案結構
 
 ```
-tutorial_gepa_optimization/
+gepa-optimization-agent/
 ├── gepa_agent/                 # 代理實作
 │   ├── __init__.py            # 套件標記
 │   ├── agent.py               # ADK 代理 + 工具
@@ -266,7 +266,7 @@ make test-coverage
    - 執行 GEPA 最佳化
    - 部署最佳化後的提示
 
-## 🎬 GEPA 即時演化展示
+## 🎬 GEPA 即時演化展示，參考 [GEPA.md](./GEPA.md)
 
 在深入研究程式碼之前，先來看看 GEPA 的實際操作：
 

@@ -756,3 +756,282 @@ agents:
     server-port: 8000
     tags: [finance, calculator, investment, loan, savings, asyncio, parallel]
     sub_agents: []
+  - name: GEPA Optimization Agent
+    description: GEPA 教學代理：模擬客服代理，展示如何使用 GEPA (遺傳演算法-帕雷托提示最佳化) 改善身份驗證、政策遵循和解釋清晰度。
+    code_ref: workspace/python/agents/gepa-optimization-agent
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: verify_customer_identity
+        type: BaseTool
+        description: 透過檢查訂單號碼和電子郵件來驗證客戶身份。
+      - name: check_return_policy
+        type: BaseTool
+        description: 驗證訂單是否在 30 天的退貨期限內。
+      - name: process_refund
+        type: BaseTool
+        description: 為符合資格的客戶訂單處理退款。
+    config: []
+    server-port: 8000
+    tags:
+      [
+        gepa,
+        customer-support,
+        optimization,
+        prompt-tuning,
+        genetic-algorithm,
+        base_tool,
+      ]
+    sub_agents: []
+  - name: Grounding Agent
+    description: 具有動態工具選擇功能的 Grounding 代理，可根據環境配置啟用網路搜尋與地圖 Grounding。
+    code_ref: workspace/python/agents/grounding-agent
+    type: Agent
+    model: [gemini-2.0-flash, gemini-1.5-flash]
+    tools:
+      - name: google_search
+        type: GoogleSearchTool
+        description: 執行 Google 搜尋以取得最新資訊。
+      - name: google_maps_grounding
+        type: GoogleMapsGroundingTool
+        description: 處理基於位置的查詢和地圖 Grounding (在啟用 Vertex AI 時可用)。
+      - name: analyze_search_results
+        type: FunctionTool
+        description: 分析搜尋結果並提取關鍵見解。
+      - name: save_research_findings
+        type: FunctionTool
+        description: 將研究發現儲存為 Artifacts。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags:
+      - grounding
+      - google-search
+      - google-maps
+      - dynamic-tools
+      - vertex-ai
+      - research
+      - analysis
+      - grounding
+    sub_agents: []
+  - name: Hello Agent
+    description: 提供友善的對話體驗。 ADK 的入門範例，展示基礎代理的設定。
+    code_ref: workspace/python/agents/hello-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools: []
+    config: []
+    server-port: 8000
+    tags: [hello-world, beginner, conversation]
+    sub_agents: []
+  - name: Interactions API Basic Agent
+    description: 展示 Google Interactions API 的核心功能，包括基礎文字互動、伺服器端狀態管理、串流回應與函數呼叫。
+    code_ref: workspace/python/agents/interactions-api-basic
+    type: genai.Client
+    model: [gemini-2.5-flash, gemini-2.5-pro, gemini-3-pro-preview]
+    tools:
+      - name: create_basic_interaction
+        type: FunctionTool
+        description: 與 Gemini 模型建立單次的請求-回應互動。
+      - name: create_stateful_conversation
+        type: FunctionTool
+        description: 建立具備伺服器端狀態管理的多輪對話。
+      - name: create_streaming_interaction
+        type: FunctionTool
+        description: 建立即時回應輸出的串流互動。
+      - name: create_function_calling_interaction
+        type: FunctionTool
+        description: 建立具備自定義函數呼叫能力的互動。
+      - name: create_interaction_with_builtin_tools
+        type: FunctionTool
+        description: 使用內建工具 (如 google_search, code_execution) 建立互動。
+    config: [api_key]
+    server-port: none
+    tags:
+      [
+        interactions-api,
+        google-genai,
+        state-management,
+        streaming,
+        function-calling,
+        standalone,
+      ]
+    sub_agents: []
+  - name: Math Agent (OTel)
+    description: 具有 OpenTelemetry 儀表化的 ADK 數學代理，展示使用 Jaeger 後端的分散式追蹤與結構化日誌。
+    code_ref: workspace/python/agents/math-agent-otel
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: add_numbers
+        type: FunctionTool
+        description: 將兩個數字相加。
+      - name: subtract_numbers
+        type: FunctionTool
+        description: 從 a 減去 b。
+      - name: multiply_numbers
+        type: FunctionTool
+        description: 將兩個數字相乘。
+      - name: divide_numbers
+        type: FunctionTool
+        description: 將 a 除以 b。
+    config: []
+    server-port: 8000
+    tags:
+      - math
+      - calculator
+      - opentelemetry
+      - otel
+      - jaeger
+      - tracing
+      - observability
+    sub_agents: []
+  - name: Host Agent (MCP/A2A)
+    description: 將請求路由至 A2A 代理或 MCP 工具。
+    code_ref: workspace/python/agents/mcp-a2a-master/agents
+    type: LlmAgent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: _delegate_task
+        type: FunctionTool
+        description: 將任務委派給指定的代理。
+      - name: _list_agents
+        type: FunctionTool
+        description: 回傳已註冊的 A2A 子代理的代理卡片物件字典列表。
+      - name: terminal_server
+        type: MCPToolset
+        transports: stdio
+        description: 提供與 MCP 伺服器通訊的工具集 (stdio)。
+        tools:
+          - name: run_command
+            type: McpTool
+            description: 在終端機中執行指令並回傳輸出。
+      - name: arithmetic_server
+        type: MCPToolset
+        transports: streamable
+        description: 提供與算術 MCP 伺服器通訊的工具集 (streamable)。
+        tools:
+          - name: add_numbers
+            type: McpTool
+            description: 將兩個數字相加並回傳結果。
+    config: []
+    server-port: 8000
+    tags: [mcp, a2a, orchestrator, router, stdio, streamable]
+    sub_agents:
+      - name: Website Builder Simple
+        protocol: a2a
+        description: 此代理接收使用者關於建立網站的查詢，並生成一個包含嵌入式 CSS 和 JavaScript 的單一獨立 HTML 檔案。
+        type: LlmAgent
+        model: [gemini-2.0-flash-exp]
+        tools: []
+        config: []
+        server-port: 8001
+        tags: [website-builder, html, css, javascript]
+        sub_agents: []
+  - name: MCP File Assistant
+    description: 具有檔案系統存取和人工介入迴路核准功能的 AI 助理。
+    code_ref: workspace/python/agents/mcp-agent
+    type: Agent
+    model: [gemini-2.0-flash-exp]
+    tools:
+      - name: '@modelcontextprotocol/server-filesystem'
+        type: MCPToolset
+        transports: stdio
+        description: 提供與 MCP 伺服器通訊的工具集 (stdio)。
+        tools:
+          - name: read_file
+            type: McpTool
+            description: 讀取檔案內容 (無需核准)。
+          - name: read_text_file
+            type: McpTool
+            description: 讀取文字檔案 (無需核准)。
+          - name: list_directory
+            type: McpTool
+            description: 列出目錄內容 (無需核准)。
+          - name: search_files
+            type: McpTool
+            description: 依模式搜尋檔案 (無需核准)。
+          - name: get_file_info
+            type: McpTool
+            description: 取得檔案元資料 (無需核准)。
+          - name: write_file
+            type: McpTool
+            description: 建立或更新檔案 (⚠️ 需要核准)。
+          - name: write_text_file
+            type: McpTool
+            description: 寫入文字檔案 (⚠️ 需要核准)。
+          - name: create_directory
+            type: McpTool
+            description: 建立新目錄 (⚠️ 需要核准)。
+          - name: move_file
+            type: McpTool
+            description: 移動或重新命名檔案 (⚠️ 需要核准)。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags: [mcp, filesystem, hitl, security, callbacks, approval-workflow]
+    sub_agents: []
+  - name: Model Selector Agent
+    description: 用於選擇和比較 AI 模型的專家 agent，可根據使用場景推薦最佳模型。
+    code_ref: workspace/python/agents/model-selector
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: recommend_model_for_use_case
+        type: FunctionTool
+        description: 根據使用場景描述推薦模型。
+      - name: get_model_info
+        type: FunctionTool
+        description: 獲取特定模型的詳細資訊。
+    config: []
+    server-port: 8000
+    tags: [model-selection, benchmark, comparison, recommendation]
+    sub_agents: []
+  - name: Multi-LLM Agent
+    description: 支援 OpenAI, Claude, Ollama 等多種模型的 Multi-LLM agent，透過 LiteLLM 實現。此 agent 可以針對不同任務使用不同的 LLM 供應商。
+    code_ref: workspace/python/agents/multi-llm-agent
+    type: Agent
+    model:
+      [
+        openai/gpt-4o-mini,
+        'anthropic/claude-3-7-sonnet-20250219',
+        'ollama_chat/granite4:latest',
+      ]
+    tools:
+      - name: calculate_square
+        type: FunctionTool
+        description: 計算一個數字的平方。
+      - name: get_weather
+        type: FunctionTool
+        description: 取得指定城市目前的天氣 (模擬實作)。
+      - name: analyze_sentiment
+        type: FunctionTool
+        description: 分析文字的情緒 (模擬實作)。
+    config: []
+    server-port: 8000
+    tags: [multi-llm, litellm, openai, claude, ollama, function-calling, model]
+    sub_agents: []
+  - name: Observability Agent
+    description: 具備全面事件監控、指標收集與詳細報告功能的客戶服務代理程式。
+    code_ref: workspace/python/agents/observability-agent
+    type: Agent
+    model: [gemini-2.0-flash-exp]
+    tools:
+      - name: check_order_status
+        type: FunctionTool
+        description: 檢查訂單狀態。
+      - name: process_refund
+        type: FunctionTool
+        description: 處理退款請求，金額超過 100 時上報。
+      - name: check_inventory
+        type: FunctionTool
+        description: 檢查產品庫存。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags:
+      - observability
+      - events
+      - monitoring
+      - customer-service
+      - metrics
+      - logging
+      - reporting
+    sub_agents: []

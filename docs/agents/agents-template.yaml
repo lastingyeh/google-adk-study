@@ -1,12 +1,20 @@
 version: 1.0
 agents:
   - name: <AGENT_NAME>
-    description: <DESCRIPTION>
+    description: |
+      <DESCRIPTION>
+      (可以使用多行描述)
     code_ref: <SAMPLE_CODE_REFERENCE> # 例如：workspace/python/agents/my-agent
-    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent
+    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset
+
+    # 選填：A2A 協定 (例如在 Host Agent 中使用)
+    # protocol: a2a
+
+    # 選填：MCP 傳輸方式 (用於 MCPToolset 類型的代理或工具)
+    # transports: stdio # 或 streamable
 
     # 選填
-    model: [<MODEL_NAME>] # 例如：gemini-2.0-flash。對於 SequentialAgent/ParallelAgent 等容器代理，請留空 []。
+    model: [<MODEL_NAME>] # 例如：[gemini-2.0-flash], [openai/gpt-4o-mini, anthropic/claude-3-7-sonnet-20250219]。對於 SequentialAgent/ParallelAgent 等容器代理，請留空 []。
 
     # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
     # output_key: <OUTPUT_KEY_NAME>
@@ -14,12 +22,14 @@ agents:
     # 選填
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset
         description: <TOOL_DESCRIPTION>
-        # 選填：特定工具類型的額外設定（例如 AgentTool）
+
+        # 選填：特定工具類型的額外設定（例如 MCPToolset）
         # model: [<MODEL_NAME>]
-        # tools: [] # AgentTool 的巢狀工具
+        # tools: [] # 在 type 為 MCPToolset 的巢狀工具
         # tags: []
+        # transports: stdio # 用於 MCPToolset
 
     # 選填：程式碼執行設定
     # code_executor:
@@ -57,7 +67,7 @@ agents:
     #     description: <DESCRIPTION>
 
     server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none"
-    tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow
+    tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow, mcp, interactions-api
 
     # 選填
     sub_agents:
@@ -65,10 +75,13 @@ agents:
         description: <SUB_AGENT_DESCRIPTION>
         type: <SUB_AGENT_TYPE>
 
+        # 選填：協定 (例如 a2a)
+        # protocol: a2a
+
         # 選填
         model: [<SUB_AGENT_MODEL>]
 
-        # 選填
+        # 選填：流水線步驟的輸出鍵
         # output_key: <SUB_AGENT_OUTPUT_KEY>
 
         # 選填
@@ -76,11 +89,13 @@ agents:
           - name: <SUB_AGENT_TOOL_NAME>
             type: <SUB_AGENT_TOOL_TYPE>
             description: <SUB_AGENT_TOOL_DESCRIPTION>
+            # 選填：巢狀工具設定
+            # tools: []
 
         # 選填
         config: [<SUB_AGENT_CONFIG_PARAMETER>]
 
-        server-port: <SUB_AGENT_PORT>
+        server-port: <SUB_AGENT_PORT> # 例如：8001 或 "none"
         tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]
 
         # 選填

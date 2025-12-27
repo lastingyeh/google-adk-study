@@ -33,7 +33,6 @@ mcp = FastMCP(
 async def add_numbers(input: ArithmeticInput) -> ArithmeticOutput:
     """
     將兩個數字相加並回傳結果。
-    Add two numbers and return the result.
 
     Args:
         input (ArithmeticInput): 包含兩個要相加的數字的輸入。 (Input containing two numbers to add.)

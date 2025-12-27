@@ -119,6 +119,7 @@ async def run_agent(query: str) -> str:
 
         # 執行代理並收集回應
         response_text = ""
+
         async for event in runner.run_async(
             session_id=session.id,
             user_id="demo_user",

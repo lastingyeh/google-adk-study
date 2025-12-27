@@ -120,23 +120,6 @@ def create_stateful_conversation(
     伺服器管理對話歷史記錄，減少 Token 成本
     並降低客戶端複雜度。
 
-    Mermaid 流程圖：
-    <div style='text-align: left;'>
-    ```mermaid
-    sequenceDiagram
-        participant Client
-        participant Server
-
-        Note over Client, Server: 初始互動
-        Client->>Server: 訊息 1
-        Server-->>Client: 回應 1 (ID: A)
-
-        Note over Client, Server: 後續互動 (帶有前次 ID)
-        Client->>Server: 訊息 2 + previous_interaction_id=A
-        Server-->>Client: 回應 2 (ID: B)
-    ```
-    </div>
-
     Args:
         messages: 依序發送的使用者訊息列表。
         model: 模型識別碼。
@@ -242,23 +225,6 @@ def create_function_calling_interaction(
     - 自定義函數定義
     - 內建工具 (google_search, code_execution)
     - 遠端 MCP 伺服器
-
-    Mermaid 流程圖：
-    <div style='text-align: left;'>
-    ```mermaid
-    sequenceDiagram
-        participant Client
-        participant Model
-        participant Tool
-
-        Client->>Model: 提示 + 工具定義
-        Model-->>Client: 函數呼叫請求 (Function Call)
-        Client->>Tool: 執行工具 (Execute Tool)
-        Tool-->>Client: 工具結果 (Result)
-        Client->>Model: 發送工具結果 (function_result)
-        Model-->>Client: 最終文字回應
-    ```
-    </div>
 
     Args:
         prompt: 使用者的請求。
