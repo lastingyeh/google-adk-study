@@ -75,7 +75,7 @@ make demo
 ## 專案結構
 
 ```
-tutorial12/
+strategic-solver/
 ├── strategic_solver/           # 代理實作
 │   ├── __init__.py            # 套件標記
 │   ├── agent.py               # 主代理，包含規劃器和工具
@@ -92,7 +92,7 @@ tutorial12/
 └── README.md                 # 本檔案
 ```
 
-## 代理變體
+## 代理變體，參考 [base_planner.py](./strategic_solver/agent.py)
 
 ### BuiltInPlanner 代理 (`builtin_planner_agent`)
 

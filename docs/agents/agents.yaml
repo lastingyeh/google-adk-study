@@ -1409,7 +1409,7 @@ agents:
         sql-database,
         github-mcp,
         multi-tools,
-        postgres
+        postgres,
       ]
     sub_agents:
       - name: search_agent
@@ -1422,3 +1422,90 @@ agents:
             description: Google搜尋工具。
         config: []
         tags: [search, google]
+  - name: Strategic Problem Solver (BuiltInPlanner)
+    description: 使用 BuiltInPlanner 進行透明思考的策略商業顧問，涵蓋市場分析、ROI 計算與風險評估並輸出策略報告。
+    code_ref: workspace/python/agents/strategic-solver
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: analyze_market
+        type: FunctionTool
+        description: 分析指定產業與地區的市場狀況與趨勢。
+      - name: calculate_roi
+        type: FunctionTool
+        description: 進行投資複利與 ROI 計算，提供年度分解。
+      - name: assess_risk
+        type: FunctionTool
+        description: 依因素評估風險分數、等級與緩解優先度。
+      - name: save_strategy_report
+        type: FunctionTool
+        description: 生成並保存策略計畫的 Markdown 報告。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    output_key: builtin_strategy_result
+    tags:
+      - strategy
+      - business-analysis
+      - builtin-planner
+      - market
+      - roi
+      - risk
+  - name: Strategic Problem Solver (PlanReActPlanner)
+    description: 使用 PlanReActPlanner 以「計劃→推理→行動→觀察→重規劃」結構進行策略分析與建議。
+    code_ref: workspace/python/agents/strategic-solver
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: analyze_market
+        type: FunctionTool
+        description: 分析指定產業與地區的市場狀況與趨勢。
+      - name: calculate_roi
+        type: FunctionTool
+        description: 進行投資複利與 ROI 計算，提供年度分解。
+      - name: assess_risk
+        type: FunctionTool
+        description: 依因素評估風險分數、等級與緩解優先度。
+      - name: save_strategy_report
+        type: FunctionTool
+        description: 生成並保存策略計畫的 Markdown 報告。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    output_key: plan_react_strategy_result
+    tags:
+      - strategy
+      - business-analysis
+      - plan-react-planner
+      - structured-reasoning
+      - market
+      - roi
+      - risk
+  - name: Strategic Problem Solver (Custom StrategicPlanner)
+    description: 使用自訂 StrategicPlanner 的特定領域工作流程（ANALYSIS／EVALUATION／STRATEGY／VALIDATION）產生可執行的策略建議。
+    code_ref: workspace/python/agents/strategic-solver
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: analyze_market
+        type: FunctionTool
+        description: 分析指定產業與地區的市場狀況與趨勢。
+      - name: calculate_roi
+        type: FunctionTool
+        description: 進行投資複利與 ROI 計算，提供年度分解。
+      - name: assess_risk
+        type: FunctionTool
+        description: 依因素評估風險分數、等級與緩解優先度。
+      - name: save_strategy_report
+        type: FunctionTool
+        description: 生成並保存策略計畫的 Markdown 報告。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    output_key: strategic_planner_result
+    tags:
+      - strategy
+      - business-analysis
+      - custom-planner
+      - domain-workflow
+      - market
+      - roi
+      - risk
+      - base-planner
