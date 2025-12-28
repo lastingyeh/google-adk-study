@@ -216,3 +216,6 @@ refs/
 
 # Node modules
 node_modules/
+
+# IDE specific files
+.idea/
