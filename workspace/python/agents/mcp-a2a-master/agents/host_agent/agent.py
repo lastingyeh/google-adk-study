@@ -77,7 +77,7 @@ class HostAgent:
 
         return [card.model_dump(exclude_none=True) for card in cards]
 
-    async def _delgate_task(self, agent_name: str, message: str) -> str:
+    async def _delegate_task(self, agent_name: str, message: str) -> str:
         """
         將任務委派給指定的代理。
         Delegate task to the specified agent.
@@ -111,7 +111,7 @@ class HostAgent:
             instruction=self.system_instruction,
             description=self.description,
             tools=[
-                FunctionTool(self._delgate_task),
+                FunctionTool(self._delegate_task),
                 FunctionTool(self._list_agents),
                 *mcp_tools,
             ],

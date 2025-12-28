@@ -229,7 +229,7 @@ print('可用工具:', len(get_available_grounding_tools()))
 ## 📁 專案結構
 
 ```text
-tutorial11/
+grounding-agent/
 ├── grounding_agent/           # 代理實作
 │   ├── __init__.py           # 套件標記
 │   ├── agent.py              # 代理定義與工具

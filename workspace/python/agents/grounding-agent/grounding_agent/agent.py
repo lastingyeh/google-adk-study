@@ -170,8 +170,7 @@ basic_grounding_agent = Agent(
     {("4. " if is_vertexai_enabled() else "3. ")}始終註明資訊來自網路搜尋
     {("5. " if is_vertexai_enabled() else "4. ")}如果資訊似乎過時或不確定,請提及這一點
 
-    保持有幫助、準確,並指出你何時使用搜尋功能。
-    """,
+    保持有幫助、準確,並指出你何時使用搜尋功能。""",
     tools=get_available_grounding_tools(),  # 動態載入可用工具
     output_key="grounding_response",  # 輸出鍵值
 )
@@ -191,8 +190,7 @@ advanced_grounding_agent = Agent(
     {("4. " if is_vertexai_enabled() else "3. ")}使用 save_research_findings 保存重要研究
     {("5. " if is_vertexai_enabled() else "4. ")}提供全面的摘要
 
-    始終保持徹底,引用來源,並解釋你的流程。
-  """,
+    始終保持徹底,引用來源,並解釋你的流程。""",
     # 結合 grounding 工具和自訂功能工具
     tools=get_available_grounding_tools()
     + [FunctionTool(analyze_search_results), FunctionTool(save_research_findings)],
@@ -224,8 +222,7 @@ research_assistant = Agent(
     - 為時效性資訊提供時間戳記
     - 儲存重要發現以供未來參考
 
-    注意: 啟用 VertexAI 時可使用完整的網路搜尋整合。
-  """,
+    注意: 啟用 VertexAI 時可使用完整的網路搜尋整合。""",
     tools=get_available_grounding_tools()
     + [FunctionTool(analyze_search_results), FunctionTool(save_research_findings)],
     generate_content_config=types.GenerateContentConfig(

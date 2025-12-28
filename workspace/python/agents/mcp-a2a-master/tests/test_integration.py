@@ -108,7 +108,7 @@ class TestHostAgentA2AIntegration:
         1. 建立 HostAgent 實例
         2. Mock AgentDiscovery 回傳有效的 agent cards
         3. Mock AgentConnector 及其 send_task 方法回傳成功結果
-        4. 呼叫 agent._delgate_task()
+        4. 呼叫 agent._delegate_task()
         5. 驗證回傳結果包含預期的成功訊息
         6. 驗證 send_task 方法被呼叫一次
         """
@@ -131,7 +131,7 @@ class TestHostAgentA2AIntegration:
                 )
                 mock_connector_class.return_value = mock_connector
 
-                result = await agent._delgate_task(
+                result = await agent._delegate_task(
                     agent_name="test_website_builder",
                     message="Build a homepage",
                 )

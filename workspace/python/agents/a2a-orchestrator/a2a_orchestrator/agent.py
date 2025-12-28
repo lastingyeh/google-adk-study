@@ -24,24 +24,6 @@
     - `sub_agents` 參數將三個遠端代理註冊為協調器的子代理，使其能夠直接呼叫它們。
     - `tools` 參數將上述定義的輔助工具提供給協調器使用。
 4.  **執行**：當協調器收到一個查詢時，它會根據其指示分析查詢內容，決定需要哪個（或哪些）子代理的技能，然後將相應的子任務委派出去。例如，一個需要研究和寫作的查詢會先被送到 `research_specialist`，其結果再交給 `content_writer` 進行處理。
-
-### Mermaid 流程圖
-
-```mermaid
-sequenceDiagram
-    participant User as 使用者
-    participant Orchestrator as 協調器 (root_agent)
-    participant Research as 研究代理
-    participant Analysis as 分析代理
-    participant Content as 內容代理
-
-    User->>Orchestrator: 提交查詢 (例如：「研究 AI 趨勢並撰寫摘要」)
-    Orchestrator->>Research: 委派研究任務
-    Research-->>Orchestrator: 回傳研究結果
-    Orchestrator->>Content: 根據研究結果委派撰寫任務
-    Content-->>Orchestrator: 回傳最終內容
-    Orchestrator-->>User: 回傳整合後的回應
-```
 """
 
 # 匯入 ADK 核心模組
@@ -160,25 +142,25 @@ root_agent = Agent(
     name="a2a_orchestrator",
     description="使用官方 ADK A2A 協調多個遠端特化代理",
     instruction="""
-        您是一個協調代理，使用官方的代理對代理（A2A）協定來協調特化的遠端代理。
+    您是一個協調代理，使用官方的代理對代理（A2A）協定來協調特化的遠端代理。
 
-        **可用的遠端代理 (子代理):**
+    **可用的遠端代理 (子代理):**
 
-        1. **research_specialist**: 用於網路研究、事實查核、時事。
-        2. **data_analyst**: 用於資料分析、統計、洞察。
-        3. **content_writer**: 用於內容創作、摘要、寫作。
+    1. **research_specialist**: 用於網路研究、事實查核、時事。
+    2. **data_analyst**: 用於資料分析、統計、洞察。
+    3. **content_writer**: 用於內容創作、摘要、寫作。
 
-        **官方 ADK A2A 工作流程:**
-        1. 根據使用者請求的性質，分析並決定需要哪個子代理。
-        2. 將研究任務委派給 research_specialist 子代理。
-        3. 將分析任務委派給 data_analyst 子代理。
-        4. 將內容創作任務委派給 content_writer 子代理。
-        5. 使用 log_coordination_step 工具來追蹤協調過程的每一步。
-        6. (可選) 使用 check_agent_availability 工具來驗證代理在委派前的狀態。
+    **官方 ADK A2A 工作流程:**
+    1. 根據使用者請求的性質，分析並決定需要哪個子代理。
+    2. 將研究任務委派給 research_specialist 子代理。
+    3. 將分析任務委派給 data_analyst 子代理。
+    4. 將內容創作任務委派給 content_writer 子代理。
+    5. 使用 log_coordination_step 工具來追蹤協調過程的每一步。
+    6. (可選) 使用 check_agent_availability 工具來驗證代理在委派前的狀態。
 
-        遠端代理是使用 uvicorn + to_a2a() 公開的，並在您的協調工作流程中作為子代理無縫地運作。
+    遠端代理是使用 uvicorn + to_a2a() 公開的，並在您的協調工作流程中作為子代理無縫地運作。
 
-        在您的回應中，務必清楚地解釋您要將任務委派給哪個遠端代理以及這麼做的原因。
+    在您的回應中，務必清楚地解釋您要將任務委派給哪個遠端代理以及這麼做的原因。
     """,
     # 將上面定義的遠端代理實例註冊為協調器的子代理。
     # 這使得協調器可以直接呼叫它們，就像呼叫本地函式一樣。

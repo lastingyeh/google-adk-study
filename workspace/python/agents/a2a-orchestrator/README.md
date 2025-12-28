@@ -1,20 +1,3 @@
-### 重點摘要
-- **核心概念**：本教學示範如何使用 Google ADK 官方的 `RemoteA2aAgent` 類別來實現真實的代理（Agent）對代理（A2A）通訊。協調器（Orchestrator）會協調多個作為獨立 ADK A2A 伺服器運行的遠端特化代理，以建構分散式 AI 系統。
-- **關鍵技術**：
-    - 使用官方 `to_a2a()` 函式設定 A2A 伺服器。
-    - 使用 `RemoteA2aAgent` 與遠端代理進行通訊。
-    - 透過 `.well-known/agent-card.json` 自動進行代理探索。
-    - 將多個代理作為獨立的 `uvicorn` 服務運行。
-    - 使用官方 ADK 模式來協調分散式代理工作流程。
-- **重要結論**：透過本教學，您將學會如何使用官方 ADK A2A 通訊來建構分散式多代理系統。
-- **行動項目**：
-    1. 設定環境：安裝所有依賴套件並設定您的 Google API 金鑰。
-    2. 啟動遠端 A2A 代理：在一個終端機中啟動所有遠端 A2A 代理。
-    3. 啟動協調器：在另一個終端機中啟動 ADK 開發伺服器。
-    4. 嘗試範例查詢。
-
----
-
 # 教學 17：代理對代理（Agent-to-Agent）通訊 - 官方 ADK 實作
 
 本教學示範如何使用 Google ADK 官方的 `RemoteA2aAgent` 類別來實現**真實的代理對代理（A2A）通訊**。協調器會協調多個作為獨立 ADK A2A 伺服器運行的遠端特化代理，以建構分散式 AI 系統。
@@ -45,6 +28,24 @@ graph TD
     C -->|RemoteA2aAgent localhost:8001| B[研究代理 ADK 伺服器]
     C -->|RemoteA2aAgent localhost:8002| D[分析代理 ADK 伺服器]
     C -->|RemoteA2aAgent localhost:8003| E[內容代理 ADK 伺服器]
+```
+---
+### A2A 呼叫流程時序圖
+
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant Orchestrator as 協調器 (root_agent)
+    participant Research as 研究代理
+    participant Analysis as 分析代理
+    participant Content as 內容代理
+
+    User->>Orchestrator: 提交查詢 (例如：「研究 AI 趨勢並撰寫摘要」)
+    Orchestrator->>Research: 委派研究任務
+    Research-->>Orchestrator: 回傳研究結果
+    Orchestrator->>Content: 根據研究結果委派撰寫任務
+    Content-->>Orchestrator: 回傳最終內容
+    Orchestrator-->>User: 回傳整合後的回應
 ```
 
 ## 快速入門
@@ -99,7 +100,7 @@ make dev
 ## 專案結構
 
 ```text
-tutorial17/
+a2a-orchestrator/
 ├── a2a_orchestrator/          # 主要 ADK 代理套件
 │   ├── __init__.py           # 套件初始化
 │   ├── agent.py              # 官方 ADK RemoteA2aAgent 實作
@@ -283,13 +284,6 @@ adk deploy cloud_run a2a_orchestrator/
 # 使用 uvicorn + to_a2a() 部署遠端代理
 # (用於生產 A2A 伺服器的自訂部署)
 ```
-
-## 後續步驟
-
-- **教學 18**：事件與可觀察性
-- **教學 19**：產物與檔案管理
-- **教學 20**：YAML 設定
-
 ## 資源
 
 - [Google ADK 文件](https://google.github.io/adk-docs/)
@@ -297,5 +291,17 @@ adk deploy cloud_run a2a_orchestrator/
 - [A2A 協定指南](https://google.github.io/adk-docs/a2a/)
 
 ---
-
-**🎉 教學 17 完成！** 您現在了解如何使用官方 ADK A2A 通訊來建構分散式多代理系統。
+## 重點摘要
+- **核心概念**：本教學示範如何使用 Google ADK 官方的 `RemoteA2aAgent` 類別來實現真實的代理（Agent）對代理（A2A）通訊。協調器（Orchestrator）會協調多個作為獨立 ADK A2A 伺服器運行的遠端特化代理，以建構分散式 AI 系統。
+- **關鍵技術**：
+    - 使用官方 `to_a2a()` 函式設定 A2A 伺服器。
+    - 使用 `RemoteA2aAgent` 與遠端代理進行通訊。
+    - 透過 `.well-known/agent-card.json` 自動進行代理探索。
+    - 將多個代理作為獨立的 `uvicorn` 服務運行。
+    - 使用官方 ADK 模式來協調分散式代理工作流程。
+- **重要結論**：透過本教學，您將學會如何使用官方 ADK A2A 通訊來建構分散式多代理系統。
+- **行動項目**：
+    1. 設定環境：安裝所有依賴套件並設定您的 Google API 金鑰。
+    2. 啟動遠端 A2A 代理：在一個終端機中啟動所有遠端 A2A 代理。
+    3. 啟動協調器：在另一個終端機中啟動 ADK 開發伺服器。
+    4. 嘗試範例查詢。

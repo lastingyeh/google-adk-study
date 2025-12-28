@@ -201,19 +201,16 @@ class MarketingAnalysisOutput(BaseModel):
 financial_agent = LlmAgent(
     name="financial_analyzer",
     model="gemini-2.5-flash",
-    description="分析財務文件和報告 Analyzes financial documents and reports",
+    description="分析財務文件和報告",
     instruction=(
         "你是一位專業的財務分析師。分析提供的財務文件並提取所有相關資訊，包括指標、期間和建議。\n"
-        "You are an expert financial analyst. Analyze the provided financial document "
-        "and extract all relevant information including metrics, periods, and recommendations. "
+
         "提供包含以下內容的綜合分析：\n"
-        "Provide a comprehensive analysis with:\n"
-        "- 主要財務重點和摘要 Main financial points and summary\n"
-        "- 財務指標：營收、利潤、利潤率、成長率 Financial metrics: revenue, profit, margins, growth rates\n"
-        "- 提到的財政期間 (Q1, Q2, 2024 等) Fiscal periods mentioned (Q1, Q2, 2024, etc.)\n"
-        "- 財務改善的關鍵建議 Key recommendations for financial improvement\n\n"
+        "- 主要財務重點和摘要 \n"
+        "- 財務指標：營收、利潤、利潤率、成長率 \n"
+        "- 提到的財政期間 (Q1, Q2, 2024 等) \n"
+        "- 財務改善的關鍵建議 \n\n"
         "使用 set_model_response 工具並回傳所需的 JSON 結構。\n"
-        "Return your analysis using the set_model_response tool with the required JSON structure."
     ),
     output_schema=FinancialAnalysisOutput,
 )
@@ -221,19 +218,16 @@ financial_agent = LlmAgent(
 technical_agent = LlmAgent(
     name="technical_analyzer",
     model="gemini-2.5-flash",
-    description="分析技術文件和規格書 Analyzes technical documents and specifications",
+    description="分析技術文件和規格書",
     instruction=(
         "你是一位專業的技術分析師。分析提供的技術文件並提取技術、元件和技術建議。\n"
-        "You are an expert technical analyst. Analyze the provided technical document "
-        "and extract technologies, components, and technical recommendations. "
+
         "提供包含以下內容的綜合分析：\n"
-        "Provide a comprehensive analysis with:\n"
-        "- 技術摘要和主要重點 Technical summary and main points\n"
-        "- 提到的技術和框架 Technologies and frameworks mentioned\n"
-        "- 討論的系統元件和服務 System components and services discussed\n"
-        "- 改善的技術建議 Technical recommendations for improvement\n\n"
+        "- 技術摘要和主要重點\n"
+        "- 提到的技術和框架\n"
+        "- 討論的系統元件和服務\n"
+        "- 改善的技術建議\n\n"
         "使用 set_model_response 工具並回傳所需的 JSON 結構。\n"
-        "Return your analysis using the set_model_response tool with the required JSON structure."
     ),
     output_schema=TechnicalAnalysisOutput,
 )
@@ -241,19 +235,16 @@ technical_agent = LlmAgent(
 sales_agent = LlmAgent(
     name="sales_analyzer",
     model="gemini-2.5-flash",
-    description="分析銷售文件和管道資訊 Analyzes sales documents and pipeline information",
+    description="分析銷售文件和管道資訊",
     instruction=(
         "你是一位專業的銷售分析師。分析提供的銷售文件並提取交易資訊、管道價值和銷售建議。\n"
-        "You are an expert sales analyst. Analyze the provided sales document "
-        "and extract deal information, pipeline value, and sales recommendations. "
+
         "提供包含以下內容的綜合分析：\n"
-        "Provide a comprehensive analysis with:\n"
-        "- 銷售摘要和主要重點 Sales summary and main points\n"
-        "- 包含價值和階段的客戶交易 Customer deals with values and stages\n"
-        "- 總管道價值 Total pipeline value\n"
-        "- 成長的銷售建議 Sales recommendations for growth\n\n"
+        "- 銷售摘要和主要重點\n"
+        "- 包含價值和階段的客戶交易\n"
+        "- 總管道價值\n"
+        "- 成長的銷售建議\n\n"
         "使用 set_model_response 工具並回傳所需的 JSON 結構。\n"
-        "Return your analysis using the set_model_response tool with the required JSON structure."
     ),
     output_schema=SalesAnalysisOutput,
 )
@@ -261,19 +252,17 @@ sales_agent = LlmAgent(
 marketing_agent = LlmAgent(
     name="marketing_analyzer",
     model="gemini-2.5-flash",
-    description="分析行銷文件和活動資訊 Analyzes marketing documents and campaign information",
+    description="分析行銷文件和活動資訊",
     instruction=(
         "你是一位專業的行銷分析師。分析提供的行銷文件並提取活動資訊、指標和行銷建議。\n"
-        "You are an expert marketing analyst. Analyze the provided marketing document "
-        "and extract campaign information, metrics, and marketing recommendations. "
+
         "提供包含以下內容的綜合分析：\n"
-        "Provide a comprehensive analysis with:\n"
-        "- 行銷摘要和主要活動 Marketing summary and main campaigns\n"
-        "- 參與率、轉換率、觸及率指標 Engagement rates, conversion rates, reach metrics\n"
-        "- 活動成本和產生的營收 Campaign costs and revenue generated\n"
-        "- 最佳化的行銷建議 Marketing recommendations for optimization\n\n"
+
+        "- 行銷摘要和主要活動\n"
+        "- 參與率、轉換率、觸及率指標\n"
+        "- 活動成本和產生的營收\n"
+        "- 最佳化的行銷建議\n\n"
         "使用 set_model_response 工具並回傳所需的 JSON 結構。\n"
-        "Return your analysis using the set_model_response tool with the required JSON structure."
     ),
     output_schema=MarketingAnalysisOutput,
 )

@@ -24,7 +24,7 @@ make dev
 ## 📁 專案結構 (Project Structure)
 
 ```
-tutorial01/
+hello-agent/
 ├── hello_agent/           # 代理實作 (Agent implementation)
 │   ├── __init__.py        # 套件標記 (Package marker)
 │   ├── agent.py           # 代理定義 (Agent definition)

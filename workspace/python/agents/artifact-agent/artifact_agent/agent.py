@@ -211,13 +211,13 @@ async def create_final_report_tool(tool_context: ToolContext) -> Dict[str, Any]:
         # 建立報告內容
         report_content = """# 文件處理最終報告
 
-## 處理摘要
+    ## 處理摘要
 
-本報告結合了當前會話中的所有文件處理Artifacts。
+    本報告結合了當前會話中的所有文件處理Artifacts。
 
-## 已處理的Artifacts
+    ## 已處理的Artifacts
 
-"""
+    """
 
         artifacts_list = []
         for filename in all_artifacts:
@@ -228,17 +228,17 @@ async def create_final_report_tool(tool_context: ToolContext) -> Dict[str, Any]:
                     artifacts_list.append(filename)
 
         report_content += """
-## 建議
+        ## 建議
 
-所有文件處理已成功完成。Artifacts均已版本化並
-可供將來參考。
+        所有文件處理已成功完成。Artifacts均已版本化並
+        可供將來參考。
 
-## 後續步驟
+        ## 後續步驟
 
-- 檢閱個別Artifacts以獲取詳細內容
-- 如有需要，生成額外的翻譯
-- 封存或匯出最終結果
-"""
+        - 檢閱個別Artifacts以獲取詳細內容
+        - 如有需要，生成額外的翻譯
+        - 封存或匯出最終結果
+        """
 
         # 創建Artifacts部分
         report_part = types.Part.from_text(text=report_content)
@@ -301,22 +301,22 @@ async def list_artifacts_tool(tool_context: ToolContext) -> Dict[str, Any]:
 
 async def load_artifact_tool(filename: str, tool_context: ToolContext, version: Optional[int] = None) -> Dict[str, Any]:
     """
-    按檔名和可選的版本號載入特定Artifacts。
+    按檔名和可選的版本號載入特定Artifact。
 
     Args:
-        filename: 要載入的Artifacts名稱。
-        tool_context: 用於Artifacts操作的工具上下文。
+        filename: 要載入的Artifact名稱。
+        tool_context: 用於Artifact操作的工具上下文。
         version: 要載入的特定版本（可選 - 若未指定則載入最新版本）。
 
     Returns:
-        包含狀態、報告和Artifacts內容的字典。
+        包含狀態、報告和Artifact內容的字典。
     """
     try:
         if not filename:
             return {
                 'status': 'error',
                 'error': '未提供檔名',
-                'report': '請指定要載入的Artifacts檔名'
+                'report': '請指定要載入的Artifact檔名'
             }
 
         # 從Artifacts服務中載入Artifacts

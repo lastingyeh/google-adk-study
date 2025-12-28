@@ -7,7 +7,7 @@ name = "gepa-optimization-agent"
 version = "0.1.0"
 description = "使用 ADK 進行 GEPA (遺傳演算法-帕雷托提示最佳化) 的教學"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "Apache License 2.0"}
 
 dependencies = [
@@ -31,8 +31,7 @@ dev = [
     "mypy>=1.11.0",
 ]
 gepa = [
-    "gepa>=0.1.0",
-    "tau-bench>=0.1.0",
+    "gepa<=0.0.22",
 ]
 
 [project.urls]

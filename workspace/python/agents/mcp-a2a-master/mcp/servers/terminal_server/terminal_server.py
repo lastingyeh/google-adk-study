@@ -57,7 +57,6 @@ logger.info(f"Terminal Server initialized with workspace: {DEFAULT_WORKSPACE}")
 async def run_command(command: str) -> str:
     """
     在終端機中執行指令並回傳輸出。
-    Run a command in the terminal and return the output.
 
     ⚠️ 安全性警告 (Security Warning):
     此函數使用 shell=True 執行命令,存在命令注入風險。
@@ -173,7 +172,6 @@ if __name__ == "__main__":
     主程式入口點 (Main entry point)
 
     啟動 MCP 伺服器並使用 stdio 傳輸協定進行通訊。
-    Starts the MCP server using stdio transport protocol.
 
     傳輸模式 (Transport Mode):
     - stdio: 使用標準輸入/輸出進行通訊,適合作為子程序運行

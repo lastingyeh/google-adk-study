@@ -1,34 +1,3 @@
-"""
-Data Analysis Agent with ADK
-Multi-agent system: analysis tools + visualization code execution
-搭配 ADK 的資料分析代理
-多代理系統：分析工具 + 視覺化程式碼執行
-
-重點摘要
-- 核心概念：定義了資料分析代理系統，包含分析代理與協調者代理。
-- 關鍵技術：Google ADK Agent, Multi-agent Coordination, Function Calling Tools.
-- 重要結論：採用多代理模式（協調者 + 專門代理）來分離分析與視覺化職責。
-- 行動項目：
-    1. 定義資料分析工具（欄位分析、關聯性計算、過濾、摘要）。
-    2. 建立 analysis_agent 處理統計分析。
-    3. 建立 root_agent 協調分析與視覺化任務。
-
-流程圖：
-```mermaid
-graph TD
-    User[使用者] --> Coordinator[Root Agent (協調者代理)]
-    Coordinator -->|分析請求| AnalysisAgent[Analysis Agent (分析代理)]
-    Coordinator -->|視覺化請求| VisualizationAgent[Visualization Agent (視覺化代理)]
-
-    AnalysisAgent --> Tool1[Analyze Column (欄位分析)]
-    AnalysisAgent --> Tool2[Calculate Correlation (關聯性計算)]
-    AnalysisAgent --> Tool3[Filter Data (資料過濾)]
-    AnalysisAgent --> Tool4[Dataset Summary (資料集摘要)]
-
-    VisualizationAgent --> CodeExec[Code Execution (程式碼執行)]
-```
-"""
-
 from typing import Any, Dict
 from google.adk.agents import Agent
 from google.adk.tools.agent_tool import AgentTool
@@ -37,10 +6,11 @@ from google.adk.tools.agent_tool import AgentTool
 from .visualization_agent import visualization_agent
 
 
-def analyze_column(column_name: str, analysis_type: str = "summary", data_context: str = "") -> Dict[str, Any]:
+def analyze_column(
+    column_name: str, analysis_type: str = "summary", data_context: str = ""
+) -> Dict[str, Any]:
     """
     分析資料集中的特定欄位。
-    Analyze a specific column in the dataset.
 
     Args:
         column_name: 要分析的欄位名稱 (Name of the column to analyze)
@@ -73,10 +43,11 @@ def analyze_column(column_name: str, analysis_type: str = "summary", data_contex
         }
 
 
-def calculate_correlation(column1: str, column2: str = "", data_context: str = "") -> Dict[str, Any]:
+def calculate_correlation(
+    column1: str, column2: str = "", data_context: str = ""
+) -> Dict[str, Any]:
     """
     計算兩個數值欄位之間的關聯性。
-    Calculate correlation between two numeric columns.
 
     Args:
         column1: 第一個欄位名稱 (First column name)
@@ -114,7 +85,6 @@ def filter_data(
 ) -> Dict[str, Any]:
     """
     依條件過濾資料集。
-    Filter dataset by condition.
 
     Args:
         column_name: 要過濾的欄位 (Column to filter on)
@@ -152,7 +122,6 @@ def filter_data(
 def get_dataset_summary(data_context: str = "") -> Dict[str, Any]:
     """
     取得目前資料集的摘要資訊。
-    Get summary information about the current dataset.
 
     Args:
         data_context: 關於可用資料的 JSON 上下文 (JSON context about available data)
@@ -181,7 +150,8 @@ analysis_agent = Agent(
     name="analysis_agent",
     model="gemini-2.0-flash",
     description="具備統計工具的資料分析與見解代理",
-    instruction="""你是一位專業的資料分析師。你的職責是透過分析幫助使用者理解他們的資料集並提供見解。
+    instruction="""
+    你是一位專業的資料分析師。你的職責是透過分析幫助使用者理解他們的資料集並提供見解。
 
     當使用者詢問有關資料分析的問題時：
     1. 使用可用的工具來分析資料
@@ -216,7 +186,8 @@ root_agent = Agent(
     name="data_analysis_coordinator",
     model="gemini-2.0-flash",
     description="具備視覺化與分析能力的智慧資料分析助理",
-    instruction="""你是一位專業的資料分析師與視覺化專家。你的職責是透過分析和視覺化幫助使用者理解和探索他們的資料集。
+    instruction="""
+    你是一位專業的資料分析師與視覺化專家。你的職責是透過分析和視覺化幫助使用者理解和探索他們的資料集。
 
     **關鍵原則：**
     - 積極主動：不要等待詳細的問題。

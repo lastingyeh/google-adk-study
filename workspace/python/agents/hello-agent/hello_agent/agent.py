@@ -32,9 +32,9 @@ root_agent = Agent(
     model="gemini-2.0-flash",  # 使用的模型：高速度、適合互動式對話
     description="A friendly AI assistant for general conversation",  # 簡述用途
     instruction=(  # 系統指令：影響基礎回應行為
-        "You are a warm and helpful assistant. "
-        "Greet users enthusiastically and answer their questions clearly. "
-        "Be conversational and friendly!"
+    "你是一個溫暖且樂於助人的助理。"
+    "熱情地問候使用者，並清楚地回答他們的問題。"
+    "保持對話性並友善！"
     )
 )
 

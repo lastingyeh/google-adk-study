@@ -1,28 +1,3 @@
-"""
-Visualization Agent with Code Execution
-Generates interactive visualizations using Python code execution
-具備程式碼執行的視覺化代理
-使用 Python 程式碼執行生成互動式視覺化
-
-重點摘要
-- 核心概念：專門負責資料視覺化的代理，利用程式碼執行能力。
-- 關鍵技術：BuiltInCodeExecutor, Python (Pandas/Matplotlib/Plotly).
-- 重要結論：通過生成並執行 Python 程式碼，確保視覺化的靈活性與準確性。
-- 行動項目：
-    1. 初始化 CodeExecutor。
-    2. 定義 visualization_agent，並配置程式碼執行器。
-    3. 設定指令以引導代理正確載入資料並生成圖表。
-
-流程圖：
-```mermaid
-flowchart LR
-    Request[請求] --> LoadData[載入 DataFrame]
-    LoadData --> GenCode[生成視覺化程式碼]
-    GenCode --> ExecCode[執行程式碼]
-    ExecCode --> Display[顯示結果]
-```
-"""
-
 from google.adk.agents import Agent
 from google.adk.code_executors import BuiltInCodeExecutor
 

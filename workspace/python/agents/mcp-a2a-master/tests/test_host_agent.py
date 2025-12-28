@@ -270,7 +270,7 @@ class TestHostAgentTools:
         1. 建立 HostAgent 實例
         2. Mock AgentDiscovery 回傳有效的 agent cards
         3. Mock AgentConnector 及其 send_task 方法回傳成功訊息
-        4. 呼叫 agent._delgate_task() 委派任務
+        4. 呼叫 agent._delegate_task() 委派任務
         5. 驗證回傳結果與預期相符
         """
         from agents.host_agent.agent import HostAgent
@@ -290,7 +290,7 @@ class TestHostAgentTools:
                 mock_connector.send_task = AsyncMock(return_value="Task completed")
                 mock_connector_class.return_value = mock_connector
 
-                result = await agent._delgate_task(
+                result = await agent._delegate_task(
                     agent_name="test_website_builder", message="Test task"
                 )
 
@@ -303,7 +303,7 @@ class TestHostAgentTools:
         重點說明：
         1. 建立 HostAgent 實例
         2. Mock AgentDiscovery 回傳空列表
-        3. 呼叫 agent._delgate_task() 嘗試委派給不存在的 agent
+        3. 呼叫 agent._delegate_task() 嘗試委派給不存在的 agent
         4. 驗證回傳錯誤訊息包含 "Agent not found"
         """
         from agents.host_agent.agent import HostAgent
@@ -316,7 +316,7 @@ class TestHostAgentTools:
         ) as mock_list_cards:
             mock_list_cards.return_value = []
 
-            result = await agent._delgate_task(
+            result = await agent._delegate_task(
                 agent_name="nonexistent_agent", message="Test task"
             )
 

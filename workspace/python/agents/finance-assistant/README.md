@@ -28,7 +28,7 @@ make clean
 ## 專案結構
 
 ```
-tutorial02/
+finance-assistant/
 ├── README.md                    # 本檔案
 ├── Makefile                     # 建置與測試指令
 ├── finance_assistant/           # 代理實作

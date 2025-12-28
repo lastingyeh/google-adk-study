@@ -20,16 +20,16 @@ news_fetcher = Agent(
   model="gemini-2.0-flash",
   description="使用 Google 搜尋取得最新新聞文章",
   instruction=(
-    "你是新聞研究員。根據使用者的主題，搜尋當前新聞文章和最新發展。\n"
-    "\n"
-    "使用 google_search 工具找出 3-4 篇當前新聞文章。\n"
-    "專注於過去 6 個月內來自可信賴新聞來源的最新內容。\n"
-    "\n"
-    "輸出項目符號清單，包含：\n"
-    "• 來源 + 標題 + 簡短摘要\n"
-    "• 盡可能包含發布日期\n"
-    "\n"
-    "搜尋查詢應為：'[主題] 新聞 最新發展 site:可信賴新聞網站'"
+  "你是新聞研究員。根據使用者的主題，搜尋當前新聞文章和最新發展。\n"
+  "\n"
+  "使用 google_search 工具找出 3-4 篇當前新聞文章。\n"
+  "專注於過去 6 個月內來自可信賴新聞來源的最新內容。\n"
+  "\n"
+  "輸出項目符號清單，包含：\n"
+  "• 來源 + 標題 + 簡短摘要\n"
+  "• 盡可能包含發布日期\n"
+  "\n"
+  "搜尋查詢應為：'[主題] 新聞 最新發展 site:可信賴新聞網站'"
   ),
   tools=[google_search],
   output_key="raw_news",  # 原始新聞資料
@@ -40,16 +40,16 @@ news_summarizer = Agent(
   model="gemini-2.0-flash",
   description="總結關鍵新聞要點",
   instruction=(
-    "將新聞文章總結成 2-3 個關鍵重點。\n"
-    "\n"
-    "**原始新聞：**\n"
-    "{raw_news}\n"
-    "\n"
-    "輸出格式：\n"
-    "關鍵重點：\n"
-    "1. 第一個重點\n"
-    "2. 第二個重點\n"
-    "3. 第三個重點"
+  "將新聞文章總結成 2-3 個關鍵重點。\n"
+  "\n"
+  "**原始新聞：**\n"
+  "{raw_news}\n"
+  "\n"
+  "輸出格式：\n"
+  "關鍵重點：\n"
+  "1. 第一個重點\n"
+  "2. 第二個重點\n"
+  "3. 第三個重點"
   ),
   output_key="news_summary",  # 新聞摘要
 )
@@ -258,7 +258,7 @@ article_formatter = Agent(
 # ============================================================================
 
 content_publishing_system = SequentialAgent(
-  name="ContentPublishingSystem",
+  name="Content Publishing System",
   sub_agents=[
     parallel_research,    # 階段 1：研究（3 條並行管線！）
     article_writer,       # 階段 2：草稿
@@ -270,4 +270,3 @@ content_publishing_system = SequentialAgent(
 
 # 必須命名為 root_agent 才能被 ADK 發現
 root_agent = content_publishing_system
-

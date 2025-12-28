@@ -6,8 +6,8 @@ from google.adk.tools.openapi_tool import OpenAPIToolset
 CHUCK_NORRIS_SPEC = {
     "openapi": "3.0.0",
     "info": {
-        "title": "Chuck Norris API",
-        "description": "Free JSON API for hand curated Chuck Norris facts",
+        "title": "查克·諾里斯 API",
+        "description": "免費的 JSON API，提供精心挑選的查克·諾里斯笑話",
         "version": "1.0.0",
     },
     "servers": [{"url": "https://api.chucknorris.io/jokes"}],
@@ -15,20 +15,20 @@ CHUCK_NORRIS_SPEC = {
         "/random": {
             "get": {
                 "operationId": "get_random_joke",
-                "summary": "Get a random Chuck Norris joke",
-                "description": "Retrieve a random joke from the database. Can optionally filter by category.",
+                "summary": "取得隨機的查克·諾里斯笑話",
+                "description": "從資料庫中檢索一個隨機笑話。可以選擇按類別篩選。",
                 "parameters": [
                     {
                         "name": "category",
                         "in": "query",
-                        "description": "Filter jokes by category (optional)",
+                        "description": "按類別篩選笑話（可選）",
                         "required": False,
                         "schema": {"type": "string"},
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "成功回應",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -49,20 +49,20 @@ CHUCK_NORRIS_SPEC = {
         "/search": {
             "get": {
                 "operationId": "search_jokes",
-                "summary": "Search for jokes",
-                "description": "Free text search for jokes containing the query term.",
+                "summary": "搜尋笑話",
+                "description": "依據查詢詞進行全文搜尋笑話。",
                 "parameters": [
                     {
                         "name": "query",
                         "in": "query",
-                        "description": "Search query (3+ characters required)",
+                        "description": "搜尋查詢（需要 3 個以上字元）",
                         "required": True,
                         "schema": {"type": "string", "minLength": 3},
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "成功回應",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -92,11 +92,11 @@ CHUCK_NORRIS_SPEC = {
         "/categories": {
             "get": {
                 "operationId": "get_categories",
-                "summary": "Get all joke categories",
-                "description": "Retrieve list of available joke categories.",
+                "summary": "取得所有笑話類別",
+                "description": "檢索可用的笑話類別列表。",
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "成功回應",
                         "content": {
                             "application/json": {
                                 "schema": {"type": "array", "items": {"type": "string"}}
@@ -115,34 +115,34 @@ root_agent = Agent(
     name="chuck_norris_agent",
     model="gemini-2.0-flash",
     description="""
-    Chuck Norris fact assistant that can retrieve jokes/facts from the
-    Chuck Norris API using OpenAPI tools.
+    查克·諾里斯笑話助理，可以使用 OpenAPI 工具從
+    查克·諾里斯 API 檢索笑話/事實。
     """,
     instruction="""
-    You are a fun Chuck Norris fact assistant!
+    你是一個有趣的查克·諾里斯笑話助理！
 
-    CAPABILITIES:
-    - Get random Chuck Norris jokes (optionally filtered by category)
-    - Search for jokes containing specific keywords
-    - List all available joke categories
+    功能：
+    - 取得隨機的查克·諾里斯笑話（可選擇按類別篩選）
+    - 搜尋包含特定關鍵字的笑話
+    - 列出所有可用的笑話類別
 
-    STYLE:
-    - Be enthusiastic and playful
-    - Chuck Norris jokes are exaggerated for comedic effect
-    - Format jokes clearly for easy reading
-    - If search returns multiple results, show a few best ones
+    風格：
+    - 熱情、俏皮
+    - 查克·諾里斯的笑話為達喜劇效果而誇大
+    - 清晰地格式化笑話以便閱讀
+    - 如果搜尋返回多個結果，則顯示幾個最好的結果
 
-    WORKFLOW:
-    - For random requests → use get_random_joke
-    - For specific topics → use search_jokes with query
-    - To see categories → use get_categories
-    - For category-specific random → use get_random_joke with category parameter
+    工作流程：
+    - 對於隨機請求 → 使用 get_random_joke
+    - 對於特定主題 → 使用帶有查詢的 search_jokes
+    - 若要查看類別 → 使用 get_categories
+    - 對於特定類別的隨機 → 使用帶有類別參數的 get_random_joke
 
-    IMPORTANT:
-    - Always extract the 'value' field from API response (that's the actual joke)
-    - If search finds 0 results, suggest trying a different keyword
-    - Categories are lowercase (e.g., "dev", "movie", "food")
+    重要事項：
+    - 務必從 API 回應中提取 'value' 欄位（這才是真正的笑話）
+    - 如果搜尋結果為 0，建議嘗試不同的關鍵字
+    - 類別為小寫（例如 "dev"、"movie"、"food"）
     """,
-    # Pass the toolset to the agent
+    # 將工具集傳遞給代理
     toolsets=[chuck_norris_toolset],
 )
