@@ -551,12 +551,12 @@ async def process_document_with_agent(document_id: str, content: str):
 
     prompt = f"""分析此文件並將其路由到適當的分析器：
 
-文件 ID: {document_id}
+    文件 ID: {document_id}
 
-內容:
-{content}
+    內容:
+    {content}
 
-分析文件類型並擷取相關資訊。"""
+    分析文件類型並擷取相關資訊。"""
 
     # 為代理建立一個正確的 Content 物件
     message_content = types.Content(

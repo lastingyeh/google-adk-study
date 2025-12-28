@@ -1144,3 +1144,281 @@ agents:
       - learning-analytics
       - tutorial08
     sub_agents: []
+  - name: Policy Navigator
+    description: 企業合規與政策導航器，使用 Google Gemini File Search API 實作原生 RAG 進行政策管理、搜尋與分析。
+    code_ref: workspace/python/agents/policy-navigator
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: upload_policy_documents
+        type: FunctionTool
+        description: 以 upsert 語意上傳政策文件到 File Search Store。如果具有相同名稱的文件已存在，將被取代。
+      - name: search_policies
+        type: FunctionTool
+        description: 使用 File Search 對政策進行語意搜尋，支援 metadata 過濾。
+      - name: filter_policies_by_metadata
+        type: FunctionTool
+        description: 依 metadata 屬性（部門、政策類型、敏感度、管轄區）過濾政策。
+      - name: compare_policies
+        type: FunctionTool
+        description: 跨部門比較政策，識別不一致或衝突之處。
+      - name: check_compliance_risk
+        type: FunctionTool
+        description: 評估與政策相關的合規風險並提供建議。
+      - name: extract_policy_requirements
+        type: FunctionTool
+        description: 從政策中擷取特定需求與關鍵資訊。
+      - name: generate_policy_summary
+        type: FunctionTool
+        description: 建立簡潔的政策摘要與執行報告。
+      - name: create_audit_trail
+        type: FunctionTool
+        description: 建立稽核追蹤項目，追蹤所有政策存取與決策。
+    config: []
+    server-port: 8000
+    output_key: policy_navigator_result
+    tags:
+      [
+        file-search,
+        rag,
+        compliance,
+        multi-agent,
+        metadata,
+        audit-trail,
+        store,
+        coordinator,
+      ]
+    sub_agents:
+      - name: Document Manager
+        description: 管理政策文件上傳、組織與 metadata 設定。
+        type: Agent
+        invoke: prompting
+        model: [gemini-2.5-flash]
+        tools:
+          - name: upload_policy_documents
+            type: FunctionTool
+            description: 將政策文件上傳到 File Search stores 並設定 metadata。
+        server-port: null
+        output_key: document_manager_result
+        tags: [document-management, file-upload, metadata]
+      - name: Search Specialist
+        description: 搜尋公司政策並檢索相關資訊，提供準確的政策資訊並附帶引用。
+        type: Agent
+        invoke: prompting
+        model: [gemini-2.5-flash]
+        tools:
+          - name: search_policies
+            type: FunctionTool
+            description: 對政策文件執行語意搜尋。
+          - name: filter_policies_by_metadata
+            type: FunctionTool
+            description: 依部門、類型與日期過濾政策。
+          - name: extract_policy_requirements
+            type: FunctionTool
+            description: 從政策中擷取特定需求。
+        server-port: null
+        output_key: search_specialist_result
+        tags: [search, retrieval, semantic-search]
+      - name: Compliance Advisor
+        description: 評估合規風險並提供政策指導，識別不一致或衝突之處。
+        type: Agent
+        invoke: prompting
+        model: [gemini-2.5-flash]
+        tools:
+          - name: check_compliance_risk
+            type: FunctionTool
+            description: 評估與政策相關的合規風險。
+          - name: compare_policies
+            type: FunctionTool
+            description: 跨部門比較政策，識別不一致之處。
+        output_key: compliance_advisor_result
+        server-port: null
+        tags: [compliance, risk-assessment, policy-analysis]
+      - name: Report Generator
+        description: 產生政策摘要、報告與稽核追蹤，為利益相關者格式化政策資訊。
+        type: Agent
+        invoke: prompting
+        model: [gemini-2.5-flash]
+        tools:
+          - name: generate_policy_summary
+            type: FunctionTool
+            description: 建立簡潔的政策摘要。
+          - name: create_audit_trail
+            type: FunctionTool
+            description: 建立稽核追蹤項目。
+        output_key: report_generator_result
+        server-port: null
+        tags: [reporting, summary, audit]
+  - name: Production Agent
+    description: 生產環境部署專家，為 ADK 代理提供部署策略、最佳實踐和基礎設施模式的指導。
+    code_ref: workspace/python/agents/production-agent
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: check_deployment_status
+        type: FunctionTool
+        description: 檢查部署狀態與健康狀況，返回包含部署狀態資訊的字典。
+      - name: get_deployment_options
+        type: FunctionTool
+        description: 取得可用的部署選項，包括本地 API 伺服器、Cloud Run、Agent Engine 和 GKE 的詳細資訊。
+      - name: get_best_practices
+        type: FunctionTool
+        description: 取得生產環境部署最佳實踐，涵蓋安全性、監控、可擴展性和可靠性方面的建議。
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    tags:
+      [
+        deployment,
+        production,
+        fastapi,
+        cloud-run,
+        gke,
+        agent-engine,
+        monitoring,
+        security,
+        uvicorn,
+        middleware,
+        health-checks,
+      ]
+    sub_agents: []
+  - name: Pub/Sub Document Processor
+    description: 事件驅動的文件路由協調者，透過 Pub/Sub 將上傳文件分發給專門分析代理並回傳結構化 JSON。
+    code_ref: workspace/python/agents/pubsub-agent
+    type: LlmAgent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: financial_analyzer
+        type: AgentTool
+        description: 分析財務文件，提取財務指標、財政期間與建議的結構化輸出。
+      - name: technical_analyzer
+        type: AgentTool
+        description: 分析技術文件與架構，回傳涉及技術元件與改進建議的 JSON。
+      - name: sales_analyzer
+        type: AgentTool
+        description: 分析銷售交易與管道，提供交易狀態與銷售建議。
+      - name: marketing_analyzer
+        type: AgentTool
+        description: 分析行銷活動與指標，整理參與率、轉換率與最佳化建議。
+    config: []
+    server-port: 8000
+    tags:
+      [
+        pubsub,
+        topics,
+        gcp,
+        dlq,
+        event-driven,
+        document-routing,
+        multi-agent,
+        structured-output,
+      ]
+    sub_agents:
+      - name: Financial Analyzer
+        description: 對財務報告進行結構化解析，擷取財務指標與財政期間。
+        type: LlmAgent
+        model: [gemini-2.5-flash]
+        tools: []
+        config: []
+        tags: [finance, structured-output]
+        output_schema: FinancialAnalysisOutput
+      - name: Technical Analyzer
+        description: 解析技術文件，列出技術、元件與改進建議。
+        type: LlmAgent
+        model: [gemini-2.5-flash]
+        tools: []
+        config: []
+        tags: [technical, architecture, structured-output]
+        output_schema: TechnicalAnalysisOutput
+      - name: Sales Analyzer
+        description: 解析銷售文件，萃取交易、管道價值與銷售建議。
+        type: LlmAgent
+        model: [gemini-2.5-flash]
+        tools: []
+        config: []
+        tags: [sales, pipeline, structured-output]
+        output_schema: SalesAnalysisOutput
+      - name: Marketing Analyzer
+        description: 解析行銷文件，彙整活動、參與度與最佳化建議。
+        type: LlmAgent
+        model: [gemini-2.5-flash]
+        tools: []
+        config: []
+        tags: [marketing, campaign, structured-output]
+        output_key: MarketingAnalysisOutput
+  - name: Software Bug Assistant
+    description: 一位熟練的軟體問題分類和除錯專家，專為咖啡機公司 QuantumRoast 提供票務管理服務。整合多種工具進行票務搜尋、建立、更新與網路查詢。
+    code_ref: workspace/python/agents/software-bug-assistant
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools:
+      - name: get_current_date
+        type: FunctionTool
+        description: 取得當前日期(YYYY-MM-DD格式)，用於計算日期範圍查詢。
+      - name: search_agent
+        type: AgentTool
+        description: 使用Google Search進行網路搜尋，查詢軟體社群中的已知問題(CVE、廣泛問題等)。
+      - name: langchain_tool
+        type: LangchainTool
+        description: 在Stack Exchange(StackOverflow)上搜尋使用者過去的查詢與解決方案。
+      - name: search-tickets
+        type: ToolboxCoreClientTool
+        description: 透過向量搜尋找出類似或重複的 ticket (限制 3 筆紀錄)。
+      - name: update-ticket-status
+        type: ToolboxCoreClientTool
+        description: 更新 ticket狀態(開放、進行中、已關閉、已解決)。
+      - name: update-ticket-priority
+        type: ToolboxCoreClientTool
+        description: 更新 ticket優先級(P0-關鍵、P1-高、P2-中等、P3-低)。
+      - name: create-new-ticket
+        type: ToolboxCoreClientTool
+        description: 建立新的 ticket/問題。
+      - name: get-ticket-by-id
+        type: ToolboxCoreClientTool
+        description: 透過ID檢索 ticket。
+      - name: get-tickets-by-date-range
+        type: ToolboxCoreClientTool
+        description: 檢索特定日期範圍內建立或更新的 ticket。
+      - name: get-tickets-by-assignee
+        type: ToolboxCoreClientTool
+        description: 檢索具有特定受託人的 ticket。
+      - name: get-tickets-by-status
+        type: ToolboxCoreClientTool
+        description: 檢索具有特定狀態的 ticket。
+      - name: get-tickets-by-priority
+        type: ToolboxCoreClientTool
+        description: 檢索具有特定優先級的 ticket。
+      - name: github_search
+        type: MCPTool
+        description: 透過MCP工具在GitHub上搜尋儲存庫、問題與PR，支援search_repositories、search_issues、list_issues、get_issue、list_pull_requests、get_pull_request等操作。
+      - name: mcp_tools
+        type: MCPToolset
+        transports: streamable
+        description: 提供 GitHub Copilot MCP 各項服務與任務工具。
+        tools:
+          refs: 'https://github.com/github/github-mcp-server'
+    config: []
+    server-port: 8000
+    tags:
+      [
+        bug-tracking,
+        ticket-management,
+        toolbox,
+        mcp,
+        langchain,
+        vector-search,
+        sql-database,
+        github-mcp,
+        multi-tools,
+        postgres
+      ]
+    sub_agents:
+      - name: search_agent
+        description: 使用Google Search的專家代理，負責網路搜尋任務。
+        type: AgentTool
+        model: [gemini-2.5-flash]
+        tools:
+          - name: google_search
+            type: GoogleSearchAgentTool
+            description: Google搜尋工具。
+        config: []
+        tags: [search, google]
