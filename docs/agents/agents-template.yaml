@@ -5,7 +5,7 @@ agents:
       <DESCRIPTION>
       (可以使用多行描述)
     code_ref: <SAMPLE_CODE_REFERENCE> # 例如：workspace/python/agents/my-agent
-    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset
+    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset, App
 
     # 選填：A2A 協定 (例如在 Host Agent 中使用)
     # protocol: a2a
@@ -19,10 +19,19 @@ agents:
     # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
     # output_key: <OUTPUT_KEY_NAME>
 
+    # 選填：結構化輸出 Schema (例如在 Pub/Sub Agent 中)
+    # output_schema: <SCHEMA_NAME>
+
+    # 選填：調用模式 (例如在 Policy Navigator 中)
+    # invoke: prompting
+
+    # 選填：暫停與恢復設定 (例如在 Pause Resume Agent 中)
+    # resumability_config: [is_resumable]
+
     # 選填
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool
         description: <TOOL_DESCRIPTION>
 
         # 選填：特定工具類型的額外設定（例如 MCPToolset）
@@ -30,6 +39,13 @@ agents:
         # tools: [] # 在 type 為 MCPToolset 的巢狀工具
         # tags: []
         # transports: stdio # 用於 MCPToolset
+        # refs: <URL> # 用於 MCPToolset
+
+    # 選填：外掛程式 (例如在 Observability Plugins Agent 中)
+    # plugins:
+    #   - name: <PLUGIN_NAME>
+    #     type: BasePlugin
+    #     description: <PLUGIN_DESCRIPTION>
 
     # 選填：程式碼執行設定
     # code_executor:
@@ -83,6 +99,12 @@ agents:
 
         # 選填：流水線步驟的輸出鍵
         # output_key: <SUB_AGENT_OUTPUT_KEY>
+
+        # 選填：結構化輸出 Schema
+        # output_schema: <SUB_AGENT_OUTPUT_SCHEMA>
+
+        # 選填：調用模式
+        # invoke: prompting
 
         # 選填
         tools:
