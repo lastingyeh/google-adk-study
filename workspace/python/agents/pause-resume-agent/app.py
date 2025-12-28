@@ -1,5 +1,10 @@
 """支援暫停/恢復調用 (Pause/Resume Invocation) 的 ADK App 配置。"""
 
+# 「App」是由大型語言模型 (LLM) 驅動的代理系統的頂層容器。
+#  它管理一個根代理 (「root_agent」)，該代理作為代理樹的根，
+#  實現層級結構中所有代理之間的協調與溝通。
+# 「plugins」是應用程式範圍的元件，為整個系統提供共享功能和服務。
+
 from google.adk.apps import App, ResumabilityConfig
 from pause_resume_agent import root_agent
 

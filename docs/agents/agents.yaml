@@ -1035,3 +1035,112 @@ agents:
       - logging
       - reporting
     sub_agents: []
+  - name: Observability Plugins Agent
+    description: 具有全面可觀測性的生產助理，包括指標收集、警報和效能分析，用於企業監控。
+    code_ref: workspace/python/agents/observability-plugins-agent
+    type: Agent
+    model: [gemini-2.5-flash]
+    tools: []
+    config: [temperature, max_output_tokens]
+    server-port: 8000
+    plugins:
+      - name: metrics_collector_plugin
+        type: BasePlugin
+        description: 用於收集請求指標的外掛程式。
+      - name: alerting_plugin
+        type: BasePlugin
+        description: 用於異常警報的外掛程式。
+      - name: performance_profiler_plugin
+        type: BasePlugin
+        description: 用於詳細效能分析的外掛程式。
+    tags: [observability, monitoring, plugins, metrics, alerting, profiling]
+    sub_agents: []
+  - name: Pack ADK A2A Agent
+    description: 一個可以提供有關天氣和時間資訊的代理程式。
+    code_ref: workspace/python/agents/pack-adk-a2a-agent
+    type: Agent
+    model: [gemini-3-pro-preview]
+    tools:
+      - name: get_weather
+        type: FunctionTool
+        description: 模擬網路搜尋。使用它來獲取天氣資訊。
+      - name: get_current_time
+        type: FunctionTool
+        description: 模擬獲取城市的當前時間。
+    config: []
+    protocol: a2a
+    server-port: 8000
+    tags:
+      [
+        a2a,
+        agent-starter-pack,
+        fastapi,
+        uvicorn,
+        terraform,
+        storage,
+        monitoring,
+        agent-card,
+        telemetry,
+        logger,
+      ]
+    sub_agents: []
+  - name: Pause Resume Agent
+    description: 展示 ADK 1.16.0 中暫停與恢復調用 (Pause and Resume Invocations) 的 Agent。
+    code_ref: workspace/python/agents/pause-resume-agent
+    type: App
+    model: [gemini-2.0-flash]
+    tools:
+      - name: process_data_chunk
+        type: FunctionTool
+        description: 模擬處理資料塊，代表一個能從暫停/恢復中受益的長期執行操作。
+      - name: validate_checkpoint
+        type: FunctionTool
+        description: 驗證恢復時的檢查點完整性，展示恢復前的狀態驗證。
+      - name: get_resumption_hint
+        type: FunctionTool
+        description: 分析上下文並建議最佳恢復點。
+    config: []
+    server-port: 8000
+    resumability_config: [is_resumable]
+    tags:
+      - pause-resume
+      - checkpoint
+      - long-running-workflow
+      - resumability-config
+    sub_agents: []
+  - name: Personal Tutor
+    description: 個人化學習導師，展示多層次狀態與記憶管理，追蹤使用者進度、偏好與學習歷史。
+    code_ref: workspace/python/agents/personal-tutor
+    type: Agent
+    model: [gemini-2.0-flash]
+    tools:
+      - name: set_user_preferences
+        type: FunctionTool
+        description: '設定使用者學習偏好（語言、難度），使用 user: 前綴進行永久儲存。'
+      - name: record_topic_completion
+        type: FunctionTool
+        description: 紀錄使用者完成的學習主題與測驗分數，更新永久狀態的已完成主題列表與分數映射。
+      - name: get_user_progress
+        type: FunctionTool
+        description: 取得使用者學習進度摘要，包含語言偏好、難度層級、已完成主題數量與平均測驗分數。
+      - name: start_learning_session
+        type: FunctionTool
+        description: 啟動新的主題學習工作階段，設定工作階段層級狀態（無前綴），包含當前主題與開始時間。
+      - name: calculate_quiz_grade
+        type: FunctionTool
+        description: '計算測驗成績，使用 temp: 前綴儲存中間計算結果（單次呼叫作用域），回傳分數與等級評定。'
+      - name: search_past_lessons
+        type: FunctionTool
+        description: 搜尋過往學習紀錄，模擬記憶服務功能，在已完成主題中尋找與查詢相關的內容。
+    config: []
+    server-port: 8000
+    output_key: last_tutor_response
+    tags:
+      - state-management
+      - memory
+      - user-preferences
+      - progress-tracking
+      - session-management
+      - learning-analytics
+      - tutorial08
+    sub_agents: []

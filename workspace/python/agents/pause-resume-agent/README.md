@@ -32,7 +32,7 @@ make test
 ## 檔案結構
 
 ```text
-til_pause_resume_20251020/
+pause-resume-agent/
 ├── pause_resume_agent/
 │   ├── __init__.py        # 套件初始化
 │   ├── agent.py           # Agent 定義與 root_agent 導出

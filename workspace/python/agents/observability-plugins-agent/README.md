@@ -102,7 +102,7 @@ adk web --trace_to_cloud
 ## 專案結構
 
 ```
-tutorial24/
+observability-plugins-agent/
 ├── observability_plugins_agent/       # Agent 實作
 │   ├── __init__.py
 │   └── agent.py              # 包含外掛程式的主 Agent
@@ -243,10 +243,9 @@ https://console.cloud.google.com/traces?project=your-project-id
 - [ADK 外掛程式系統](https://github.com/google/adk-python)
 - [Cloud Trace 文件](https://cloud.google.com/trace/docs)
 - [Prometheus 最佳實踐](https://prometheus.io/docs/practices/)
+- [Basic Plugins 補充說明](./observability_plugins_agent/plugins.md)
 
 ---
-
-**🎉 恭喜！** 您現在已了解生產環境 Agent 系統的進階可觀測性模式。
 
 # 重點摘要
 - **核心概念**: 進階可觀測性與監控系統，整合 Cloud Trace。

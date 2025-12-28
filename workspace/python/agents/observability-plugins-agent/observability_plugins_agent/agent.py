@@ -16,7 +16,7 @@ ADK 教學 24: 進階可觀測性與監控
 - 生產就緒的監控模式
 """
 
-import time
+import time, asyncio
 from datetime import datetime
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
@@ -24,12 +24,14 @@ from dataclasses import dataclass, field
 from google.adk.agents import Agent
 from google.adk.plugins import BasePlugin
 from google.adk.events import Event
+from google.adk.runners import InMemoryRunner
 from google.genai import types
 
 
 @dataclass
 class RequestMetrics:
     """單一請求的指標。"""
+
     request_id: str
     agent_name: str
     start_time: float
@@ -44,6 +46,7 @@ class RequestMetrics:
 @dataclass
 class AggregateMetrics:
     """跨請求的聚合指標。"""
+
     total_requests: int = 0
     successful_requests: int = 0
     failed_requests: int = 0
@@ -77,27 +80,29 @@ class AggregateMetrics:
 class MetricsCollectorPlugin(BasePlugin):
     """用於收集請求指標的外掛程式。"""
 
-    def __init__(self, name: str = 'metrics_collector_plugin'):
+    def __init__(self, name: str = "metrics_collector_plugin"):
         """初始化指標收集器。"""
         super().__init__(name)
         self.metrics = AggregateMetrics()
         self.current_requests: Dict[str, RequestMetrics] = {}
 
-    async def on_event_callback(self, *, invocation_context, event: Event) -> Optional[Event]:
+    async def on_event_callback(
+        self, *, invocation_context, event: Event
+    ) -> Optional[Event]:
         """處理 Agent 事件以進行指標收集。"""
         # 追蹤事件 (為教學簡化實作)
-        if hasattr(event, 'event_type'):
-            if event.event_type == 'request_start':
+        if hasattr(event, "event_type"):
+            if event.event_type == "request_start":
                 request_id = str(time.time())
                 metrics = RequestMetrics(
                     request_id=request_id,
-                    agent_name='observability_plugins_agent',
-                    start_time=time.time()
+                    agent_name="observability_plugins_agent",
+                    start_time=time.time(),
                 )
                 self.current_requests[request_id] = metrics
                 print(f"📊 [METRICS] 請求開始於 {datetime.now().strftime('%H:%M:%S')}")
 
-            elif event.event_type == 'request_complete':
+            elif event.event_type == "request_complete":
                 if self.current_requests:
                     request_id = list(self.current_requests.keys())[0]
                     metrics = self.current_requests[request_id]
@@ -140,7 +145,12 @@ class MetricsCollectorPlugin(BasePlugin):
 class AlertingPlugin(BasePlugin):
     """用於異常警報的外掛程式。"""
 
-    def __init__(self, name: str = 'alerting_plugin', latency_threshold: float = 5.0, error_threshold: int = 3):
+    def __init__(
+        self,
+        name: str = "alerting_plugin",
+        latency_threshold: float = 5.0,
+        error_threshold: int = 3,
+    ):
         """
         初始化警報外掛程式。
 
@@ -154,49 +164,58 @@ class AlertingPlugin(BasePlugin):
         self.error_threshold = error_threshold
         self.consecutive_errors = 0
 
-    async def on_event_callback(self, *, invocation_context, event: Event) -> Optional[Event]:
+    async def on_event_callback(
+        self, *, invocation_context, event: Event
+    ) -> Optional[Event]:
         """處理 Agent 事件以進行警報。"""
-        if hasattr(event, 'event_type'):
-            if event.event_type == 'request_complete':
+        if hasattr(event, "event_type"):
+            if event.event_type == "request_complete":
                 # 成功時重置錯誤計數器
                 self.consecutive_errors = 0
 
-            elif event.event_type == 'request_error':
+            elif event.event_type == "request_error":
                 self.consecutive_errors += 1
                 print("🚨 [ALERT] 檢測到錯誤")
 
                 if self.consecutive_errors >= self.error_threshold:
-                    print(f"🚨🚨 [CRITICAL ALERT] 連續 {self.consecutive_errors} 次錯誤!")
+                    print(
+                        f"🚨🚨 [CRITICAL ALERT] 連續 {self.consecutive_errors} 次錯誤!"
+                    )
         return event
 
 
 class PerformanceProfilerPlugin(BasePlugin):
     """用於詳細效能分析的外掛程式。"""
 
-    def __init__(self, name: str = 'performance_profiler_plugin'):
+    def __init__(self, name: str = "performance_profiler_plugin"):
         """初始化分析器。"""
         super().__init__(name)
         self.profiles: List[Dict] = []
         self.current_profile: Optional[Dict] = None
 
-    async def on_event_callback(self, *, invocation_context, event: Event) -> Optional[Event]:
+    async def on_event_callback(
+        self, *, invocation_context, event: Event
+    ) -> Optional[Event]:
         """處理 Agent 事件以進行分析。"""
-        if hasattr(event, 'event_type'):
-            if event.event_type == 'tool_call_start':
+        if hasattr(event, "event_type"):
+            if event.event_type == "tool_call_start":
                 self.current_profile = {
-                    'tool': getattr(event, 'tool_name', 'unknown'),
-                    'start_time': time.time()
+                    "tool": getattr(event, "tool_name", "unknown"),
+                    "start_time": time.time(),
                 }
                 print("⚙️ [PROFILER] 工具呼叫開始")
 
-            elif event.event_type == 'tool_call_complete':
+            elif event.event_type == "tool_call_complete":
                 if self.current_profile:
-                    self.current_profile['end_time'] = time.time()
-                    self.current_profile['duration'] = (
-                        self.current_profile['end_time'] - self.current_profile['start_time']
+                    self.current_profile["end_time"] = time.time()
+                    self.current_profile["duration"] = (
+                        self.current_profile["end_time"]
+                        - self.current_profile["start_time"]
                     )
                     self.profiles.append(self.current_profile)
-                    print(f"✅ [PROFILER] 工具呼叫完成: {self.current_profile['duration']:.2f}s")
+                    print(
+                        f"✅ [PROFILER] 工具呼叫完成: {self.current_profile['duration']:.2f}s"
+                    )
                     self.current_profile = None
         return event
 
@@ -210,27 +229,27 @@ class PerformanceProfilerPlugin(BasePlugin):
         tool_stats = {}
 
         for profile in self.profiles:
-            if 'duration' not in profile:
+            if "duration" not in profile:
                 continue
 
-            tool = profile['tool']
+            tool = profile["tool"]
 
             if tool not in tool_stats:
                 tool_stats[tool] = {
-                    'calls': 0,
-                    'total_duration': 0.0,
-                    'min_duration': float('inf'),
-                    'max_duration': 0.0
+                    "calls": 0,
+                    "total_duration": 0.0,
+                    "min_duration": float("inf"),
+                    "max_duration": 0.0,
                 }
 
             stats = tool_stats[tool]
-            stats['calls'] += 1
-            stats['total_duration'] += profile['duration']
-            stats['min_duration'] = min(stats['min_duration'], profile['duration'])
-            stats['max_duration'] = max(stats['max_duration'], profile['duration'])
+            stats["calls"] += 1
+            stats["total_duration"] += profile["duration"]
+            stats["min_duration"] = min(stats["min_duration"], profile["duration"])
+            stats["max_duration"] = max(stats["max_duration"], profile["duration"])
 
         for tool, stats in tool_stats.items():
-            avg_duration = stats['total_duration'] / stats['calls']
+            avg_duration = stats["total_duration"] / stats["calls"]
 
             summary += f"Tool (工具): {tool}\n"
             summary += f"  Calls (呼叫次數):        {stats['calls']}\n"
@@ -245,8 +264,8 @@ class PerformanceProfilerPlugin(BasePlugin):
 
 # 建立包含所有外掛程式的可觀測性 Agent
 root_agent = Agent(
-    model='gemini-2.5-flash',
-    name='observability_plugins_agent',
+    model="gemini-2.5-flash",
+    name="observability_plugins_agent",
     description="""具有全面可觀測性的生產助理，包括指標收集、警報和效能分析，用於企業監控。""",
     instruction="""
     您是一位生產助理，負責協助客戶解決有關 AI 和技術的疑問。
@@ -261,13 +280,41 @@ root_agent = Agent(
     請始終保持樂於助人且準確。
     """.strip(),
     generate_content_config=types.GenerateContentConfig(
-        temperature=0.5,
-        max_output_tokens=1024
-    )
+        temperature=0.5, max_output_tokens=1024
+    ),
 )
 
+async def main():
+    # 在 InMemoryRunner 中註冊外掛程式
+    # 實際的監控外掛程式是在 Runner 層級註冊的
+    runner = InMemoryRunner(
+        agent=root_agent,
+        app_name="observability_plugins_agent",
+        plugins=[
+            MetricsCollectorPlugin(),
+            AlertingPlugin(),
+            PerformanceProfilerPlugin(),
+        ],
+    )
 
-def main():
+    content = types.Content(
+        role="user", parts=[types.Part.from_text("請解釋什麼是可觀測性？")]
+    )
+
+    session = await runner.session_service.create_session(
+        app_name="observability_plugins_agent", user_id="test_user"
+    )
+
+    async for event in runner.run_async(
+        user_id=session.user_id, session_id=session.id, new_message=content
+    ):
+        if not event.content or not event.content.parts:
+            continue
+        if event.content.parts[0].text:
+            print(f"💬 回覆部分: {event.content.parts[0].text}")
+        if event.is_final_response:
+            print("✅ 最終回覆已完成")
+
     """
     示範主要進入點。
 
@@ -289,11 +336,10 @@ def main():
     print("\n" + "=" * 70)
 
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    asyncio.run(main())
 
 # 重點摘要
 # - **核心概念**: 可觀測性 Agent 實作
 # - **關鍵技術**: Google ADK, BasePlugin, Metrics Collection, Alerting, Profiling
 # - **行動項目**: 執行此腳本以啟動監控 Agent
-

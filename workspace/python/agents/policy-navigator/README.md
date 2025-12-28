@@ -28,7 +28,7 @@ _注意：這是生產級的基礎架構。若要完全部署到生產環境，�
 ## 📁 專案結構
 
 ```
-tutorial37/
+policy-navigator/
 ├── policy_navigator/           # 主套件
 │   ├── __init__.py            # 套件匯出
 │   ├── agent.py               # 多代理人系統
@@ -71,7 +71,7 @@ tutorial37/
 
 ```bash
 # 1. 進入教學目錄
-cd tutorial_implementation/tutorial37
+cd policy-navigator
 
 # 2. 安裝相依套件
 make setup
