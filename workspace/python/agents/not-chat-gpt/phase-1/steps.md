@@ -5,16 +5,9 @@
 ### 步驟 1: 環境設定
 
 #### 1.1 建立專案目錄結構
-```powershell
-# 建立主要目錄
-cd workspace/python/agents/not-chat-gpt
-New-Item -ItemType Directory -Force backend/agents, backend/tools, backend/guardrails, backend/services, backend/config, backend/api, tests, deployment, docs
-
-# 建立 __init__.py
-New-Item -ItemType File backend/__init__.py, backend/agents/__init__.py, backend/tools/__init__.py, backend/guardrails/__init__.py, backend/services/__init__.py, backend/config/__init__.py, backend/api/__init__.py, tests/__init__.py
-```
 
 #### 1.2 安裝 Google ADK 與相依套件
+
 ```powershell
 # 建立虛擬環境
 python -m venv venv
@@ -25,6 +18,7 @@ pip install google-genai fastapi uvicorn python-dotenv sqlalchemy pytest pytest-
 ```
 
 **backend/requirements.txt**:
+
 ```txt
 google-genai>=1.0.0
 fastapi>=0.104.0
@@ -36,6 +30,7 @@ pytest-asyncio>=0.21.0
 ```
 
 #### 1.3 設定 `.env` 檔案
+
 ```powershell
 # 建立 .env 檔案
 @"
@@ -46,6 +41,7 @@ DATABASE_URL=sqlite:///./not_chat_gpt.db
 ```
 
 #### 1.4 驗證環境設定
+
 ```powershell
 # 測試 API Key
 python -c "from google import genai; client = genai.Client(api_key='YOUR_KEY'); print('✅ API Key Valid')"
@@ -61,7 +57,9 @@ pip list | Select-String "google-genai|fastapi"
 ### 步驟 2: 基礎 Agent 實作
 
 #### 2.1 建立 `conversation_agent.py`
+
 **backend/agents/conversation_agent.py**:
+
 ```python
 from google.genai import types
 from google import genai
@@ -90,6 +88,7 @@ if __name__ == "__main__":
 ```
 
 #### 2.2 測試基本對話能力
+
 ```powershell
 # 執行測試
 python backend/agents/conversation_agent.py
@@ -98,7 +97,9 @@ python backend/agents/conversation_agent.py
 ```
 
 #### 2.3 測試多輪對話
+
 **backend/test_conversation.py**:
+
 ```python
 from google import genai
 from backend.agents.conversation_agent import create_conversation_agent
@@ -133,7 +134,9 @@ python backend/test_conversation.py
 ### 步驟 3: Session State 管理
 
 #### 3.1 實作 `session_service.py`
+
 **backend/services/session_service.py**:
+
 ```python
 from sqlalchemy import create_engine, Column, String, Text, DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -186,13 +189,16 @@ class SessionService:
 ```
 
 #### 3.2 測試 Session 管理
+
 ```powershell
 # 測試建立與載入
 python -c "from backend.services.session_service import SessionService; s = SessionService(); sid = s.create_session('test-1'); print(f'✅ Session created: {sid}')"
 ```
 
 #### 3.3 實作上下文記憶（user/app/temp 前綴）
+
 **整合到 Agent**:
+
 ```python
 # 在 conversation_agent.py 中使用
 from backend.services.session_service import SessionService
@@ -222,7 +228,9 @@ def create_session_aware_agent(session_id: str):
 ### 步驟 4: 思考模式切換
 
 #### 4.1 建立 `mode_config.py`
+
 **backend/config/mode_config.py**:
+
 ```python
 from google.genai import types
 
@@ -259,7 +267,9 @@ class ModeConfig:
 ```
 
 #### 4.2 測試模式切換
+
 **backend/test_thinking_mode.py**:
+
 ```python
 from google import genai
 from backend.config.mode_config import ModeConfig
@@ -300,12 +310,15 @@ python backend/test_thinking_mode.py
 ### 步驟 5: 安全防護層 (Guardrails)
 
 #### 5.1 建立 `guardrails/` 模組結構
+
 ```powershell
 New-Item -ItemType File backend/guardrails/__init__.py, backend/guardrails/safety_callbacks.py, backend/guardrails/pii_detector.py, backend/guardrails/content_moderator.py
 ```
 
 #### 5.2 實作 `safety_callbacks.py`
+
 **backend/guardrails/safety_callbacks.py**:
+
 ```python
 from google.genai import types
 import re
@@ -347,7 +360,9 @@ class SafetyCallbacks(types.AgentCallbacks):
 ```
 
 #### 5.3 整合到 Agent
+
 **backend/agents/safe_conversation_agent.py**:
+
 ```python
 from google.genai import types
 from backend.guardrails.safety_callbacks import SafetyCallbacks
@@ -362,7 +377,9 @@ def create_safe_agent():
 ```
 
 #### 5.4 測試安全防護
+
 **backend/test_guardrails.py**:
+
 ```python
 from google import genai
 from backend.agents.safe_conversation_agent import create_safe_agent
@@ -394,7 +411,9 @@ python backend/test_guardrails.py
 ### 步驟 6: CLI 測試介面
 
 #### 6.1 建立 CLI 工具
+
 **backend/cli.py**:
+
 ```python
 import sys
 from google import genai
@@ -449,11 +468,13 @@ if __name__ == "__main__":
 ```
 
 #### 6.2 執行 CLI 測試
+
 ```powershell
 python backend/cli.py
 ```
 
 #### 6.3 測試清單
+
 - [ ] 基本對話功能
 - [ ] 多輪對話記憶
 - [ ] 思考模式切換
@@ -462,7 +483,8 @@ python backend/cli.py
 - [ ] 錯誤處理
 
 **測試範例對話**:
-```
+
+```text
 You: 你好！
 Agent: 你好！我是 NotChatGPT...
 
@@ -487,7 +509,9 @@ You: /quit
 ### 步驟 7: SSE 串流實作
 
 #### 7.1 建立 `streaming_agent.py`
+
 **backend/agents/streaming_agent.py**:
+
 ```python
 from google import genai
 from google.genai import types
@@ -507,7 +531,9 @@ async def stream_response(message: str, thinking_mode: bool = False):
 ```
 
 #### 7.2 實作 FastAPI SSE 端點
+
 **backend/api/routes.py**:
+
 ```python
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
@@ -548,7 +574,9 @@ async def root():
 ```
 
 #### 7.3 建立主程式
+
 **backend/main.py**:
+
 ```python
 import uvicorn
 from backend.api.routes import app
@@ -558,6 +586,7 @@ if __name__ == "__main__":
 ```
 
 #### 7.4 測試串流回應
+
 ```powershell
 # 啟動伺服器
 python backend/main.py
@@ -575,7 +604,9 @@ curl -X POST http://localhost:8000/api/chat/stream `
 ### 步驟 8: 對話持久化
 
 #### 8.1 擴展資料模型
+
 **backend/services/session_service.py** (擴展):
+
 ```python
 from sqlalchemy import Column, String, Text, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import relationship
@@ -598,7 +629,9 @@ class Conversation(Base):
 ```
 
 #### 8.2 實作對話歷史管理
+
 **backend/services/session_service.py** (擴展 SessionService):
+
 ```python
 class SessionService:
     # ... 原有方法
@@ -644,7 +677,9 @@ class SessionService:
 ```
 
 #### 8.3 整合到 API
+
 **backend/api/routes.py** (新增端點):
+
 ```python
 from backend.services.session_service import SessionService
 
@@ -674,6 +709,7 @@ async def delete_conversation(conv_id: str):
 ```
 
 #### 8.4 測試會話管理
+
 ```powershell
 # 建立對話
 curl -X POST http://localhost:8000/api/conversations
@@ -695,13 +731,16 @@ curl -X DELETE http://localhost:8000/api/conversations/{conv_id}
 ### 步驟 9: 測試框架建立
 
 #### 9.1 建立測試結構
+
 ```powershell
 New-Item -ItemType Directory -Force tests/fixtures
 New-Item -ItemType File tests/__init__.py, tests/conftest.py, tests/fixtures/sample_conversations.json
 ```
 
 #### 9.2 建立評估數據集
+
 **tests/eval_set.json**:
+
 ```json
 {
   "name": "not-chat-gpt-phase1-eval",
@@ -730,7 +769,9 @@ New-Item -ItemType File tests/__init__.py, tests/conftest.py, tests/fixtures/sam
 ```
 
 #### 9.3 實作 pytest 配置
+
 **tests/conftest.py**:
+
 ```python
 import pytest
 from google import genai
@@ -759,7 +800,9 @@ def sample_conversation_id(session_service):
 ### 步驟 10: 單元測試
 
 #### 10.1 Agent 測試
+
 **tests/test_agent.py**:
+
 ```python
 import pytest
 from backend.agents.conversation_agent import create_conversation_agent
@@ -792,7 +835,9 @@ class TestAgent:
 ```
 
 #### 10.2 Guardrails 測試
+
 **tests/test_guardrails.py**:
+
 ```python
 import pytest
 from backend.guardrails.safety_callbacks import SafetyCallbacks
@@ -821,7 +866,9 @@ class TestGuardrails:
 ```
 
 #### 10.3 Session 測試
+
 **tests/test_session.py**:
+
 ```python
 import pytest
 from backend.services.session_service import SessionService
@@ -850,6 +897,7 @@ class TestSession:
 ```
 
 #### 10.4 執行測試與覆蓋率
+
 ```powershell
 # 安裝 pytest-cov
 pip install pytest-cov
@@ -869,7 +917,9 @@ Start-Process htmlcov/index.html
 ### 步驟 11: 整合測試與評估
 
 #### 11.1 工作流程整合測試
+
 **tests/test_workflow_integration.py**:
+
 ```python
 import pytest
 from backend.services.session_service import SessionService
@@ -906,7 +956,9 @@ class TestWorkflowIntegration:
 ```
 
 #### 11.2 AgentEvaluator 測試
+
 **tests/test_evaluation.py**:
+
 ```python
 import pytest
 import json
@@ -939,6 +991,7 @@ class TestEvaluation:
 ```
 
 #### 11.3 執行完整測試套件
+
 ```powershell
 # 執行所有測試
 pytest tests/ -v --tb=short
@@ -962,7 +1015,9 @@ pytest tests/ --html=test_report.html --self-contained-html
 ### 步驟 12: Gemini File Search 整合
 
 #### 12.1 建立 `file_search.py`
+
 **backend/tools/file_search.py**:
+
 ```python
 from google import genai
 from google.genai import types
@@ -998,7 +1053,9 @@ class FileSearchTool:
 ```
 
 #### 12.2 測試基本文檔查詢
+
 **backend/test_file_search.py**:
+
 ```python
 from google import genai
 from backend.tools.file_search import FileSearchTool
@@ -1038,7 +1095,9 @@ python backend/test_file_search.py
 ### 步驟 13: 文檔管理功能
 
 #### 13.1 建立 `document_service.py`
+
 **backend/services/document_service.py**:
+
 ```python
 from google import genai
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
@@ -1122,7 +1181,9 @@ class DocumentService:
 ```
 
 #### 13.2 整合到 API
+
 **backend/api/routes.py** (新增端點):
+
 ```python
 from fastapi import UploadFile, File
 from backend.services.document_service import DocumentService
@@ -1160,6 +1221,7 @@ async def delete_document(doc_id: str):
 ```
 
 #### 13.3 測試文檔管理
+
 ```powershell
 # 上傳文檔
 curl -X POST http://localhost:8000/api/documents `
@@ -1179,7 +1241,9 @@ curl -X DELETE http://localhost:8000/api/documents/{doc_id}
 ### 步驟 14: 引用來源追蹤
 
 #### 14.1 實作 `groundingMetadata` 提取
+
 **backend/tools/file_search.py** (擴展):
+
 ```python
 class FileSearchTool:
     # ... 原有方法
@@ -1211,7 +1275,9 @@ class FileSearchTool:
 ```
 
 #### 14.2 整合到 Agent
+
 **backend/agents/rag_agent.py**:
+
 ```python
 from google.genai import types
 from backend.tools.file_search import FileSearchTool
@@ -1244,7 +1310,9 @@ def create_rag_agent(file_search_tool: FileSearchTool):
 ```
 
 #### 14.3 測試多文檔聯合查詢
+
 **backend/test_rag_citations.py**:
+
 ```python
 from google import genai
 from backend.tools.file_search import FileSearchTool
@@ -1277,7 +1345,9 @@ python backend/test_rag_citations.py
 ### 步驟 15: RAG 測試
 
 #### 15.1 建立 `test_rag.py`
+
 **tests/test_rag.py**:
+
 ```python
 import pytest
 from google import genai
@@ -1322,7 +1392,9 @@ class TestRAG:
 ```
 
 #### 15.2 建立 RAG 評估測試案例
+
 **tests/eval_set.json** (新增 RAG 測試案例):
+
 ```json
 {
   "test_cases": [
@@ -1349,6 +1421,7 @@ class TestRAG:
 ```
 
 #### 15.3 驗證 RAG 功能完整性
+
 ```powershell
 # 執行 RAG 測試
 pytest tests/test_rag.py -v
@@ -1361,6 +1434,7 @@ pytest tests/ --cov=backend --cov-report=html
 ```
 
 #### 15.4 RAG 功能檢查清單
+
 - [ ] 文檔上傳成功
 - [ ] 文檔列表顯示正常
 - [ ] 文檔搜尋功能正常
@@ -1380,6 +1454,7 @@ pytest tests/ --cov=backend --cov-report=html
 ### 功能完整性驗證
 
 #### 核心對話系統
+
 - [ ] ✅ 基礎 Agent 運作正常
 - [ ] ✅ 多輪對話記憶功能
 - [ ] ✅ 思考模式與標準模式切換
@@ -1387,12 +1462,14 @@ pytest tests/ --cov=backend --cov-report=html
 - [ ] ✅ 串流回應功能
 
 #### 安全防護層
+
 - [ ] ✅ PII 偵測攔截正常
 - [ ] ✅ 內容審核機制運作
 - [ ] ✅ 意圖分類功能
 - [ ] ✅ Guardrails 攔截率 100%
 
 #### RAG 功能
+
 - [ ] ✅ 文檔上傳功能
 - [ ] ✅ 文檔搜尋功能
 - [ ] ✅ 引用來源追蹤
@@ -1402,22 +1479,26 @@ pytest tests/ --cov=backend --cov-report=html
 ### 測試與品質
 
 #### 測試覆蓋率
+
 - [ ] 單元測試覆蓋率 > 70%
 - [ ] 整合測試覆蓋率 > 60%
 - [ ] RAG 測試覆蓋率 > 80%
 
 #### 評估指標
+
 - [ ] AgentEvaluator 評分 > 85/100
 - [ ] 基本對話測試通過率 100%
 - [ ] 安全測試通過率 100%
 - [ ] RAG 測試通過率 > 90%
 
 ### 效能指標
+
 - [ ] 首次回應延遲 < 2s（標準模式）
 - [ ] 串流回應順暢（無明顯卡頓）
 - [ ] 錯誤率 < 1%
 
 ### 文檔完成度
+
 - [ ] README.md 更新
 - [ ] API 文檔基本完成
 - [ ] 測試文檔完成
@@ -1455,6 +1536,7 @@ black backend/ --check
 ### 準備進入 Phase 2
 
 **檢查清單**:
+
 - [ ] 所有 Phase 1 功能測試通過
 - [ ] 代碼已提交到版本控制
 - [ ] 測試報告已生成並檢視
@@ -1462,7 +1544,8 @@ black backend/ --check
 - [ ] 團隊已審核代碼（如適用）
 
 **已知限制與待改進項目** (進入 Phase 2 前記錄):
-```
+
+```text
 1. [記錄項目]
 2. [記錄項目]
 3. [記錄項目]
