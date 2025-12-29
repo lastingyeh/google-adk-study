@@ -37,7 +37,7 @@
 ## 專案結構
 
 ```
-tutorial14/
+streaming-agent/
 ├── streaming_agent/           # 主要代理套件
 │   ├── __init__.py           # 套件匯出
 │   ├── agent.py              # 代理實作

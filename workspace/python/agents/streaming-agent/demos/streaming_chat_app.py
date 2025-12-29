@@ -31,14 +31,14 @@ class StreamingChatApp:
             name='chat_assistant',
             description='一個能進行自然對話的助理。',
             instruction="""
-你是一個有幫助、友善的助理，能進行自然的對話。
+            你是一個有幫助、友善的助理，能進行自然的對話。
 
-指導方針：
-- 保持對話性和吸引力
-- 當被問到時提供詳細的解釋
-- 如有需要，提出澄清問題
-- 記住對話上下文
-- 對於簡單的查詢要簡潔，對於複雜的查詢要詳細
+            指導方針：
+            - 保持對話性和吸引力
+            - 當被問到時提供詳細的解釋
+            - 如有需要，提出澄清問題
+            - 記住對話上下文
+            - 對於簡單的查詢要簡潔，對於複雜的查詢要詳細
             """.strip(),
             generate_content_config=types.GenerateContentConfig(
                 temperature=0.7,  # 對話式

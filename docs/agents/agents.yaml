@@ -4,7 +4,7 @@ agents:
     description: 作為協調代理，依官方A2A協定調度研究、分析與寫作子代理，整合結果交付。
     code_ref: workspace/python/agents/a2a-orchestrator
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: check_agent_availability
         type: FunctionTool
@@ -12,14 +12,16 @@ agents:
       - name: log_coordination_step
         type: FunctionTool
         description: 在複雜的多代理工作流程中，此函式提供了一個簡單的方法來記錄協調器在每個階段的行為，方便開發者追蹤流程。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.5
+      max_output_tokens: 2048
     server-port: 8000
     tags: [a2a, orchestrator, fastapi]
     sub_agents:
       - name: Research Specialist
         description: 進行網路研究與事實查核。
         type: RemoteA2aAgent
-        model: [gemini-2.0-flash]
+        models: [gemini-2.0-flash]
         tools:
           - name: research_topic
             type: FunctionTool
@@ -27,13 +29,15 @@ agents:
           - name: fact_check
             type: FunctionTool
             description: 對特定的聲明或陳述進行事實查核。
-        config: [temperature, max_output_tokens]
+        generate_content_config:
+          temperature: 0.3
+          max_output_tokens: 1500
         server-port: 8001
         tags: [to_a2a, research, fact-checking, fastapi]
       - name: Content Writer
         description: 創作書面內容與摘要。
         type: RemoteA2aAgent
-        model: [gemini-2.0-flash]
+        models: [gemini-2.0-flash]
         tools:
           - name: create_content
             type: FunctionTool
@@ -41,13 +45,15 @@ agents:
           - name: format_content
             type: FunctionTool
             description: 將現有內容格式化為特定的格式或樣式。
-        config: [temperature, max_output_tokens]
+        generate_content_config:
+          temperature: 0.7
+          max_output_tokens: 2000
         server-port: 8003
         tags: [to_a2a, writing, content-creation, fastapi]
       - name: Analysis Agent
         description: 您是一位專注於從資訊與資料中提取洞察的資料分析專家。
         type: RemoteA2aAgent
-        model: [gemini-2.0-flash]
+        models: [gemini-2.0-flash]
         tools:
           - name: analyze_data
             type: FunctionTool
@@ -55,14 +61,16 @@ agents:
           - name: generate_insights
             type: FunctionTool
             description: 針對特定主題產生策略性洞察與建議。
-        config: [temperature, max_output_tokens]
+        generate_content_config:
+          temperature: 0.4
+          max_output_tokens: 1500
         server-port: 8002
         tags: [to_a2a, analysis, data-insights, fastapi]
   - name: ADK Interactions Agent
     description: 一個展示 Interactions API 整合的 ADK 代理，具備天氣、計算和搜尋工具。
     code_ref: workspace/python/agents/adk-interactions-integration
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: get_current_weather
         type: FunctionTool
@@ -73,15 +81,13 @@ agents:
       - name: search_knowledge_base
         type: FunctionTool
         description: 在知識庫中搜尋資訊。
-    config: []
     server-port: 8000
     tags: [use_interactions_api, gemini, model, agent-factory]
-    sub_agents: []
   - name: Artifact Agent
     description: 您是一個具備 Artifacts 儲存功能的進階文件處理代理程式。
     code_ref: workspace/python/agents/artifact-agent
     type: Agent
-    model: [gemini-1.5-flash]
+    models: [gemini-1.5-flash]
     tools:
       - name: extract_text_tool
         type: FunctionTool
@@ -104,7 +110,6 @@ agents:
       - name: load_artifacts_tool
         type: LoadArtifactsTool
         description: 用於對話式Artifacts存取的內建工具。
-    config: []
     server-port: 8000
     tags:
       [
@@ -116,12 +121,11 @@ agents:
         extract_text,
         report,
       ]
-    sub_agents: []
   - name: Best Practices Agent
     description: 展示安全性、效能、可靠性和可觀測性最佳實踐的生產就緒代理。
     code_ref: workspace/python/agents/best-practices-agent
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: validate_input_tool
         type: FunctionTool
@@ -144,7 +148,6 @@ agents:
       - name: get_metrics_tool
         type: FunctionTool
         description: 取得當前系統指標。
-    config: []
     server-port: 8000
     tags:
       - security
@@ -157,54 +160,47 @@ agents:
       - circuit-breaker
       - cache
       - batch-processing
-    sub_agents: []
   - name: Blog Creation Pipeline
     description: 從研究到發布的完整部落格文章創建流水線。
     code_ref: workspace/python/agents/blog-pipeline
     type: SequentialAgent
-    model: []
-    tools: []
-    config: []
+
     server-port: 8000
     tags: [sequential-workflow, pipeline, blog-creation]
     sub_agents:
       - name: researcher
         description: 研究主題並收集關鍵資訊。
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: research_findings
         tags: [research]
       - name: writer
         description: 根據研究結果撰寫部落格文章草稿。
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: draft_post
         tags: [writing, drafting]
       - name: editor
         description: 審閱部落格文章草稿並提供編輯回饋。
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: editorial_feedback
         tags: [editing, review]
       - name: formatter
         description: 應用編輯回饋並格式化最終部落格文章。
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: final_post
         tags: [formatting, markdown]
   - name: Chuck Norris Agent
     description: 查克·諾里斯笑話助理，可以使用 OpenAPI 工具從查克·諾里斯 API 檢索笑話/事實。
     code_ref: workspace/python/agents/chuck-norris-agent
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: get_random_joke
         type: OpenAPITool
@@ -215,30 +211,28 @@ agents:
       - name: get_categories
         type: OpenAPITool
         description: 取得所有笑話類別
-    config: []
     server-port: 8000
     tags: [openapi, jokes, chuck-norris, open-api-toolset]
-    sub_agents: []
   - name: Financial Calculator
     description: 具備 Python 程式碼執行能力的專業金融計算器
     code_ref: workspace/python/agents/code-calculator
     type: Agent
-    model: [gemini-2.0-flash]
-    tools: []
+    models: [gemini-2.0-flash]
     code_executor:
       name: builtin-code-executor
       type: BuiltInCodeExecutor
       description: 使用內建的 Python 程式碼執行器來進行精確的金融計算。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.1
+      max_output_tokens: 2048
     server-port: 8000
     tags:
       [financial-calculator, builtin-code-executor, python, precise-computation]
-    sub_agents: []
   - name: Commerce Agent
     description: 一位個人運動購物禮賓，使用 Google Search Grounding 與儲存的使用者偏好來提供專家級產品推薦。此代理還展示了使用 SQLite 的會話持久性。
     code_ref: workspace/python/agents/commerce-agent-e2e
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: search_products
         type: AgentTool
@@ -249,7 +243,7 @@ agents:
       - name: get_preferences
         type: FunctionTool
         description: 檢索已儲存的使用者偏好。
-    config: []
+
     server-port: 8000
     tags:
       - commerce
@@ -262,19 +256,19 @@ agents:
       - name: Product Search Agent
         description: 使用帶有 Grounding 的 Google Search 搜尋體育產品。
         type: Agent
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: google_search
             type: GoogleSearchAgentTool
             description: 一個包裝了僅使用 google_search 工具的子代理的工具。
-        config: []
+
         server-port: none
         tags: [google-search, search_products, grounding]
   - name: Content Moderator
     description: 具備安全防護、驗證與監控功能的內容審查助理，展示適用於生產環境的回呼模式。
     code_ref: workspace/python/agents/content-moderator
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: generate_text
         type: FunctionTool
@@ -285,7 +279,6 @@ agents:
       - name: get_usage_stats
         type: FunctionTool
         description: 從狀態（state）中取得使用者統計資料，示範回呼如何累積指標。
-    config: []
     before_agent_callback:
       - name: before_agent_callback
         type: BeforeAgentCallback
@@ -321,14 +314,11 @@ agents:
       - metrics-tracking
       - security
       - content-moderation
-    sub_agents: []
   - name: Content Publisher
     description: 完整的內容發布系統，具有並行研究和循序創作功能
     code_ref: workspace/python/agents/content-publisher
     type: SequentialAgent
-    model: []
-    tools: []
-    config: []
+
     server-port: 8000
     tags:
       [multi-agent, sequential-workflow, parallel-research, content-creation]
@@ -336,121 +326,107 @@ agents:
       - name: ParallelResearch
         description: 同時執行所有研究管線
         type: ParallelAgent
-        model: []
-        tools: []
-        config: []
+
         tags: [parallel-research, pipeline]
         sub_agents:
           - name: NewsPipeline
             description: 取得並總結新聞
             type: SequentialAgent
-            model: []
-            tools: []
-            config: []
+
             tags: [news, research, pipeline]
             sub_agents:
               - name: news_fetcher
                 description: 使用 Google 搜尋取得最新新聞文章
                 type: Agent
-                model: [gemini-2.0-flash]
+                models: [gemini-2.0-flash]
                 tools:
                   - name: google_search
                     type: GoogleSearchTool
                     description: 執行 Google 搜尋
-                config: []
+
                 output_key: raw_news
                 tags: [news, research, fetch]
               - name: news_summarizer
                 description: 總結關鍵新聞要點
                 type: Agent
-                model: [gemini-2.0-flash]
-                tools: []
-                config: []
+                models: [gemini-2.0-flash]
+
                 output_key: news_summary
                 tags: [news, research, summary]
           - name: SocialPipeline
             description: 監控並分析社群媒體
             type: SequentialAgent
-            model: []
-            tools: []
-            config: []
+
             tags: [social-media, research, pipeline]
             sub_agents:
               - name: social_monitor
                 description: 使用 Google 搜尋監控社群媒體趨勢
                 type: Agent
-                model: [gemini-2.0-flash]
+                models: [gemini-2.0-flash]
                 tools:
                   - name: google_search
                     type: GoogleSearchTool
                     description: 執行 Google 搜尋
-                config: []
+
                 output_key: raw_social
                 tags: [social-media, research, monitor]
               - name: sentiment_analyzer
                 description: 分析社群情緒
                 type: Agent
-                model: [gemini-2.0-flash]
-                tools: []
-                config: []
+                models: [gemini-2.0-flash]
+
                 output_key: social_insights
                 tags: [social-media, research, sentiment-analysis]
           - name: ExpertPipeline
             description: 尋找並提取專家意見
             type: SequentialAgent
-            model: []
-            tools: []
-            config: []
+
             tags: [expert, research, pipeline]
             sub_agents:
               - name: expert_finder
                 description: 使用 Google 搜尋尋找專家意見
                 type: Agent
-                model: [gemini-2.0-flash]
+                models: [gemini-2.0-flash]
                 tools:
                   - name: google_search
                     type: GoogleSearchTool
                     description: 執行 Google 搜尋
-                config: []
+
                 output_key: raw_experts
                 tags: [expert, research, find]
               - name: quote_extractor
                 description: 提取可引用的見解
                 type: Agent
-                model: [gemini-2.0-flash]
-                tools: []
-                config: []
+                models: [gemini-2.0-flash]
+
                 output_key: expert_quotes
                 tags: [expert, research, extract]
       - name: article_writer
         description: 從所有研究撰寫文章草稿
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: draft_article
         tags: [writing, drafting]
       - name: article_editor
         description: 編輯文章以提升清晰度和影響力
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: edited_article
         tags: [editing, review]
       - name: article_formatter
         description: 格式化文章以供發布
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
+
         output_key: published_article
         tags: [formatting, markdown]
   - name: Context Compaction Agent
     description: 展示長對話上下文壓縮功能的代理
     code_ref: workspace/python/agents/context-compaction-agent
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: summarize_text
         type: FunctionTool
@@ -458,15 +434,13 @@ agents:
       - name: calculate_complexity
         type: FunctionTool
         description: 分析問題複雜度以決定回應深度。
-    config: []
     server-port: 8000
     tags: [context-compaction, conversation-summary, token-optimization]
-    sub_agents: []
   - name: Custom Session Agent
     description: 演示 ADK 中自定義會話服務註冊模式
     code_ref: workspace/python/agents/custom-session-agent
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: describe_session_info
         type: FunctionTool
@@ -480,7 +454,6 @@ agents:
       - name: get_session_backend_guide
         type: FunctionTool
         description: 提供 Redis 作為會話後端的指南工具。
-    config: []
     server-port: 8000
     tags:
       - custom-session-service
@@ -488,12 +461,11 @@ agents:
       - service-registry
       - factory-pattern
       - BaseSessionService
-    sub_agents: []
   - name: Customer Support
     description: 具備各種工具的客戶支援代理人
     code_ref: workspace/python/agents/customer-support
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: check_customer_status
         type: FunctionTool
@@ -528,15 +500,16 @@ agents:
       - name: update_payment_method
         type: FunctionTool
         description: 更新儲存的付款方式
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.5
+      max_output_tokens: 2048
     server-port: 8000
     tags: [customer-support, tools, yaml-config, visual-agent-builder]
-    sub_agents: []
   - name: Customer Support Agent (AG-UI)
     description: 整合 AG-UI 的客戶支援 ADK 代理人。提供知識庫搜尋、訂單狀態查詢、支援工單建立、產品詳情查詢及退款處理（需人機協作）等功能。
     code_ref: workspace/python/agents/customer-support-agent
     type: Agent
-    model: [gemini-2.0-flash-exp]
+    models: [gemini-2.0-flash-exp]
     tools:
       - name: search_knowledge_base
         type: FunctionTool
@@ -553,20 +526,18 @@ agents:
       - name: process_refund
         type: FunctionTool
         description: 處理訂單退款（需要前端使用者批准的人機協作）。
-    config: []
     server-port: 8000
     tags: [customer-support, ag-ui, fastapi, uvicorn, generative-ui, nextjs]
-    sub_agents: []
   - name: Data Analysis Agent
     description: 具備視覺化與分析能力的智慧資料分析助理。
     code_ref: workspace/python/agents/data-analysis-agent
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: analysis_agent
         type: AgentTool
         description: 具備統計工具的資料分析與見解代理。
-        model: [gemini-2.0-flash]
+        models: [gemini-2.0-flash]
         tools:
           - name: analyze_column
             type: FunctionTool
@@ -584,15 +555,12 @@ agents:
       - name: visualization_agent
         type: AgentTool
         description: 使用 Python 程式碼執行生成資料視覺化。
-        model: [gemini-2.0-flash]
-        tools: []
+        models: [gemini-2.0-flash]
         code_executor:
           name: builtin-code-executor
           type: BuiltInCodeExecutor
           description: 使用內建的 Python 程式碼執行器來編寫生成並顯示視覺化的 Python 程式碼。
-        config: []
         tags: [data-visualization, code-executor, python]
-    config: []
     server-port: 8000
     tags:
       [
@@ -603,12 +571,11 @@ agents:
         data-visualization,
         statistics,
       ]
-    sub_agents: []
   - name: Data Analysis Dashboard
     description: 整合 pandas 工具與 AG-UI 的數據分析 ADK Agent。提供 CSV 數據載入、統計分析及圖表生成功能，並透過 AG-UI 協議與 Vite+React 前端整合。
     code_ref: workspace/python/agents/data-analysis-dashboard
     type: Agent
-    model: [gemini-2.0-flash-exp]
+    models: [gemini-2.0-flash-exp]
     tools:
       - name: load_csv_data
         type: FunctionTool
@@ -619,7 +586,6 @@ agents:
       - name: create_chart
         type: FunctionTool
         description: 生成視覺化圖表數據。
-    config: []
     server-port: 8000
     tags:
       [
@@ -632,12 +598,11 @@ agents:
         reactjs,
         uvicorn,
       ]
-    sub_agents: []
   - name: Deep Research Agent
     description: 提供高階介面，用於啟動背景研究任務、輪詢完成狀態、串流結果以及進行後續提問。
     code_ref: workspace/python/agents/deep-research-agent
-    type: Agent
-    model: [gemini-3-pro-preview]
+    type: genai.Client
+    models: [gemini-3-pro-preview]
     tools:
       - name: research
         type: FunctionTool
@@ -648,7 +613,8 @@ agents:
       - name: follow_up
         type: FunctionTool
         description: 針對已完成的研究提出後續問題。
-    config: [api_key]
+    init:
+      api_key: YOUR_API_KEY_HERE
     server-port: none
     tags:
       - deep-research
@@ -659,12 +625,11 @@ agents:
       - polling
       - genai-client-interactions
       - background
-    sub_agents: []
   - name: Enterprise Lead Qualifier
     description: 具備公司情報和評分功能的企業銷售潛在客戶資格審查 Agent，用於企業規模的 Agent 管理、治理、編排與協作。
     code_ref: workspace/python/agents/enterprise-agent
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: check_company_size
         type: FunctionTool
@@ -675,7 +640,6 @@ agents:
       - name: get_competitive_intel
         type: FunctionTool
         description: 獲取將公司與競爭對手比較的競爭情報，可整合市場情報平台。
-    config: []
     server-port: 8000
     tags:
       - enterprise
@@ -684,14 +648,11 @@ agents:
       - crm
       - gemini-enterprise
       - production-ready
-    sub_agents: []
   - name: Essay Refinement System
     description: 一個完整的論文寫作和精煉系統，首先創建初稿，然後通過評論家-精煉者循環進行迭代改進。
     code_ref: workspace/python/agents/essay-refiner
     type: SequentialAgent
-    model: []
-    tools: []
-    config: []
+
     server-port: 8000
     tags:
       [multi-agent, sequential-workflow, loop-agent, writing, refinement, essay]
@@ -699,36 +660,30 @@ agents:
       - name: InitialWriter
         description: 撰寫論文的第一版草稿。
         type: Agent
-        model: [gemini-2.0-flash]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash]
         output_key: current_essay
         tags: [writing, drafting]
       - name: RefinementLoop
         description: 迭代評估和改進論文，直到滿足品質標準為止。
         type: LoopAgent
-        model: []
-        tools: []
-        config: [max_iterations]
+        generate_content_config:
+          max_iterations: 5
         tags: [loop, iterative-improvement, quality-control]
         sub_agents:
           - name: Critic
             description: 評估論文品質並提供具體的回饋。
             type: Agent
-            model: [gemini-2.0-flash]
-            tools: []
-            config: []
+            models: [gemini-2.0-flash]
             output_key: critique
             tags: [evaluation, feedback, critique]
           - name: Refiner
             description: 根據評論者的回饋改進論文，或在論文被批准時退出循環。
             type: Agent
-            model: [gemini-2.0-flash]
+            models: [gemini-2.0-flash]
             tools:
               - name: exit_loop
                 type: FunctionTool
                 description: 當論文被批准時，發出信號以終止精煉循環。
-            config: []
             output_key: current_essay
             tags: [refinement, editing, exit-condition]
   - name: Finance Assistant
@@ -741,7 +696,7 @@ agents:
       所有計算都包含詳細說明和格式化報告。
     code_ref: workspace/python/agents/finance-assistant
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: calculate_compound_interest
         type: FunctionTool
@@ -752,15 +707,13 @@ agents:
       - name: calculate_monthly_savings
         type: FunctionTool
         description: 計算達到財務目標所需的每月儲蓄。
-    config: []
     server-port: 8000
     tags: [finance, calculator, investment, loan, savings, asyncio, parallel]
-    sub_agents: []
   - name: GEPA Optimization Agent
     description: GEPA 教學代理：模擬客服代理，展示如何使用 GEPA (遺傳演算法-帕雷托提示最佳化) 改善身份驗證、政策遵循和解釋清晰度。
     code_ref: workspace/python/agents/gepa-optimization-agent
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: verify_customer_identity
         type: BaseTool
@@ -771,7 +724,6 @@ agents:
       - name: process_refund
         type: BaseTool
         description: 為符合資格的客戶訂單處理退款。
-    config: []
     server-port: 8000
     tags:
       [
@@ -782,12 +734,11 @@ agents:
         genetic-algorithm,
         base_tool,
       ]
-    sub_agents: []
   - name: Grounding Agent
     description: 具有動態工具選擇功能的 Grounding 代理，可根據環境配置啟用網路搜尋與地圖 Grounding。
     code_ref: workspace/python/agents/grounding-agent
     type: Agent
-    model: [gemini-2.0-flash, gemini-1.5-flash]
+    models: [gemini-2.0-flash, gemini-1.5-flash]
     tools:
       - name: google_search
         type: GoogleSearchTool
@@ -801,7 +752,9 @@ agents:
       - name: save_research_findings
         type: FunctionTool
         description: 將研究發現儲存為 Artifacts。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.3
+      max_output_tokens: 2048
     server-port: 8000
     tags:
       - grounding
@@ -812,22 +765,18 @@ agents:
       - research
       - analysis
       - grounding
-    sub_agents: []
   - name: Hello Agent
     description: 提供友善的對話體驗。 ADK 的入門範例，展示基礎代理的設定。
     code_ref: workspace/python/agents/hello-agent
     type: Agent
-    model: [gemini-2.0-flash]
-    tools: []
-    config: []
+    models: [gemini-2.0-flash]
     server-port: 8000
     tags: [hello-world, beginner, conversation]
-    sub_agents: []
   - name: Interactions API Basic Agent
     description: 展示 Google Interactions API 的核心功能，包括基礎文字互動、伺服器端狀態管理、串流回應與函數呼叫。
     code_ref: workspace/python/agents/interactions-api-basic
     type: genai.Client
-    model: [gemini-2.5-flash, gemini-2.5-pro, gemini-3-pro-preview]
+    models: [gemini-2.5-flash, gemini-2.5-pro, gemini-3-pro-preview]
     tools:
       - name: create_basic_interaction
         type: FunctionTool
@@ -844,7 +793,8 @@ agents:
       - name: create_interaction_with_builtin_tools
         type: FunctionTool
         description: 使用內建工具 (如 google_search, code_execution) 建立互動。
-    config: [api_key]
+    init:
+      api_key: YOUR_API_KEY_HERE
     server-port: none
     tags:
       [
@@ -855,12 +805,11 @@ agents:
         function-calling,
         standalone,
       ]
-    sub_agents: []
   - name: Math Agent (OTel)
     description: 具有 OpenTelemetry 儀表化的 ADK 數學代理，展示使用 Jaeger 後端的分散式追蹤與結構化日誌。
     code_ref: workspace/python/agents/math-agent-otel
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: add_numbers
         type: FunctionTool
@@ -874,7 +823,6 @@ agents:
       - name: divide_numbers
         type: FunctionTool
         description: 將 a 除以 b。
-    config: []
     server-port: 8000
     tags:
       - math
@@ -884,12 +832,11 @@ agents:
       - jaeger
       - tracing
       - observability
-    sub_agents: []
   - name: Host Agent (MCP/A2A)
     description: 將請求路由至 A2A 代理或 MCP 工具。
-    code_ref: workspace/python/agents/mcp-a2a-master/agents
+    code_ref: workspace/python/agents/mcp-a2a-master
     type: LlmAgent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: _delegate_task
         type: FunctionTool
@@ -913,7 +860,6 @@ agents:
           - name: add_numbers
             type: McpTool
             description: 將兩個數字相加並回傳結果。
-    config: []
     server-port: 8000
     tags: [mcp, a2a, orchestrator, router, stdio, streamable]
     sub_agents:
@@ -921,17 +867,14 @@ agents:
         protocol: a2a
         description: 此代理接收使用者關於建立網站的查詢，並生成一個包含嵌入式 CSS 和 JavaScript 的單一獨立 HTML 檔案。
         type: LlmAgent
-        model: [gemini-2.0-flash-exp]
-        tools: []
-        config: []
+        models: [gemini-2.0-flash-exp]
         server-port: 8001
         tags: [website-builder, html, css, javascript]
-        sub_agents: []
   - name: MCP File Assistant
     description: 具有檔案系統存取和人工介入迴路核准功能的 AI 助理。
     code_ref: workspace/python/agents/mcp-agent
     type: Agent
-    model: [gemini-2.0-flash-exp]
+    models: [gemini-2.0-flash-exp]
     tools:
       - name: '@modelcontextprotocol/server-filesystem'
         type: MCPToolset
@@ -965,15 +908,16 @@ agents:
           - name: move_file
             type: McpTool
             description: 移動或重新命名檔案 (⚠️ 需要核准)。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.2
+      max_output_tokens: 2048
     server-port: 8000
     tags: [mcp, filesystem, hitl, security, callbacks, approval-workflow]
-    sub_agents: []
   - name: Model Selector Agent
     description: 用於選擇和比較 AI 模型的專家 agent，可根據使用場景推薦最佳模型。
     code_ref: workspace/python/agents/model-selector
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: recommend_model_for_use_case
         type: FunctionTool
@@ -981,10 +925,8 @@ agents:
       - name: get_model_info
         type: FunctionTool
         description: 獲取特定模型的詳細資訊。
-    config: []
     server-port: 8000
     tags: [model-selection, benchmark, comparison, recommendation]
-    sub_agents: []
   - name: Multi-LLM Agent
     description: 支援 OpenAI, Claude, Ollama 等多種模型的 Multi-LLM agent，透過 LiteLLM 實現。此 agent 可以針對不同任務使用不同的 LLM 供應商。
     code_ref: workspace/python/agents/multi-llm-agent
@@ -1005,15 +947,13 @@ agents:
       - name: analyze_sentiment
         type: FunctionTool
         description: 分析文字的情緒 (模擬實作)。
-    config: []
     server-port: 8000
     tags: [multi-llm, litellm, openai, claude, ollama, function-calling, model]
-    sub_agents: []
   - name: Observability Agent
     description: 具備全面事件監控、指標收集與詳細報告功能的客戶服務代理程式。
     code_ref: workspace/python/agents/observability-agent
     type: Agent
-    model: [gemini-2.0-flash-exp]
+    models: [gemini-2.0-flash-exp]
     tools:
       - name: check_order_status
         type: FunctionTool
@@ -1024,7 +964,9 @@ agents:
       - name: check_inventory
         type: FunctionTool
         description: 檢查產品庫存。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.5
+      max_output_tokens: 1024
     server-port: 8000
     tags:
       - observability
@@ -1034,14 +976,14 @@ agents:
       - metrics
       - logging
       - reporting
-    sub_agents: []
   - name: Observability Plugins Agent
     description: 具有全面可觀測性的生產助理，包括指標收集、警報和效能分析，用於企業監控。
     code_ref: workspace/python/agents/observability-plugins-agent
     type: Agent
-    model: [gemini-2.5-flash]
-    tools: []
-    config: [temperature, max_output_tokens]
+    models: [gemini-2.5-flash]
+    generate_content_config:
+      temperature: 0.5
+      max_output_tokens: 1024
     server-port: 8000
     plugins:
       - name: metrics_collector_plugin
@@ -1054,12 +996,11 @@ agents:
         type: BasePlugin
         description: 用於詳細效能分析的外掛程式。
     tags: [observability, monitoring, plugins, metrics, alerting, profiling]
-    sub_agents: []
   - name: Pack ADK A2A Agent
     description: 一個可以提供有關天氣和時間資訊的代理程式。
     code_ref: workspace/python/agents/pack-adk-a2a-agent
     type: Agent
-    model: [gemini-3-pro-preview]
+    models: [gemini-3-pro-preview]
     tools:
       - name: get_weather
         type: FunctionTool
@@ -1067,7 +1008,6 @@ agents:
       - name: get_current_time
         type: FunctionTool
         description: 模擬獲取城市的當前時間。
-    config: []
     protocol: a2a
     server-port: 8000
     tags:
@@ -1083,12 +1023,11 @@ agents:
         telemetry,
         logger,
       ]
-    sub_agents: []
   - name: Pause Resume Agent
     description: 展示 ADK 1.16.0 中暫停與恢復調用 (Pause and Resume Invocations) 的 Agent。
     code_ref: workspace/python/agents/pause-resume-agent
     type: App
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: process_data_chunk
         type: FunctionTool
@@ -1099,7 +1038,6 @@ agents:
       - name: get_resumption_hint
         type: FunctionTool
         description: 分析上下文並建議最佳恢復點。
-    config: []
     server-port: 8000
     resumability_config: [is_resumable]
     tags:
@@ -1107,12 +1045,11 @@ agents:
       - checkpoint
       - long-running-workflow
       - resumability-config
-    sub_agents: []
   - name: Personal Tutor
     description: 個人化學習導師，展示多層次狀態與記憶管理，追蹤使用者進度、偏好與學習歷史。
     code_ref: workspace/python/agents/personal-tutor
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: set_user_preferences
         type: FunctionTool
@@ -1132,7 +1069,6 @@ agents:
       - name: search_past_lessons
         type: FunctionTool
         description: 搜尋過往學習紀錄，模擬記憶服務功能，在已完成主題中尋找與查詢相關的內容。
-    config: []
     server-port: 8000
     output_key: last_tutor_response
     tags:
@@ -1143,12 +1079,11 @@ agents:
       - session-management
       - learning-analytics
       - tutorial08
-    sub_agents: []
   - name: Policy Navigator
     description: 企業合規與政策導航器，使用 Google Gemini File Search API 實作原生 RAG 進行政策管理、搜尋與分析。
     code_ref: workspace/python/agents/policy-navigator
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: upload_policy_documents
         type: FunctionTool
@@ -1174,7 +1109,6 @@ agents:
       - name: create_audit_trail
         type: FunctionTool
         description: 建立稽核追蹤項目，追蹤所有政策存取與決策。
-    config: []
     server-port: 8000
     output_key: policy_navigator_result
     tags:
@@ -1193,7 +1127,7 @@ agents:
         description: 管理政策文件上傳、組織與 metadata 設定。
         type: Agent
         invoke: prompting
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: upload_policy_documents
             type: FunctionTool
@@ -1205,7 +1139,7 @@ agents:
         description: 搜尋公司政策並檢索相關資訊，提供準確的政策資訊並附帶引用。
         type: Agent
         invoke: prompting
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: search_policies
             type: FunctionTool
@@ -1223,7 +1157,7 @@ agents:
         description: 評估合規風險並提供政策指導，識別不一致或衝突之處。
         type: Agent
         invoke: prompting
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: check_compliance_risk
             type: FunctionTool
@@ -1238,7 +1172,7 @@ agents:
         description: 產生政策摘要、報告與稽核追蹤，為利益相關者格式化政策資訊。
         type: Agent
         invoke: prompting
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: generate_policy_summary
             type: FunctionTool
@@ -1253,7 +1187,7 @@ agents:
     description: 生產環境部署專家，為 ADK 代理提供部署策略、最佳實踐和基礎設施模式的指導。
     code_ref: workspace/python/agents/production-agent
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: check_deployment_status
         type: FunctionTool
@@ -1264,7 +1198,9 @@ agents:
       - name: get_best_practices
         type: FunctionTool
         description: 取得生產環境部署最佳實踐，涵蓋安全性、監控、可擴展性和可靠性方面的建議。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.5
+      max_output_tokens: 2048
     server-port: 8000
     tags:
       [
@@ -1280,12 +1216,11 @@ agents:
         middleware,
         health-checks,
       ]
-    sub_agents: []
   - name: Pub/Sub Document Processor
     description: 事件驅動的文件路由協調者，透過 Pub/Sub 將上傳文件分發給專門分析代理並回傳結構化 JSON。
     code_ref: workspace/python/agents/pubsub-agent
     type: LlmAgent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: financial_analyzer
         type: AgentTool
@@ -1299,7 +1234,7 @@ agents:
       - name: marketing_analyzer
         type: AgentTool
         description: 分析行銷活動與指標，整理參與率、轉換率與最佳化建議。
-    config: []
+
     server-port: 8000
     tags:
       [
@@ -1316,40 +1251,36 @@ agents:
       - name: Financial Analyzer
         description: 對財務報告進行結構化解析，擷取財務指標與財政期間。
         type: LlmAgent
-        model: [gemini-2.5-flash]
-        tools: []
-        config: []
+        models: [gemini-2.5-flash]
+
         tags: [finance, structured-output]
         output_schema: FinancialAnalysisOutput
       - name: Technical Analyzer
         description: 解析技術文件，列出技術、元件與改進建議。
         type: LlmAgent
-        model: [gemini-2.5-flash]
-        tools: []
-        config: []
+        models: [gemini-2.5-flash]
+
         tags: [technical, architecture, structured-output]
         output_schema: TechnicalAnalysisOutput
       - name: Sales Analyzer
         description: 解析銷售文件，萃取交易、管道價值與銷售建議。
         type: LlmAgent
-        model: [gemini-2.5-flash]
-        tools: []
-        config: []
+        models: [gemini-2.5-flash]
+
         tags: [sales, pipeline, structured-output]
         output_schema: SalesAnalysisOutput
       - name: Marketing Analyzer
         description: 解析行銷文件，彙整活動、參與度與最佳化建議。
         type: LlmAgent
-        model: [gemini-2.5-flash]
-        tools: []
-        config: []
+        models: [gemini-2.5-flash]
+
         tags: [marketing, campaign, structured-output]
         output_key: MarketingAnalysisOutput
   - name: Software Bug Assistant
     description: 一位熟練的軟體問題分類和除錯專家，專為咖啡機公司 QuantumRoast 提供票務管理服務。整合多種工具進行票務搜尋、建立、更新與網路查詢。
     code_ref: workspace/python/agents/software-bug-assistant
     type: Agent
-    model: [gemini-2.5-flash]
+    models: [gemini-2.5-flash]
     tools:
       - name: get_current_date
         type: FunctionTool
@@ -1396,7 +1327,7 @@ agents:
         description: 提供 GitHub Copilot MCP 各項服務與任務工具。
         tools:
           refs: 'https://github.com/github/github-mcp-server'
-    config: []
+
     server-port: 8000
     tags:
       [
@@ -1415,18 +1346,18 @@ agents:
       - name: search_agent
         description: 使用Google Search的專家代理，負責網路搜尋任務。
         type: AgentTool
-        model: [gemini-2.5-flash]
+        models: [gemini-2.5-flash]
         tools:
           - name: google_search
             type: GoogleSearchAgentTool
             description: Google搜尋工具。
-        config: []
+
         tags: [search, google]
   - name: Strategic Problem Solver (BuiltInPlanner)
     description: 使用 BuiltInPlanner 進行透明思考的策略商業顧問，涵蓋市場分析、ROI 計算與風險評估並輸出策略報告。
     code_ref: workspace/python/agents/strategic-solver
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: analyze_market
         type: FunctionTool
@@ -1440,7 +1371,9 @@ agents:
       - name: save_strategy_report
         type: FunctionTool
         description: 生成並保存策略計畫的 Markdown 報告。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.3
+      max_output_tokens: 3000
     server-port: 8000
     output_key: builtin_strategy_result
     tags:
@@ -1454,7 +1387,7 @@ agents:
     description: 使用 PlanReActPlanner 以「計劃→推理→行動→觀察→重規劃」結構進行策略分析與建議。
     code_ref: workspace/python/agents/strategic-solver
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: analyze_market
         type: FunctionTool
@@ -1468,7 +1401,9 @@ agents:
       - name: save_strategy_report
         type: FunctionTool
         description: 生成並保存策略計畫的 Markdown 報告。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.4
+      max_output_tokens: 3000
     server-port: 8000
     output_key: plan_react_strategy_result
     tags:
@@ -1483,7 +1418,7 @@ agents:
     description: 使用自訂 StrategicPlanner 的特定領域工作流程（ANALYSIS／EVALUATION／STRATEGY／VALIDATION）產生可執行的策略建議。
     code_ref: workspace/python/agents/strategic-solver
     type: Agent
-    model: [gemini-2.0-flash]
+    models: [gemini-2.0-flash]
     tools:
       - name: analyze_market
         type: FunctionTool
@@ -1497,7 +1432,9 @@ agents:
       - name: save_strategy_report
         type: FunctionTool
         description: 生成並保存策略計畫的 Markdown 報告。
-    config: [temperature, max_output_tokens]
+    generate_content_config:
+      temperature: 0.3
+      max_output_tokens: 3000
     server-port: 8000
     output_key: strategic_planner_result
     tags:
@@ -1509,3 +1446,313 @@ agents:
       - roi
       - risk
       - base-planner
+  - name: Streaming Agent
+    description: 一個示範 Server-Sent Events (SSE) 串流回應的代理人，透過即時、漸進式的輸出改善使用者體驗。
+    code_ref: workspace/python/agents/streaming-agent
+    type: Agent
+    models: [gemini-2.0-flash]
+    tools:
+      - name: format_streaming_info
+        type: FunctionTool
+        description: 提供有關串流功能的資訊，包括支援的串流模式、效能優勢與使用情境。
+      - name: analyze_streaming_performance
+        type: FunctionTool
+        description: 分析串流效能特性，包括預估區塊數、時間估計與記憶體效率。
+    generate_content_config:
+      temperature: 0.7
+      max_output_tokens: 2048
+      top_p: 0.8
+      top_k: 40
+    server-port: 8000
+    runner:
+      run_config:
+        streaming_mode: sse
+        max_llm_calls: 50
+    tags:
+      - sse
+      - streaming
+      - real-time
+      - async-iteration
+      - gemini-2.0-flash
+      - streaming_mode,
+      - fastapi,
+      - html,
+      - uvicorn,
+      - chunks
+  - name: Support Agent
+    description: 客戶支援代理 - 可測試的模式示範。提供知識庫搜尋、建立支援工單、查詢工單狀態等功能，展示清晰的工具使用、結構化回應與確定性行為。
+    code_ref: workspace/python/agents/support-agent
+    type: Agent
+    models: [gemini-2.0-flash-exp]
+    tools:
+      - name: search_knowledge_base
+        type: FunctionTool
+        description: 在知識庫中搜尋常見客戶問題的資訊。使用記憶體內知識庫提供確定性結果，支援不區分大小寫的關鍵字比對。涵蓋密碼重設、退款政策、運送、帳戶管理、帳單和技術支援等主題。
+      - name: create_ticket
+        type: FunctionTool
+        description: '為客戶問題建立新的支援工單。支援四種優先級別（low, normal, high, urgent），自動生成唯一工單 ID (TICK-XXXXXXXX 格式)，並根據優先級設定預估回應時間（urgent: 4小時, high: 24小時, normal: 2工作天, low: 5工作天）。'
+      - name: check_ticket_status
+        type: FunctionTool
+        description: 查詢現有支援工單的狀態。使用工單 ID 檢索工單詳細資訊，包括問題描述、優先級別、當前狀態、建立時間和預估回應時間。
+    output_key: support_response
+    tags:
+      - customer-support
+      - evaluation
+      - testable-patterns
+      - knowledge-base
+      - ticketing
+      - deterministic
+      - structured-response
+  - name: Support Bot
+    description: Slack Socket Mode 的團隊支援助理，使用內建知識庫回答公司政策與 IT 問題，並可建立支援工單示範 ADK 工具整合。
+    code_ref: workspace/python/agents/support-bot
+    type: Agent
+    models: [gemini-2.5-flash]
+    tools:
+      - name: search_knowledge_base
+        type: FunctionTool
+        description: 以加權關鍵字比對搜尋內建知識庫，回傳最佳文章或建議查詢提示。
+      - name: create_support_ticket
+        type: FunctionTool
+        description: 驗證優先順序後建立支援工單，回傳工單 ID 與摘要供後續追蹤。
+    server-port: 8000
+    tags:
+      - slack
+      - support
+      - knowledge-base
+      - ticketing
+      - socket-mode
+      - adk
+  - name: Third-Party Integration Agent
+    description: 綜合研究與檔案分析代理，整合 LangChain Wikipedia/DuckDuckGo 與 CrewAI 檔案工具，無需 API 金鑰。
+    code_ref: workspace/python/agents/third-party-agent
+    type: Agent
+    models: [gemini-2.0-flash]
+    tools:
+      - name: wikipedia_search
+        type: LangchainTool
+        description: 使用 LangChain 的 WikipediaQueryRun 查詢百科知識。
+      - name: web_search
+        type: LangchainTool
+        description: 使用 LangChain 的 DuckDuckGoSearchRun 搜尋最新資訊。
+      - name: directory_read
+        type: DirectoryReadTool
+        description: 使用 CrewAI DirectoryReadTool 讀取目錄內容。
+      - name: file_read
+        type: FileReadTool
+        description: 使用 CrewAI FileReadTool 讀取檔案內容。
+    server-port: 8000
+    output_key: research_response
+    tags:
+      - third-party
+      - langchain
+      - crewai
+      - wikipedia
+      - duckduckgo
+      - filesystem
+      - research
+      - analysis
+  - name: Tool Use Evaluator
+    description: 用於展示工具使用品質（Tool Use Quality）評估的代理，涵蓋正確工具排序、依賴性與錯誤處理。
+    code_ref: workspace/python/agents/tool-use-evaluator
+    type: Agent
+    models: [gemini-2.0-flash]
+    tools:
+      - name: analyze_data
+        type: FunctionTool
+        description: 分析指定資料集，回傳基本統計與欄位型態。
+      - name: extract_features
+        type: FunctionTool
+        description: 從分析結果中提取特徵（mean、median、std_dev、correlation）。
+      - name: validate_quality
+        type: FunctionTool
+        description: 驗證特徵品質並提供分數與通過狀態。
+      - name: apply_model
+        type: FunctionTool
+        description: 將指定 ML 模型套用於特徵並回傳預測與準確度。
+    server-port: 8000
+    output_key: analysis_result
+    tags:
+      [
+        tool-use-quality,
+        evaluation,
+        data-analysis,
+        function-tools,
+        tools-ordering,
+      ]
+  - name: Travel Planner
+    description: 平行搜尋航班、飯店與活動，並聚合成完整行程表的教學範例。
+    code_ref: workspace/python/agents/travel-planner
+    type: SequentialAgent
+    models: []
+    server-port: 8000
+    tags:
+      - travel
+      - parallel
+      - sequential
+      - fan-out
+      - gather
+      - itinerary
+      - parallel-search
+    sub_agents:
+      - name: ParallelSearch
+        description: 平行搜尋航班、飯店與活動，將結果寫入 state。
+        type: ParallelAgent
+        tags: [parallel-search, fan-out]
+        sub_agents:
+          - name: flight_finder
+            description: 搜尋可用航班並提供時間、價格與航空公司選項。
+            type: Agent
+            models: [gemini-2.0-flash]
+            output_key: flight_options
+            tags: [flights, search]
+          - name: hotel_finder
+            description: 尋找合適的飯店，包含位置、評等、價格與設施重點。
+            type: Agent
+            models: [gemini-2.0-flash]
+            output_key: hotel_options
+            tags: [hotels, search]
+          - name: activity_finder
+            description: 推薦目的地活動與景點，提供時間與費用估計。
+            type: Agent
+            models: [gemini-2.0-flash]
+            output_key: activity_options
+            tags: [activities, search]
+      - name: itinerary_builder
+        description: 從 state 合併航班、飯店與活動選項，生成格式化行程表與建議。
+        type: Agent
+        models: [gemini-2.0-flash]
+        output_key: final_itinerary
+        tags: [itinerary, planner, gather]
+  - name: UI Integration Quickstart Agent
+    description: 您是由 Google ADK 驅動的樂於助人的人工智慧助理。整合 AG-UI 協定與 CopilotKit 相容中介軟體，提供 React 前端整合 fastapi 後端應用的完整服務。
+    code_ref: workspace/python/agents/ui-integration
+    type: ADKAgent
+    models: [gemini-2.0-flash-exp]
+    server-port: 8000
+    tags:
+      - ui-integration
+      - ag-ui
+      - copilotkit
+      - fastapi
+      - uvicorn
+      - reactjs
+      - middleware
+      - frontend
+  - name: Vision Catalog Coordinator
+    description: 具有多模態能力的視覺化產品目錄協調器，可以分析產品圖片、生成合成產品模型、比較多張圖片並建立專業的產品目錄條目。
+    code_ref: workspace/python/agents/vision-catalog-agent
+    type: Agent
+    models: [gemini-2.0-flash-exp, gemini-2.5-flash-image]
+    tools:
+      - name: list_sample_images
+        type: FunctionTool
+        description: 列出 _sample_images 目錄中可用的範例產品圖片，供使用者選擇和分析。
+      - name: generate_product_mockup
+        type: FunctionTool
+        description: 使用 Gemini 2.5 Flash Image 生成合成產品圖片，適合原型設計、測試或生成產品變化版本。
+      - name: analyze_uploaded_image
+        type: FunctionTool
+        description: 分析直接在查詢中上傳的圖片，提供結構化分析框架和指引。
+      - name: analyze_product_image
+        type: FunctionTool
+        description: 分析產品圖片並自動生成詳細的視覺分析與專業目錄條目。
+      - name: compare_product_images
+        type: FunctionTool
+        description: 比較多張產品圖片，識別異同點並提供結構化的比較分析。
+    generate_content_config:
+      temperature: 0.7
+      max_output_tokens: 2048
+    tags: [vision, multimodal, image-analysis, product-catalog, e-commerce]
+    sub_agents:
+      - name: vision_analyzer
+        description: 分析產品圖片並提取視覺資訊，包括產品識別、視覺特徵、品質指標。
+        type: Agent
+        models: [gemini-2.0-flash-exp]
+        generate_content_config:
+          temperature: 0.3
+          max_output_tokens: 1024
+        tags: [vision, image-analysis, product-identification]
+      - name: catalog_generator
+        description: 根據視覺分析結果生成專業、可用於行銷的產品描述和目錄條目。
+        type: Agent
+        models: [gemini-2.0-flash-exp]
+        tools:
+          - name: generate_catalog_entry
+            type: FunctionTool
+            description: 生成並儲存可用於行銷的目錄條目為 artifact。
+        generate_content_config:
+          temperature: 0.6
+          max_output_tokens: 1536
+        tags: [catalog, content-creation, marketing]
+  - name: Voice Assistant
+    description: 支援 Live API 的即時語音助理，可進行雙向串流對話、麥克風錄音和喇叭播放。
+    code_ref: workspace/python/agents/voice-assistant
+    type: App
+    models: [gemini-2.0-flash-live-001, gemini-2.5-flash]
+    generate_content_config:
+      temperature: 0.8
+      max_output_tokens: 150
+    runner:
+      run_config:
+        streaming_mode:
+        speech_config:
+          voice_config: voice_config_default
+        max_llm_calls: 20
+    tools:
+      - name: record_audio
+        description: 從麥克風錄製指定時長的音訊
+      - name: play_audio
+        description: 透過喇叭播放音訊 bytes
+      - name: send_text
+        description: 傳送文字訊息並取得 Agent 回應
+      - name: send_audio
+        description: 傳送音訊並取得文字和音訊回應
+      - name: conversation_turn
+        description: 執行完整的音訊對話回合 (錄音 → 傳送 → 接收 → 播放)
+    tags:
+      [
+        live-api,
+        voice,
+        real-time-streaming,
+        audio,
+        multimodal,
+        conversational-ai,
+      ]
+  - name: YouTube Shorts Agent
+    description: 一個協調代理，整合腳本編寫、視覺創作和格式化子代理，自動生成 YouTube 短視頻內容。
+    code_ref: workspace/python/agents/youtube-shorts-assistant
+    type: Agent
+    models: [gemini-2.0-flash-001]
+    tools:
+      - name: scriptwriter_agent
+        type: AgentTool
+        description: 根據主題和要求生成簡潔的短視頻腳本 (15-50秒)。
+      - name: visualizer_agent
+        type: AgentTool
+        description: 為腳本段落創建動態的垂直 (9:16) 視覺概念。
+      - name: formatter_agent
+        type: AgentTool
+        description: 使用 Markdown 整合和格式化腳本與視覺概念。
+    server-port: 8000
+    tags: [youtube-shorts, content-creation, multi-agent, gemini, adk]
+    sub_agents:
+      - name: Scriptwriter Agent
+        description: 負責編寫引人注目的短視頻腳本。
+        type: LlmAgent
+        models: [gemini-2.0-flash-001]
+        tools:
+          - name: google_search
+            type: GoogleSearchAgentTool
+            description: 搜尋資訊以支持腳本創作。
+        tags: [scriptwriting, content-creation, adk]
+      - name: Visualizer Agent
+        description: 負責創建與腳本對應的視覺概念。
+        type: LlmAgent
+        models: [gemini-2.0-flash-001]
+        tags: [visual-design, content-creation, adk]
+      - name: Formatter Agent
+        description: 負責整合腳本和視覺概念，並使用 Markdown 進行格式化。
+        type: LlmAgent
+        models: [gemini-2.0-flash-001]
+        tags: [formatting, content-creation, adk]

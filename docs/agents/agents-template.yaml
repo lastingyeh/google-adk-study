@@ -5,7 +5,7 @@ agents:
       <DESCRIPTION>
       (可以使用多行描述)
     code_ref: <SAMPLE_CODE_REFERENCE> # 例如：workspace/python/agents/my-agent
-    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset, App
+    type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset, App, ADKAgent
 
     # 選填：A2A 協定 (例如在 Host Agent 中使用)
     # protocol: a2a
@@ -13,8 +13,8 @@ agents:
     # 選填：MCP 傳輸方式 (用於 MCPToolset 類型的代理或工具)
     # transports: stdio # 或 streamable
 
-    # 選填
-    model: [<MODEL_NAME>] # 例如：[gemini-2.0-flash], [openai/gpt-4o-mini, anthropic/claude-3-7-sonnet-20250219]。對於 SequentialAgent/ParallelAgent 等容器代理，請留空 []。
+    # 選填：模型列表
+    models: [<MODEL_NAME>] # 例如：[gemini-2.0-flash], [gemini-2.0-flash-exp]
 
     # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
     # output_key: <OUTPUT_KEY_NAME>
@@ -28,18 +28,34 @@ agents:
     # 選填：暫停與恢復設定 (例如在 Pause Resume Agent 中)
     # resumability_config: [is_resumable]
 
-    # 選填
+    # 選填：初始化參數 (例如在 Deep Research Agent 中使用)
+    # init:
+    #   api_key: <API_KEY_VALUE>
+
+    # 選填：執行器設定 (例如在 Streaming Agent, Voice Assistant 中使用)
+    # runner:
+    #   run_config:
+    #     streaming_mode: <MODE> # 例如：sse
+    #     speech_config:
+    #       voice_config: <CONFIG_NAME>
+    #     max_llm_calls: <NUMBER>
+
+    # 選填：工具列表
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, DirectoryReadTool, FileReadTool
         description: <TOOL_DESCRIPTION>
 
-        # 選填：特定工具類型的額外設定（例如 MCPToolset）
-        # model: [<MODEL_NAME>]
-        # tools: [] # 在 type 為 MCPToolset 的巢狀工具
+        # 選填：特定工具類型的額外設定（例如 AgentTool, MCPToolset）
+        # models: [<MODEL_NAME>] # 用於 AgentTool
+        # tools: [] # 用於 AgentTool 或 MCPToolset 的巢狀工具
         # tags: []
         # transports: stdio # 用於 MCPToolset
         # refs: <URL> # 用於 MCPToolset
+        # code_executor: # 用於 AgentTool
+        #   name: <EXECUTOR_NAME>
+        #   type: <EXECUTOR_TYPE>
+        #   description: <DESCRIPTION>
 
     # 選填：外掛程式 (例如在 Observability Plugins Agent 中)
     # plugins:
@@ -53,8 +69,13 @@ agents:
     #   type: BuiltInCodeExecutor
     #   description: <DESCRIPTION> # 執行器描述
 
-    # 選填
-    config: [<CONFIG_PARAMETER_1>, <CONFIG_PARAMETER_2>] # 例如：temperature, max_output_tokens, max_iterations, api_key
+    # 選填：生成內容設定
+    # generate_content_config:
+    #   temperature: <VALUE> # 例如：0.5
+    #   max_output_tokens: <VALUE> # 例如：2048
+    #   top_p: <VALUE>
+    #   top_k: <VALUE>
+    #   max_iterations: <VALUE> # 用於 LoopAgent
 
     # 選填：回呼函式（生命週期鉤子）
     # before_agent_callback:
@@ -85,7 +106,7 @@ agents:
     server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none"
     tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow, mcp, interactions-api
 
-    # 選填
+    # 選填：子代理 (Sub-agents)
     sub_agents:
       - name: <SUB_AGENT_NAME>
         description: <SUB_AGENT_DESCRIPTION>
@@ -95,7 +116,7 @@ agents:
         # protocol: a2a
 
         # 選填
-        model: [<SUB_AGENT_MODEL>]
+        models: [<SUB_AGENT_MODEL>]
 
         # 選填：流水線步驟的輸出鍵
         # output_key: <SUB_AGENT_OUTPUT_KEY>
@@ -114,8 +135,10 @@ agents:
             # 選填：巢狀工具設定
             # tools: []
 
-        # 選填
-        config: [<SUB_AGENT_CONFIG_PARAMETER>]
+        # 選填：生成內容設定
+        # generate_content_config:
+        #   temperature: <VALUE>
+        #   max_output_tokens: <VALUE>
 
         server-port: <SUB_AGENT_PORT> # 例如：8001 或 "none"
         tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]

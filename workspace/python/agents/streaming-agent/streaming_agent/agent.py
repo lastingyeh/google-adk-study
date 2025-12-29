@@ -16,7 +16,7 @@ from google.genai import types
 
 # 設定 Google AI 的環境變數
 # 設定預設值，指示 ADK 不要使用 Vertex AI
-os.environ.setdefault('GOOGLE_GENAI_USE_VERTEXAI', 'FALSE')
+os.environ.setdefault("GOOGLE_GENAI_USE_VERTEXAI", "FALSE")
 
 
 def create_streaming_agent() -> Agent:
@@ -28,9 +28,9 @@ def create_streaming_agent() -> Agent:
     """
     # 建立並設定代理人
     return Agent(
-        model='gemini-2.0-flash',  # 使用的模型
-        name='streaming_assistant',  # 代理人名稱
-        description='一個提供即時聊天串流回應的實用助理',  # 代理人描述
+        model="gemini-2.0-flash",  # 使用的模型
+        name="streaming_assistant",  # 代理人名稱
+        description="一個提供即時聊天串流回應的實用助理",  # 代理人描述
         instruction="""
         您是一位樂於助人、友善的助理，能以串流輸出方式提供詳細的回應。
 
@@ -46,9 +46,10 @@ def create_streaming_agent() -> Agent:
             temperature=0.7,  # 設定溫度以獲得更具對話性的回應
             max_output_tokens=2048,  # 最大輸出 token 數
             top_p=0.8,  # top-p 核新取樣
-            top_k=40  # top-k token 排序取樣
-        )
+            top_k=40,  # top-k token 排序取樣
+        ),
     )
+
 
 # 簡單說明 top_k 和 top_p 的差異：
 # | 特性    | top_k       | top_p      |
@@ -58,7 +59,6 @@ def create_streaming_agent() -> Agent:
 # | 創意度控制 | 中等          | 高          |
 # | 生成穩定性 | 穩定（限制選項）    | 更靈活        |
 # | 適合    | 程式碼、精準任務    | 自然語言、高創意場景 |
-
 
 
 # 全域代理人實例
@@ -78,18 +78,19 @@ async def stream_agent_response(query: str) -> AsyncIterator[str]:
     """
     # 建立 runner 和 session 服務
     session_service = InMemorySessionService()  # 使用記憶體內的 session 服務
-    runner = Runner(app_name="streaming_agent", agent=root_agent, session_service=session_service)
+    runner = Runner(
+        app_name="streaming_agent", agent=root_agent, session_service=session_service
+    )
 
     # 為此對話建立一個 session
     session = await session_service.create_session(
-        app_name="streaming_agent",
-        user_id="demo_user"
+        app_name="streaming_agent", user_id="demo_user"
     )
 
     # 設定為 SSE 串流模式
     run_config = RunConfig(
         streaming_mode=StreamingMode.SSE,  # 指定串流模式為 SSE
-        max_llm_calls=50  # 設定大型語言模型 (LLM) 的最大呼叫次數
+        max_llm_calls=50,  # 設定大型語言模型 (LLM) 的最大呼叫次數
     )
 
     try:
@@ -98,7 +99,7 @@ async def stream_agent_response(query: str) -> AsyncIterator[str]:
             user_id="demo_user",
             session_id=session.id,
             new_message=types.Content(role="user", parts=[types.Part(text=query)]),
-            run_config=run_config
+            run_config=run_config,
         ):
             # 處理不同的事件類型
             if event.content and event.content.parts:
@@ -120,6 +121,7 @@ async def stream_agent_response(query: str) -> AsyncIterator[str]:
         for word in words:
             yield word + " "
             import asyncio
+
             await asyncio.sleep(0.01)
 
 
@@ -135,18 +137,18 @@ async def get_complete_response(query: str) -> str:
     """
     # 建立 runner 和 session 服務
     session_service = InMemorySessionService()
-    runner = Runner(app_name="streaming_agent", agent=root_agent, session_service=session_service)
+    runner = Runner(
+        app_name="streaming_agent", agent=root_agent, session_service=session_service
+    )
 
     # 建立一個 session
     session = await session_service.create_session(
-        app_name="streaming_agent",
-        user_id="demo_user"
+        app_name="streaming_agent", user_id="demo_user"
     )
 
     # 設定為非串流模式
     run_config = RunConfig(
-        streaming_mode=StreamingMode.NONE,  # 停用串流
-        max_llm_calls=50
+        streaming_mode=StreamingMode.NONE, max_llm_calls=50  # 停用串流
     )
 
     # 收集所有回應部分
@@ -156,7 +158,7 @@ async def get_complete_response(query: str) -> str:
         user_id="demo_user",
         session_id=session.id,
         new_message=types.Content(role="user", parts=[types.Part(text=query)]),
-        run_config=run_config
+        run_config=run_config,
     ):
         if event.content and event.content.parts:
             for part in event.content.parts:
@@ -166,7 +168,7 @@ async def get_complete_response(query: str) -> str:
         if event.turn_complete:
             break
 
-    return ''.join(response_parts)
+    return "".join(response_parts)
 
 
 def create_demo_session():
@@ -177,6 +179,7 @@ def create_demo_session():
         Session: 用於演示的 Session 物件
     """
     import asyncio
+
     session_service = InMemorySessionService()
 
     # 為了演示目的，同步建立 session
@@ -186,8 +189,7 @@ def create_demo_session():
     try:
         session = loop.run_until_complete(
             session_service.create_session(
-                app_name="streaming_agent",
-                user_id="demo_user"
+                app_name="streaming_agent", user_id="demo_user"
             )
         )
         return session
@@ -204,24 +206,19 @@ def format_streaming_info() -> Dict[str, Any]:
         Dict[str, Any]: 包含串流資訊的字典
     """
     return {
-        'status': 'success',
-        'report': '成功檢索串流資訊',
-        'data': {
-            'streaming_modes': ['SSE', 'BIDI', 'OFF'],
-            'current_mode': 'SSE',
-            'benefits': [
-                '即時使用者回饋',
-                '更好的感知效能',
-                '漸進式輸出顯示',
-                '可提早中斷回應'
+        "status": "success",
+        "report": "成功檢索串流資訊",
+        "data": {
+            "streaming_modes": ["SSE", "BIDI", "OFF"],
+            "current_mode": "SSE",
+            "benefits": [
+                "即時使用者回饋",
+                "更好的感知效能",
+                "漸進式輸出顯示",
+                "可提早中斷回應",
             ],
-            'use_cases': [
-                '聊天應用程式',
-                '長文內容生成',
-                '互動式助理',
-                '即時分析'
-            ]
-        }
+            "use_cases": ["聊天應用程式", "長文內容生成", "互動式助理", "即時分析"],
+        },
     }
 
 
@@ -241,22 +238,18 @@ def analyze_streaming_performance(query_length: int = 100) -> Dict[str, Any]:
         estimated_time = query_length * 0.1  # 粗略時間估計
 
         return {
-            'status': 'success',
-            'report': f'查詢長度 {query_length} 的效能分析',
-            'data': {
-                'estimated_chunks': estimated_chunks,
-                'estimated_total_time_seconds': estimated_time,
-                'chunk_size_range': '10-100 字元',
-                'recommended_buffer_size': 1024,
-                'memory_efficient': True
-            }
+            "status": "success",
+            "report": f"查詢長度 {query_length} 的效能分析",
+            "data": {
+                "estimated_chunks": estimated_chunks,
+                "estimated_total_time_seconds": estimated_time,
+                "chunk_size_range": "10-100 字元",
+                "recommended_buffer_size": 1024,
+                "memory_efficient": True,
+            },
         }
     except Exception as e:
-        return {
-            'status': 'error',
-            'error': str(e),
-            'report': '分析串流效能失敗'
-        }
+        return {"status": "error", "error": str(e), "report": "分析串流效能失敗"}
 
 
 # 將工具新增至代理人

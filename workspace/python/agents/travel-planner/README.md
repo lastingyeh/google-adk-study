@@ -135,8 +135,7 @@ make test
 ### 專案結構
 
 ```
-text
-tutorial05/
+travel-planner/
 ├── travel_planner/           # 代理實作
 │   ├── __init__.py          # 套件初始化
 │   ├── agent.py             # 代理定義和管線

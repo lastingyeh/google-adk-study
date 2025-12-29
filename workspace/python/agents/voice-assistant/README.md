@@ -103,7 +103,7 @@ make test
 ## 專案結構
 
 ```
-tutorial15/
+voice-assistant/
 ├── voice_assistant/
 │   ├── __init__.py              # 套件初始化
 │   ├── agent.py                 # VoiceAssistant 類別 (匯出 root_agent)

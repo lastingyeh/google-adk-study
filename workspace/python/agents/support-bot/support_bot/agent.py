@@ -275,5 +275,3 @@ root_agent = Agent(
 # - 行動項目：
 #   - 擴充 `KNOWLEDGE_BASE` 以涵蓋更多主題。
 #   - 實作持久化的資料庫以儲存工單 (`TICKETS`)。
-
-

@@ -20,7 +20,7 @@
 ## 專案結構
 
 ```
-tutorial21/
+vision-catalog-agent/
 ├── Makefile                    # 包含說明系統的易用建置自動化工具
 ├── requirements.txt            # Python 依賴套件
 ├── pyproject.toml             # 套件組態設定

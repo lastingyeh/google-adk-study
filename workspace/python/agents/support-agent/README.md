@@ -27,7 +27,7 @@ make test
 ## 專案結構
 
 ```text
-tutorial10/
+support-agent/
 ├── support_agent/           # 代理實作
 │   ├── __init__.py         # 套件匯出
 │   ├── agent.py            # 客戶支援代理
@@ -193,7 +193,3 @@ pytest tests/ -v -s
 2. 為新功能新增測試案例
 3. 更新 API 變更的文件
 4. 遵循既定的程式碼模式
-
----
-
-_此實作展示了 ADK 代理的生產就緒測試模式,包含 28 個全面的測試,涵蓋單元測試、整合測試和評估框架。_
