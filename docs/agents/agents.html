@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Google ADK 代理市集</title>
-    <!-- 引入 Inter 字體 -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google ADK Agent Marketplace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-      /* ===== iOS Grouped 風格 CSS ===== */
+      /* ===== iOS Grouped Style CSS (Adapted from index.html) ===== */
       * {
         margin: 0;
         padding: 0;
@@ -21,7 +21,8 @@
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-          'Inter', 'Noto Sans TC', sans-serif;
+          'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC',
+          sans-serif;
         background-color: #f2f2f7;
         color: #000000;
         line-height: 1.5;
@@ -43,6 +44,18 @@
         border-radius: 20px;
         box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
         position: relative;
+        color: white;
+      }
+
+      .header-icon {
+          width: 64px;
+          height: 64px;
+          margin-bottom: 16px;
+          border-radius: 16px;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+          background: white;
+          padding: 8px;
+          object-fit: contain;
       }
 
       header h1 {
@@ -82,12 +95,6 @@
         font-weight: 500;
       }
 
-      .stat-icon {
-        width: 20px;
-        height: 20px;
-        fill: rgba(255, 255, 255, 0.9);
-      }
-
       /* Navigation Links */
       .nav-links {
         display: flex;
@@ -119,23 +126,30 @@
         box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
       }
 
-      .nav-link svg {
-        width: 16px;
-        height: 16px;
+      /* Controls */
+      .controls-bar {
+        background: #ffffff;
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        margin-bottom: 24px;
+        position: sticky;
+        top: 20px;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
       }
 
-      /* Search & Controls */
-      .controls-bar {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
+      @media (min-width: 768px) {
+          .controls-bar {
+              flex-direction: row;
+              align-items: center;
+          }
       }
 
       .search-container {
         flex: 1;
-        min-width: 250px;
         position: relative;
       }
 
@@ -145,13 +159,14 @@
         border: 1px solid #e5e5ea;
         border-radius: 12px;
         font-size: 15px;
-        background: #ffffff;
+        background: #f9f9f9;
         transition: all 0.2s ease;
       }
 
       .search-input:focus {
         outline: none;
         border-color: #007aff;
+        background: #ffffff;
         box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
       }
 
@@ -165,203 +180,161 @@
         color: #8e8e93;
       }
 
-      .clear-btn {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #8e8e93;
-        font-size: 20px;
-        padding: 4px;
-        display: none;
+      .filters-container {
+          display: flex;
+          gap: 10px;
+          overflow-x: auto;
+          padding-bottom: 4px;
       }
 
-      .search-input:not(:placeholder-shown) ~ .clear-btn {
-        display: block;
+      select {
+          padding: 10px 32px 10px 12px;
+          border: 1px solid #e5e5ea;
+          border-radius: 10px;
+          font-size: 14px;
+          background-color: #f9f9f9;
+          color: #1c1c1e;
+          cursor: pointer;
+          appearance: none;
+          background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007AFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+          background-repeat: no-repeat;
+          background-position: right 12px top 50%;
+          background-size: 10px auto;
+          transition: all 0.2s ease;
       }
 
-      /* Agent Cards Container */
-      #agents-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 16px;
-        margin-bottom: 20px;
+      select:focus {
+          outline: none;
+          border-color: #007aff;
+          background-color: #ffffff;
+      }
+
+      /* Grid */
+      .agents-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+          gap: 20px;
       }
 
       /* Agent Card */
       .agent-card {
-        background: #ffffff;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-        cursor: pointer;
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        padding: 16px;
-      }
-
-      .agent-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+          background: #ffffff;
+          border-radius: 16px;
+          overflow: hidden;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          flex-direction: column;
+          border: 1px solid rgba(0,0,0,0.03);
+          height: 100%;
       }
 
       .agent-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
       }
 
-      .agent-card:active {
-        transform: translateY(-2px);
+      .card-body {
+          padding: 24px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
       }
 
-      /* Card Header */
-      .agent-header {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 12px;
+      .card-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 12px;
       }
 
-      .agent-icon {
-        flex-shrink: 0;
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #ffffff;
-        border: 2px solid #e0e7ff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      .agent-name {
+          font-size: 18px;
+          font-weight: 700;
+          color: #1c1c1e;
+          line-height: 1.3;
       }
 
-      .agent-icon img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      .agent-type {
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+          padding: 4px 8px;
+          border-radius: 6px;
+          background: #f2f2f7;
+          color: #8e8e93;
+          letter-spacing: 0.5px;
       }
 
-      .agent-title-group {
-        flex: 1;
-        min-width: 0;
+      .agent-desc {
+          font-size: 15px;
+          color: #3c3c43;
+          line-height: 1.6;
+          margin-bottom: 20px;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          opacity: 0.9;
       }
 
-      .agent-title {
-        font-size: 17px;
-        font-weight: 600;
-        color: #000000;
-        margin-bottom: 2px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .card-tags {
+          margin-top: auto;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
       }
 
-      .agent-path {
-        font-size: 12px;
-        color: #007aff;
-        font-family: 'SF Mono', 'Monaco', monospace;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        overflow: hidden;
+      .tag {
+          font-size: 12px;
+          padding: 4px 10px;
+          border-radius: 12px;
+          background: #f0f4ff;
+          color: #007aff;
+          font-weight: 500;
       }
 
-      .agent-path:hover {
-        color: #0051d5;
-        text-decoration: underline;
+      .tag-model {
+          background: #f5f0ff;
+          color: #764ba2;
       }
 
-      .agent-path svg {
-        width: 12px;
-        height: 12px;
-        flex-shrink: 0;
+      .card-footer {
+          padding: 16px 24px;
+          background: #f9f9f9;
+          border-top: 1px solid #f2f2f7;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
       }
 
-      .agent-path span {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+      .tool-count {
+          font-size: 13px;
+          color: #8e8e93;
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 4px;
       }
 
-      /* Card Body */
-      .agent-description {
-        font-size: 14px;
-        color: #3c3c43;
-        line-height: 1.6;
-        margin-bottom: 12px;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+      .view-btn {
+          color: #007aff;
+          font-size: 14px;
+          font-weight: 600;
+          background: none;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          transition: opacity 0.2s;
       }
 
-      /* Card Labels */
-      .agent-labels {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin-bottom: 12px;
+      .view-btn:hover {
+          opacity: 0.7;
       }
 
-      .label-tag {
-        display: inline-block;
-        padding: 4px 10px;
-        background-color: #e5e5ea;
-        color: #3c3c43;
-        font-size: 11px;
-        border-radius: 12px;
-        font-weight: 500;
-        white-space: nowrap;
-      }
-
-      .label-tag.type {
-        background: linear-gradient(135deg, #4285f415 0%, #4285f425 100%);
-        color: #4285f4;
-        border: 1px solid #4285f430;
-      }
-
-      .label-tag.model {
-        background: linear-gradient(135deg, #a142f415 0%, #a142f425 100%);
-        color: #a142f4;
-        border: 1px solid #a142f430;
-      }
-
-      /* Card Footer */
-      .agent-meta {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 12px;
-        color: #8e8e93;
-        padding-top: 12px;
-        border-top: 1px solid #f2f2f7;
-        margin-top: auto;
-      }
-
-      .meta-item {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .meta-item svg {
-        width: 14px;
-        height: 14px;
-      }
-
-      /* Modal */
+      /* Modal (Matching index.html style) */
       .modal {
         display: none;
         position: fixed;
@@ -382,19 +355,12 @@
         display: flex;
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
       .modal-content {
         background: #ffffff;
         border-radius: 20px;
-        max-width: 700px;
+        max-width: 800px;
         width: 100%;
         max-height: 85vh;
         display: flex;
@@ -404,74 +370,34 @@
         animation: slideUp 0.3s ease;
       }
 
-      @keyframes slideUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
+      @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
       .modal-header {
-        padding: 24px 24px 16px;
+        padding: 24px;
         border-bottom: 0.5px solid #e5e5ea;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        flex-shrink: 0;
         background: #ffffff;
       }
 
       .modal-title-group {
         flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .modal-type-badge {
-        display: inline-block;
-        padding: 4px 12px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 600;
-        width: fit-content;
       }
 
       .modal-title {
-        font-size: 20px;
+        font-size: 24px;
         font-weight: 700;
         color: #000000;
-        line-height: 1.4;
-        padding-right: 16px;
-        margin: 0;
+        margin: 0 0 8px 0;
       }
 
-      .modal-path {
-        font-size: 11px;
-        color: #007aff;
-        font-family: 'SF Mono', 'Monaco', monospace;
-        text-decoration: none;
-        transition: all 0.2s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      .modal-path:hover {
-        color: #0051d5;
-        text-decoration: underline;
-      }
-
-      .modal-path svg {
-        width: 14px;
-        height: 14px;
-        flex-shrink: 0;
+      .modal-subtitle {
+          font-size: 14px;
+          color: #8e8e93;
+          display: flex;
+          gap: 8px;
+          align-items: center;
       }
 
       .close-btn {
@@ -487,55 +413,24 @@
         transition: all 0.2s ease;
         font-size: 20px;
         color: #3c3c43;
-        flex-shrink: 0;
       }
 
-      .close-btn:hover {
-        background: #d1d1d6;
-      }
+      .close-btn:hover { background: #d1d1d6; }
 
       .modal-body {
         padding: 24px;
         overflow-y: auto;
         flex: 1;
-        min-height: 0;
-        -webkit-overflow-scrolling: touch;
       }
 
-      /* 自定義滾動條樣式 */
-      .modal-body::-webkit-scrollbar {
-        width: 10px;
-      }
-
-      .modal-body::-webkit-scrollbar-track {
-        background: #f9f9f9;
-        border-radius: 5px;
-        margin: 8px 0;
-      }
-
-      .modal-body::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-        border-radius: 5px;
-        border: 2px solid #f9f9f9;
-      }
-
-      .modal-body::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
-      }
-
-      .detail-section {
-        margin-bottom: 24px;
-      }
-
-      .detail-section:last-child {
-        margin-bottom: 0;
-      }
+      .detail-section { margin-bottom: 28px; }
+      .detail-section:last-child { margin-bottom: 0; }
 
       .detail-section h3 {
         font-size: 15px;
         font-weight: 700;
         color: #667eea;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -543,1680 +438,487 @@
         border-bottom: 2px solid #f2f2f7;
       }
 
-      .detail-section h3 svg {
-        width: 18px;
-        height: 18px;
-      }
-
-      .description-box {
-        background: linear-gradient(135deg, #f0f4ff 0%, #f9f9ff 100%);
-        padding: 16px;
-        border-radius: 12px;
-        border: 2px solid #e0e7ff;
-        font-size: 15px;
-        line-height: 1.7;
-        color: #1a1a1a;
-      }
-
-      .detail-list {
-        display: grid;
-        gap: 8px;
-      }
-
-      .detail-item {
+      .description-content {
         background: #f9f9f9;
-        padding: 12px 16px;
-        border-radius: 10px;
+        padding: 18px 20px;
+        border-radius: 12px;
         border: 1px solid #e5e5ea;
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      .detail-item strong {
-        color: #667eea;
-        font-weight: 600;
-        display: block;
-        margin-bottom: 4px;
-      }
-
-      .detail-item p {
+        font-size: 16px;
+        line-height: 1.7;
         color: #3c3c43;
-        margin: 0;
       }
 
-      .modal-labels {
+      /* Tools Table */
+      .tools-table {
+          width: 100%;
+          border-collapse: separate;
+          border-spacing: 0;
+          border: 1px solid #e5e5ea;
+          border-radius: 12px;
+          overflow: hidden;
+      }
+
+      .tools-table th {
+          background: #f2f2f7;
+          text-align: left;
+          padding: 12px 16px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #8e8e93;
+          text-transform: uppercase;
+      }
+
+      .tools-table td {
+          padding: 14px 16px;
+          border-top: 1px solid #e5e5ea;
+          font-size: 14px;
+      }
+
+      .tools-table tr:last-child td { border-bottom: none; }
+
+      .tool-name { font-weight: 600; color: #1c1c1e; font-family: monospace; }
+      .tool-desc { color: #3c3c43; }
+
+      /* Sub Agents */
+      .sub-agent-card {
+          background: #ffffff;
+          border: 1px solid #e5e5ea;
+          border-radius: 12px;
+          padding: 16px;
+          margin-bottom: 12px;
+          position: relative;
+      }
+
+      .sub-agent-card::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 16px;
+          bottom: 16px;
+          width: 4px;
+          background: #007aff;
+          border-radius: 0 4px 4px 0;
+      }
+
+      .flow-arrow {
+          text-align: center;
+          color: #c7c7cc;
+          margin: 4px 0;
+      }
+
+      /* Code Link Card */
+      .link-card {
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .modal-label-tag {
-        padding: 6px 14px;
-        background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
-        color: #667eea;
-        font-size: 13px;
-        border-radius: 16px;
-        font-weight: 600;
-        border: 2px solid #e0e7ff;
+        align-items: center;
+        gap: 14px;
+        padding: 16px 18px;
+        background: #ffffff;
+        border: 2px solid #e5e5ea;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #007aff;
+        font-size: 14.5px;
+        font-weight: 500;
         transition: all 0.2s ease;
-        cursor: default;
       }
 
-      .modal-label-tag:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #ffffff;
-        border-color: #667eea;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+      .link-card:hover {
+        border-color: #007aff;
+        background: #f0f7ff;
+        transform: translateX(4px);
       }
+
+      .modal-footer {
+        padding: 16px 24px;
+        border-top: 0.5px solid #e5e5ea;
+        background: #f9f9f9;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .modal-close-btn {
+        padding: 10px 20px;
+        background: #e5e5ea;
+        color: #1c1c1e;
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .modal-close-btn:hover { background: #d1d1d6; }
 
       /* Empty State */
       .empty-state {
         text-align: center;
         padding: 60px 20px;
         color: #8e8e93;
+        grid-column: 1 / -1;
       }
 
-      .empty-state svg {
-        width: 64px;
-        height: 64px;
-        margin-bottom: 16px;
-        opacity: 0.5;
-      }
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #c7c7cc; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #8e8e93; }
 
-      .empty-state h3 {
-        font-size: 18px;
-        font-weight: 600;
-        margin-bottom: 8px;
-        color: #3c3c43;
-      }
-
-      .empty-state p {
-        font-size: 14px;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        header h1 {
-          font-size: 24px;
-        }
-
-        .stats-bar {
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .nav-links {
-          flex-direction: column;
-        }
-
-        .nav-link {
-          width: 100%;
-          justify-content: center;
-        }
-
-        .controls-bar {
-          flex-direction: column;
-        }
-
-        .search-container {
-          width: 100%;
-        }
-
-        #agents-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .modal-content {
-          max-width: 100%;
-          max-height: 95vh;
-        }
-
-        .modal-body {
-          padding: 16px;
-        }
-
-        .modal-title {
-          font-size: 18px;
-        }
-      }
     </style>
-  </head>
+</head>
+<body>
 
-  <body>
     <div class="container">
-      <!-- Header -->
-      <header>
-        <h1>Google ADK 代理市集</h1>
-        <p>探索專案實現與整合社群打造的 AI 助手</p>
+        <!-- Header -->
+        <header>
+            <img src="assets/adk.png" alt="ADK Logo" class="header-icon">
+            <h1>Google ADK Agent Marketplace</h1>
+            <p>Discover, Integrate, and Deploy AI Agents</p>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-          <div class="stat-item">
-            <svg class="stat-icon" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-              ></path>
-            </svg>
-            <span>總計：<strong id="total-count">0</strong> 個代理</span>
-          </div>
-          <div class="stat-item">
-            <svg class="stat-icon" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fill-rule="evenodd"
-                d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
-            <span id="agent-types-count">0 種類型</span>
-          </div>
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <i data-lucide="bot" class="w-5 h-5 mr-2"></i>
+                    <span id="total-agents">0 Agents</span>
+                </div>
+                <div class="stat-item">
+                    <i data-lucide="wrench" class="w-5 h-5 mr-2"></i>
+                    <span id="total-tools">0 Tools</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <div class="nav-links">
+            <a href="../index.html" class="nav-link">
+                <i data-lucide="home" class="w-4 h-4"></i> 回首頁
+            </a>
+            <a href="https://github.com/lastingyeh/google-adk-study" target="_blank" class="nav-link">
+                <i data-lucide="github" class="w-4 h-4"></i> GitHub Repo
+            </a>
         </div>
-      </header>
 
-      <!-- Navigation Links -->
-      <div class="nav-links">
-        <a href="../index.html" class="nav-link">
-          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 19l-7-7m0 0l7-7m-7 7h18"
-            ></path>
-          </svg>
-          返回學習儀表板
-        </a>
-      </div>
-
-      <!-- Search & View Controls -->
-      <div class="controls-bar">
-        <div class="search-container">
-          <svg
-            class="search-icon"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            ></path>
-          </svg>
-          <input
-            type="text"
-            id="search-input"
-            class="search-input"
-            placeholder="搜尋代理名稱、功能或工具..."
-          />
-          <button class="clear-btn" id="clear-btn">×</button>
+        <!-- Controls -->
+        <div class="controls-bar">
+            <div class="search-container">
+                <i data-lucide="search" class="search-icon"></i>
+                <input type="text" id="search-input" class="search-input" placeholder="Search agents, descriptions, or tags...">
+            </div>
+            <div class="filters-container">
+                <select id="model-filter">
+                    <option value="">All Models</option>
+                </select>
+                <select id="tag-filter">
+                    <option value="">All Tags</option>
+                </select>
+                <select id="type-filter">
+                    <option value="">All Types</option>
+                </select>
+            </div>
         </div>
-      </div>
 
-      <!-- Agent Cards Container -->
-      <div id="agents-grid">
-        <!-- JavaScript 將在此處動態插入卡片 -->
-      </div>
+        <!-- Grid -->
+        <div id="agents-grid" class="agents-grid">
+            <!-- Agent Cards will be injected here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state hidden">
+            <i data-lucide="search-x" class="w-16 h-16 mx-auto mb-4 opacity-50"></i>
+            <h3 class="text-lg font-medium text-slate-900">No agents found</h3>
+            <p>Try adjusting your search or filters</p>
+        </div>
+
     </div>
 
-    <!-- Detail Modal -->
-    <div class="modal" id="detail-modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <div class="modal-title-group">
-            <span class="modal-type-badge" id="modal-type"></span>
-            <h2 class="modal-title" id="modal-title"></h2>
-            <div id="modal-path"></div>
-          </div>
-          <button class="close-btn" id="close-btn">×</button>
+    <!-- Modal -->
+    <div id="agent-modal" class="modal">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h2 class="modal-title" id="modal-title">Agent Name</h2>
+                    <div class="modal-subtitle" id="modal-subtitle">
+                        <!-- Type and Model badges will go here -->
+                    </div>
+                </div>
+                <button type="button" id="modal-close" class="close-btn">×</button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body" id="modal-content">
+                <!-- Content injected dynamically -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" id="modal-close-btn" class="modal-close-btn">
+                    Close
+                </button>
+            </div>
         </div>
-        <div class="modal-body" id="modal-body">
-          <!-- 動態內容將在此處填入 -->
-        </div>
-      </div>
     </div>
 
-    <!-- JavaScript 邏輯 -->
+    <!-- Data & Scripts -->
     <script>
-      // 代理資料
-      const agentsData = [
-        {
-          name: 'hello-agent',
-          path: 'workspace/python/agents/hello-agent',
-          type: 'Agent',
-          description: '第一個 ADK 代理，使用 Gemini 2.0 Flash 驅動的友善互動型對話助理。',
-          model: 'gemini-2.0-flash',
-          tools: [],
-        },
-        {
-          name: 'finance-assistant',
-          path: 'workspace/python/agents/finance-assistant',
-          type: 'Agent',
-          description: '個人財務助理，可計算複利、貸款支付和儲蓄目標。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'calculate_compound_interest',
-              description: '計算儲蓄或投資的複利',
-            },
-            {
-              name: 'calculate_loan_payment',
-              description: '計算每月貸款還款金額',
-            },
-            {
-              name: 'calculate_monthly_savings',
-              description: '計算為達成目標所需的每月儲蓄金額',
-            },
-          ],
-        },
-        {
-          name: 'chuck-norris-agent',
-          path: 'workspace/python/agents/chuck-norris-agent',
-          type: 'Agent',
-          description: '展示 OpenAPI 工具整合的幽默代理，提供笑話與搜索功能。',
-          model: 'gemini-2.0-flash',
-          toolsets: [
-            {
-              name: 'chuck_norris_toolset',
-              type: 'OpenAPIToolset',
-            },
-          ],
-        },
-        {
-          name: 'blog-pipeline',
-          path: 'workspace/python/agents/blog-pipeline',
-          type: 'SequentialAgent',
-          description: '循序工作流程的部落格文章創建管線，按嚴格順序串連多個代理。',
-          sub_agents: [
-            {
-              name: 'researcher',
-              description: '研究主題並收集關鍵事實',
-            },
-            {
-              name: 'writer',
-              description: '根據研究撰寫部落格文章草稿',
-            },
-            {
-              name: 'editor',
-              description: '審查部落格文章草稿並提供回饋',
-            },
-            {
-              name: 'formatter',
-              description: '應用編輯回饋並格式化最終文章',
-            },
-          ],
-        },
-        {
-          name: 'travel-planner',
-          path: 'workspace/python/agents/travel-planner',
-          type: 'ParallelAgent',
-          description: '平行處理旅遊規劃系統，同時搜尋航班、飯店和活動並整合行程。',
-          sub_agents: [
-            {
-              name: 'ParallelSearch',
-              type: 'ParallelAgent',
-              sub_agents: [
-                {
-                  name: 'flight_finder',
-                },
-                {
-                  name: 'hotel_finder',
-                },
-                {
-                  name: 'activity_finder',
-                },
-              ],
-            },
-            {
-              name: 'itinerary_builder',
-            },
-          ],
-        },
-        {
-          name: 'content-publisher',
-          path: 'workspace/python/agents/content-publisher',
-          type: 'SequentialAgent',
-          description: '結合平行研究與順序創作的多代理內容發布系統。',
-          sub_agents: [
-            {
-              name: 'ParallelResearch',
-              type: 'ParallelAgent',
-              sub_agents: [
-                {
-                  name: 'NewsPipeline',
-                  type: 'SequentialAgent',
-                  sub_agents: ['news_fetcher', 'news_summarizer'],
-                },
-                {
-                  name: 'SocialPipeline',
-                  type: 'SequentialAgent',
-                  sub_agents: ['social_monitor', 'sentiment_analyzer'],
-                },
-                {
-                  name: 'ExpertPipeline',
-                  type: 'SequentialAgent',
-                  sub_agents: ['expert_finder', 'quote_extractor'],
-                },
-              ],
-            },
-            {
-              name: 'article_writer',
-            },
-            {
-              name: 'article_editor',
-            },
-            {
-              name: 'article_formatter',
-            },
-          ],
-        },
-        {
-          name: 'essay-refiner',
-          path: 'workspace/python/agents/essay-refiner',
-          type: 'SequentialAgent',
-          description: '具備自我批判與迭代精煉能力的循環代理系統，用於提升文章品質。',
-          sub_agents: [
-            {
-              name: 'InitialWriter',
-            },
-            {
-              name: 'RefinementLoop',
-              type: 'LoopAgent',
-              sub_agents: [
-                {
-                  name: 'Critic',
-                },
-                {
-                  name: 'Refiner',
-                  tools: ['exit_loop'],
-                },
-              ],
-            },
-          ],
-        },
-        {
-          name: 'personal-tutor',
-          path: 'workspace/python/agents/personal-tutor',
-          type: 'Agent',
-          description: '個人學習導師，展示多層次狀態與記憶管理能力。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'set_user_preferences',
-              description: '設定用戶的學習偏好',
-            },
-            {
-              name: 'record_topic_completion',
-              description: '記錄學習主題的完成情況',
-            },
-            {
-              name: 'get_user_progress',
-              description: '檢索用戶的當前進度',
-            },
-            {
-              name: 'start_learning_session',
-              description: '開始新的學習會話',
-            },
-            {
-              name: 'calculate_quiz_grade',
-              description: '計算測驗的成績',
-            },
-            {
-              name: 'search_past_lessons',
-              description: '搜尋過去的課程',
-            },
-          ],
-        },
-        {
-          name: 'content-moderator',
-          path: 'workspace/python/agents/content-moderator',
-          type: 'Agent',
-          description: '內容審核系統，展示回呼機制與防護措施以過濾不當內容。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'generate_text',
-              description: '根據主題和字數生成文本',
-            },
-            {
-              name: 'check_grammar',
-              description: '檢查所提供文本的語法',
-            },
-            {
-              name: 'get_usage_stats',
-              description: '返回工具上下文的使用統計數據',
-            },
-          ],
-          callbacks: [
-            'before_agent_callback',
-            'after_agent_callback',
-            'before_model_callback',
-            'after_model_callback',
-            'before_tool_callback',
-            'after_tool_callback',
-          ],
-        },
-        {
-          name: 'support-agent',
-          path: 'workspace/python/agents/support-agent',
-          type: 'Agent',
-          description: '客戶支援代理，展示 ADK 代理的全面測試模式與評估框架。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'search_knowledge_base',
-              description: '在知識庫中搜尋解決方案',
-            },
-            {
-              name: 'create_ticket',
-              description: '創建新的支援工單',
-            },
-            {
-              name: 'check_ticket_status',
-              description: '檢查現有工單的狀態',
-            },
-          ],
-        },
-        {
-          name: 'grounding-agent',
-          path: 'workspace/python/agents/grounding-agent',
-          type: 'Agent',
-          description: '使用 Google 搜尋與地圖功能的 Grounding 代理，提供即時資訊。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'google_search',
-              description: '執行 Google 搜尋',
-            },
-            {
-              name: 'google_maps_grounding (Conditional)',
-              description: '使用 Google 地圖數據提供 grounding',
-            },
-            {
-              name: 'analyze_search_results',
-              description: '分析搜尋結果',
-            },
-            {
-              name: 'save_research_findings',
-              description: '保存研究發現',
-            },
-          ],
-        },
-        {
-          name: 'strategic-solver',
-          path: 'workspace/python/agents/strategic-solver',
-          type: 'Agent',
-          description: '策略規劃代理，展示不同類型的規劃器以解決複雜商業問題。',
-          model: 'gemini-2.0-flash',
-          planner: 'PlanReActPlanner',
-          tools: [
-            {
-              name: 'analyze_market',
-              description: '分析市場趨勢和數據',
-            },
-            {
-              name: 'calculate_roi',
-              description: '計算投資回報率 (ROI)',
-            },
-            {
-              name: 'assess_risk',
-              description: '評估潛在的業務風險',
-            },
-            {
-              name: 'save_strategy_report',
-              description: '保存生成的策略報告',
-            },
-          ],
-        },
-        {
-          name: 'code-calculator',
-          path: 'workspace/python/agents/code-calculator',
-          type: 'Agent',
-          description: '金融計算器，具備編寫並執行 Python 程式碼以進行精確計算的能力。',
-          model: 'gemini-2.0-flash',
-          capabilities: ['BuiltInCodeExecutor'],
-        },
-        {
-          name: 'streaming-agent',
-          path: 'workspace/python/agents/streaming-agent',
-          type: 'Agent',
-          description: '展示即時串流回應與 SSE 技術的聊天代理，模擬即時互動體驗。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'format_streaming_info',
-              description: '格式化用於串流回應的資訊',
-            },
-            {
-              name: 'analyze_streaming_performance',
-              description: '分析串流性能指標',
-            },
-          ],
-        },
-        {
-          name: 'voice-assistant',
-          path: 'workspace/python/agents/voice-assistant',
-          type: 'Agent',
-          description: '即時語音互動助理，使用 Live API 進行雙向語音串流。',
-          model: 'gemini-2.0-flash-live-001',
-          capabilities: ['音訊錄製/播放', 'Live API 串流'],
-        },
-        {
-          name: 'mcp-agent',
-          path: 'workspace/python/agents/mcp-agent',
-          type: 'Agent',
-          description: '整合 Model Context Protocol (MCP) 的代理，可操作檔案系統與外部資源。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'McpToolset (filesystem)',
-              description: '透過 MCP 提供對檔案系統操作的存取',
-            },
-          ],
-        },
-        {
-          name: 'a2a-orchestrator',
-          path: 'workspace/python/agents/a2a-orchestrator',
-          type: 'Agent',
-          description: '代理對代理 (Agent-to-Agent) 通訊協調器，協調遠端特化代理。',
-          model: 'gemini-2.0-flash',
-          sub_agents: [
-            {
-              name: 'research_specialist',
-              type: 'RemoteA2aAgent',
-            },
-            {
-              name: 'data_analyst',
-              type: 'RemoteA2aAgent',
-            },
-            {
-              name: 'content_writer',
-              type: 'RemoteA2aAgent',
-            },
-          ],
-          tools: [
-            {
-              name: 'check_agent_availability',
-              description: '檢查特定代理是否可用',
-            },
-            {
-              name: 'log_coordination_step',
-              description: '記錄協調過程中的一個步驟',
-            },
-          ],
-        },
-        {
-          name: 'observability-agent',
-          path: 'workspace/python/agents/observability-agent',
-          type: 'Agent',
-          description: '具備全面可觀測性、事件追蹤與監控的客戶服務系統。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'check_order_status',
-              description: '檢查特定訂單的狀態',
-            },
-            {
-              name: 'process_refund',
-              description: '處理訂單的退款',
-            },
-            {
-              name: 'check_inventory',
-              description: '檢查產品的庫存可用性',
-            },
-          ],
-        },
-        {
-          name: 'artifact-agent',
-          path: 'workspace/python/agents/artifact-agent',
-          type: 'Agent',
-          description: '文件處理代理，展示 Artifacts 的儲存、版本控制與檢索功能。',
-          model: 'gemini-1.5-flash',
-          tools: [
-            {
-              name: 'extract_text_tool',
-              description: '從文件中提取文本',
-            },
-            {
-              name: 'summarize_document_tool',
-              description: '總結文件的內容',
-            },
-            {
-              name: 'translate_document_tool',
-              description: '將文件翻譯成另一種語言',
-            },
-            {
-              name: 'create_final_report_tool',
-              description: '從處理過的數據創建最終報告',
-            },
-            {
-              name: 'list_artifacts_tool',
-              description: '列出所有可用的 artifact',
-            },
-            {
-              name: 'load_artifact_tool',
-              description: '載入特定的 artifact',
-            },
-            {
-              name: 'load_artifacts_tool',
-              description: '載入多個 artifact',
-            },
-          ],
-        },
-        {
-          name: 'customer-support',
-          path: 'workspace/python/agents/customer-support',
-          type: 'Agent',
-          description: '使用 YAML 進行宣告式設定的客戶支援代理，無需撰寫 Python 程式碼。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'check_customer_status',
-              description: '檢查客戶的當前狀態',
-            },
-            {
-              name: 'log_interaction',
-              description: '記錄與客戶的新互動',
-            },
-            {
-              name: 'get_order_status',
-              description: '檢索特定訂單的狀態',
-            },
-            {
-              name: 'track_shipment',
-              description: '追蹤訂單的貨運狀態',
-            },
-            {
-              name: 'cancel_order',
-              description: '取消現有訂單',
-            },
-            {
-              name: 'search_knowledge_base',
-              description: '在知識庫中搜尋答案',
-            },
-            {
-              name: 'run_diagnostic',
-              description: '運行診斷測試以進行故障排除',
-            },
-            {
-              name: 'create_ticket',
-              description: '創建新的支援工單',
-            },
-            {
-              name: 'get_billing_history',
-              description: '檢索客戶的帳單歷史記錄',
-            },
-            {
-              name: 'process_refund',
-              description: '處理訂單的退款',
-            },
-            {
-              name: 'update_payment_method',
-              description: '更新客戶的付款方式',
-            },
-          ],
-        },
-        {
-          name: 'vision-catalog-agent',
-          path: 'workspace/python/agents/vision-catalog-agent',
-          type: 'Agent',
-          description: '多模態視覺代理，用於產品目錄分析與行銷內容生成。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'list_sample_images',
-              description: '列出可供處理的範例圖片',
-            },
-            {
-              name: 'generate_product_mockup',
-              description: '生成產品的視覺模型',
-            },
-            {
-              name: 'analyze_uploaded_image',
-              description: '分析用戶上傳的圖片',
-            },
-            {
-              name: 'analyze_product_image',
-              description: '分析產品圖片以獲取詳細資訊',
-            },
-            {
-              name: 'compare_product_images',
-              description: '比較兩張產品圖片',
-            },
-          ],
-        },
-        {
-          name: 'model-selector',
-          path: 'workspace/python/agents/model-selector',
-          type: 'Agent',
-          description: '模型選擇與最佳化代理，協助比較與推薦適合的使用情境模型。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'recommend_model_for_use_case',
-              description: '為特定使用案例推薦 AI 模型',
-            },
-            {
-              name: 'get_model_info',
-              description: '檢索特定 AI 模型的資訊',
-            },
-          ],
-        },
-        {
-          name: 'software-bug-assistant',
-          path: 'workspace/python/agents/software-bug-assistant',
-          type: 'Agent',
-          description: '軟體錯誤追蹤與管理助手，整合企業級資料庫與向量搜尋。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'get_current_date',
-              description: '獲取當前日期',
-            },
-            {
-              name: 'search_tool (AgentTool)',
-              description: '代理的搜尋工具包裝器',
-            },
-            {
-              name: 'langchain_tool (StackExchange)',
-              description: '透過 LangChain 的 StackExchange 搜尋工具',
-            },
-            {
-              name: 'toolbox_tools (Google Cloud Toolbox)',
-              description: 'Google Cloud Toolbox 工具集',
-            },
-            {
-              name: 'mcp_tools (GitHub MCP)',
-              description: '用於程式碼互動的 GitHub MCP 工具',
-            },
-          ],
-        },
-        {
-          name: 'youtube-shorts-assistant',
-          path: 'workspace/python/agents/youtube-shorts-assistant',
-          type: 'LlmAgent',
-          description: '自動化 YouTube Shorts 短影音內容創作的多代理系統。',
-          model: 'gemini-2.0-flash-001',
-          tools: [
-            {
-              name: 'scriptwriter_agent (AgentTool)',
-              description: '負責撰寫影片腳本的代理',
-            },
-            {
-              name: 'visualizer_agent (AgentTool)',
-              description: '負責創建視覺概念的代理',
-            },
-            {
-              name: 'formatter_agent (AgentTool)',
-              description: '負責格式化最終內容的代理',
-            },
-          ],
-        },
-        {
-          name: 'production-agent',
-          path: 'workspace/python/agents/production-agent',
-          type: 'Agent',
-          description: '展示 ADK 代理部署策略和最佳實務的生產部署代理。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'check_deployment_status',
-              description: '檢查部署狀態',
-            },
-            {
-              name: 'get_deployment_options',
-              description: '獲取可用的部署選項',
-            },
-            {
-              name: 'get_best_practices',
-              description: '檢索部署最佳實踐',
-            },
-          ],
-        },
-        {
-          name: 'observability-plugins-agent',
-          path: 'workspace/python/agents/observability-plugins-agent',
-          type: 'Agent',
-          description: '企業級可觀測性系統，展示 ADK 的外掛程式架構。',
-          model: 'gemini-2.5-flash',
-          plugins: [
-            'MetricsCollectorPlugin',
-            'AlertingPlugin',
-            'PerformanceProfilerPlugin',
-          ],
-        },
-        {
-          name: 'best-practices-agent',
-          path: 'workspace/python/agents/best-practices-agent',
-          type: 'Agent',
-          description: '展示建置生產就緒代理的完整最佳實踐，包含安全性與可靠性模式。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'validate_input_tool',
-              description: '根據 schema 驗證輸入數據',
-            },
-            {
-              name: 'retry_with_backoff_tool',
-              description: '使用指數退避重試操作',
-            },
-            {
-              name: 'circuit_breaker_call_tool',
-              description: '執行包裝在斷路器中的呼叫',
-            },
-            {
-              name: 'cache_operation_tool',
-              description: '執行快取操作',
-            },
-            {
-              name: 'batch_process_tool',
-              description: '批次處理項目',
-            },
-            {
-              name: 'health_check_tool',
-              description: '檢查系統的健康狀況',
-            },
-            {
-              name: 'get_metrics_tool',
-              description: '檢索系統指標',
-            },
-          ],
-        },
-        {
-          name: 'enterprise-agent',
-          path: 'workspace/python/agents/enterprise-agent',
-          type: 'Agent',
-          description: '使用 Gemini Enterprise 在企業規模部署和管理的 ADK 代理。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'check_company_size',
-              description: '檢查公司規模',
-            },
-            {
-              name: 'score_lead',
-              description: '根據標準對銷售潛在客戶進行評分',
-            },
-            {
-              name: 'get_competitive_intel',
-              description: '收集競爭情報',
-            },
-          ],
-        },
-        {
-          name: 'third-party-agent',
-          path: 'workspace/python/agents/third-party-agent',
-          type: 'Agent',
-          description: '展示如何將第三方框架工具 (LangChain, CrewAI) 整合到 ADK 代理中。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'create_wikipedia_tool',
-              description: '創建一個用於 Wikipedia 搜尋的工具',
-            },
-            {
-              name: 'create_web_search_tool',
-              description: '創建一個用於一般網路搜尋的工具',
-            },
-            {
-              name: 'create_directory_read_tool',
-              description: '創建一個用於讀取目錄內容的工具',
-            },
-            {
-              name: 'create_file_read_tool',
-              description: '創建一個用於讀取檔案內容的工具',
-            },
-          ],
-        },
-        {
-          name: 'multi-llm-agent',
-          path: 'workspace/python/agents/multi-llm-agent',
-          type: 'Agent',
-          description: '透過 LiteLLM 整合多種 LLM (OpenAI, Claude, Ollama) 的代理。',
-          model: 'openai/gpt-4o-mini',
-          tools: [
-            {
-              name: 'calculate_square',
-              description: '計算一個數字的平方',
-            },
-            {
-              name: 'get_weather',
-              description: '獲取特定城市的天氣',
-            },
-            {
-              name: 'analyze_sentiment',
-              description: '分析文本的情感',
-            },
-          ],
-        },
-        {
-          name: 'customer-support-agent',
-          path: 'workspace/python/agents/customer-support-agent',
-          type: 'Agent',
-          description: '整合 Next.js 前端與 AG-UI 的客戶支援代理，展示生成式 UI 與人機協作功能。',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'search_knowledge_base',
-              description: '搜尋知識庫以尋找相關資訊',
-            },
-            {
-              name: 'lookup_order_status',
-              description: '查詢客戶訂單的狀態',
-            },
-            {
-              name: 'create_support_ticket',
-              description: '為複雜問題建立支援工單',
-            },
-            {
-              name: 'get_product_details',
-              description: '從資料庫獲取產品詳情',
-            },
-          ],
-        },
-        {
-          name: 'data-analysis-dashboard',
-          path: 'workspace/python/agents/data-analysis-dashboard/agent',
-          type: 'Agent',
-          description: '結合 pandas 與 Chart.js 視覺化的 CSV 數據分析 ADK agent',
-          model: 'gemini-2.0-flash-exp',
-          tools: [
-            {
-              name: 'load_csv_data',
-              description: '將 CSV 數據載入記憶體以進行分析',
-            },
-            {
-              name: 'analyze_data',
-              description: '對載入的數據集執行統計分析',
-            },
-            {
-              name: 'create_chart',
-              description: '生成視覺化圖表數據',
-            },
-          ],
-        },
-        {
-          name: 'data-analysis-agent',
-          path: 'workspace/python/agents/data-analysis-agent',
-          type: 'Agent',
-          description: '整合 Streamlit 與 ADK 的資料分析助理，實現檔案分析、圖表生成與對話。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'analyze_column',
-              description: '統計分析',
-            },
-            {
-              name: 'calculate_correlation',
-              description: '尋找關聯性',
-            },
-            {
-              name: 'filter_data',
-              description: '子集探索',
-            },
-            {
-              name: 'get_dataset_summary',
-              description: '概覽資訊',
-            },
-          ],
-        },
-        {
-          name: 'support-bot',
-          path: 'workspace/python/agents/support-bot',
-          type: 'Agent',
-          description: '協助處理公司政策與問題的團隊支援助理。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'search_knowledge_base',
-              description: '搜尋公司知識庫以獲取資訊',
-            },
-            {
-              name: 'create_support_ticket',
-              description: '為複雜問題建立支援工單',
-            },
-          ],
-        },
-        {
-          name: 'pubsub-agent',
-          path: 'workspace/python/agents/pubsub-agent',
-          type: 'Agent',
-          description: '整合 Pub/Sub 與 ADK 建構事件驅動文件處理系統。透過協調者路由至專家代理，並以 Pydantic 確保結構化輸出。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'financial_analyzer',
-              description: '分析財務報告、收益、預算',
-            },
-            {
-              name: 'technical_analyzer',
-              description: '分析技術文件、架構、規格書',
-            },
-            {
-              name: 'sales_analyzer',
-              description: '分析銷售管道、交易、預測',
-            },
-            {
-              name: 'marketing_analyzer',
-              description: '分析行銷活動、參與度指標',
-            },
-          ],
-        },
-        {
-          name: 'commerce-agent-e2e',
-          path: 'workspace/python/agents/commerce-agent-e2e',
-          type: 'Agent',
-          description: '一位個人運動購物禮賓，使用 Google Search 接地與儲存的使用者偏好來提供專家級產品推薦。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'search_products',
-              description: '包裝 Google Search 的 AgentTool',
-            },
-            {
-              name: 'save_preferences',
-              description: '儲存使用者偏好',
-            },
-            {
-              name: 'get_preferences',
-              description: '取得使用者偏好',
-            },
-          ],
-        },
-        {
-          name: 'policy-navigator',
-          path: 'workspace/python/agents/policy-navigator',
-          type: 'Agent',
-          description: '企業合規與政策導航器，利用 File Search 構建 RAG，具自動引用與多代理功能，低成本高效解決企業政策查詢。',
-          model: 'gemini-2.0-flash',
-          sub_agents: [
-            {
-              name: 'document_manager',
-              description: '管理政策文件上傳、組織與 metadata 設定',
-            },
-            {
-              name: 'search_specialist',
-              description: '搜尋公司政策並檢索相關資訊',
-            },
-            {
-              name: 'compliance_advisor',
-              description: '評估合規風險並提供政策指導',
-            },
-            {
-              name: 'report_generator',
-              description: '產生政策摘要、報告與稽核追蹤',
-            },
-          ],
-          tools: [
-            {
-              name: 'upload_policy_documents',
-              description: '將政策文件上傳到 File Search stores',
-            },
-            {
-              name: 'search_policies',
-              description: '對政策文件執行語意搜尋',
-            },
-            {
-              name: 'filter_policies_by_metadata',
-              description: '依部門、類型與日期過濾政策',
-            },
-            {
-              name: 'compare_policies',
-              description: '跨部門比較政策',
-            },
-            {
-              name: 'check_compliance_risk',
-              description: '評估與政策相關的合規風險',
-            },
-            {
-              name: 'extract_policy_requirements',
-              description: '從政策中擷取特定需求',
-            },
-            {
-              name: 'generate_policy_summary',
-              description: '建立簡潔的政策摘要',
-            },
-            {
-              name: 'create_audit_trail',
-              description: '建立稽核追蹤項目',
-            },
-          ],
-        },
-        {
-          name: 'mcp-a2a-master',
-          path: 'workspace/python/agents/mcp-a2a-master/',
-          type: 'Agent',
-          description: 'MCP A2A 多代理系統實戰課程，建構主機代理協調多個專業代理的可擴展架構。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: '_list_agents',
-              description:
-                'A2A 工具：回傳已註冊的 A2A 子代理的代理卡片物件字典列表。',
-            },
-            {
-              name: '_delgate_task',
-              description: '將任務委派給指定的代理。',
-            },
-            {
-              name: 'add_numbers',
-              description: '將兩個數字相加並回傳結果。',
-            },
-            {
-              name: 'terminal_server',
-              description: '在終端機中執行指令並回傳輸出。',
-            },
-          ],
-        },
-        {
-          name: 'math-agent-otel',
-          path: 'workspace/python/agents/math-agent-otel',
-          type: 'Agent',
-          description: '具有 OpenTelemetry 儀表化的 ADK 數學代理,展示分散式追蹤與結構化日誌。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'add_numbers',
-              description: '將兩個數字相加',
-            },
-            {
-              name: 'subtract_numbers',
-              description: '從 a 減去 b',
-            },
-            {
-              name: 'multiply_numbers',
-              description: '將兩個數字相乘',
-            },
-            {
-              name: 'divide_numbers',
-              description: '將 a 除以 b',
-            },
-          ],
-        },
-        {
-          name: 'pack-adk-a2a-agent',
-          path: 'workspace/python/agents/pack-adk-a2a-agent',
-          type: 'Agent',
-          description: '一個可以提供有關天氣和時間資訊的代理程式，支援 A2A 與 FastAPI 整合。',
-          model: 'gemini-3-pro-preview',
-          tools: [
-            {
-              name: 'get_weather',
-              description: '模擬網路搜尋。使用它來獲取天氣資訊。',
-            },
-            {
-              name: 'get_current_time',
-              description: '模擬獲取城市的當前時間。',
-            },
-          ],
-        },
-        {
-          name: 'interactions-api-basic',
-          path: 'workspace/python/agents/interactions-api-basic',
-          type: 'Agent',
-          description: 'Google Interactions API 基礎範例，展示有狀態對話、串流與工具整合。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'google_search',
-              description: '內建 Google 搜尋工具',
-            },
-            {
-              name: 'code_execution',
-              description: '內建 Python 程式碼執行工具',
-            },
-            {
-              name: 'get_weather',
-              description: '演示用的天氣查詢工具 (Function Calling)',
-            },
-          ],
-        },
-        {
-          name: 'context-compaction-agent',
-          path: 'workspace/python/agents/context-compaction-agent',
-          type: 'Agent',
-          description: '展示 Context Compaction (上下文壓縮) 的代理，自動摘要舊的對話歷史記錄以減少 Token 使用量。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'summarize_text',
-              description: '用於摘要文字區塊的實用工具',
-            },
-            {
-              name: 'calculate_complexity',
-              description: '分析問題複雜度以決定回應深度',
-            },
-          ],
-        },
-        {
-          name: 'pause-resume-agent',
-          path: 'workspace/python/agents/pause-resume-agent',
-          type: 'Agent',
-          description: '展示 ADK 1.16.0 中暫停與恢復調用的 Agent，具備狀態檢查點與恢復提示功能。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'process_data_chunk',
-              description: '模擬處理資料塊。',
-            },
-            {
-              name: 'validate_checkpoint',
-              description: '驗證恢復時的檢查點完整性。',
-            },
-            {
-              name: 'get_resumption_hint',
-              description: '提供關於從何處恢復的提示。',
-            },
-          ],
-        },
-        {
-          name: 'tool-use-evaluator',
-          path: 'workspace/python/agents/tool-use-evaluator',
-          type: 'Agent',
-          description:
-            '用於展示工具使用品質 (tool use quality) 評估的代理，展示了良好的工具排序、工具效率與錯誤恢復。',
-          model: 'gemini-2.0-flash',
-          tools: [
-            {
-              name: 'analyze_data',
-              description: '分析資料集 (模擬)',
-            },
-            {
-              name: 'extract_features',
-              description: '從分析數據中提取特徵',
-            },
-            {
-              name: 'validate_quality',
-              description: '驗證特徵品質 (模擬)',
-            },
-            {
-              name: 'apply_model',
-              description: '將機器學習 (ML) 模型應用於特徵',
-            },
-          ],
-        },
-        {
-          name: 'custom-session-agent',
-          path: 'workspace/python/agents/custom-session-agent',
-          type: 'Agent',
-          description:
-            '演示 ADK 中自定義會話服務註冊模式，將 Redis 註冊並作為自定義會話存儲後端。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'describe_session_info',
-              description: '描述會話資訊的工具',
-            },
-            {
-              name: 'test_session_persistence',
-              description: '測試跨請求會話持久化的工具',
-            },
-            {
-              name: 'show_service_registry_info',
-              description: '顯示服務註冊表資訊的工具',
-            },
-            {
-              name: 'get_session_backend_guide',
-              description: '提供 Redis 作為會話後端的指南工具',
-            },
-          ],
-        },
-        {
-          name: 'adk-interactions-integration',
-          path: 'workspace/python/agents/adk-interactions-integration',
-          type: 'Agent',
-          description: '一個展示 Interactions API 整合的 ADK 代理，具備天氣、計算和搜尋工具。',
-          model: 'gemini-2.5-flash',
-          tools: [
-            {
-              name: 'get_current_weather',
-              description: '取得任何地點的天氣資訊',
-            },
-            {
-              name: 'calculate_expression',
-              description: '執行數學運算',
-            },
-            {
-              name: 'search_knowledge_base',
-              description: '搜尋資訊',
-            },
-          ],
-        },
-        {
-          name: 'deep-research-agent',
-          path: 'workspace/python/agents/deep-research-agent',
-          type: 'DeepResearchAgent',
-          description: '深度研究代理 (Deep Research Agent) 的高階介面。支援背景研究任務、輪詢完成狀態、串流結果與進度更新。',
-          model: 'deep-research-pro-preview-12-2025',
-          tools: [
-            {
-              name: 'research',
-              description: '執行完整的研究任務並返回結果',
-            },
-            {
-              name: 'follow_up',
-              description: '針對已完成的研究提出後續問題',
-            },
-          ],
-        },
-      ];
-      // DOM 元素
-      const agentsGrid = document.getElementById('agents-grid');
-      const searchInput = document.getElementById('search-input');
-      const clearBtn = document.getElementById('clear-btn');
-      const totalCount = document.getElementById('total-count');
-      const agentTypesCount = document.getElementById('agent-types-count');
-      const modal = document.getElementById('detail-modal');
-      const modalTitle = document.getElementById('modal-title');
-      const modalType = document.getElementById('modal-type');
-      const modalPath = document.getElementById('modal-path');
-      const modalBody = document.getElementById('modal-body');
-      const closeBtn = document.getElementById('close-btn');
-
-      let filteredData = [...agentsData];
-
-      // 更新統計資訊
-      function updateStats() {
-        totalCount.textContent = filteredData.length;
-        const types = new Set(filteredData.map((a) => a.type));
-        agentTypesCount.textContent = `${types.size} 種類型`;
-      }
-
-      // 渲染代理卡片
-      function renderAgents() {
-        if (filteredData.length === 0) {
-          agentsGrid.innerHTML = `
-            <div class="empty-state">
-              <svg fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-              </svg>
-              <h3>找不到相符的代理</h3>
-              <p>請嘗試其他搜尋關鍵字</p>
-            </div>
-          `;
-          return;
-        }
-
-        agentsGrid.innerHTML = filteredData
-          .map(
-            (agent) => `
-          <div class="agent-card" onclick="showDetail('${agent.name}')">
-            <div class="agent-header">
-              <div class="agent-icon">
-                <img src="assets/adk.png" alt="Agent Icon" />
-              </div>
-              <div class="agent-title-group">
-                <div class="agent-title">${agent.name}</div>
-                <a href="https://github.com/lastingyeh/google-adk-study/tree/master/${
-                  agent.path
-                }"
-                   class="agent-path"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   onclick="event.stopPropagation()"
-                   title="${agent.path}">
-                  <svg fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                  </svg>
-                  <span>${agent.path.split('/').pop()}</span>
-                </a>
-              </div>
-            </div>
-
-            <div class="agent-description">${agent.description}</div>
-
-            <div class="agent-labels">
-              <span class="label-tag type">${agent.type}</span>
-              ${
-                agent.model
-                  ? `<span class="label-tag model">${agent.model}</span>`
-                  : ''
-              }
-            </div>
-
-            <div class="agent-meta">
-              ${
-                agent.tools
-                  ? `
-                <div class="meta-item">
-                  <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"></path>
-                  </svg>
-                  <span>${agent.tools.length} 工具</span>
-                </div>
-              `
-                  : ''
-              }
-              ${
-                agent.sub_agents
-                  ? `
-                <div class="meta-item">
-                  <svg fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"></path>
-                  </svg>
-                  <span>${agent.sub_agents.length} 子代理</span>
-                </div>
-              `
-                  : ''
-              }
-            </div>
-          </div>
-        `
-          )
-          .join('');
-      }
-
-      // 搜尋功能
-      function performSearch(query) {
-        const searchTerm = query.toLowerCase().trim();
-
-        if (searchTerm === '') {
-          filteredData = [...agentsData];
-        } else {
-          filteredData = agentsData.filter((agent) => {
-            const searchableFields = [
-              agent.name,
-              agent.description,
-              agent.type,
-              agent.model,
-              ...(agent.tools || []).map((t) => t.name + ' ' + t.description),
-              ...(agent.sub_agents || []).map((s) => s.name),
-            ]
-              .filter(Boolean)
-              .join(' ')
-              .toLowerCase();
-
-            return searchableFields.includes(searchTerm);
-          });
-        }
-
-        updateStats();
-        renderAgents();
-      }
-
-      // 顯示詳細資訊
-      function showDetail(agentName) {
-        const agent = agentsData.find((a) => a.name === agentName);
-        if (!agent) return;
-
-        modalType.textContent = agent.type;
-        modalTitle.textContent = agent.name;
-        modalPath.innerHTML = `<a href="https://github.com/lastingyeh/google-adk-study/tree/master/${
-          agent.path
-        }"
-          class="modal-path"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="${agent.path}">
-          <svg fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-          </svg>
-          ${agent.path.split('/').pop()}
-        </a>`;
-
-        let bodyHTML = `
-          <div class="detail-section">
-            <h3>
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-              功能描述
-            </h3>
-            <div class="description-box">${agent.description}</div>
-          </div>
-        `;
-
-        // 標籤區
-        const labels = [];
-        if (agent.type) labels.push(agent.type);
-        if (agent.model) labels.push(`Model: ${agent.model}`);
-
-        if (labels.length > 0) {
-          bodyHTML += `
-            <div class="detail-section">
-              <h3>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                </svg>
-                標籤
-              </h3>
-              <div class="modal-labels">
-                ${labels
-                  .map((l) => `<span class="modal-label-tag">${l}</span>`)
-                  .join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        // 工具列表
-        if (agent.tools && agent.tools.length > 0) {
-          bodyHTML += `
-            <div class="detail-section">
-              <h3>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                可用工具 (${agent.tools.length})
-              </h3>
-              <div class="detail-list">
-                ${agent.tools
-                  .map(
-                    (tool) => `
-                  <div class="detail-item">
-                    <strong>${tool.name}</strong>
-                    <p>${tool.description}</p>
-                  </div>
-                `
-                  )
-                  .join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        // 子代理列表
-        if (agent.sub_agents && agent.sub_agents.length > 0) {
-          bodyHTML += `
-            <div class="detail-section">
-              <h3>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                子代理 (${agent.sub_agents.length})
-              </h3>
-              <div class="detail-list">
-                ${agent.sub_agents
-                  .map(
-                    (sub) => `
-                  <div class="detail-item">
-                    <strong>${sub.name}</strong>
-                    ${sub.description ? `<p>${sub.description}</p>` : ''}
-                  </div>
-                `
-                  )
-                  .join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        // 其他功能
-        const extras = [];
-        if (agent.capabilities) {
-          extras.push(`Capabilities: ${agent.capabilities.join(', ')}`);
-        }
-        if (agent.toolsets) {
-          extras.push(
-            `Toolsets: ${agent.toolsets
-              .map((t) => `${t.name} (${t.type})`)
-              .join(', ')}`
-          );
-        }
-        if (agent.callbacks) {
-          extras.push(`Callbacks: ${agent.callbacks.length} 個回調`);
-        }
-
-        if (extras.length > 0) {
-          bodyHTML += `
-            <div class="detail-section">
-              <h3>
-                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                </svg>
-                其他功能
-              </h3>
-              <div class="detail-list">
-                ${extras
-                  .map((e) => `<div class="detail-item">${e}</div>`)
-                  .join('')}
-              </div>
-            </div>
-          `;
-        }
-
-        modalBody.innerHTML = bodyHTML;
-        modal.classList.add('show');
-      }
-
-      // 關閉 Modal
-      function closeModal() {
-        modal.classList.remove('show');
-      }
-
-      // 事件監聽
-      searchInput.addEventListener('input', (e) => {
-        performSearch(e.target.value);
-      });
-
-      clearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        performSearch('');
-      });
-
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
-      });
-
-      closeBtn.addEventListener('click', closeModal);
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
-          closeModal();
-        }
-      });
-
-      // 初始化
-      updateStats();
-      renderAgents();
+        const agentsData = [{"name":"A2a Orchestrator","description":"作為協調代理，依官方A2A協定調度研究、分析與寫作子代理，整合結果交付。","code_ref":"workspace/python/agents/a2a-orchestrator","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"check_agent_availability","type":"FunctionTool","description":"向遠端代理的 agent-card URL 發送一個 HTTP GET 請求，確認代理伺服器是否正在運行且可存取。"},{"name":"log_coordination_step","type":"FunctionTool","description":"在複雜的多代理工作流程中，此函式提供了一個簡單的方法來記錄協調器在每個階段的行為，方便開發者追蹤流程。"}],"generate_content_config":{"temperature":0.5,"max_output_tokens":2048},"server-port":8000,"tags":["a2a","orchestrator","fastapi"],"sub_agents":[{"name":"Research Specialist","description":"進行網路研究與事實查核。","type":"RemoteA2aAgent","models":["gemini-2.0-flash"],"tools":[{"name":"research_topic","type":"FunctionTool","description":"研究特定主題並提供詳細的發現。"},{"name":"fact_check","type":"FunctionTool","description":"對特定的聲明或陳述進行事實查核。"}],"generate_content_config":{"temperature":0.3,"max_output_tokens":1500},"server-port":8001,"tags":["to_a2a","research","fact-checking","fastapi"]},{"name":"Content Writer","description":"創作書面內容與摘要。","type":"RemoteA2aAgent","models":["gemini-2.0-flash"],"tools":[{"name":"create_content","type":"FunctionTool","description":"根據指定的類型與主題創作各種類型的內容。"},{"name":"format_content","type":"FunctionTool","description":"將現有內容格式化為特定的格式或樣式。"}],"generate_content_config":{"temperature":0.7,"max_output_tokens":2000},"server-port":8003,"tags":["to_a2a","writing","content-creation","fastapi"]},{"name":"Analysis Agent","description":"您是一位專注於從資訊與資料中提取洞察的資料分析專家。","type":"RemoteA2aAgent","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_data","type":"FunctionTool","description":"分析資料並產生洞察與建議。"},{"name":"generate_insights","type":"FunctionTool","description":"針對特定主題產生策略性洞察與建議。"}],"generate_content_config":{"temperature":0.4,"max_output_tokens":1500},"server-port":8002,"tags":["to_a2a","analysis","data-insights","fastapi"]}]},{"name":"ADK Interactions Agent","description":"一個展示 Interactions API 整合的 ADK 代理，具備天氣、計算和搜尋工具。","code_ref":"workspace/python/agents/adk-interactions-integration","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"get_current_weather","type":"FunctionTool","description":"取得特定地點的目前天氣。"},{"name":"calculate_expression","type":"FunctionTool","description":"安全地計算數學表達式。"},{"name":"search_knowledge_base","type":"FunctionTool","description":"在知識庫中搜尋資訊。"}],"server-port":8000,"tags":["use_interactions_api","gemini","model","agent-factory"]},{"name":"Artifact Agent","description":"您是一個具備 Artifacts 儲存功能的進階文件處理代理程式。","code_ref":"workspace/python/agents/artifact-agent","type":"Agent","models":["gemini-1.5-flash"],"tools":[{"name":"extract_text_tool","type":"FunctionTool","description":"將文件文字提取並儲存為Artifacts。"},{"name":"summarize_document_tool","type":"FunctionTool","description":"生成文件摘要並將其儲存為Artifacts。"},{"name":"translate_document_tool","type":"FunctionTool","description":"將文件文字翻譯成目標語言並儲存為Artifacts。"},{"name":"create_final_report_tool","type":"FunctionTool","description":"在知識庫中搜尋資訊。"},{"name":"list_artifacts_tool","type":"FunctionTool","description":"在知識庫中搜尋資訊。"},{"name":"load_artifact_tool","type":"FunctionTool","description":"按檔名和可選的版本號載入特定Artifact。"},{"name":"load_artifacts_tool","type":"LoadArtifactsTool","description":"用於對話式Artifacts存取的內建工具。"}],"server-port":8000,"tags":["tool_context","artifacts","load_artifacts_tool","translate","summarize","extract_text","report"]},{"name":"Best Practices Agent","description":"展示安全性、效能、可靠性和可觀測性最佳實踐的生產就緒代理。","code_ref":"workspace/python/agents/best-practices-agent","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"validate_input_tool","type":"FunctionTool","description":"透過綜合檢查驗證使用者輸入。"},{"name":"retry_with_backoff_tool","type":"FunctionTool","description":"執行具有重試邏輯和指數退避的操作。"},{"name":"circuit_breaker_call_tool","type":"FunctionTool","description":"使用斷路器保護呼叫外部服務。"},{"name":"cache_operation_tool","type":"FunctionTool","description":"執行快取操作以進行效能最佳化。"},{"name":"batch_process_tool","type":"FunctionTool","description":"批次處理多個項目以提升效率。"},{"name":"health_check_tool","type":"FunctionTool","description":"執行綜合健康檢查。"},{"name":"get_metrics_tool","type":"FunctionTool","description":"取得當前系統指標。"}],"server-port":8000,"tags":["security","validation","reliability","resilience","performance","observability","monitoring","circuit-breaker","cache","batch-processing"]},{"name":"Blog Creation Pipeline","description":"從研究到發布的完整部落格文章創建流水線。","code_ref":"workspace/python/agents/blog-pipeline","type":"SequentialAgent","server-port":8000,"tags":["sequential-workflow","pipeline","blog-creation"],"sub_agents":[{"name":"researcher","description":"研究主題並收集關鍵資訊。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"research_findings","tags":["research"]},{"name":"writer","description":"根據研究結果撰寫部落格文章草稿。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"draft_post","tags":["writing","drafting"]},{"name":"editor","description":"審閱部落格文章草稿並提供編輯回饋。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"editorial_feedback","tags":["editing","review"]},{"name":"formatter","description":"應用編輯回饋並格式化最終部落格文章。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"final_post","tags":["formatting","markdown"]}]},{"name":"Chuck Norris Agent","description":"查克·諾里斯笑話助理，可以使用 OpenAPI 工具從查克·諾里斯 API 檢索笑話/事實。","code_ref":"workspace/python/agents/chuck-norris-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"get_random_joke","type":"OpenAPITool","description":"取得隨機的查克·諾里斯笑話"},{"name":"search_jokes","type":"OpenAPITool","description":"搜尋笑話"},{"name":"get_categories","type":"OpenAPITool","description":"取得所有笑話類別"}],"server-port":8000,"tags":["openapi","jokes","chuck-norris","open-api-toolset"]},{"name":"Financial Calculator","description":"具備 Python 程式碼執行能力的專業金融計算器","code_ref":"workspace/python/agents/code-calculator","type":"Agent","models":["gemini-2.0-flash"],"code_executor":{"name":"builtin-code-executor","type":"BuiltInCodeExecutor","description":"使用內建的 Python 程式碼執行器來進行精確的金融計算。"},"generate_content_config":{"temperature":0.1,"max_output_tokens":2048},"server-port":8000,"tags":["financial-calculator","builtin-code-executor","python","precise-computation"]},{"name":"Commerce Agent","description":"一位個人運動購物禮賓，使用 Google Search Grounding 與儲存的使用者偏好來提供專家級產品推薦。此代理還展示了使用 SQLite 的會話持久性。","code_ref":"workspace/python/agents/commerce-agent-e2e","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"search_products","type":"AgentTool","description":"使用帶有 Grounding 的 Google Search 搜尋體育產品。"},{"name":"save_preferences","type":"FunctionTool","description":"為個人化推薦儲存使用者偏好 (運動、預算、經驗水平)。"},{"name":"get_preferences","type":"FunctionTool","description":"檢索已儲存的使用者偏好。"}],"server-port":8000,"tags":["commerce","google-search","preferences","session-persistence","sqlite","agent-tool"],"sub_agents":[{"name":"Product Search Agent","description":"使用帶有 Grounding 的 Google Search 搜尋體育產品。","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"google_search","type":"GoogleSearchAgentTool","description":"一個包裝了僅使用 google_search 工具的子代理的工具。"}],"server-port":"none","tags":["google-search","search_products","grounding"]}]},{"name":"Content Moderator","description":"具備安全防護、驗證與監控功能的內容審查助理，展示適用於生產環境的回呼模式。","code_ref":"workspace/python/agents/content-moderator","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"generate_text","type":"FunctionTool","description":"依指定主題與字數生成文字（示範版未串接真正模型）。"},{"name":"check_grammar","type":"FunctionTool","description":"檢查語法並提供可能錯誤數（簡化示範：每 10 個字視為 1 個潛在問題）。"},{"name":"get_usage_stats","type":"FunctionTool","description":"從狀態（state）中取得使用者統計資料，示範回呼如何累積指標。"}],"before_agent_callback":[{"name":"before_agent_callback","type":"BeforeAgentCallback","description":"1.[Before Agent]-這是最早執行的回呼，用於全域檢查與初始化。"}],"before_model_callback":[{"name":"before_model_callback","type":"BeforeModelCallback","description":"2.[Before Model]-這是內容安全的核心檢查點，可攔截不當請求並修改提示詞。"}],"before_tool_callback":[{"name":"before_tool_callback","type":"BeforeToolCallback","description":"3.[Before Tool]-工具層級的安全閘門，確保參數合法且使用量在限制內。"}],"after_tool_callback":[{"name":"after_tool_callback","type":"AfterToolCallback","description":"4.[After Tool]-工具結果的後處理與記錄點。"}],"after_model_callback":[{"name":"after_model_callback","type":"AfterModelCallback","description":"5.[After Model]-這是輸出過濾的關鍵點，確保回應內容符合隱私與安全標準。"}],"after_agent_callback":[{"name":"after_agent_callback","type":"AfterAgentCallback","description":"6.[After Agent]-最後執行的回呼，用於收尾與最終修改。"}],"server-port":8000,"output_key":"last_response","tags":["callbacks","guardrails","validation","logging","pii-removal","metrics-tracking","security","content-moderation"]},{"name":"Content Publisher","description":"完整的內容發布系統，具有並行研究和循序創作功能","code_ref":"workspace/python/agents/content-publisher","type":"SequentialAgent","server-port":8000,"tags":["multi-agent","sequential-workflow","parallel-research","content-creation"],"sub_agents":[{"name":"ParallelResearch","description":"同時執行所有研究管線","type":"ParallelAgent","tags":["parallel-research","pipeline"],"sub_agents":[{"name":"NewsPipeline","description":"取得並總結新聞","type":"SequentialAgent","tags":["news","research","pipeline"],"sub_agents":[{"name":"news_fetcher","description":"使用 Google 搜尋取得最新新聞文章","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"google_search","type":"GoogleSearchTool","description":"執行 Google 搜尋"}],"output_key":"raw_news","tags":["news","research","fetch"]},{"name":"news_summarizer","description":"總結關鍵新聞要點","type":"Agent","models":["gemini-2.0-flash"],"output_key":"news_summary","tags":["news","research","summary"]}]},{"name":"SocialPipeline","description":"監控並分析社群媒體","type":"SequentialAgent","tags":["social-media","research","pipeline"],"sub_agents":[{"name":"social_monitor","description":"使用 Google 搜尋監控社群媒體趨勢","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"google_search","type":"GoogleSearchTool","description":"執行 Google 搜尋"}],"output_key":"raw_social","tags":["social-media","research","monitor"]},{"name":"sentiment_analyzer","description":"分析社群情緒","type":"Agent","models":["gemini-2.0-flash"],"output_key":"social_insights","tags":["social-media","research","sentiment-analysis"]}]},{"name":"ExpertPipeline","description":"尋找並提取專家意見","type":"SequentialAgent","tags":["expert","research","pipeline"],"sub_agents":[{"name":"expert_finder","description":"使用 Google 搜尋尋找專家意見","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"google_search","type":"GoogleSearchTool","description":"執行 Google 搜尋"}],"output_key":"raw_experts","tags":["expert","research","find"]},{"name":"quote_extractor","description":"提取可引用的見解","type":"Agent","models":["gemini-2.0-flash"],"output_key":"expert_quotes","tags":["expert","research","extract"]}]}]},{"name":"article_writer","description":"從所有研究撰寫文章草稿","type":"Agent","models":["gemini-2.0-flash"],"output_key":"draft_article","tags":["writing","drafting"]},{"name":"article_editor","description":"編輯文章以提升清晰度和影響力","type":"Agent","models":["gemini-2.0-flash"],"output_key":"edited_article","tags":["editing","review"]},{"name":"article_formatter","description":"格式化文章以供發布","type":"Agent","models":["gemini-2.0-flash"],"output_key":"published_article","tags":["formatting","markdown"]}]},{"name":"Context Compaction Agent","description":"展示長對話上下文壓縮功能的代理","code_ref":"workspace/python/agents/context-compaction-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"summarize_text","type":"FunctionTool","description":"用於摘要文字區塊的實用工具。"},{"name":"calculate_complexity","type":"FunctionTool","description":"分析問題複雜度以決定回應深度。"}],"server-port":8000,"tags":["context-compaction","conversation-summary","token-optimization"]},{"name":"Custom Session Agent","description":"演示 ADK 中自定義會話服務註冊模式","code_ref":"workspace/python/agents/custom-session-agent","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"describe_session_info","type":"FunctionTool","description":"描述會話資訊的工具。"},{"name":"test_session_persistence","type":"FunctionTool","description":"測試跨請求會話持久化的工具。"},{"name":"show_service_registry_info","type":"FunctionTool","description":"顯示服務註冊表資訊的工具。"},{"name":"get_session_backend_guide","type":"FunctionTool","description":"提供 Redis 作為會話後端的指南工具。"}],"server-port":8000,"tags":["custom-session-service","redis","service-registry","factory-pattern","BaseSessionService"]},{"name":"Customer Support","description":"具備各種工具的客戶支援代理人","code_ref":"workspace/python/agents/customer-support","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"check_customer_status","type":"FunctionTool","description":"檢查客戶是否為高級會員"},{"name":"log_interaction","type":"FunctionTool","description":"記錄客戶互動以供存檔"},{"name":"get_order_status","type":"FunctionTool","description":"透過 ID 取得訂單狀態"},{"name":"track_shipment","type":"FunctionTool","description":"取得運送追蹤資訊"},{"name":"cancel_order","type":"FunctionTool","description":"取消訂單（需要授權）"},{"name":"search_knowledge_base","type":"FunctionTool","description":"搜尋技術文件"},{"name":"run_diagnostic","type":"FunctionTool","description":"執行診斷測試"},{"name":"create_ticket","type":"FunctionTool","description":"建立支援工單以進行升級處理"},{"name":"get_billing_history","type":"FunctionTool","description":"檢索帳單歷史記錄"},{"name":"process_refund","type":"FunctionTool","description":"處理退款（金額超過 $100 需要批准）"},{"name":"update_payment_method","type":"FunctionTool","description":"更新儲存的付款方式"}],"generate_content_config":{"temperature":0.5,"max_output_tokens":2048},"server-port":8000,"tags":["customer-support","tools","yaml-config","visual-agent-builder"]},{"name":"Customer Support Agent (AG-UI)","description":"整合 AG-UI 的客戶支援 ADK 代理人。提供知識庫搜尋、訂單狀態查詢、支援工單建立、產品詳情查詢及退款處理（需人機協作）等功能。","code_ref":"workspace/python/agents/customer-support-agent","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"search_knowledge_base","type":"FunctionTool","description":"搜尋知識庫以尋找相關資訊。"},{"name":"lookup_order_status","type":"FunctionTool","description":"查詢客戶訂單的狀態。"},{"name":"create_support_ticket","type":"FunctionTool","description":"為複雜問題建立支援工單。"},{"name":"get_product_details","type":"FunctionTool","description":"從資料庫獲取產品詳情以生成產品卡片。"},{"name":"process_refund","type":"FunctionTool","description":"處理訂單退款（需要前端使用者批准的人機協作）。"}],"server-port":8000,"tags":["customer-support","ag-ui","fastapi","uvicorn","generative-ui","nextjs"]},{"name":"Data Analysis Agent","description":"具備視覺化與分析能力的智慧資料分析助理。","code_ref":"workspace/python/agents/data-analysis-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"analysis_agent","type":"AgentTool","description":"具備統計工具的資料分析與見解代理。","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_column","type":"FunctionTool","description":"分析資料集中的特定欄位。"},{"name":"calculate_correlation","type":"FunctionTool","description":"計算兩個數值欄位之間的關聯性。"},{"name":"filter_data","type":"FunctionTool","description":"依條件過濾資料集。"},{"name":"get_dataset_summary","type":"FunctionTool","description":"取得目前資料集的摘要資訊。"}],"tags":["data-analysis","statistics","insights"]},{"name":"visualization_agent","type":"AgentTool","description":"使用 Python 程式碼執行生成資料視覺化。","models":["gemini-2.0-flash"],"code_executor":{"name":"builtin-code-executor","type":"BuiltInCodeExecutor","description":"使用內建的 Python 程式碼執行器來編寫生成並顯示視覺化的 Python 程式碼。"},"tags":["data-visualization","code-executor","python"]}],"server-port":8000,"tags":["data-analysis","orchestrator","visualization","code-executor","data-visualization","statistics"]},{"name":"Data Analysis Dashboard","description":"整合 pandas 工具與 AG-UI 的數據分析 ADK Agent。提供 CSV 數據載入、統計分析及圖表生成功能，並透過 AG-UI 協議與 Vite+React 前端整合。","code_ref":"workspace/python/agents/data-analysis-dashboard","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"load_csv_data","type":"FunctionTool","description":"將 CSV 數據載入記憶體以進行分析。"},{"name":"analyze_data","type":"FunctionTool","description":"對載入的數據集執行統計分析。"},{"name":"create_chart","type":"FunctionTool","description":"生成視覺化圖表數據。"}],"server-port":8000,"tags":["data-analysis","dashboard","pandas","ag-ui","fastapi","visualization","reactjs","uvicorn"]},{"name":"Deep Research Agent","description":"提供高階介面，用於啟動背景研究任務、輪詢完成狀態、串流結果以及進行後續提問。","code_ref":"workspace/python/agents/deep-research-agent","type":"genai.Client","models":["gemini-3-pro-preview"],"tools":[{"name":"research","type":"FunctionTool","description":"執行完整的研究任務並返回結果。"},{"name":"research_with_format","type":"FunctionTool","description":"使用特定的輸出格式執行研究。"},{"name":"follow_up","type":"FunctionTool","description":"針對已完成的研究提出後續問題。"}],"init":{"api_key":"YOUR_API_KEY_HERE"},"server-port":"none","tags":["deep-research","interactions-api","google-genai","vertex-ai","background-task","polling","genai-client-interactions","background"]},{"name":"Enterprise Lead Qualifier","description":"具備公司情報和評分功能的企業銷售潛在客戶資格審查 Agent，用於企業規模的 Agent 管理、治理、編排與協作。","code_ref":"workspace/python/agents/enterprise-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"check_company_size","type":"FunctionTool","description":"從企業資料庫查詢公司規模，可整合 CRM 系統或公司情報 API。"},{"name":"score_lead","type":"FunctionTool","description":"根據公司規模、產業和預算等資格標準，將銷售潛在客戶評分 0-100。"},{"name":"get_competitive_intel","type":"FunctionTool","description":"獲取將公司與競爭對手比較的競爭情報，可整合市場情報平台。"}],"server-port":8000,"tags":["enterprise","sales","lead-qualification","crm","gemini-enterprise","production-ready"]},{"name":"Essay Refinement System","description":"一個完整的論文寫作和精煉系統，首先創建初稿，然後通過評論家-精煉者循環進行迭代改進。","code_ref":"workspace/python/agents/essay-refiner","type":"SequentialAgent","server-port":8000,"tags":["multi-agent","sequential-workflow","loop-agent","writing","refinement","essay"],"sub_agents":[{"name":"InitialWriter","description":"撰寫論文的第一版草稿。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"current_essay","tags":["writing","drafting"]},{"name":"RefinementLoop","description":"迭代評估和改進論文，直到滿足品質標準為止。","type":"LoopAgent","generate_content_config":{"max_iterations":5},"tags":["loop","iterative-improvement","quality-control"],"sub_agents":[{"name":"Critic","description":"評估論文品質並提供具體的回饋。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"critique","tags":["evaluation","feedback","critique"]},{"name":"Refiner","description":"根據評論者的回饋改進論文，或在論文被批准時退出循環。","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"exit_loop","type":"FunctionTool","description":"當論文被批准時，發出信號以終止精煉循環。"}],"output_key":"current_essay","tags":["refinement","editing","exit-condition"]}]}]},{"name":"Finance Assistant","description":"一個財務計算助手，可以協助：\n- 投資的複利計算\n- 抵押貸款或其他貸款的還款計算\n- 達到財務目標的每月儲蓄計算\n我可以同時執行多項計算以供比較。\n所有計算都包含詳細說明和格式化報告。\n","code_ref":"workspace/python/agents/finance-assistant","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"calculate_compound_interest","type":"FunctionTool","description":"計算儲蓄或投資的複利。"},{"name":"calculate_loan_payment","type":"FunctionTool","description":"使用標準攤銷公式計算每月貸款還款。"},{"name":"calculate_monthly_savings","type":"FunctionTool","description":"計算達到財務目標所需的每月儲蓄。"}],"server-port":8000,"tags":["finance","calculator","investment","loan","savings","asyncio","parallel"]},{"name":"GEPA Optimization Agent","description":"GEPA 教學代理：模擬客服代理，展示如何使用 GEPA (遺傳演算法-帕雷托提示最佳化) 改善身份驗證、政策遵循和解釋清晰度。","code_ref":"workspace/python/agents/gepa-optimization-agent","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"verify_customer_identity","type":"BaseTool","description":"透過檢查訂單號碼和電子郵件來驗證客戶身份。"},{"name":"check_return_policy","type":"BaseTool","description":"驗證訂單是否在 30 天的退貨期限內。"},{"name":"process_refund","type":"BaseTool","description":"為符合資格的客戶訂單處理退款。"}],"server-port":8000,"tags":["gepa","customer-support","optimization","prompt-tuning","genetic-algorithm","base_tool"]},{"name":"Grounding Agent","description":"具有動態工具選擇功能的 Grounding 代理，可根據環境配置啟用網路搜尋與地圖 Grounding。","code_ref":"workspace/python/agents/grounding-agent","type":"Agent","models":["gemini-2.0-flash","gemini-1.5-flash"],"tools":[{"name":"google_search","type":"GoogleSearchTool","description":"執行 Google 搜尋以取得最新資訊。"},{"name":"google_maps_grounding","type":"GoogleMapsGroundingTool","description":"處理基於位置的查詢和地圖 Grounding (在啟用 Vertex AI 時可用)。"},{"name":"analyze_search_results","type":"FunctionTool","description":"分析搜尋結果並提取關鍵見解。"},{"name":"save_research_findings","type":"FunctionTool","description":"將研究發現儲存為 Artifacts。"}],"generate_content_config":{"temperature":0.3,"max_output_tokens":2048},"server-port":8000,"tags":["grounding","google-search","google-maps","dynamic-tools","vertex-ai","research","analysis","grounding"]},{"name":"Hello Agent","description":"提供友善的對話體驗。 ADK 的入門範例，展示基礎代理的設定。","code_ref":"workspace/python/agents/hello-agent","type":"Agent","models":["gemini-2.0-flash"],"server-port":8000,"tags":["hello-world","beginner","conversation"]},{"name":"Interactions API Basic Agent","description":"展示 Google Interactions API 的核心功能，包括基礎文字互動、伺服器端狀態管理、串流回應與函數呼叫。","code_ref":"workspace/python/agents/interactions-api-basic","type":"genai.Client","models":["gemini-2.5-flash","gemini-2.5-pro","gemini-3-pro-preview"],"tools":[{"name":"create_basic_interaction","type":"FunctionTool","description":"與 Gemini 模型建立單次的請求-回應互動。"},{"name":"create_stateful_conversation","type":"FunctionTool","description":"建立具備伺服器端狀態管理的多輪對話。"},{"name":"create_streaming_interaction","type":"FunctionTool","description":"建立即時回應輸出的串流互動。"},{"name":"create_function_calling_interaction","type":"FunctionTool","description":"建立具備自定義函數呼叫能力的互動。"},{"name":"create_interaction_with_builtin_tools","type":"FunctionTool","description":"使用內建工具 (如 google_search, code_execution) 建立互動。"}],"init":{"api_key":"YOUR_API_KEY_HERE"},"server-port":"none","tags":["interactions-api","google-genai","state-management","streaming","function-calling","standalone"]},{"name":"Math Agent (OTel)","description":"具有 OpenTelemetry 儀表化的 ADK 數學代理，展示使用 Jaeger 後端的分散式追蹤與結構化日誌。","code_ref":"workspace/python/agents/math-agent-otel","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"add_numbers","type":"FunctionTool","description":"將兩個數字相加。"},{"name":"subtract_numbers","type":"FunctionTool","description":"從 a 減去 b。"},{"name":"multiply_numbers","type":"FunctionTool","description":"將兩個數字相乘。"},{"name":"divide_numbers","type":"FunctionTool","description":"將 a 除以 b。"}],"server-port":8000,"tags":["math","calculator","opentelemetry","otel","jaeger","tracing","observability"]},{"name":"Host Agent (MCP/A2A)","description":"將請求路由至 A2A 代理或 MCP 工具。","code_ref":"workspace/python/agents/mcp-a2a-master","type":"LlmAgent","models":["gemini-2.5-flash"],"tools":[{"name":"_delegate_task","type":"FunctionTool","description":"將任務委派給指定的代理。"},{"name":"_list_agents","type":"FunctionTool","description":"回傳已註冊的 A2A 子代理的代理卡片物件字典列表。"},{"name":"terminal_server","type":"MCPToolset","transports":"stdio","description":"提供與 MCP 伺服器通訊的工具集 (stdio)。","tools":[{"name":"run_command","type":"McpTool","description":"在終端機中執行指令並回傳輸出。"}]},{"name":"arithmetic_server","type":"MCPToolset","transports":"streamable","description":"提供與算術 MCP 伺服器通訊的工具集 (streamable)。","tools":[{"name":"add_numbers","type":"McpTool","description":"將兩個數字相加並回傳結果。"}]}],"server-port":8000,"tags":["mcp","a2a","orchestrator","router","stdio","streamable"],"sub_agents":[{"name":"Website Builder Simple","protocol":"a2a","description":"此代理接收使用者關於建立網站的查詢，並生成一個包含嵌入式 CSS 和 JavaScript 的單一獨立 HTML 檔案。","type":"LlmAgent","models":["gemini-2.0-flash-exp"],"server-port":8001,"tags":["website-builder","html","css","javascript"]}]},{"name":"MCP File Assistant","description":"具有檔案系統存取和人工介入迴路核准功能的 AI 助理。","code_ref":"workspace/python/agents/mcp-agent","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"@modelcontextprotocol/server-filesystem","type":"MCPToolset","transports":"stdio","description":"提供與 MCP 伺服器通訊的工具集 (stdio)。","tools":[{"name":"read_file","type":"McpTool","description":"讀取檔案內容 (無需核准)。"},{"name":"read_text_file","type":"McpTool","description":"讀取文字檔案 (無需核准)。"},{"name":"list_directory","type":"McpTool","description":"列出目錄內容 (無需核准)。"},{"name":"search_files","type":"McpTool","description":"依模式搜尋檔案 (無需核准)。"},{"name":"get_file_info","type":"McpTool","description":"取得檔案元資料 (無需核准)。"},{"name":"write_file","type":"McpTool","description":"建立或更新檔案 (⚠️ 需要核准)。"},{"name":"write_text_file","type":"McpTool","description":"寫入文字檔案 (⚠️ 需要核准)。"},{"name":"create_directory","type":"McpTool","description":"建立新目錄 (⚠️ 需要核准)。"},{"name":"move_file","type":"McpTool","description":"移動或重新命名檔案 (⚠️ 需要核准)。"}]}],"generate_content_config":{"temperature":0.2,"max_output_tokens":2048},"server-port":8000,"tags":["mcp","filesystem","hitl","security","callbacks","approval-workflow"]},{"name":"Model Selector Agent","description":"用於選擇和比較 AI 模型的專家 agent，可根據使用場景推薦最佳模型。","code_ref":"workspace/python/agents/model-selector","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"recommend_model_for_use_case","type":"FunctionTool","description":"根據使用場景描述推薦模型。"},{"name":"get_model_info","type":"FunctionTool","description":"獲取特定模型的詳細資訊。"}],"server-port":8000,"tags":["model-selection","benchmark","comparison","recommendation"]},{"name":"Multi-LLM Agent","description":"支援 OpenAI, Claude, Ollama 等多種模型的 Multi-LLM agent，透過 LiteLLM 實現。此 agent 可以針對不同任務使用不同的 LLM 供應商。","code_ref":"workspace/python/agents/multi-llm-agent","type":"Agent","model":["openai/gpt-4o-mini","anthropic/claude-3-7-sonnet-20250219","ollama_chat/granite4:latest"],"tools":[{"name":"calculate_square","type":"FunctionTool","description":"計算一個數字的平方。"},{"name":"get_weather","type":"FunctionTool","description":"取得指定城市目前的天氣 (模擬實作)。"},{"name":"analyze_sentiment","type":"FunctionTool","description":"分析文字的情緒 (模擬實作)。"}],"server-port":8000,"tags":["multi-llm","litellm","openai","claude","ollama","function-calling","model"]},{"name":"Observability Agent","description":"具備全面事件監控、指標收集與詳細報告功能的客戶服務代理程式。","code_ref":"workspace/python/agents/observability-agent","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"check_order_status","type":"FunctionTool","description":"檢查訂單狀態。"},{"name":"process_refund","type":"FunctionTool","description":"處理退款請求，金額超過 100 時上報。"},{"name":"check_inventory","type":"FunctionTool","description":"檢查產品庫存。"}],"generate_content_config":{"temperature":0.5,"max_output_tokens":1024},"server-port":8000,"tags":["observability","events","monitoring","customer-service","metrics","logging","reporting"]},{"name":"Observability Plugins Agent","description":"具有全面可觀測性的生產助理，包括指標收集、警報和效能分析，用於企業監控。","code_ref":"workspace/python/agents/observability-plugins-agent","type":"Agent","models":["gemini-2.5-flash"],"generate_content_config":{"temperature":0.5,"max_output_tokens":1024},"server-port":8000,"plugins":[{"name":"metrics_collector_plugin","type":"BasePlugin","description":"用於收集請求指標的外掛程式。"},{"name":"alerting_plugin","type":"BasePlugin","description":"用於異常警報的外掛程式。"},{"name":"performance_profiler_plugin","type":"BasePlugin","description":"用於詳細效能分析的外掛程式。"}],"tags":["observability","monitoring","plugins","metrics","alerting","profiling"]},{"name":"Pack ADK A2A Agent","description":"一個可以提供有關天氣和時間資訊的代理程式。","code_ref":"workspace/python/agents/pack-adk-a2a-agent","type":"Agent","models":["gemini-3-pro-preview"],"tools":[{"name":"get_weather","type":"FunctionTool","description":"模擬網路搜尋。使用它來獲取天氣資訊。"},{"name":"get_current_time","type":"FunctionTool","description":"模擬獲取城市的當前時間。"}],"protocol":"a2a","server-port":8000,"tags":["a2a","agent-starter-pack","fastapi","uvicorn","terraform","storage","monitoring","agent-card","telemetry","logger"]},{"name":"Pause Resume Agent","description":"展示 ADK 1.16.0 中暫停與恢復調用 (Pause and Resume Invocations) 的 Agent。","code_ref":"workspace/python/agents/pause-resume-agent","type":"App","models":["gemini-2.0-flash"],"tools":[{"name":"process_data_chunk","type":"FunctionTool","description":"模擬處理資料塊，代表一個能從暫停/恢復中受益的長期執行操作。"},{"name":"validate_checkpoint","type":"FunctionTool","description":"驗證恢復時的檢查點完整性，展示恢復前的狀態驗證。"},{"name":"get_resumption_hint","type":"FunctionTool","description":"分析上下文並建議最佳恢復點。"}],"server-port":8000,"resumability_config":["is_resumable"],"tags":["pause-resume","checkpoint","long-running-workflow","resumability-config"]},{"name":"Personal Tutor","description":"個人化學習導師，展示多層次狀態與記憶管理，追蹤使用者進度、偏好與學習歷史。","code_ref":"workspace/python/agents/personal-tutor","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"set_user_preferences","type":"FunctionTool","description":"設定使用者學習偏好（語言、難度），使用 user: 前綴進行永久儲存。"},{"name":"record_topic_completion","type":"FunctionTool","description":"紀錄使用者完成的學習主題與測驗分數，更新永久狀態的已完成主題列表與分數映射。"},{"name":"get_user_progress","type":"FunctionTool","description":"取得使用者學習進度摘要，包含語言偏好、難度層級、已完成主題數量與平均測驗分數。"},{"name":"start_learning_session","type":"FunctionTool","description":"啟動新的主題學習工作階段，設定工作階段層級狀態（無前綴），包含當前主題與開始時間。"},{"name":"calculate_quiz_grade","type":"FunctionTool","description":"計算測驗成績，使用 temp: 前綴儲存中間計算結果（單次呼叫作用域），回傳分數與等級評定。"},{"name":"search_past_lessons","type":"FunctionTool","description":"搜尋過往學習紀錄，模擬記憶服務功能，在已完成主題中尋找與查詢相關的內容。"}],"server-port":8000,"output_key":"last_tutor_response","tags":["state-management","memory","user-preferences","progress-tracking","session-management","learning-analytics","tutorial08"]},{"name":"Policy Navigator","description":"企業合規與政策導航器，使用 Google Gemini File Search API 實作原生 RAG 進行政策管理、搜尋與分析。","code_ref":"workspace/python/agents/policy-navigator","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"upload_policy_documents","type":"FunctionTool","description":"以 upsert 語意上傳政策文件到 File Search Store。如果具有相同名稱的文件已存在，將被取代。"},{"name":"search_policies","type":"FunctionTool","description":"使用 File Search 對政策進行語意搜尋，支援 metadata 過濾。"},{"name":"filter_policies_by_metadata","type":"FunctionTool","description":"依 metadata 屬性（部門、政策類型、敏感度、管轄區）過濾政策。"},{"name":"compare_policies","type":"FunctionTool","description":"跨部門比較政策，識別不一致或衝突之處。"},{"name":"check_compliance_risk","type":"FunctionTool","description":"評估與政策相關的合規風險並提供建議。"},{"name":"extract_policy_requirements","type":"FunctionTool","description":"從政策中擷取特定需求與關鍵資訊。"},{"name":"generate_policy_summary","type":"FunctionTool","description":"建立簡潔的政策摘要與執行報告。"},{"name":"create_audit_trail","type":"FunctionTool","description":"建立稽核追蹤項目，追蹤所有政策存取與決策。"}],"server-port":8000,"output_key":"policy_navigator_result","tags":["file-search","rag","compliance","multi-agent","metadata","audit-trail","store","coordinator"],"sub_agents":[{"name":"Document Manager","description":"管理政策文件上傳、組織與 metadata 設定。","type":"Agent","invoke":"prompting","models":["gemini-2.5-flash"],"tools":[{"name":"upload_policy_documents","type":"FunctionTool","description":"將政策文件上傳到 File Search stores 並設定 metadata。"}],"server-port":null,"output_key":"document_manager_result","tags":["document-management","file-upload","metadata"]},{"name":"Search Specialist","description":"搜尋公司政策並檢索相關資訊，提供準確的政策資訊並附帶引用。","type":"Agent","invoke":"prompting","models":["gemini-2.5-flash"],"tools":[{"name":"search_policies","type":"FunctionTool","description":"對政策文件執行語意搜尋。"},{"name":"filter_policies_by_metadata","type":"FunctionTool","description":"依部門、類型與日期過濾政策。"},{"name":"extract_policy_requirements","type":"FunctionTool","description":"從政策中擷取特定需求。"}],"server-port":null,"output_key":"search_specialist_result","tags":["search","retrieval","semantic-search"]},{"name":"Compliance Advisor","description":"評估合規風險並提供政策指導，識別不一致或衝突之處。","type":"Agent","invoke":"prompting","models":["gemini-2.5-flash"],"tools":[{"name":"check_compliance_risk","type":"FunctionTool","description":"評估與政策相關的合規風險。"},{"name":"compare_policies","type":"FunctionTool","description":"跨部門比較政策，識別不一致之處。"}],"output_key":"compliance_advisor_result","server-port":null,"tags":["compliance","risk-assessment","policy-analysis"]},{"name":"Report Generator","description":"產生政策摘要、報告與稽核追蹤，為利益相關者格式化政策資訊。","type":"Agent","invoke":"prompting","models":["gemini-2.5-flash"],"tools":[{"name":"generate_policy_summary","type":"FunctionTool","description":"建立簡潔的政策摘要。"},{"name":"create_audit_trail","type":"FunctionTool","description":"建立稽核追蹤項目。"}],"output_key":"report_generator_result","server-port":null,"tags":["reporting","summary","audit"]}]},{"name":"Production Agent","description":"生產環境部署專家，為 ADK 代理提供部署策略、最佳實踐和基礎設施模式的指導。","code_ref":"workspace/python/agents/production-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"check_deployment_status","type":"FunctionTool","description":"檢查部署狀態與健康狀況，返回包含部署狀態資訊的字典。"},{"name":"get_deployment_options","type":"FunctionTool","description":"取得可用的部署選項，包括本地 API 伺服器、Cloud Run、Agent Engine 和 GKE 的詳細資訊。"},{"name":"get_best_practices","type":"FunctionTool","description":"取得生產環境部署最佳實踐，涵蓋安全性、監控、可擴展性和可靠性方面的建議。"}],"generate_content_config":{"temperature":0.5,"max_output_tokens":2048},"server-port":8000,"tags":["deployment","production","fastapi","cloud-run","gke","agent-engine","monitoring","security","uvicorn","middleware","health-checks"]},{"name":"Pub/Sub Document Processor","description":"事件驅動的文件路由協調者，透過 Pub/Sub 將上傳文件分發給專門分析代理並回傳結構化 JSON。","code_ref":"workspace/python/agents/pubsub-agent","type":"LlmAgent","models":["gemini-2.5-flash"],"tools":[{"name":"financial_analyzer","type":"AgentTool","description":"分析財務文件，提取財務指標、財政期間與建議的結構化輸出。"},{"name":"technical_analyzer","type":"AgentTool","description":"分析技術文件與架構，回傳涉及技術元件與改進建議的 JSON。"},{"name":"sales_analyzer","type":"AgentTool","description":"分析銷售交易與管道，提供交易狀態與銷售建議。"},{"name":"marketing_analyzer","type":"AgentTool","description":"分析行銷活動與指標，整理參與率、轉換率與最佳化建議。"}],"server-port":8000,"tags":["pubsub","topics","gcp","dlq","event-driven","document-routing","multi-agent","structured-output"],"sub_agents":[{"name":"Financial Analyzer","description":"對財務報告進行結構化解析，擷取財務指標與財政期間。","type":"LlmAgent","models":["gemini-2.5-flash"],"tags":["finance","structured-output"],"output_schema":"FinancialAnalysisOutput"},{"name":"Technical Analyzer","description":"解析技術文件，列出技術、元件與改進建議。","type":"LlmAgent","models":["gemini-2.5-flash"],"tags":["technical","architecture","structured-output"],"output_schema":"TechnicalAnalysisOutput"},{"name":"Sales Analyzer","description":"解析銷售文件，萃取交易、管道價值與銷售建議。","type":"LlmAgent","models":["gemini-2.5-flash"],"tags":["sales","pipeline","structured-output"],"output_schema":"SalesAnalysisOutput"},{"name":"Marketing Analyzer","description":"解析行銷文件，彙整活動、參與度與最佳化建議。","type":"LlmAgent","models":["gemini-2.5-flash"],"tags":["marketing","campaign","structured-output"],"output_key":"MarketingAnalysisOutput"}]},{"name":"Software Bug Assistant","description":"一位熟練的軟體問題分類和除錯專家，專為咖啡機公司 QuantumRoast 提供票務管理服務。整合多種工具進行票務搜尋、建立、更新與網路查詢。","code_ref":"workspace/python/agents/software-bug-assistant","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"get_current_date","type":"FunctionTool","description":"取得當前日期(YYYY-MM-DD格式)，用於計算日期範圍查詢。"},{"name":"search_agent","type":"AgentTool","description":"使用Google Search進行網路搜尋，查詢軟體社群中的已知問題(CVE、廣泛問題等)。"},{"name":"langchain_tool","type":"LangchainTool","description":"在Stack Exchange(StackOverflow)上搜尋使用者過去的查詢與解決方案。"},{"name":"search-tickets","type":"ToolboxCoreClientTool","description":"透過向量搜尋找出類似或重複的 ticket (限制 3 筆紀錄)。"},{"name":"update-ticket-status","type":"ToolboxCoreClientTool","description":"更新 ticket狀態(開放、進行中、已關閉、已解決)。"},{"name":"update-ticket-priority","type":"ToolboxCoreClientTool","description":"更新 ticket優先級(P0-關鍵、P1-高、P2-中等、P3-低)。"},{"name":"create-new-ticket","type":"ToolboxCoreClientTool","description":"建立新的 ticket/問題。"},{"name":"get-ticket-by-id","type":"ToolboxCoreClientTool","description":"透過ID檢索 ticket。"},{"name":"get-tickets-by-date-range","type":"ToolboxCoreClientTool","description":"檢索特定日期範圍內建立或更新的 ticket。"},{"name":"get-tickets-by-assignee","type":"ToolboxCoreClientTool","description":"檢索具有特定受託人的 ticket。"},{"name":"get-tickets-by-status","type":"ToolboxCoreClientTool","description":"檢索具有特定狀態的 ticket。"},{"name":"get-tickets-by-priority","type":"ToolboxCoreClientTool","description":"檢索具有特定優先級的 ticket。"},{"name":"github_search","type":"MCPTool","description":"透過MCP工具在GitHub上搜尋儲存庫、問題與PR，支援search_repositories、search_issues、list_issues、get_issue、list_pull_requests、get_pull_request等操作。"},{"name":"mcp_tools","type":"MCPToolset","transports":"streamable","description":"提供 GitHub Copilot MCP 各項服務與任務工具。","tools":{"refs":"https://github.com/github/github-mcp-server"}}],"server-port":8000,"tags":["bug-tracking","ticket-management","toolbox","mcp","langchain","vector-search","sql-database","github-mcp","multi-tools","postgres"],"sub_agents":[{"name":"search_agent","description":"使用Google Search的專家代理，負責網路搜尋任務。","type":"AgentTool","models":["gemini-2.5-flash"],"tools":[{"name":"google_search","type":"GoogleSearchAgentTool","description":"Google搜尋工具。"}],"tags":["search","google"]}]},{"name":"Strategic Problem Solver (BuiltInPlanner)","description":"使用 BuiltInPlanner 進行透明思考的策略商業顧問，涵蓋市場分析、ROI 計算與風險評估並輸出策略報告。","code_ref":"workspace/python/agents/strategic-solver","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_market","type":"FunctionTool","description":"分析指定產業與地區的市場狀況與趨勢。"},{"name":"calculate_roi","type":"FunctionTool","description":"進行投資複利與 ROI 計算，提供年度分解。"},{"name":"assess_risk","type":"FunctionTool","description":"依因素評估風險分數、等級與緩解優先度。"},{"name":"save_strategy_report","type":"FunctionTool","description":"生成並保存策略計畫的 Markdown 報告。"}],"generate_content_config":{"temperature":0.3,"max_output_tokens":3000},"server-port":8000,"output_key":"builtin_strategy_result","tags":["strategy","business-analysis","builtin-planner","market","roi","risk"]},{"name":"Strategic Problem Solver (PlanReActPlanner)","description":"使用 PlanReActPlanner 以「計劃→推理→行動→觀察→重規劃」結構進行策略分析與建議。","code_ref":"workspace/python/agents/strategic-solver","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_market","type":"FunctionTool","description":"分析指定產業與地區的市場狀況與趨勢。"},{"name":"calculate_roi","type":"FunctionTool","description":"進行投資複利與 ROI 計算，提供年度分解。"},{"name":"assess_risk","type":"FunctionTool","description":"依因素評估風險分數、等級與緩解優先度。"},{"name":"save_strategy_report","type":"FunctionTool","description":"生成並保存策略計畫的 Markdown 報告。"}],"generate_content_config":{"temperature":0.4,"max_output_tokens":3000},"server-port":8000,"output_key":"plan_react_strategy_result","tags":["strategy","business-analysis","plan-react-planner","structured-reasoning","market","roi","risk"]},{"name":"Strategic Problem Solver (Custom StrategicPlanner)","description":"使用自訂 StrategicPlanner 的特定領域工作流程（ANALYSIS／EVALUATION／STRATEGY／VALIDATION）產生可執行的策略建議。","code_ref":"workspace/python/agents/strategic-solver","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_market","type":"FunctionTool","description":"分析指定產業與地區的市場狀況與趨勢。"},{"name":"calculate_roi","type":"FunctionTool","description":"進行投資複利與 ROI 計算，提供年度分解。"},{"name":"assess_risk","type":"FunctionTool","description":"依因素評估風險分數、等級與緩解優先度。"},{"name":"save_strategy_report","type":"FunctionTool","description":"生成並保存策略計畫的 Markdown 報告。"}],"generate_content_config":{"temperature":0.3,"max_output_tokens":3000},"server-port":8000,"output_key":"strategic_planner_result","tags":["strategy","business-analysis","custom-planner","domain-workflow","market","roi","risk","base-planner"]},{"name":"Streaming Agent","description":"一個示範 Server-Sent Events (SSE) 串流回應的代理人，透過即時、漸進式的輸出改善使用者體驗。","code_ref":"workspace/python/agents/streaming-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"format_streaming_info","type":"FunctionTool","description":"提供有關串流功能的資訊，包括支援的串流模式、效能優勢與使用情境。"},{"name":"analyze_streaming_performance","type":"FunctionTool","description":"分析串流效能特性，包括預估區塊數、時間估計與記憶體效率。"}],"generate_content_config":{"temperature":0.7,"max_output_tokens":2048,"top_p":0.8,"top_k":40},"server-port":8000,"runner":{"run_config":{"streaming_mode":"sse","max_llm_calls":50}},"tags":["sse","streaming","real-time","async-iteration","gemini-2.0-flash","streaming_mode,","fastapi,","html,","uvicorn,","chunks"]},{"name":"Support Agent","description":"客戶支援代理 - 可測試的模式示範。提供知識庫搜尋、建立支援工單、查詢工單狀態等功能，展示清晰的工具使用、結構化回應與確定性行為。","code_ref":"workspace/python/agents/support-agent","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"search_knowledge_base","type":"FunctionTool","description":"在知識庫中搜尋常見客戶問題的資訊。使用記憶體內知識庫提供確定性結果，支援不區分大小寫的關鍵字比對。涵蓋密碼重設、退款政策、運送、帳戶管理、帳單和技術支援等主題。"},{"name":"create_ticket","type":"FunctionTool","description":"為客戶問題建立新的支援工單。支援四種優先級別（low, normal, high, urgent），自動生成唯一工單 ID (TICK-XXXXXXXX 格式)，並根據優先級設定預估回應時間（urgent: 4小時, high: 24小時, normal: 2工作天, low: 5工作天）。"},{"name":"check_ticket_status","type":"FunctionTool","description":"查詢現有支援工單的狀態。使用工單 ID 檢索工單詳細資訊，包括問題描述、優先級別、當前狀態、建立時間和預估回應時間。"}],"output_key":"support_response","tags":["customer-support","evaluation","testable-patterns","knowledge-base","ticketing","deterministic","structured-response"]},{"name":"Support Bot","description":"Slack Socket Mode 的團隊支援助理，使用內建知識庫回答公司政策與 IT 問題，並可建立支援工單示範 ADK 工具整合。","code_ref":"workspace/python/agents/support-bot","type":"Agent","models":["gemini-2.5-flash"],"tools":[{"name":"search_knowledge_base","type":"FunctionTool","description":"以加權關鍵字比對搜尋內建知識庫，回傳最佳文章或建議查詢提示。"},{"name":"create_support_ticket","type":"FunctionTool","description":"驗證優先順序後建立支援工單，回傳工單 ID 與摘要供後續追蹤。"}],"server-port":8000,"tags":["slack","support","knowledge-base","ticketing","socket-mode","adk"]},{"name":"Third-Party Integration Agent","description":"綜合研究與檔案分析代理，整合 LangChain Wikipedia/DuckDuckGo 與 CrewAI 檔案工具，無需 API 金鑰。","code_ref":"workspace/python/agents/third-party-agent","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"wikipedia_search","type":"LangchainTool","description":"使用 LangChain 的 WikipediaQueryRun 查詢百科知識。"},{"name":"web_search","type":"LangchainTool","description":"使用 LangChain 的 DuckDuckGoSearchRun 搜尋最新資訊。"},{"name":"directory_read","type":"DirectoryReadTool","description":"使用 CrewAI DirectoryReadTool 讀取目錄內容。"},{"name":"file_read","type":"FileReadTool","description":"使用 CrewAI FileReadTool 讀取檔案內容。"}],"server-port":8000,"output_key":"research_response","tags":["third-party","langchain","crewai","wikipedia","duckduckgo","filesystem","research","analysis"]},{"name":"Tool Use Evaluator","description":"用於展示工具使用品質（Tool Use Quality）評估的代理，涵蓋正確工具排序、依賴性與錯誤處理。","code_ref":"workspace/python/agents/tool-use-evaluator","type":"Agent","models":["gemini-2.0-flash"],"tools":[{"name":"analyze_data","type":"FunctionTool","description":"分析指定資料集，回傳基本統計與欄位型態。"},{"name":"extract_features","type":"FunctionTool","description":"從分析結果中提取特徵（mean、median、std_dev、correlation）。"},{"name":"validate_quality","type":"FunctionTool","description":"驗證特徵品質並提供分數與通過狀態。"},{"name":"apply_model","type":"FunctionTool","description":"將指定 ML 模型套用於特徵並回傳預測與準確度。"}],"server-port":8000,"output_key":"analysis_result","tags":["tool-use-quality","evaluation","data-analysis","function-tools","tools-ordering"]},{"name":"Travel Planner","description":"平行搜尋航班、飯店與活動，並聚合成完整行程表的教學範例。","code_ref":"workspace/python/agents/travel-planner","type":"SequentialAgent","models":[],"server-port":8000,"tags":["travel","parallel","sequential","fan-out","gather","itinerary","parallel-search"],"sub_agents":[{"name":"ParallelSearch","description":"平行搜尋航班、飯店與活動，將結果寫入 state。","type":"ParallelAgent","tags":["parallel-search","fan-out"],"sub_agents":[{"name":"flight_finder","description":"搜尋可用航班並提供時間、價格與航空公司選項。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"flight_options","tags":["flights","search"]},{"name":"hotel_finder","description":"尋找合適的飯店，包含位置、評等、價格與設施重點。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"hotel_options","tags":["hotels","search"]},{"name":"activity_finder","description":"推薦目的地活動與景點，提供時間與費用估計。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"activity_options","tags":["activities","search"]}]},{"name":"itinerary_builder","description":"從 state 合併航班、飯店與活動選項，生成格式化行程表與建議。","type":"Agent","models":["gemini-2.0-flash"],"output_key":"final_itinerary","tags":["itinerary","planner","gather"]}]},{"name":"UI Integration Quickstart Agent","description":"您是由 Google ADK 驅動的樂於助人的人工智慧助理。整合 AG-UI 協定與 CopilotKit 相容中介軟體，提供 React 前端整合 fastapi 後端應用的完整服務。","code_ref":"workspace/python/agents/ui-integration","type":"ADKAgent","models":["gemini-2.0-flash-exp"],"server-port":8000,"tags":["ui-integration","ag-ui","copilotkit","fastapi","uvicorn","reactjs","middleware","frontend"]},{"name":"Vision Catalog Coordinator","description":"具有多模態能力的視覺化產品目錄協調器，可以分析產品圖片、生成合成產品模型、比較多張圖片並建立專業的產品目錄條目。","code_ref":"workspace/python/agents/vision-catalog-agent","type":"Agent","models":["gemini-2.0-flash-exp","gemini-2.5-flash-image"],"tools":[{"name":"list_sample_images","type":"FunctionTool","description":"列出 _sample_images 目錄中可用的範例產品圖片，供使用者選擇和分析。"},{"name":"generate_product_mockup","type":"FunctionTool","description":"使用 Gemini 2.5 Flash Image 生成合成產品圖片，適合原型設計、測試或生成產品變化版本。"},{"name":"analyze_uploaded_image","type":"FunctionTool","description":"分析直接在查詢中上傳的圖片，提供結構化分析框架和指引。"},{"name":"analyze_product_image","type":"FunctionTool","description":"分析產品圖片並自動生成詳細的視覺分析與專業目錄條目。"},{"name":"compare_product_images","type":"FunctionTool","description":"比較多張產品圖片，識別異同點並提供結構化的比較分析。"}],"generate_content_config":{"temperature":0.7,"max_output_tokens":2048},"tags":["vision","multimodal","image-analysis","product-catalog","e-commerce"],"sub_agents":[{"name":"vision_analyzer","description":"分析產品圖片並提取視覺資訊，包括產品識別、視覺特徵、品質指標。","type":"Agent","models":["gemini-2.0-flash-exp"],"generate_content_config":{"temperature":0.3,"max_output_tokens":1024},"tags":["vision","image-analysis","product-identification"]},{"name":"catalog_generator","description":"根據視覺分析結果生成專業、可用於行銷的產品描述和目錄條目。","type":"Agent","models":["gemini-2.0-flash-exp"],"tools":[{"name":"generate_catalog_entry","type":"FunctionTool","description":"生成並儲存可用於行銷的目錄條目為 artifact。"}],"generate_content_config":{"temperature":0.6,"max_output_tokens":1536},"tags":["catalog","content-creation","marketing"]}]},{"name":"Voice Assistant","description":"支援 Live API 的即時語音助理，可進行雙向串流對話、麥克風錄音和喇叭播放。","code_ref":"workspace/python/agents/voice-assistant","type":"App","models":["gemini-2.0-flash-live-001","gemini-2.5-flash"],"generate_content_config":{"temperature":0.8,"max_output_tokens":150},"runner":{"run_config":{"streaming_mode":null,"speech_config":{"voice_config":"voice_config_default"},"max_llm_calls":20}},"tools":[{"name":"record_audio","description":"從麥克風錄製指定時長的音訊"},{"name":"play_audio","description":"透過喇叭播放音訊 bytes"},{"name":"send_text","description":"傳送文字訊息並取得 Agent 回應"},{"name":"send_audio","description":"傳送音訊並取得文字和音訊回應"},{"name":"conversation_turn","description":"執行完整的音訊對話回合 (錄音 → 傳送 → 接收 → 播放)"}],"tags":["live-api","voice","real-time-streaming","audio","multimodal","conversational-ai"]},{"name":"YouTube Shorts Agent","description":"一個協調代理，整合腳本編寫、視覺創作和格式化子代理，自動生成 YouTube 短視頻內容。","code_ref":"workspace/python/agents/youtube-shorts-assistant","type":"Agent","models":["gemini-2.0-flash-001"],"tools":[{"name":"scriptwriter_agent","type":"AgentTool","description":"根據主題和要求生成簡潔的短視頻腳本 (15-50秒)。"},{"name":"visualizer_agent","type":"AgentTool","description":"為腳本段落創建動態的垂直 (9:16) 視覺概念。"},{"name":"formatter_agent","type":"AgentTool","description":"使用 Markdown 整合和格式化腳本與視覺概念。"}],"server-port":8000,"tags":["youtube-shorts","content-creation","multi-agent","gemini","adk"],"sub_agents":[{"name":"Scriptwriter Agent","description":"負責編寫引人注目的短視頻腳本。","type":"LlmAgent","models":["gemini-2.0-flash-001"],"tools":[{"name":"google_search","type":"GoogleSearchAgentTool","description":"搜尋資訊以支持腳本創作。"}],"tags":["scriptwriting","content-creation","adk"]},{"name":"Visualizer Agent","description":"負責創建與腳本對應的視覺概念。","type":"LlmAgent","models":["gemini-2.0-flash-001"],"tags":["visual-design","content-creation","adk"]},{"name":"Formatter Agent","description":"負責整合腳本和視覺概念，並使用 Markdown 進行格式化。","type":"LlmAgent","models":["gemini-2.0-flash-001"],"tags":["formatting","content-creation","adk"]}]}];
+        const GITHUB_BASE = "https://github.com/lastingyeh/google-adk-study/tree/master/";
     </script>
-  </body>
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // DOM Elements
+        const grid = document.getElementById('agents-grid');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const modelFilter = document.getElementById('model-filter');
+        const tagFilter = document.getElementById('tag-filter');
+        const typeFilter = document.getElementById('type-filter');
+        const modal = document.getElementById('agent-modal');
+        const modalClose = document.getElementById('modal-close');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalSubtitle = document.getElementById('modal-subtitle');
+
+        // Stats
+        document.getElementById('total-agents').textContent = `${agentsData.length} Agents`;
+        const totalTools = agentsData.reduce((acc, agent) => acc + (agent.tools ? agent.tools.length : 0), 0);
+        document.getElementById('total-tools').textContent = `${totalTools} Tools`;
+
+        // Populate Filters
+        const uniqueModels = new Set();
+        const uniqueTags = new Set();
+        const uniqueTypes = new Set();
+
+        agentsData.forEach(agent => {
+            if (agent.models) agent.models.forEach(m => uniqueModels.add(m));
+            if (agent.tags) agent.tags.forEach(t => uniqueTags.add(t));
+            if (agent.type) uniqueTypes.add(agent.type);
+        });
+
+        Array.from(uniqueModels).sort().forEach(m => {
+            const option = document.createElement('option');
+            option.value = m;
+            option.textContent = m;
+            modelFilter.appendChild(option);
+        });
+
+        Array.from(uniqueTags).sort().forEach(t => {
+            const option = document.createElement('option');
+            option.value = t;
+            option.textContent = t;
+            tagFilter.appendChild(option);
+        });
+
+         Array.from(uniqueTypes).sort().forEach(t => {
+            const option = document.createElement('option');
+            option.value = t;
+            option.textContent = t;
+            typeFilter.appendChild(option);
+        });
+
+
+        // Render Functions
+        function renderAgents(agents) {
+            grid.innerHTML = '';
+
+            if (agents.length === 0) {
+                grid.style.display = 'none';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.classList.add('hidden');
+
+            agents.forEach(agent => {
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+
+                const tagsHtml = (agent.tags || []).slice(0, 3).map(tag =>
+                    `<span class="tag">${tag}</span>`
+                ).join('');
+                const remainingTags = (agent.tags || []).length > 3 ? `<span class="tag" style="background:#f2f2f7;color:#8e8e93">+${agent.tags.length - 3}</span>` : '';
+
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="card-header">
+                            <h3 class="agent-name">${agent.name}</h3>
+                            <span class="agent-type">${agent.type}</span>
+                        </div>
+                        <p class="agent-desc">${agent.description}</p>
+
+                        <div class="card-tags">
+                            ${tagsHtml}
+                            ${remainingTags}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="tool-count">
+                            <i data-lucide="wrench" style="width:14px;height:14px;"></i>
+                            <span>${agent.tools ? agent.tools.length : 0} Tools</span>
+                        </div>
+                        <button onclick="openModal('${agent.name}')" class="view-btn">
+                            View Details <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function filterAgents() {
+            const search = searchInput.value.toLowerCase();
+            const model = modelFilter.value;
+            const tag = tagFilter.value;
+            const type = typeFilter.value;
+
+            const filtered = agentsData.filter(agent => {
+                const matchesSearch = agent.name.toLowerCase().includes(search) ||
+                                      agent.description.toLowerCase().includes(search) ||
+                                      (agent.tags && agent.tags.some(t => t.toLowerCase().includes(search)));
+                const matchesModel = !model || (agent.models && agent.models.includes(model));
+                const matchesTag = !tag || (agent.tags && agent.tags.includes(tag));
+                const matchesType = !type || agent.type === type;
+
+                return matchesSearch && matchesModel && matchesTag && matchesType;
+            });
+
+            renderAgents(filtered);
+        }
+
+        // Modal Functions
+        window.openModal = function(agentName) {
+            const agent = agentsData.find(a => a.name === agentName);
+            if (!agent) return;
+
+            modalTitle.textContent = agent.name;
+            modalSubtitle.innerHTML = `
+                <span class="tag" style="background:#e5e5ea;color:#1c1c1e">${agent.type}</span>
+                ${(agent.models || []).map(m => `<span class="tag tag-model">${m}</span>`).join('')}
+            `;
+
+            // Build Modal Content
+            let toolsHtml = '';
+            if (agent.tools && agent.tools.length > 0) {
+                toolsHtml = `
+                    <div class="detail-section">
+                        <h3><i data-lucide="wrench" style="width:18px"></i> Available Tools</h3>
+                        <table class="tools-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${agent.tools.map(tool => `
+                                    <tr>
+                                        <td class="tool-name">${tool.name}</td>
+                                        <td class="tool-desc">${tool.description}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            let subAgentsHtml = '';
+            if (agent.sub_agents && agent.sub_agents.length > 0) {
+                 subAgentsHtml = `
+                    <div class="detail-section">
+                        <h3><i data-lucide="network" style="width:18px"></i> Sub-Agents Flow</h3>
+                        <div class="flow-container">
+                            ${agent.sub_agents.map((sub, idx) => `
+                                <div class="sub-agent-card">
+                                    <div style="font-weight:600;color:#1c1c1e;margin-bottom:4px">${sub.name}</div>
+                                    <div style="font-size:14px;color:#3c3c43">${sub.description}</div>
+                                    ${sub.models ? `<div style="margin-top:8px"><span class="tag tag-model" style="font-size:11px">${sub.models.join(', ')}</span></div>` : ''}
+                                </div>
+                            `).join('<div class="flow-arrow"><i data-lucide="arrow-down" style="width:20px;height:20px"></i></div>')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Code Link Block
+            let codeLinkHtml = '';
+            if (agent.code_ref) {
+                codeLinkHtml = `
+                    <div class="detail-section">
+                        <h3><i data-lucide="code" style="width:18px"></i> Code</h3>
+                        <a href="${GITHUB_BASE + agent.code_ref}" target="_blank" class="link-card">
+                            <i data-lucide="github" style="color:#667eea;width:20px;height:20px"></i>
+                            <span>${agent.code_ref}</span>
+                            <i data-lucide="external-link" style="margin-left:auto;color:#c7c7cc;width:16px;height:16px"></i>
+                        </a>
+                    </div>
+                `;
+            }
+
+            // Port Info
+            let portHtml = '';
+            if (agent['server-port'] && agent['server-port'] !== 'none') {
+                portHtml = `
+                    <div class="detail-section">
+                        <h3><i data-lucide="server" style="width:18px"></i> Configuration</h3>
+                        <div style="background:#f9f9f9;padding:12px;border-radius:10px;border:1px solid #e5e5ea;display:inline-block">
+                            <span style="color:#8e8e93;font-size:13px;text-transform:uppercase;margin-right:8px">Default Port</span>
+                            <span style="font-family:monospace;font-weight:600">${agent['server-port']}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            modalContent.innerHTML = `
+                <div class="detail-section">
+                    <h3><i data-lucide="book-open" style="width:18px"></i> Description</h3>
+                    <div class="description-content">
+                        <p>${agent.description.replace(/\n/g, '<br>')}</p>
+                        <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
+                            ${(agent.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                ${subAgentsHtml}
+                ${toolsHtml}
+                ${codeLinkHtml}
+                ${portHtml}
+            `;
+
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            lucide.createIcons();
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        // Event Listeners
+        searchInput.addEventListener('input', filterAgents);
+        modelFilter.addEventListener('change', filterAgents);
+        tagFilter.addEventListener('change', filterAgents);
+        typeFilter.addEventListener('change', filterAgents);
+
+        modalClose.addEventListener('click', closeModal);
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+        });
+
+        // Initial Render
+        renderAgents(agentsData);
+
+    </script>
+</body>
 </html>
