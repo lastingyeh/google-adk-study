@@ -157,8 +157,8 @@ make deploy
 - GenAI 檢測工具會擷取 LLM 互動 (權杖、模型、時間)
 - 匯出至 **Google Cloud Storage** (JSONL)、**BigQuery** (外部資料表) 和 **Cloud Logging** (專用儲存桶)
 
-| 環境                             | 提示-回應記錄                                         |
-| -------------------------------- | ----------------------------------------------------- |
+| 環境                             | 提示-回應記錄                                        |
+| -------------------------------- | ---------------------------------------------------- |
 | **本機開發** (`make playground`) | ❌ 預設停用                                           |
 | **已部署環境** (透過 Terraform)  | ✅ **預設啟用** (保護隱私：僅元資料，無提示/回應內容) |
 
@@ -167,6 +167,360 @@ make deploy
 **若要在部署中停用：** 編輯 Terraform 設定，將 `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=false`。
 
 有關詳細說明、範例查詢和視覺化選項，請參閱[可觀測性指南](https://googlecloudplatform.github.io/agent-starter-pack/guide/observability.html)。
+
+---
+
+## 四面向整合分析
+
+本專案整合了 RAG (檢索增強生成)、Agent 開發、安全與運營等核心能力。以下從四個關鍵面向展開詳細分析：
+
+### 1️⃣ Agent Operations (代理運營)
+
+**概述**
+Agent Operations 負責代理程式的生命週期管理，包括部署、監控、維運與可觀測性。
+
+**核心應用服務**
+
+| 服務                           | 功能                     | 應用場景                                       |
+| ------------------------------ | ------------------------ | ---------------------------------------------- |
+| **Cloud Run**                  | 無伺服器容器運行環境     | 部署 FastAPI 應用，自動擴展以應對變動流量      |
+| **Cloud SQL (PostgreSQL)**     | 可靠的會話與狀態存儲     | 維持代理與使用者的對話上下文，支援非同步連接   |
+| **Cloud Logging & BigQuery**   | 集中式日誌與遙測分析     | 收集執行日誌、追蹤效能指標、分析使用者互動模式 |
+| **Cloud Trace**                | OpenTelemetry 分佈式追蹤 | 監控代理執行延遲、識別性能瓶頸                 |
+| **Google Cloud Storage (GCS)** | 產物與日誌儲存           | 存儲遙測數據、模型產物、執行日誌 (JSONL)       |
+| **Secret Manager**             | 敏感信息管理             | 安全存儲資料庫密碼、API 密鑰                   |
+
+**部署架構**
+- 開發環境：簡化架構，資料庫備份預設關閉，快速迭代測試
+- 生產環境：完整監控、自動備份、多層安全、高可用設置
+- CI/CD 整合：GitHub Actions + Google Cloud Build，自動化測試與部署
+
+**監控與可觀測性策略**
+```
+代理程式執行
+    ↓
+OpenTelemetry (自動檢測)
+    ├→ Cloud Trace (分佈式追蹤)
+    ├→ GenAI 檢測 (LLM 交互記錄)
+    └→ 遙測匯出
+         ├→ Cloud Logging (實時日誌)
+         ├→ GCS (JSONL 格式)
+         └→ BigQuery (分析用外部表)
+```
+
+**關鍵指令**
+```bash
+make setup-dev-env      # 使用 Terraform 部署開發環境資源
+make deploy             # 部署到 Cloud Run (支援 IAP 認證)
+make test               # 執行整合與單元測試
+```
+
+---
+
+### 2️⃣ Agent Security (代理安全)
+
+**概述**
+Agent Security 涵蓋身份驗證、授權、數據隱私與合規性，確保代理系統的安全性。
+
+**核心應用服務**
+
+| 服務                                   | 功能             | 應用場景                                                        |
+| -------------------------------------- | ---------------- | --------------------------------------------------------------- |
+| **Workload Identity Federation (WIF)** | 無密鑰認證       | GitHub Actions 與 GCP 間的安全信任關係，無需長期密鑰            |
+| **Identity-Aware Proxy (IAP)**         | API 層級訪問控制 | 在 Cloud Run 前設置身份驗證，確保只有授權用戶可訪問             |
+| **Cloud IAM (服務帳號)**               | 最小權限原則     | 代理程式只獲得執行必需的最小權限 (GCS 讀寫、SQL 連接、API 調用) |
+| **Secret Manager**                     | 敏感信息隱藏     | 保護資料庫密碼、API 金鑰，運行時動態注入環境變數                |
+| **VPC & Network**                      | 網路隔離         | 可選：在專用網路中運行 Cloud Run，增強網路邊界安全              |
+| **Vertex AI Search 權限**              | 數據訪問控制     | 限制誰可以訪問特定的資料存儲 (datastore)                        |
+
+**數據隱私保護**
+```
+本機開發環境
+    ├→ 提示-回應記錄：預設停用 ❌
+    └→ 僅遙測：無敏感數據上傳
+
+已部署環境
+    ├→ 提示-回應記錄：預設啟用 ✅
+    ├→ 隱私模式：僅記錄元數據 (權杖數、模型名、耗時)
+    └→ 無提示/回應內容：敏感信息不被存儲
+```
+
+**認證流程**
+```
+User Request
+    ↓
+IAP (身份驗證層)
+    ↓
+Cloud Run (WIF + IAM)
+    ├→ 驗證服務帳號
+    ├→ 檢查 IAM 權限
+    └→ 附加憑證存取下游服務
+         ├→ Cloud SQL
+         ├→ Vertex AI Search
+         └→ GCS
+```
+
+**安全最佳實踐**
+- ✅ 使用 Workload Identity Federation，避免長期密鑰管理
+- ✅ 啟用 IAP 提供應用程式層級的身份驗證
+- ✅ 遵循最小權限原則配置 IAM 角色
+- ✅ 使用 Secret Manager 而非環境變數存儲密鑰
+- ✅ 定期審查與更新安全策略
+
+**相關資源**
+參閱 [deployment/terraform/wif.tf](deployment/terraform/wif.tf) 和 [deployment/terraform/iam.tf](deployment/terraform/iam.tf) 了解具體配置。
+
+---
+
+### 3️⃣ Agent Development (代理開發)
+
+**概述**
+Agent Development 涵蓋從原型設計到生產級代理的整個開發生命週期，利用 ADK 框架與 LangChain 生態。
+
+**核心應用服務與工具棧**
+
+| 層級           | 服務/工具             | 功能               | 用途                                 |
+| -------------- | --------------------- | ------------------ | ------------------------------------ |
+| **LLM 核心**   | Gemini 3.0 Flash      | 高效的多模態 LLM   | 代理推理、指令遵循、內容生成         |
+| **Agent 框架** | Google ADK (v0.29.3)  | 代理開發套件       | 定義代理、編排工作流程、事件驅動執行 |
+| **LLM 集成**   | LangChain + Vertex AI | 模型抽象層         | 支持多模型切換、嵌入、文本分割       |
+| **Web 服務**   | FastAPI + Uvicorn     | 非同步 Web 框架    | REST API、WebSocket 支援、熱重載開發 |
+| **依賴管理**   | UV                    | 現代 Python 包管理 | 快速解析、鎖定版本、虛擬環境管理     |
+| **測試框架**   | Pytest + 整合測試     | 自動化測試         | 單元測試、端對端測試、負載測試       |
+| **代碼檢查**   | Ruff, MyPy, Codespell | 代碼質量           | 型別檢查、風格檢查、拼寫檢查         |
+| **開發筆記本** | Jupyter               | 互動式開發         | 快速原型、數據探索、代理評估         |
+
+**代理架構核心組件**
+
+```
+用戶請求
+    ↓
+[FastAPI 應用層] (app/fast_api_app.py)
+    ├→ 會話管理 (Cloud SQL + PostgreSQL)
+    ├→ 歷史上下文管理
+    └→ 反饋收集
+    ↓
+[代理邏輯層] (app/agent.py)
+    ├→ Gemini 3.0 Flash LLM
+    ├→ 工具集
+    │   └→ retrieve_docs (檢索工具)
+    └→ 提示指令 (System Prompt)
+    ↓
+[檢索層] (app/retrievers.py)
+    ├→ Vertex AI Search 檢索器
+    │   ├→ 查詢向量化 (text-embedding-005)
+    │   ├→ 語義搜索
+    │   └→ 自訂嵌入集成
+    └→ Vertex AI Rank 重排器
+        └→ 相關性重新排序
+    ↓
+生成與回應
+```
+
+**開發工作流程**
+
+```
+1️⃣ 原型設計
+   ├→ notebooks/adk_app_testing.ipynb
+   ├→ notebooks/evaluating_adk_agent.ipynb
+   └→ 使用 Vertex AI Evaluation 評估效能
+
+2️⃣ 代碼集成
+   ├→ 編輯 app/agent.py (代理邏輯)
+   ├→ 定義自訂工具函數
+   └→ 設定 LLM 參數與指令
+
+3️⃣ 本機測試
+   ├→ make install (安裝依賴)
+   ├→ make playground (啟動開發服務器，支援熱重載)
+   └→ make test (執行自動化測試)
+
+4️⃣ 質量檢查
+   ├→ make lint (Ruff, MyPy, Codespell)
+   └→ make test (包括整合測試)
+
+5️⃣ 部署
+   ├→ make deploy (本地部署測試)
+   └→ make setup-cicd (完整 CI/CD 管道)
+```
+
+**工具定義最佳實踐**
+
+```python
+# app/agent.py 中的工具示例
+def retrieve_docs(query: str, context: ToolContext) -> str:
+    """檢索相關文檔的代理工具"""
+    # 1. 檢索 (Retrieval)
+    docs = retriever.invoke({"query": query})
+
+    # 2. 重排 (Re-ranking)
+    compressed = compressor.compress_documents(docs)
+
+    # 3. 格式化 (Formatting)
+    return format_docs(compressed)
+```
+
+**依賴版本管理**
+- Python: >= 3.10, < 3.14
+- google-adk: >= 1.15.0, < 2.0.0
+- langchain: ~0.3.24
+- Vertex AI SDK: >= 1.118.0, < 2.0.0
+
+**關鍵文件**
+- [GEMINI.md](GEMINI.md) - ADK 速查表與最佳實踐
+- [notebooks/](notebooks/) - 互動式開發與評估
+- [tests/](tests/) - 自動化測試套件
+
+---
+
+### 4️⃣ Knowledge Management & RAG (知識管理與 RAG)
+
+**概述**
+Knowledge Management 與 RAG 是本專案的核心，通過結構化的資料管道與智能檢索，為代理提供動態知識基礎。
+
+**核心應用服務與工作流程**
+
+| 服務                     | 角色     | 關鍵功能                                            |
+| ------------------------ | -------- | --------------------------------------------------- |
+| **Vertex AI Pipelines**  | 管道協調 | 編排資料處理流程，管理依賴關係與重試                |
+| **BigQuery**             | 資料中樞 | 原始資料來源 (如 StackOverflow)、增量數據、去重存儲 |
+| **Vertex AI Embeddings** | 向量化   | text-embedding-005 模型，將文本轉換為 768 維向量    |
+| **Google Cloud Storage** | 中繼存儲 | JSONL 格式文件交換點，連接資料處理與索引            |
+| **Vertex AI Search**     | 智能索引 | 構建可搜索的向量索引，支持語義檢索                  |
+| **Vertex AI Rank**       | 重新排序 | 根據查詢相關性重新排列檢索結果                      |
+
+**數據管道流程 (Data Ingestion Pipeline)**
+
+```
+bigquery.PublicDatasets (StackOverflow)
+    ↓ [1. 資料獲取]
+BigQuery 原始表
+    ↓ [2. 預處理]
+    ├→ HTML → Markdown 轉換
+    ├→ 文本合併 (標題 + 內容 + 答案)
+    └→ 數據清理
+    ↓ [3. 文本分塊]
+    └→ RecursiveCharacterTextSplitter
+        ├→ chunk_size: 1500 字符
+        └→ chunk_overlap: 20 字符
+    ↓ [4. 向量化]
+    └→ text-embedding-005
+        └→ 生成 768 維嵌入向量
+    ↓ [5. 去重 & 儲存]
+    ├→ incremental_questions_embeddings (增量)
+    └→ questions_embeddings (去重)
+    ↓ [6. 導出]
+    └→ GCS (JSONL 格式)
+    ↓ [7. 索引構建]
+    └→ Vertex AI Search
+        ├→ Schema 更新
+        ├→ 文件匯入
+        └→ 索引建立
+```
+
+**RAG 檢索流程 (Query Handling)**
+
+```
+用戶查詢
+    ↓
+[查詢向量化]
+    └→ text-embedding-005 (與索引構建同一模型)
+    ↓
+[語義搜索]
+    ├→ Vertex AI Search Retriever
+    │   ├→ 相似度匹配 (自訂嵌入 + 原生搜索混合)
+    │   ├→ custom_embedding_ratio: 0.5 (可調)
+    │   └→ 檢索 max_documents: 10
+    ↓
+[相關性重排]
+    └→ Vertex AI Rank
+        ├→ 按相關性重新評分
+        └→ 保留 top_n: 5 結果
+    ↓
+[上下文格式化] (app/templates.py)
+    └→ Markdown 格式化
+    ↓
+[代理推理]
+    ├→ 接收結構化上下文
+    ├→ Gemini LLM 生成回應
+    └→ 整合檢索結果與 LLM 推理
+    ↓
+最終回應
+```
+
+**核心參數配置**
+
+| 參數                     | 預設值             | 說明               | 調整建議                           |
+| ------------------------ | ------------------ | ------------------ | ---------------------------------- |
+| `EMBEDDING_MODEL`        | text-embedding-005 | 用於生成向量的模型 | 確保與 RAG 檢索使用同一模型        |
+| `chunk_size`             | 1500               | 文本分塊大小       | 較大值 = 更多上下文但計算成本增加  |
+| `chunk_overlap`          | 20                 | 分塊重疊           | 保留上下文連續性                   |
+| `max_documents`          | 10                 | 檢索文檔數         | 平衡相關性與成本                   |
+| `top_n` (重排)           | 5                  | 最終回傳文檔數     | 控制上下文窗口大小                 |
+| `custom_embedding_ratio` | 0.5                | 自訂嵌入權重       | 0.0 = 純原生搜索，1.0 = 純自訂嵌入 |
+
+**資料生命週期管理**
+
+```
+初始加載 (Full Import)
+    ↓ 設置基礎索引
+定期更新 (Incremental)
+    ├→ 差量檢測 (按時間範圍)
+    ├→ 增量處理
+    └→ 去重合併
+    ↓
+實時查詢服務
+    ├→ 向量化
+    ├→ 語義搜索
+    └→ 排序與重排
+```
+
+**知識管理最佳實踐**
+
+- ✅ **版本控制**：使用去重表 (`questions_embeddings`) 維持資料一致性
+- ✅ **增量更新**：配置 `look_back_days` 進行差量處理，優化成本
+- ✅ **嵌入模型一致性**：索引與查詢使用同一嵌入模型確保語義對齐
+- ✅ **分塊策略**：根據內容類型調整 `chunk_size`，平衡上下文與精度
+- ✅ **監控索引健康**：定期檢查索引完整性與搜索延遲
+- ✅ **隱私保護**：敏感信息進行掩蔽或過濾後再索引
+
+**管道執行與監控**
+
+```bash
+# 運行資料擷取管道
+make data-ingestion
+
+# 在 Google Cloud Console 監控
+# Vertex AI → Pipelines → [pipeline_name] → 查看執行日誌與時序圖
+```
+
+**相關文件**
+- [data_ingestion/README.md](data_ingestion/README.md) - 完整管道文檔
+- [data_ingestion/data_ingestion_pipeline/pipeline.py](data_ingestion/data_ingestion_pipeline/pipeline.py) - 管道定義
+- [data_ingestion/data_ingestion_pipeline/components/](data_ingestion/data_ingestion_pipeline/components/) - 各元件實現
+
+---
+
+## 綜合應用場景示例
+
+### 端到端工作流程
+
+```
+1. 知識準備 (Knowledge Management)
+   └→ 資料擷取管道 → BigQuery → Vertex AI Search
+
+2. 代理開發 (Agent Development)
+   └→ 定義工具 & 指令 → 本機測試 → 質量檢查
+
+3. 代理部署 (Agent Operations)
+   └→ Terraform 佈建 → Cloud Run 部署 → 啟用監控
+
+4. 安全加固 (Agent Security)
+   └→ 配置 IAP & WIF → 設置 IAM 權限 → 啟用遙測隱私模式
+
+5. 運行與優化
+   └→ 監控與分析 → 迭代改進 → 實時更新知識庫
+```
 
 ---
 
