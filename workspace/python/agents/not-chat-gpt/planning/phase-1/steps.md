@@ -1659,7 +1659,9 @@ python -m pytest tests/unit/backend/test_guardrails.py -v
 from google import genai
 from google.genai import types
 from typing import AsyncIterator
+from dotenv import load_dotenv
 import os
+import asyncio
 
 async def stream_response(
     message: str,
@@ -1722,6 +1724,56 @@ async def stream_response(
                 
     except Exception as e:
         yield f"❌ 生成錯誤: {str(e)}"
+
+
+# 測試用
+if __name__ == "__main__":
+    # 載入 .env 檔案
+    load_dotenv()
+    
+    # 從環境變數取得 API Key
+    api_key = os.getenv('GOOGLE_API_KEY')
+    model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
+    
+    if not api_key:
+        print("❌ 錯誤: GOOGLE_API_KEY 未設定在 .env 檔案中")
+        exit(1)
+    
+    print(f"✅ 使用模型: {model_name}")
+    print("=" * 60)
+    
+    async def test_streaming():
+        """測試串流功能"""
+        test_cases = [
+            {
+                "message": "請用一句話解釋什麼是機器學習",
+                "thinking_mode": False,
+                "enable_safety": True
+            },
+            {
+                "message": "分析量子計算的未來發展",
+                "thinking_mode": True,
+                "enable_safety": True
+            }
+        ]
+        
+        for i, test in enumerate(test_cases, 1):
+            print(f"\n📝 測試 {i}: {test['message']}")
+            print(f"   思考模式: {'✓' if test['thinking_mode'] else '✗'}")
+            print(f"   安全防護: {'✓' if test['enable_safety'] else '✗'}")
+            print("-" * 60)
+            
+            async for chunk in stream_response(
+                message=test['message'],
+                thinking_mode=test['thinking_mode'],
+                enable_safety=test['enable_safety']
+            ):
+                print(chunk, end='', flush=True)
+            
+            print("\n" + "=" * 60)
+    
+    # 執行測試
+    asyncio.run(test_streaming())
 ```
 
 #### 7.2 實作 FastAPI SSE 端點
@@ -1773,7 +1825,11 @@ async def root():
 
 ```python
 import uvicorn
-from backend.api.routes import app
+from dotenv import load_dotenv
+from api.routes import app
+
+# 載入環境變數（必須在應用程式啟動前載入）
+load_dotenv()
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
