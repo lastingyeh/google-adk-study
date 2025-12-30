@@ -1,6 +1,6 @@
 """具有安全防護的對話 Agent"""
 from google.genai import types
-from backend.guardrails.safety_callbacks import validate_input, sanitize_response
+from guardrails.safety_callbacks import validate_input, sanitize_response
 import logging
 
 logger = logging.getLogger(__name__)
@@ -49,14 +49,21 @@ def create_safe_config(enable_safety: bool = True) -> types.GenerateContentConfi
     
     return config
 
-def safe_generate_response(client, model_name: str, user_message: str, enable_safety: bool = True) -> dict:
-    """安全地生成回應
+def safe_generate_response(
+    client, 
+    model_name: str, 
+    user_message: str, 
+    enable_safety: bool = True,
+    conversation_history: list = None
+) -> dict:
+    """安全地生成回應（支援多輪對話）
     
     Args:
         client: Genai client
         model_name: 模型名稱
         user_message: 使用者訊息
         enable_safety: 是否啟用安全檢查
+        conversation_history: 對話歷史，格式為 [{'role': 'user', 'parts': [{'text': '...'}]}, ...]
         
     Returns:
         dict: {'success': bool, 'text': str, 'reason': str}
@@ -75,9 +82,21 @@ def safe_generate_response(client, model_name: str, user_message: str, enable_sa
     # 生成回應
     try:
         config = create_safe_config(enable_safety=enable_safety)
+        
+        # 準備內容：如果有對話歷史，則包含歷史 + 新訊息
+        if conversation_history:
+            # 複製歷史並添加新訊息
+            contents = conversation_history + [{
+                'role': 'user',
+                'parts': [{'text': user_message}]
+            }]
+        else:
+            # 沒有歷史，只傳送新訊息
+            contents = user_message
+        
         response = client.models.generate_content(
             model=model_name,
-            contents=user_message,
+            contents=contents,
             config=config
         )
         
