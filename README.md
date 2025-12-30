@@ -1345,4 +1345,23 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </details>
 
+#### 🕗 Day 67
+
+<details>
+<summary>
+這是一個使用 Google Cloud ADK 入門包建立的 RAG 代理專案，用於文件檢索與問答。它整合了 Vertex AI Search，並包含完整的資料擷取管道、Terraform 部署腳本及可觀測性設定，讓開發者能快速建構、測試與部署生成式 AI 應用。
+
+🏷️ `rag`, `agent-starter-pack`, `gcp`, `vertex-ai`, `terraform`, `logging`, `cloud-sql`, `knowledge-management`, `monitoring`, `cicd`
+
+</summary>
+
+- **詳細說明**：
+  - [RAG KM Agent](./workspace/python/agents/rag-km-agents/)
+
+- **參考資源**
+  - [Agent Starter Pack 文件](https://googlecloudplatform.github.io/agent-starter-pack/)
+  - [ADK GitHub 儲存庫](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+
+</details>
+
 </details>

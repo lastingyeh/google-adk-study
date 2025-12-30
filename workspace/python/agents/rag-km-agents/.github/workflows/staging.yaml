@@ -1,0 +1,138 @@
+# ==============================================================================
+# 重點註解：此工作流程的整體目標
+# 此 GitHub Actions 工作流程會自動將應用程式部署到「預備環境」(Staging)。
+# 成功部署並通過負載測試後，它會觸發另一個工作流程來部署到「生產環境」(Production)。
+# ==============================================================================
+name: 部署至預備環境
+
+on:
+  # 重點註解：工作流程觸發條件
+  # 當 'main' 分支中特定目錄的程式碼被推送 (push) 時，此工作流程將會被觸發。
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'data_ingestion/**'
+      - 'tests/**'
+      - 'deployment/**'
+      - 'uv.lock'
+
+jobs:
+  # 重點註解：定義第一個作業 (Job)
+  # 此作業負責部署應用程式到預備環境並執行相關測試。
+  deploy_and_test_staging:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write' # 重點註解：需要 id-token 權限以進行 OIDC 驗證。
+
+    steps:
+      - name: 簽出程式碼
+        uses: actions/checkout@v4
+
+      - name: 設定 Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 重點註解：向 Google Cloud 進行身份驗證
+      # 使用 Workload Identity Federation (WIF) 進行安全驗證，無需使用靜態服務帳號金鑰。
+      - id: 'auth'
+        name: '驗證至 Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      - name: 設定 Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      # 重點註解：部署資料處理管道
+      # 執行 Python 腳本來提交一個 Vertex AI Pipeline，用於處理和擷取資料。
+      - name: 部署資料擷取管道 (預備環境)
+        run: |
+          cd data_ingestion && pip install uv==0.8.13 && cd data_ingestion_pipeline && \
+          uv sync --locked && uv run python submit_pipeline.py
+        env:
+          PIPELINE_ROOT: ${{ vars.PIPELINE_GCS_ROOT_STAGING }}
+          REGION: ${{ vars.REGION }}
+          DATA_STORE_REGION: ${{ vars.DATA_STORE_REGION }}
+          DATA_STORE_ID: ${{ vars.DATA_STORE_ID_STAGING }}
+          PROJECT_ID: ${{ vars.STAGING_PROJECT_ID }}
+          SERVICE_ACCOUNT: ${{ vars.PIPELINE_SA_EMAIL_STAGING }}
+          PIPELINE_NAME: ${{ vars.PIPELINE_NAME }}
+
+      - name: 為 Artifact Registry 設定 Docker
+        run: |
+          gcloud auth configure-docker ${{ vars.REGION }}-docker.pkg.dev --quiet
+
+      # 重點註解：建置並推送應用程式的 Docker 映像檔
+      # 將應用程式打包成 Docker 映像檔，並將其推送到 Google Artifact Registry 以供後續部署使用。
+      - name: 建置並推送 Docker 映像檔
+        run: |
+          docker build -t ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --build-arg COMMIT_SHA=${{ github.sha }} \
+            .
+          docker push ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }}
+
+      # 重點註解：將應用程式部署到 Cloud Run
+      # 使用剛才建置的 Docker 映像檔，將應用程式部署為一個 Cloud Run 服務。
+      - name: 部署至預備環境 (Cloud Run)
+        run: |
+          gcloud run deploy rag-km-agents \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --region ${{ vars.REGION }} \
+            --project ${{ vars.STAGING_PROJECT_ID }}
+
+      - name: 取得預備環境服務 URL
+        id: fetch-url
+        run: |
+          _STAGING_URL=$(gcloud run services describe rag-km-agents \
+            --region ${{ vars.REGION }} --project ${{ vars.STAGING_PROJECT_ID }} --format="value(status.url)")
+          echo "_staging_url=${_STAGING_URL}" >> $GITHUB_OUTPUT
+
+      - name: 取得 ID Token
+        id: fetch-token
+        run: |
+          _ID_TOKEN=$(gcloud auth print-identity-token --impersonate-service-account=${{ secrets.GCP_SERVICE_ACCOUNT }} -q)
+          echo "::add-mask::${_ID_TOKEN}"
+          echo "_id_token=${_ID_TOKEN}" >> $GITHUB_OUTPUT
+
+      # 重點註解：執行自動化負載測試
+      # 使用 Locust 工具對剛部署的預備環境服務進行負載測試，以確保其穩定性與效能。
+      - name: 執行負載測試
+        run: |
+          export _ID_TOKEN="${{ steps.fetch-token.outputs._id_token }}"
+          export _STAGING_URL="${{ steps.fetch-url.outputs._staging_url }}"
+          pip install locust==2.31.1
+          locust -f tests/load_test/load_test.py \
+          --headless \
+          -H ${_STAGING_URL} \
+          -t 30s -u 10 -r 0.5 \
+          --csv=tests/load_test/.results/results \
+          --html=tests/load_test/.results/report.html
+
+      # 重點註解：保存測試結果
+      # 將負載測試的報告和數據上傳到 Google Cloud Storage (GCS) 以便後續分析和存檔。
+      - name: 將負載測試結果匯出至 GCS
+        run: |
+          TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+          gcloud storage cp --recursive tests/load_test/.results gs://${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP} --quiet
+          echo "_________________________________________________________________________"
+          echo "負載測試結果已複製到 gs://${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP}"
+          echo "HTTP 連結: https://console.cloud.google.com/storage/browser/${{ vars.LOGS_BUCKET_NAME_STAGING }}/load-test-results/results-${TIMESTAMP}"
+          echo "_________________________________________________________________________"
+
+  # 重點註解：定義第二個作業，用於觸發後續流程
+  # 此作業會在 'deploy_and_test_staging' 作業成功後執行。
+  # 它會呼叫另一個可重複使用的工作流程 (reusable workflow) 來執行生產環境的部署。
+  call_production_workflow:
+    needs: deploy_and_test_staging # 重點註解：表示此作業依賴於前一個作業的成功。
+    uses: ./.github/workflows/deploy-to-prod.yaml
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    secrets: inherit # 重點註解：將此工作流程的 secrets 傳遞給被呼叫的工作流程。

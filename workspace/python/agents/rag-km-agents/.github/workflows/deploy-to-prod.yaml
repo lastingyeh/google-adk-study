@@ -1,0 +1,93 @@
+# ==============================================================================
+# 重點註解：此工作流程 (Workflow) 的主要目的是將應用程式部署到生產環境。
+# 它包含兩個主要部署步驟：
+# 1. 部署資料擷取管道 (Data Ingestion Pipeline)。
+# 2. 部署應用程式主體至 Cloud Run。
+# ==============================================================================
+
+name: 部署至生產環境 (Deploy to Production)
+
+on:
+  # 重點註解：允許手動從 GitHub Actions UI 觸發此工作流程。
+  workflow_dispatch:
+  # 重點註解：允許其他工作流程調用此工作流程，實現可重用性。
+  workflow_call:
+
+jobs:
+  deploy:
+    # 重點註解：指定此作業 (job) 在最新的 Ubuntu 環境中運行。
+    runs-on: ubuntu-latest
+    # ==============================================================================
+    # 重點註解：此作業針對 'production' 環境。
+    # 這個環境是由 `deployment/terraform/github.tf` 中的 Terraform 設定自動建立的。
+    # 若要啟用部署前的「手動審批」，您必須在 GitHub 儲存庫設定中為此環境新增保護規則。
+    #
+    # 1. 前往您儲存庫的 Settings > Environments。
+    # 2. 選擇 'production' 環境。
+    # 3. 在 'Protection rules' 下，勾選 'Required reviewers'。
+    # 4. 新增必須批准部署的特定使用者或團隊。
+    #
+    # 設定完成後，工作流程會在此步驟暫停，等待授權使用者批准後才會繼續。
+    # ==============================================================================
+    environment:
+      name: production
+    # 重點註解：確保一次只有一個 'production' 的部署在運行，避免資源衝突或部署狀態不一致。
+    concurrency: production
+    # 重點註解：設定此作業所需的權限。
+    permissions:
+      contents: 'read' # 允許讀取儲存庫內容 (例如 checkout 程式碼)。
+      id-token: 'write' # 允許向 OIDC 提供商 (Google Cloud) 請求 JWT ID Token，用於無密鑰驗證。
+
+    steps:
+      - name: 簽出程式碼 (Checkout code)
+        uses: actions/checkout@v4
+
+      - name: 設定 Python 3.12 環境
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 重點註解：此步驟使用 Google Cloud 的 Workload Identity Federation (WIF) 進行身份驗證。
+      # 這是最安全的方式，它不需要長期有效的服務帳戶金鑰 (Service Account Key)。
+      # 它會為此作業產生一個短期的 OIDC Token，並用它來換取 Google Cloud 的存取權杖。
+      - id: 'auth'
+        name: '向 Google Cloud 進行身份驗證 (Authenticate to Google Cloud)'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          # 重點註解：設定 Workload Identity Provider，將 GitHub Actions 與 GCP 服務帳戶關聯。
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          # 重點註解：指定要模擬的 GCP 服務帳戶。
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      - name: 設定 Cloud SDK (gcloud)
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      # 重點註解：部署 Vertex AI 或 Dataflow 的資料處理管道。
+      # 此步驟會進入 `data_ingestion` 目錄，使用 `uv` (一個快速的 Python 套件管理器) 安裝依賴，
+      # 然後執行 `submit_pipeline.py` 腳本來提交管道作業。
+      - name: 部署資料擷取管道 (生產環境)
+        run: |
+          cd data_ingestion && pip install uv==0.8.13 && cd data_ingestion_pipeline && \
+          uv sync --locked && uv run python submit_pipeline.py
+        env:
+          # 重點註解：以下環境變數用於配置管道，使其指向「生產環境」的資源。
+          PIPELINE_ROOT: ${{ vars.PIPELINE_GCS_ROOT_PROD }}
+          REGION: ${{ vars.REGION }}
+          DATA_STORE_REGION: ${{ vars.DATA_STORE_REGION }}
+          DATA_STORE_ID: ${{ vars.DATA_STORE_ID_PROD }}
+          PROJECT_ID: ${{ vars.PROD_PROJECT_ID }}
+          SERVICE_ACCOUNT: ${{ vars.PIPELINE_SA_EMAIL_PROD }}
+          PIPELINE_NAME: ${{ vars.PIPELINE_NAME }}
+          CRON_SCHEDULE: ${{ vars.PIPELINE_CRON_SCHEDULE }}
+          DISABLE_CACHING: 'TRUE'
+
+      # 重點註解：將應用程式的 Docker 映像檔部署到 Cloud Run。
+      # `gcloud run deploy` 是部署 Cloud Run 服務的標準指令。
+      - name: 部署至生產環境 (Cloud Run)
+        run: |
+          gcloud run deploy rag-km-agents \
+            --image ${{ vars.REGION }}-docker.pkg.dev/${{ vars.CICD_PROJECT_ID }}/${{ vars.ARTIFACT_REGISTRY_REPO_NAME }}/${{ vars.CONTAINER_NAME }} \
+            --region ${{ vars.REGION }} \
+            --project ${{ vars.PROD_PROJECT_ID }}

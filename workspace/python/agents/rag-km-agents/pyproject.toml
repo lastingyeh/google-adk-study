@@ -1,0 +1,179 @@
+# [project] 區塊：定義專案的核心元數據 (PEP 621 標準)
+[project]
+# 專案名稱
+name = "rag-km-agents"
+# 專案版本
+version = "0.1.0"
+# 專案的簡短描述
+description = ""
+# 作者資訊
+authors = [{ name = "Your Name", email = "your@email.com" }]
+# 專案的主要依賴函式庫
+dependencies = [
+    # Google Agent Development Kit (ADK)，用於建構和部署代理程式的框架
+    "google-adk>=1.15.0,<2.0.0",
+    # LangChain 與 Google Vertex AI 的整合套件
+    "langchain-google-vertexai~=2.0.7",
+    # LangChain 核心框架，用於開發由大型語言模型驅動的應用程式
+    "langchain~=0.3.24",
+    # LangChain 的核心抽象和資料結構
+    "langchain-core~=0.3.55",
+    # LangChain 的社群貢獻整合套件
+    "langchain-community~=0.3.17",
+    # LangChain 與 OpenAI 服務的整合套件
+    "langchain-openai~=0.3.5",
+    # LangChain 的 Google 社群整合套件，並包含 Vertex AI Search 的額外功能
+    "langchain-google-community[vertexaisearch]~=2.0.7",
+    # 一個現代且功能強大的 Python 樣板引擎
+    "Jinja2~=3.1.6",
+    # 用於 Google Generative AI 的 OpenTelemetry 檢測工具，用於追蹤和監控
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0",
+    # 提供 Google Cloud Storage (GCS) 的檔案系統介面
+    "gcsfs>=2024.11.0",
+    # 用於與 Google Cloud Logging 服務互動的客戶端函式庫
+    "google-cloud-logging>=3.12.0,<4.0.0",
+    # Google Cloud AI Platform 的 SDK，並包含模型評估功能
+    "google-cloud-aiplatform[evaluation]>=1.118.0,<2.0.0",
+    # 一個現代、高效能的 Python Web 框架，用於建構 API
+    "fastapi~=0.115.8",
+    # 一個輕量級的 ASGI 伺服器，常用於執行 FastAPI 應用程式
+    "uvicorn~=0.34.0",
+    # 一個高效能的 PostgreSQL 資料庫非同步驅動程式
+    "asyncpg>=0.30.0,<1.0.0",
+]
+# 專案要求的 Python 版本
+requires-python = ">=3.10,<3.14"
+
+
+# [dependency-groups] 區塊：Hatch 工具用來定義依賴群組，這裡定義了開發環境的依賴
+[dependency-groups]
+dev = [
+    # Python 的測試框架
+    "pytest>=8.3.4,<9.0.0",
+    # Pytest 的外掛，用於支援非同步 (asyncio) 程式碼的測試
+    "pytest-asyncio>=0.23.8,<1.0.0",
+    # 允許 asyncio 事件迴圈巢狀執行，在 Jupyter 或其他互動式環境中很有用
+    "nest-asyncio>=1.6.0,<2.0.0",
+]
+
+# [project.optional-dependencies] 區塊：定義可選的依賴項 (extras)
+[project.optional-dependencies]
+# 用於執行 Jupyter Notebook 的相關依賴
+jupyter = ["jupyter>=1.0.0,<2.0.0"]
+# 用於程式碼品質檢查 (Linting) 的相關依賴
+lint = [
+    # 一個極速的 Python Linter 和程式碼格式化工具
+    "ruff>=0.4.6,<1.0.0",
+    # Python 的靜態型別檢查工具
+    "mypy>=1.15.0,<2.0.0",
+    # 用於檢查和修正程式碼中常見拼寫錯誤的工具
+    "codespell>=2.2.0,<3.0.0",
+    # PyYAML 函式庫的型別提示
+    "types-pyyaml>=6.0.12.20240917,<7.0.0",
+    # Requests 函式庫的型別提示
+    "types-requests>=2.32.0.20240914,<3.0.0",
+]
+
+# [tool.ruff] 區塊：Ruff 工具的設定
+[tool.ruff]
+# 每行程式碼的最大長度
+line-length = 88
+# 設定目標 Python 版本以提供對應的程式碼檢查
+target-version = "py310"
+
+# [tool.ruff.lint] 區塊：Ruff 的 Linter 細部設定
+[tool.ruff.lint]
+# 選擇要啟用的規則集
+select = [
+    "E",   # pycodestyle 錯誤
+    "F",   # pyflakes 錯誤
+    "W",   # pycodestyle 警告
+    "I",   # isort (import 排序)
+    "C",   # flake8-comprehensions (列表推導式風格)
+    "B",   # flake8-bugbear (常見錯誤模式)
+    "UP",  # pyupgrade (升級語法)
+    "RUF", # Ruff 的專屬規則
+]
+# 忽略特定的規則
+ignore = ["E501", "C901", "B006"] # 忽略 "行太長"、"函式太複雜" 等
+
+# [tool.ruff.lint.isort] 區塊：isort (import 排序) 的設定
+[tool.ruff.lint.isort]
+# 將這些模組視為第一方函式庫 (專案內部模組)
+known-first-party = ["app", "frontend"]
+
+# [tool.mypy] 區塊：Mypy (靜態型別檢查) 的設定
+[tool.mypy]
+disallow_untyped_calls = true                                     # 禁止呼叫沒有型別定義的函式
+disallow_untyped_defs = true                                      # 禁止定義沒有型別標註的函式
+disallow_incomplete_defs = true                                   # 禁止不完整的型別定義
+no_implicit_optional = true                                       # 禁止隱性的 Optional 型別
+check_untyped_defs = true                                         # 檢查沒有型別標註的函式內部
+disallow_subclassing_any = true                                   # 禁止繼承自 Any 型別
+warn_incomplete_stub = true                                       # 對不完整的 stub 檔案發出警告
+warn_redundant_casts = true                                       # 對多餘的型別轉換發出警告
+warn_unused_ignores = true                                        # 對未使用的 # type: ignore 發出警告
+warn_unreachable = true                                           # 對無法觸及的程式碼發出警告
+follow_imports = "silent"                                         # 靜默地跟隨 import，不報告相關錯誤
+ignore_missing_imports = true                                     # 忽略找不到模組的錯誤
+explicit_package_bases = true                                     # 要求明確的套件基礎路徑
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"] # 禁用特定的錯誤碼
+
+# 排除檢查的目錄
+exclude = [".venv"]
+
+# [tool.codespell] 區塊：Codespell (拼寫檢查) 的設定
+[tool.codespell]
+# 忽略清單中的單字
+ignore-words-list = "rouge"
+# 跳過檢查的檔案或目錄
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
+
+# [build-system] 區塊：定義建構專案所需的工具 (PEP 517/518)
+[build-system]
+# 建構時需要的套件
+requires = ["hatchling"]
+# 用於建構專案的後端工具
+build-backend = "hatchling.build"
+
+
+# [tool.pytest.ini_options] 區塊：Pytest 的設定
+[tool.pytest.ini_options]
+# 將專案根目錄加入 Python 搜尋路徑
+pythonpath = "."
+# 設定 asyncio fixture 的預設作用域為函式級別
+asyncio_default_fixture_loop_scope = "function"
+
+# [tool.hatch.build.targets.wheel] 區塊：Hatch 建構 Wheel 檔案的設定
+[tool.hatch.build.targets.wheel]
+# 指定要包含在打包檔案中的套件目錄
+packages = ["app", "frontend"]
+
+# [tool.agent-starter-pack] 區塊：Google Agent Starter Pack 的專屬設定
+[tool.agent-starter-pack]
+# 產生元數據 - 讓 CLI 命令能夠理解專案上下文
+# 這些欄位允許任何產生的專案作為遠端樣板
+name = "rag-km-agents"
+description = "用於文件檢索和問答的 ADK RAG 代理程式。包含一個資料管道，用於將文件擷取並索引到 Vertex AI Search 或 Vector Search。"
+base_template = "agentic_rag"
+agent_directory = "app"
+
+# 產生上下文
+generated_at = "2025-12-24T06:11:24.089492+00:00"
+asp_version = "0.29.3"
+
+# [tool.agent-starter-pack.create_params] 區塊：專案建立時使用的參數
+[tool.agent-starter-pack.create_params]
+# 部署目標
+deployment_target = "cloud_run"
+# 會話 (session) 儲存類型
+session_type = "cloud_sql"
+# CI/CD 執行器
+cicd_runner = "github_actions"
+# 是否包含資料擷取管道
+include_data_ingestion = true
+# 資料儲存類型
+datastore = "vertex_ai_search"
+# 前端類型
+frontend_type = "None"
