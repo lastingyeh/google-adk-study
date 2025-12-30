@@ -566,69 +566,119 @@ class ModeConfig:
     """思考模式配置"""
     
     @staticmethod
-    def get_thinking_config() -> types.ThinkingConfig:
-        """思考模式配置 💭"""
-        return types.ThinkingConfig(
-            mode="thinking",
-            include_thoughts=True,
-            max_thinking_tokens=8000,
-        )
-    
-    @staticmethod
-    def get_standard_config() -> types.ThinkingConfig:
-        """標準模式配置 💬"""
-        return types.ThinkingConfig(
-            mode="none",
-            include_thoughts=False,
-        )
-    
-    @staticmethod
-    def create_agent_with_mode(thinking_mode: bool = False):
-        """根據模式建立 Agent"""
-        config = ModeConfig.get_thinking_config() if thinking_mode else ModeConfig.get_standard_config()
+    def create_config_with_mode(thinking_mode: bool = False) -> types.GenerateContentConfig:
+        """根據模式建立 GenerateContentConfig
         
-        return types.Agent(
-            model="gemini-2.0-flash-exp",
-            system_instruction="你是 NotChatGPT，智慧對話助理。",
-            tools=[types.BuiltInPlanner(thinking_config=config)],
+        Args:
+            thinking_mode: 是否啟用思考模式
+            
+        Returns:
+            GenerateContentConfig: 配置物件
+        """
+        system_instruction = "你是 NotChatGPT，智慧對話助理。"
+        
+        if thinking_mode:
+            system_instruction += "\n\n請展示你的思考過程。"
+        
+        return types.GenerateContentConfig(
+            system_instruction=system_instruction,
+            temperature=1.0,
         )
 ```
 
 #### 4.2 測試模式切換
 
-**backend/test_thinking_mode.py**:
+**tests/unit/backend/test_thinking_mode.py**:
 
 ```python
+import pytest
 from google import genai
+from dotenv import load_dotenv
+import os
 from backend.config.mode_config import ModeConfig
 
-def test_thinking_mode():
-    client = genai.Client()
+class TestThinkingMode:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        """測試前置設定"""
+        load_dotenv()
+        self.api_key = os.getenv('GOOGLE_API_KEY')
+        self.model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
+        
+        if not self.api_key:
+            pytest.skip("GOOGLE_API_KEY 未設定")
+        
+        self.client = genai.Client(api_key=self.api_key)
+        
+        yield
     
-    # 測試思考模式
-    print("\n=== 思考模式 💭 ===")
-    agent_thinking = ModeConfig.create_agent_with_mode(thinking_mode=True)
-    session = client.agentic.create_session(agent=agent_thinking)
-    response = session.send_message("請解釋量子糾纏的原理")
+    def test_thinking_mode(self):
+        """測試思考模式"""
+        print("\n=== 思考模式 💭 ===")
+        config = ModeConfig.create_config_with_mode(thinking_mode=True)
+        
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents="請解釋量子糾纏的原理",
+            config=config
+        )
+        
+        print(f"回應: {response.text[:200]}...")
+        
+        # 驗證回應
+        assert response.text is not None
+        assert len(response.text) > 0
+        print("✅ 思考模式測試通過")
     
-    # 檢查是否有思考過程
-    if hasattr(response, 'thoughts'):
-        print(f"思考過程: {response.thoughts}")
-    print(f"回應: {response.text[:200]}...")
+    def test_standard_mode(self):
+        """測試標準模式"""
+        print("\n=== 標準模式 💬 ===")
+        config = ModeConfig.create_config_with_mode(thinking_mode=False)
+        
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents="今天天氣如何？",
+            config=config
+        )
+        
+        print(f"回應: {response.text}")
+        
+        # 驗證回應
+        assert response.text is not None
+        assert len(response.text) > 0
+        print("✅ 標準模式測試通過")
     
-    # 測試標準模式
-    print("\n=== 標準模式 💬 ===")
-    agent_standard = ModeConfig.create_agent_with_mode(thinking_mode=False)
-    session2 = client.agentic.create_session(agent=agent_standard)
-    response2 = session2.send_message("今天天氣如何？")
-    print(f"回應: {response2.text}")
+    def test_mode_toggle(self):
+        """測試模式切換"""
+        # 建立兩種模式的 config
+        config_thinking = ModeConfig.create_config_with_mode(thinking_mode=True)
+        config_standard = ModeConfig.create_config_with_mode(thinking_mode=False)
+        
+        # 驗證建立成功
+        assert config_thinking is not None
+        assert config_standard is not None
+        
+        # 驗證 system_instruction 不同
+        assert "思考過程" in config_thinking.system_instruction
+        assert "思考過程" not in config_standard.system_instruction
+        
+        print("✅ 模式切換測試通過")
 
 if __name__ == "__main__":
-    test_thinking_mode()
+    pytest.main([__file__, "-v"])
 ```
 
+**執行測試**:
+
 ```bash
-python backend/test_thinking_mode.py
+# 執行思考模式單元測試
+python -m pytest tests/unit/backend/test_thinking_mode.py -v
+
+# 或使用 PYTHONPATH
+PYTHONPATH=. python -m pytest tests/unit/backend/test_thinking_mode.py -v
+
+# 執行單一測試方法
+python -m pytest tests/unit/backend/test_thinking_mode.py::TestThinkingMode::test_thinking_mode -v
 ```
 
 **參考**: Day 20 (strategic-solver) - Thinking Mode
