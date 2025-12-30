@@ -90,16 +90,7 @@ not-chat-gpt/
 
 #### 1.2 安裝 Google ADK 與相依套件
 
-```powershell
-# 建立虛擬環境
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-
-# 安裝套件
-pip install google-genai fastapi uvicorn python-dotenv sqlalchemy pytest pytest-asyncio
-```
-
-**backend/requirements.txt**:
+**建立 backend/requirements.txt**:
 
 ```txt
 google-genai>=1.0.0
@@ -111,26 +102,50 @@ pytest>=7.4.0
 pytest-asyncio>=0.21.0
 ```
 
-#### 1.3 設定 `.env` 檔案
+**安裝套件**:
 
 ```powershell
-# 建立 .env 檔案
-@"
+# 建立虛擬環境
+python -m venv venv
+
+# windows powershell
+.\venv\Scripts\Activate.ps1
+# mac/linux
+source venv/bin/activate
+
+# 使用 requirements.txt 安裝套件
+pip install -r backend/requirements.txt
+```
+
+#### 1.3 設定 `.env` 檔案
+
+**建立 `.env` 檔案**（專案根目錄）：
+
+```env
 GOOGLE_API_KEY=your_api_key_here
 MODEL_NAME=gemini-2.0-flash-exp
 DATABASE_URL=sqlite:///./not_chat_gpt.db
-"@ | Out-File -FilePath .env -Encoding utf8
 ```
 
 #### 1.4 驗證環境設定
 
-```powershell
-# 測試 API Key
-python -c "from google import genai; client = genai.Client(api_key='YOUR_KEY'); print('✅ API Key Valid')"
+**測試 API Key**:
 
-# 檢查套件安裝
-pip list | Select-String "google-genai|fastapi"
+```bash
+# 使用 python-dotenv 載入 .env
+python -c "from google import genai; import os; from dotenv import load_dotenv; load_dotenv(); client = genai.Client(api_key=os.getenv('GOOGLE_API_KEY')); print('✅ API Key Valid')"
 ```
+
+**檢查套件安裝**:
+
+```bash
+pip list | grep -E "google-genai|fastapi"
+```
+
+**說明**：
+
+- `.env` 檔案不會自動載入到環境變數，需要使用 `load_dotenv()` 明確載入
+- 確保 `.env` 檔案中的 `GOOGLE_API_KEY` 已設定正確的值
 
 **參考**: Day 16 (hello-agent) - 基礎環境設定
 
@@ -171,7 +186,7 @@ if __name__ == "__main__":
 
 #### 2.2 測試基本對話能力
 
-```powershell
+```bash
 # 執行測試
 python backend/agents/conversation_agent.py
 
@@ -205,7 +220,7 @@ if __name__ == "__main__":
     test_multi_turn()
 ```
 
-```powershell
+```bash
 python backend/test_conversation.py
 ```
 
@@ -272,7 +287,7 @@ class SessionService:
 
 #### 3.2 測試 Session 管理
 
-```powershell
+```bash
 # 測試建立與載入
 python -c "from backend.services.session_service import SessionService; s = SessionService(); sid = s.create_session('test-1'); print(f'✅ Session created: {sid}')"
 ```
@@ -381,7 +396,7 @@ if __name__ == "__main__":
     test_thinking_mode()
 ```
 
-```powershell
+```bash
 python backend/test_thinking_mode.py
 ```
 
@@ -393,8 +408,13 @@ python backend/test_thinking_mode.py
 
 #### 5.1 建立 `guardrails/` 模組結構
 
-```powershell
-New-Item -ItemType File backend/guardrails/__init__.py, backend/guardrails/safety_callbacks.py, backend/guardrails/pii_detector.py, backend/guardrails/content_moderator.py
+```bash
+# 建立目錄與檔案
+mkdir -p backend/guardrails
+touch backend/guardrails/__init__.py
+touch backend/guardrails/safety_callbacks.py
+touch backend/guardrails/pii_detector.py
+touch backend/guardrails/content_moderator.py
 ```
 
 #### 5.2 實作 `safety_callbacks.py`
@@ -482,7 +502,7 @@ if __name__ == "__main__":
     test_pii_detection()
 ```
 
-```powershell
+```bash
 python backend/test_guardrails.py
 ```
 
@@ -551,7 +571,7 @@ if __name__ == "__main__":
 
 #### 6.2 執行 CLI 測試
 
-```powershell
+```bash
 python backend/cli.py
 ```
 
@@ -669,13 +689,13 @@ if __name__ == "__main__":
 
 #### 7.4 測試串流回應
 
-```powershell
+```bash
 # 啟動伺服器
 python backend/main.py
 
 # 在另一個終端測試
-curl -X POST http://localhost:8000/api/chat/stream `
-  -H "Content-Type: application/json" `
+curl -X POST http://localhost:8000/api/chat/stream \
+  -H "Content-Type: application/json" \
   -d '{"message": "請給我一個笑話", "thinking_mode": false}'
 ```
 
@@ -792,7 +812,7 @@ async def delete_conversation(conv_id: str):
 
 #### 8.4 測試會話管理
 
-```powershell
+```bash
 # 建立對話
 curl -X POST http://localhost:8000/api/conversations
 
@@ -814,9 +834,12 @@ curl -X DELETE http://localhost:8000/api/conversations/{conv_id}
 
 #### 9.1 建立測試結構
 
-```powershell
-New-Item -ItemType Directory -Force tests/fixtures
-New-Item -ItemType File tests/__init__.py, tests/conftest.py, tests/fixtures/sample_conversations.json
+```bash
+# 建立測試目錄與檔案
+mkdir -p tests/fixtures
+touch tests/__init__.py
+touch tests/conftest.py
+touch tests/fixtures/sample_conversations.json
 ```
 
 #### 9.2 建立評估數據集
@@ -980,7 +1003,7 @@ class TestSession:
 
 #### 10.4 執行測試與覆蓋率
 
-```powershell
+```bash
 # 安裝 pytest-cov
 pip install pytest-cov
 
@@ -990,8 +1013,7 @@ pytest tests/ -v
 # 執行測試並產生覆蓋率報告
 pytest tests/ --cov=backend --cov-report=html --cov-report=term
 
-# 檢視覆蓋率報告
-Start-Process htmlcov/index.html
+# 檢視覆蓋率報告（在瀏覽器開啟 htmlcov/index.html）
 ```
 
 ---
@@ -1074,7 +1096,7 @@ class TestEvaluation:
 
 #### 11.3 執行完整測試套件
 
-```powershell
+```bash
 # 執行所有測試
 pytest tests/ -v --tb=short
 
@@ -1161,10 +1183,10 @@ if __name__ == "__main__":
     test_file_search()
 ```
 
-```powershell
+```bash
 # 建立測試文檔
-New-Item -ItemType File tests/fixtures/sample_doc.txt
-"This is a sample document for testing file search functionality." | Out-File tests/fixtures/sample_doc.txt
+mkdir -p tests/fixtures
+echo "This is a sample document for testing file search functionality." > tests/fixtures/sample_doc.txt
 
 # 執行測試
 python backend/test_file_search.py
@@ -1304,9 +1326,9 @@ async def delete_document(doc_id: str):
 
 #### 13.3 測試文檔管理
 
-```powershell
+```bash
 # 上傳文檔
-curl -X POST http://localhost:8000/api/documents `
+curl -X POST http://localhost:8000/api/documents \
   -F "file=@tests/fixtures/sample_doc.txt"
 
 # 列出文檔
@@ -1418,7 +1440,7 @@ if __name__ == "__main__":
     test_citations()
 ```
 
-```powershell
+```bash
 python backend/test_rag_citations.py
 ```
 
@@ -1504,7 +1526,7 @@ class TestRAG:
 
 #### 15.3 驗證 RAG 功能完整性
 
-```powershell
+```bash
 # 執行 RAG 測試
 pytest tests/test_rag.py -v
 
@@ -1587,12 +1609,11 @@ pytest tests/ --cov=backend --cov-report=html
 
 ### 最終驗證指令
 
-```powershell
+```bash
 # 1. 執行所有測試
 pytest tests/ -v --cov=backend --cov-report=term --cov-report=html
 
-# 2. 檢查測試覆蓋率
-Start-Process htmlcov/index.html
+# 2. 檢查測試覆蓋率（在瀏覽器開啟 htmlcov/index.html）
 
 # 3. 執行 CLI 完整測試
 python backend/cli.py
