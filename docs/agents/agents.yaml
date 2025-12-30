@@ -164,7 +164,6 @@ agents:
     description: 從研究到發布的完整部落格文章創建流水線。
     code_ref: workspace/python/agents/blog-pipeline
     type: SequentialAgent
-
     server-port: 8000
     tags: [sequential-workflow, pipeline, blog-creation]
     sub_agents:
@@ -172,28 +171,24 @@ agents:
         description: 研究主題並收集關鍵資訊。
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: research_findings
         tags: [research]
       - name: writer
         description: 根據研究結果撰寫部落格文章草稿。
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: draft_post
         tags: [writing, drafting]
       - name: editor
         description: 審閱部落格文章草稿並提供編輯回饋。
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: editorial_feedback
         tags: [editing, review]
       - name: formatter
         description: 應用編輯回饋並格式化最終部落格文章。
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: final_post
         tags: [formatting, markdown]
   - name: Chuck Norris Agent
@@ -243,7 +238,6 @@ agents:
       - name: get_preferences
         type: FunctionTool
         description: 檢索已儲存的使用者偏好。
-
     server-port: 8000
     tags:
       - commerce
@@ -261,7 +255,6 @@ agents:
           - name: google_search
             type: GoogleSearchAgentTool
             description: 一個包裝了僅使用 google_search 工具的子代理的工具。
-
         server-port: none
         tags: [google-search, search_products, grounding]
   - name: Content Moderator
@@ -318,7 +311,6 @@ agents:
     description: 完整的內容發布系統，具有並行研究和循序創作功能
     code_ref: workspace/python/agents/content-publisher
     type: SequentialAgent
-
     server-port: 8000
     tags:
       [multi-agent, sequential-workflow, parallel-research, content-creation]
@@ -326,7 +318,6 @@ agents:
       - name: ParallelResearch
         description: 同時執行所有研究管線
         type: ParallelAgent
-
         tags: [parallel-research, pipeline]
         sub_agents:
           - name: NewsPipeline
@@ -350,13 +341,11 @@ agents:
                 description: 總結關鍵新聞要點
                 type: Agent
                 models: [gemini-2.0-flash]
-
                 output_key: news_summary
                 tags: [news, research, summary]
           - name: SocialPipeline
             description: 監控並分析社群媒體
             type: SequentialAgent
-
             tags: [social-media, research, pipeline]
             sub_agents:
               - name: social_monitor
@@ -367,20 +356,17 @@ agents:
                   - name: google_search
                     type: GoogleSearchTool
                     description: 執行 Google 搜尋
-
                 output_key: raw_social
                 tags: [social-media, research, monitor]
               - name: sentiment_analyzer
                 description: 分析社群情緒
                 type: Agent
                 models: [gemini-2.0-flash]
-
                 output_key: social_insights
                 tags: [social-media, research, sentiment-analysis]
           - name: ExpertPipeline
             description: 尋找並提取專家意見
             type: SequentialAgent
-
             tags: [expert, research, pipeline]
             sub_agents:
               - name: expert_finder
@@ -391,35 +377,30 @@ agents:
                   - name: google_search
                     type: GoogleSearchTool
                     description: 執行 Google 搜尋
-
                 output_key: raw_experts
                 tags: [expert, research, find]
               - name: quote_extractor
                 description: 提取可引用的見解
                 type: Agent
                 models: [gemini-2.0-flash]
-
                 output_key: expert_quotes
                 tags: [expert, research, extract]
       - name: article_writer
         description: 從所有研究撰寫文章草稿
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: draft_article
         tags: [writing, drafting]
       - name: article_editor
         description: 編輯文章以提升清晰度和影響力
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: edited_article
         tags: [editing, review]
       - name: article_formatter
         description: 格式化文章以供發布
         type: Agent
         models: [gemini-2.0-flash]
-
         output_key: published_article
         tags: [formatting, markdown]
   - name: Context Compaction Agent
@@ -1252,28 +1233,24 @@ agents:
         description: 對財務報告進行結構化解析，擷取財務指標與財政期間。
         type: LlmAgent
         models: [gemini-2.5-flash]
-
         tags: [finance, structured-output]
         output_schema: FinancialAnalysisOutput
       - name: Technical Analyzer
         description: 解析技術文件，列出技術、元件與改進建議。
         type: LlmAgent
         models: [gemini-2.5-flash]
-
         tags: [technical, architecture, structured-output]
         output_schema: TechnicalAnalysisOutput
       - name: Sales Analyzer
         description: 解析銷售文件，萃取交易、管道價值與銷售建議。
         type: LlmAgent
         models: [gemini-2.5-flash]
-
         tags: [sales, pipeline, structured-output]
         output_schema: SalesAnalysisOutput
       - name: Marketing Analyzer
         description: 解析行銷文件，彙整活動、參與度與最佳化建議。
         type: LlmAgent
         models: [gemini-2.5-flash]
-
         tags: [marketing, campaign, structured-output]
         output_key: MarketingAnalysisOutput
   - name: Software Bug Assistant
@@ -1327,7 +1304,6 @@ agents:
         description: 提供 GitHub Copilot MCP 各項服務與任務工具。
         tools:
           refs: 'https://github.com/github/github-mcp-server'
-
     server-port: 8000
     tags:
       [
