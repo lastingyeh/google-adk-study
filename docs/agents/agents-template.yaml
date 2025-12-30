@@ -7,14 +7,15 @@ agents:
     code_ref: <SAMPLE_CODE_REFERENCE> # 例如：workspace/python/agents/my-agent
     type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset, App, ADKAgent
 
-    # 選填：A2A 協定 (例如在 Host Agent 中使用)
+    # 選填：A2A 協定 (例如在 Pack ADK A2A Agent 中使用)
     # protocol: a2a
 
     # 選填：MCP 傳輸方式 (用於 MCPToolset 類型的代理或工具)
     # transports: stdio # 或 streamable
 
     # 選填：模型列表
-    models: [<MODEL_NAME>] # 例如：[gemini-2.0-flash], [gemini-2.0-flash-exp]
+    models: [<MODEL_NAME>] # 例如：[gemini-2.5-flash], [gemini-2.0-flash-exp], [gemini-3-pro-preview], [gemini-2.5-flash-image]
+    # model: [<MODEL_NAME>] # 替代選項：單數形式 (例如在 Multi-LLM Agent 中使用)
 
     # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
     # output_key: <OUTPUT_KEY_NAME>
@@ -43,7 +44,7 @@ agents:
     # 選填：工具列表
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, DirectoryReadTool, FileReadTool
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool
         description: <TOOL_DESCRIPTION>
 
         # 選填：特定工具類型的額外設定（例如 AgentTool, MCPToolset）
