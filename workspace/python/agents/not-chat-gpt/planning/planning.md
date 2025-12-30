@@ -703,20 +703,25 @@ not-chat-gpt/
 │   ├── package.json
 │   └── vite.config.ts
 ├── tests/
-│   ├── __init__.py
-│   ├── test_agent.py
-│   ├── test_tools.py
-│   ├── test_guardrails.py             # 安全測試
-│   ├── test_session.py
-│   ├── test_rag.py                    # 新增：RAG 功能測試
-│   ├── test_workflow_integration.py   # 新增：工作流程整合測試
-│   ├── test_performance.py            # 新增：效能測試
-│   ├── test_evaluation.py             # 新增：AgentEvaluator 測試
-│   ├── eval_set.json                  # 新增：評估數據集
-│   ├── conftest.py                    # pytest 配置
-│   └── fixtures/                      # 測試數據
-│       ├── sample_conversations.json
-│       └── mock_responses.json
+│   ├── unit/
+│   │   ├── backend/
+│   │   │   ├── test_agent.py
+│   │   │   ├── test_tools.py
+│   │   │   └── test_guardrails.py
+│   │   └── frontend/
+│   │       ├── MessageList.test.tsx
+│   │       └── DocumentPanel.test.tsx
+│   ├── integration/
+│   │   ├── test_workflow.py
+│   │   └── test_rag.py
+│   ├── e2e/
+│   │   ├── test_user_journey.py
+│   │   └── test_api_endpoints.py
+│   ├── evaluation/
+│   │   ├── test_agent_quality.py
+│   │   └── eval_set.json
+│   ├── conftest.py
+│   └── fixtures/
 ├── deployment/
 │   ├── Dockerfile
 │   └── cloudbuild.yaml

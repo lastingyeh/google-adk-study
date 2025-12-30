@@ -6,6 +6,89 @@
 
 #### 1.1 建立專案目錄結構
 
+### 專案結構
+
+```text
+not-chat-gpt/
+├── backend/
+│   ├── agents/
+│   │   ├── __init__.py
+│   │   ├── conversation_agent.py
+│   │   └── streaming_agent.py
+│   ├── tools/
+│   │   ├── __init__.py
+│   │   ├── google_search.py
+│   │   ├── code_executor.py
+│   │   ├── file_handler.py
+│   │   └── file_search.py             # 新增：Gemini File Search RAG
+│   ├── guardrails/                    # 新增：安全防護層
+│   │   ├── __init__.py
+│   │   ├── safety_callbacks.py        # AgentCallbacks 實作
+│   │   ├── policy_engine.py           # 規範引擎
+│   │   ├── content_moderator.py       # 內容審核
+│   │   ├── pii_detector.py            # 敏感資訊偵測
+│   │   ├── intent_classifier.py       # 意圖分類
+│   │   └── audit_logger.py            # 審計日誌
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── session_service.py
+│   │   ├── redis_session_service.py
+│   │   └── document_service.py        # 新增：文檔索引管理
+│   ├── config/
+│   │   ├── __init__.py
+│   │   ├── mode_config.py             # 思考模式配置
+│   │   └── security_config.py         # 新增：安全配置
+│   ├── api/
+│   │   ├── __init__.py
+│   │   └── routes.py
+│   ├── main.py
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── ConversationView.tsx
+│   │   │   ├── MessageList.tsx
+│   │   │   ├── InputBox.tsx
+│   │   │   ├── ModeSelector.tsx
+│   │   │   ├── DocumentPanel.tsx      # 新增：文檔管理面板
+│   │   │   └── CitationBadge.tsx      # 新增：引用來源標籤
+│   │   ├── services/
+│   │   │   └── api.ts
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   └── vite.config.ts
+├── tests/
+│   ├── unit/
+│   │   ├── backend/
+│   │   │   ├── test_agent.py
+│   │   │   ├── test_tools.py
+│   │   │   └── test_guardrails.py
+│   │   └── frontend/
+│   │       ├── MessageList.test.tsx
+│   │       └── DocumentPanel.test.tsx
+│   ├── integration/
+│   │   ├── test_workflow.py
+│   │   └── test_rag.py
+│   ├── e2e/
+│   │   ├── test_user_journey.py
+│   │   └── test_api_endpoints.py
+│   ├── evaluation/
+│   │   ├── test_agent_quality.py
+│   │   └── eval_set.json
+│   ├── conftest.py
+│   └── fixtures/
+├── deployment/
+│   ├── Dockerfile
+│   └── cloudbuild.yaml
+├── docs/
+│   ├── API.md
+│   ├── DEPLOYMENT.md
+│   └── SECURITY.md                    # 新增：安全文件
+├── planning.md (本檔案)
+└── README.md
+```
+
 #### 1.2 安裝 Google ADK 與相依套件
 
 ```powershell
