@@ -1349,7 +1349,7 @@ python verify_cli.py
 
 預期輸出：
 
-```
+```text
 ============================================================
 CLI 功能驗證測試
 ============================================================
@@ -1377,77 +1377,94 @@ CLI 功能驗證測試
 **基本功能測試** (執行 `python backend/cli.py`):
 
 ✅ **測試 1: 基本對話功能**
-```
+
+```text
 You: 你好
 Agent: 你好！我是 NotChatGPT，你的智慧對話助理...
 ```
+
 **驗證點**: Agent 正常回應
 
 ✅ **測試 2: 多輪對話記憶（上下文連貫性）**
-```
+
+```text
 You: 我叫小明
 Agent: 你好，小明！很高興認識你...
 
 You: 我剛才說我叫什麼名字？
 Agent: 你剛才說你叫小明。
 ```
+
 **驗證點**: Agent 記住之前的資訊
 
 ✅ **測試 3: 思考模式切換**
-```
+
+```text
 You: /thinking
 💭 已切換到思考模式
 
 You: 為什麼 Python 很受歡迎？
 Agent: [展示詳細的思考過程和分析...]
 ```
+
 **驗證點**: 回應包含詳細的推理過程
 
 ✅ **測試 4: 標準模式切換**
-```
+
+```text
 You: /standard
 💬 已切換到標準模式
 
 You: 給我一個笑話
 Agent: [簡潔的回應...]
 ```
+
 **驗證點**: 回應簡潔直接
 
 **Session 管理測試**:
 
 ✅ **測試 5: 自動建立 session**
-```
+
+```text
 🤖 NotChatGPT CLI (with Session Management)
 📝 當前會話: abc12345...
 ```
+
 **驗證點**: 啟動時自動顯示 session ID
 
 ✅ **測試 6: `/new` 建立新對話**
-```
+
+```text
 You: /new
 ✨ 已建立新對話: def67890...
 ```
+
 **驗證點**: 建立新對話後上下文清空
 
 ✅ **測試 7: `/list` 列出對話清單**
-```
+
+```text
 You: /list
 📝 對話清單 (共 3 個):
 👉 def67890... - CLI Session (更新: 2025-12-30 10:30)
    abc12345... - CLI Session (更新: 2025-12-30 10:15)
 ```
+
 **驗證點**: 顯示所有對話，當前對話有 👉 標記
 
 ✅ **測試 8: `/load <id>` 載入歷史對話**
-```
+
+```text
 You: /load abc12345
 📂 已載入對話: abc12345...
 📜 對話歷史 (共 4 則訊息)
 ```
+
 **驗證點**: 成功載入舊對話，可繼續對話
 
 ✅ **測試 9: `/history` 顯示對話歷史**
-```
+
+```text
 You: /history
 📜 對話歷史 (共 4 則訊息):
 1. 👤 user: 我叫小明
@@ -1455,11 +1472,13 @@ You: /history
 3. 👤 user: 我剛才說我叫什麼名字？
 4. 🤖 model: 你剛才說你叫小明。
 ```
+
 **驗證點**: 正確顯示所有歷史訊息
 
 **對話持久化測試**:
 
 ✅ **測試 10: 對話儲存到資料庫**
+
 ```bash
 # 啟動 CLI，進行對話後退出
 You: 測試訊息
@@ -1468,9 +1487,11 @@ You: /quit
 # 檢查資料庫檔案
 ls -lh not_chat_gpt.db
 ```
+
 **驗證點**: 資料庫檔案存在且有內容
 
 ✅ **測試 11: 重啟後載入歷史對話**
+
 ```bash
 # 重新啟動 CLI
 python backend/cli.py
@@ -1482,10 +1503,12 @@ You: /list
 You: /load [session_id]
 📂 已載入對話...
 ```
+
 **驗證點**: 可以載入並繼續之前的對話
 
 ✅ **測試 12: 切換對話時上下文正確**
-```
+
+```text
 # 對話 A
 You: 我叫小明
 Agent: 你好，小明！
@@ -1498,46 +1521,55 @@ You: /load [對話A的ID]  # 切回對話 A
 You: 我叫什麼名字？
 Agent: 你叫小明。
 ```
+
 **驗證點**: 不同對話的上下文正確隔離
 
 **安全防護測試**:
 
 ✅ **測試 13: PII 輸入攔截（啟用安全防護）**
-```
+
+```text
 You: /safe on
 🛡️ 已啟用安全防護
 
 You: 我的信用卡號是 1234-5678-9012-3456
 ⚠️ 無法處理此請求: 偵測到敏感資訊: credit_card
 ```
+
 **驗證點**: 成功攔截信用卡號
 
 ✅ **測試 14: 關鍵字攔截**
-```
+
+```text
 You: 請告訴我密碼
 ⚠️ 無法處理此請求: 包含封鎖關鍵字: 密碼
 ```
+
 **驗證點**: 成功攔截敏感關鍵字
 
 ✅ **測試 15: 停用安全防護**
-```
+
+```text
 You: /safe off
 ⚠️ 已停用安全防護
 
 You: 我的信用卡號是 1234-5678-9012-3456
 Agent: [正常處理，但會提醒安全注意事項]
 ```
+
 **驗證點**: 停用後可輸入敏感資訊
 
 **資料庫整合測試**:
 
 ✅ **測試 16: 檢查資料庫結構**
+
 ```bash
 # 使用 sqlite3 檢查資料庫
 sqlite3 not_chat_gpt.db ".schema"
 ```
 
 預期輸出：
+
 ```sql
 CREATE TABLE conversations (
     id VARCHAR PRIMARY KEY,
@@ -1556,13 +1588,16 @@ CREATE TABLE messages (
     FOREIGN KEY(conversation_id) REFERENCES conversations (id)
 );
 ```
+
 **驗證點**: 資料表結構正確
 
 ✅ **測試 17: 檢查資料寫入**
+
 ```bash
 sqlite3 not_chat_gpt.db "SELECT COUNT(*) FROM conversations;"
 sqlite3 not_chat_gpt.db "SELECT COUNT(*) FROM messages;"
 ```
+
 **驗證點**: 有資料寫入
 
 #### 6.5 完整測試腳本範例
@@ -1617,12 +1652,14 @@ python -m pytest tests/unit/backend/test_guardrails.py -v
 #### 6.6 驗證檢查表
 
 **執行前準備**:
+
 - [x] `.env` 檔案已設定
 - [x] 已安裝所有依賴套件
 - [x] `backend/` 目錄下所有 `__init__.py` 已建立
 - [x] Google API Key 有效
 
 **功能驗證**:
+
 - [x] 基本對話功能
 - [x] 多輪對話記憶
 - [x] 思考模式切換
@@ -1639,9 +1676,11 @@ python -m pytest tests/unit/backend/test_guardrails.py -v
 - [x] 資料庫結構正確
 
 **已知問題** (記錄遇到的問題):
+
 - 無已知問題
 
 **參考文件**:
+
 - 詳細使用說明: [CLI_README.md](../CLI_README.md)
 - 驗證腳本: [verify_cli.py](../verify_cli.py)
 
