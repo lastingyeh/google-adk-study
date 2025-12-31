@@ -98,13 +98,21 @@ not-chat-gpt/
 **建立 backend/requirements.txt**:
 
 ```txt
+# 核心套件
 google-genai>=1.0.0
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 python-dotenv>=1.0.0
 sqlalchemy>=2.0.0
+
+# 測試套件
 pytest>=7.4.0
 pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0      # 測試覆蓋率
+pytest-html>=4.0.0     # HTML 測試報告
+
+# 選用套件（Phase 3 進階評估）
+# google-adk             # Google Agent Development Kit (AgentEvaluator)
 ```
 
 **安裝套件**:
@@ -2565,7 +2573,7 @@ python -m pytest tests/unit/backend/test_guardrails.py -v
 python -m pytest tests/unit/backend/test_guardrails.py -v -s
 ```
 
-#### 10.3 Session 測試
+#### 10.3 Session 服務測試
 
 **tests/unit/backend/test_session_service.py**:
 
@@ -2666,6 +2674,54 @@ if __name__ == "__main__":
     test_run_all()
 ```
 
+**執行測試（逐步驗證）**:
+
+```bash
+# 1️⃣ 測試建立 session
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_create_session -v
+
+# 2️⃣ 測試訊息儲存與讀取
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_add_and_get_messages -v
+
+# 3️⃣ 測試列出對話
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_list_conversations -v
+
+# 4️⃣ 測試刪除對話
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_delete_conversation -v
+
+# 5️⃣ 測試狀態儲存與載入
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_save_and_load_state -v
+
+# 6️⃣ 執行整個測試類別
+python -m pytest tests/unit/backend/test_session_service.py -v
+```
+
+**單一測試驗證**:
+
+```bash
+# 測試單一方法
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_create_session -v
+
+# 顯示詳細輸出
+python -m pytest tests/unit/backend/test_session_service.py::TestSessionService::test_save_and_load_state -v -s
+```
+
+**快速驗證（執行所有測試）**:
+
+```bash
+# 簡潔輸出
+python -m pytest tests/unit/backend/test_session_service.py
+
+# 詳細輸出
+python -m pytest tests/unit/backend/test_session_service.py -v
+
+# 顯示 print 輸出和詳細資訊
+python -m pytest tests/unit/backend/test_session_service.py -v -s
+
+# 直接執行測試文件
+python tests/unit/backend/test_session_service.py
+```
+
 #### 10.4 執行測試與覆蓋率
 
 ```bash
@@ -2687,7 +2743,7 @@ pytest tests/ --cov=backend --cov-report=html --cov-report=term
 
 #### 11.1 工作流程整合測試
 
-**tests/test_workflow_integration.py**:
+**tests/integration/test_workflow_integration.py**:
 
 ```python
 import pytest
@@ -2696,88 +2752,273 @@ from backend.agents.conversation_agent import create_conversation_agent
 from google import genai
 
 class TestWorkflowIntegration:
-    @pytest.mark.asyncio
-    async def test_full_conversation_workflow(self, genai_client):
-        """測試完整對話流程"""
+    """整合測試：測試多個組件協作的完整工作流程"""
+    
+    def test_full_conversation_workflow(self, genai_client, model_name):
+        """測試完整對話流程（使用 SessionService + Agent Config）"""
         # 1. 建立 session
         session_service = SessionService(database_url="sqlite:///:memory:")
-        conv_id = session_service.create_session("integration-test-001")
+        conv_id = session_service.create_session("integration-test-001", "Integration Test")
         
-        # 2. 建立 agent
-        agent = create_conversation_agent()
-        session = genai_client.agentic.create_session(agent=agent)
+        # 2. 建立 agent config
+        config = create_conversation_agent()
         
-        # 3. 發送訊息
+        # 3. 第一輪對話：發送訊息
         user_msg = "我叫 Bob"
-        response = session.send_message(user_msg)
+        response = genai_client.models.generate_content(
+            model=model_name,
+            contents=user_msg,
+            config=config
+        )
         
         # 4. 儲存對話歷史
         session_service.add_message(conv_id, "user", user_msg)
-        session_service.add_message(conv_id, "assistant", response.text)
+        session_service.add_message(conv_id, "model", response.text)
         
-        # 5. 驗證
+        # 5. 驗證訊息已儲存
         messages = session_service.get_messages(conv_id)
         assert len(messages) == 2
+        assert messages[0][0] == "user"
+        assert messages[0][1] == user_msg
+        assert messages[1][0] == "model"
+        assert len(messages[1][1]) > 0
+        print("✅ 對話歷史儲存驗證通過")
         
-        # 6. 測試記憶
-        response2 = session.send_message("我叫什麼名字？")
-        assert "Bob" in response2.text
+        # 6. 測試對話持久化：載入對話
+        loaded_messages = session_service.get_messages(conv_id)
+        assert len(loaded_messages) == 2
+        assert loaded_messages[0][1] == user_msg
+        print("✅ 對話持久化驗證通過")
+        
+        # 7. 測試第二輪對話（需手動提供上下文以測試記憶）
+        # 注意：generate_content 不會自動保留記憶，需手動構建對話歷史
+        history = [
+            {"role": "user", "parts": [{"text": user_msg}]},
+            {"role": "model", "parts": [{"text": response.text}]}
+        ]
+        
+        user_msg2 = "我叫什麼名字？"
+        response2 = genai_client.models.generate_content(
+            model=model_name,
+            contents=history + [{"role": "user", "parts": [{"text": user_msg2}]}],
+            config=config
+        )
+        
+        # 8. 儲存第二輪對話
+        session_service.add_message(conv_id, "user", user_msg2)
+        session_service.add_message(conv_id, "model", response2.text)
+        
+        # 9. 驗證完整對話歷史
+        all_messages = session_service.get_messages(conv_id)
+        assert len(all_messages) == 4
+        print("✅ 多輪對話儲存驗證通過")
+        
+        # 10. 驗證回應包含名字（測試記憶功能）
+        assert "Bob" in response2.text or "bob" in response2.text.lower()
+        print("✅ 對話記憶功能驗證通過")
+        
+        # 11. 清理：刪除測試對話
+        session_service.delete_conversation(conv_id)
+        deleted_messages = session_service.get_messages(conv_id)
+        assert len(deleted_messages) == 0
+        print("✅ 對話刪除驗證通過")
 ```
 
 #### 11.2 AgentEvaluator 測試
 
-**tests/test_evaluation.py**:
+**tests/evaluation/test_evaluation.py**:
 
 ```python
 import pytest
 import json
+import os
 from google import genai
-from google.genai.evaluators import AgentEvaluator
 from backend.agents.conversation_agent import create_conversation_agent
 
 class TestEvaluation:
-    @pytest.mark.asyncio
-    async def test_eval_basic_conversation(self, genai_client):
+    """評估測試：使用評估數據集驗證 AI 回應品質
+    
+    注意：本測試使用基本斷言驗證回應品質
+    進階評估可使用 Google ADK 的 AgentEvaluator（需額外安裝 google-adk）
+    """
+    
+    def test_eval_basic_conversation(self, genai_client, model_name):
         """評估基本對話品質"""
         # 載入評估數據集
-        with open("tests/eval_set.json", "r", encoding="utf-8") as f:
+        eval_set_path = os.path.join(os.path.dirname(__file__), "..", "eval_set.json")
+        with open(eval_set_path, "r", encoding="utf-8") as f:
             eval_data = json.load(f)
         
-        # 建立評估器
-        evaluator = AgentEvaluator(client=genai_client)
-        
-        # 測試第一個案例
+        # 測試第一個案例：基本對話
         test_case = eval_data["test_cases"][0]
-        agent = create_conversation_agent()
-        session = genai_client.agentic.create_session(agent=agent)
-        response = session.send_message(test_case["input"])
+        config = create_conversation_agent()
+        
+        response = genai_client.models.generate_content(
+            model=model_name,
+            contents=test_case["input"],
+            config=config
+        )
         
         # 驗證回應
+        assert response.text is not None, "回應不應為空"
+        assert len(response.text) > 0, "回應長度應大於 0"
+        
+        # 驗證關鍵字
         for keyword in test_case["expected"]["response_contains"]:
             assert keyword in response.text, f"回應缺少關鍵字: {keyword}"
         
-        print(f"✅ 評估通過: {test_case['id']}")
+        # 驗證最小長度
+        if "min_length" in test_case["expected"]:
+            assert len(response.text) >= test_case["expected"]["min_length"], \
+                f"回應長度 {len(response.text)} 小於最小要求 {test_case['expected']['min_length']}"
+        
+        print(f"✅ 評估通過: {test_case['id']} - {test_case['description']}")
+    
+    def test_eval_multiple_cases(self, genai_client, model_name):
+        """評估多個測試案例"""
+        eval_set_path = os.path.join(os.path.dirname(__file__), "..", "eval_set.json")
+        with open(eval_set_path, "r", encoding="utf-8") as f:
+            eval_data = json.load(f)
+        
+        config = create_conversation_agent()
+        passed = 0
+        failed = 0
+        
+        # 只測試基本對話案例（非記憶類）
+        basic_cases = [tc for tc in eval_data["test_cases"] 
+                       if tc["category"] == "basic_conversation"]
+        
+        for test_case in basic_cases:
+            try:
+                response = genai_client.models.generate_content(
+                    model=model_name,
+                    contents=test_case["input"],
+                    config=config
+                )
+                
+                # 驗證回應不為空
+                assert response.text and len(response.text) > 0
+                
+                # 驗證關鍵字（如果有）
+                if "response_contains" in test_case["expected"]:
+                    for keyword in test_case["expected"]["response_contains"]:
+                        assert keyword in response.text
+                
+                passed += 1
+                print(f"✅ {test_case['id']}: {test_case['description']}")
+                
+            except AssertionError as e:
+                failed += 1
+                print(f"❌ {test_case['id']}: {str(e)}")
+        
+        print(f"\n📊 評估結果: {passed} 通過 / {failed} 失敗 / {len(basic_cases)} 總計")
+        assert passed > 0, "至少應有一個測試通過"
 ```
 
-#### 11.3 執行完整測試套件
+**執行評估測試**:
+
+```bash
+# 執行單一評估測試
+python -m pytest tests/evaluation/test_evaluation.py::TestEvaluation::test_eval_basic_conversation -v -s
+
+# 執行所有評估測試
+python -m pytest tests/evaluation/test_evaluation.py -v -s
+
+# 產生詳細報告
+python -m pytest tests/evaluation/test_evaluation.py -v -s --tb=short
+```
+
+**進階評估（選用）**:
+
+如需使用 Google ADK 的 AgentEvaluator 進行進階評估，請安裝：
+
+```bash
+# 安裝 Google ADK（選用）
+pip install google-adk
+
+# 使用範例
+from google.adk.evaluation.agent_evaluator import AgentEvaluator
+
+evaluator = AgentEvaluator(client=genai_client)
+results = await evaluator.evaluate(
+    agent=agent,
+    eval_dataset=eval_data
+)
+```
+
+> **注意**: Phase 1 使用基本斷言驗證即可，進階評估功能將在 Phase 3 實作。
+
+#### 11.3 測試結構與執行
+
+**測試目錄結構**:
+
+```text
+tests/
+├── __init__.py
+├── conftest.py                      # pytest 共用配置
+├── eval_set.json                    # 評估數據集
+├── fixtures/                        # 測試數據
+│   └── sample_conversations.json
+├── unit/                            # 單元測試 (70%)
+│   ├── backend/
+│   │   ├── test_agent.py
+│   │   ├── test_guardrails.py
+│   │   └── test_session_service.py
+│   └── test_fixtures.py
+├── integration/                     # 整合測試 (20%)
+│   └── test_workflow_integration.py
+└── evaluation/                      # 評估測試 (10%)
+    └── test_evaluation.py
+```
+
+**執行完整測試套件**:
 
 ```bash
 # 執行所有測試
 pytest tests/ -v --tb=short
 
+# 只執行單元測試
+pytest tests/unit/ -v
+
 # 只執行整合測試
-pytest tests/test_workflow_integration.py -v
+pytest tests/integration/ -v
 
 # 只執行評估測試
-pytest tests/test_evaluation.py -v
+pytest tests/evaluation/ -v
 
-# 產生測試報告
-pytest tests/ --html=test_report.html --self-contained-html
+# 產生測試覆蓋率報告（需先安裝 pytest-cov）
+pytest tests/ --cov=backend --cov-report=html --cov-report=term -v
+
+# 產生 HTML 測試報告（需先安裝 pytest-html）
+pip install pytest-html  # 首次執行需要安裝
+pytest tests/ --html=test_report.html --self-contained-html -v
+
+# 執行特定整合測試
+pytest tests/integration/test_workflow_integration.py -v
+
+# 執行特定評估測試
+pytest tests/evaluation/test_evaluation.py -v
+```
+
+**安裝測試報告工具**:
+
+```bash
+# 安裝測試覆蓋率和 HTML 報告工具
+pip install pytest-cov pytest-html
+
+# 產生完整的測試報告
+pytest tests/ --cov=backend --cov-report=html --html=test_report.html --self-contained-html -v
+
+# 檢視覆蓋率報告
+open htmlcov/index.html  # macOS
+# start htmlcov\index.html  # Windows
+
+# 檢視測試報告
+open test_report.html  # macOS
+# start test_report.html  # Windows
 ```
 
 **參考**: Day 19 (support-agent) - Testing & AgentEvaluator
-
----
 
 ---
 
