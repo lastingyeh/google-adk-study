@@ -104,6 +104,7 @@ fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
 python-dotenv>=1.0.0
 sqlalchemy>=2.0.0
+python-multipart>=0.0.6    # FastAPI 文件上傳支持
 
 # 測試套件
 pytest>=7.4.0
@@ -3245,15 +3246,29 @@ python -m pytest tests/unit/backend/test_file_upload.py -v -s
 
 ### 步驟 13: 文檔管理功能
 
+> **先決條件**: 文件上傳功能需要 `python-multipart` 套件
+
+**安裝依賴**:
+
+```bash
+# 如果還沒有安裝 python-multipart
+pip install python-multipart
+
+# 或更新 requirements.txt 後重新安裝
+pip install -r backend/requirements.txt
+```
+
 #### 13.1 建立 `document_service.py`
 
 **backend/services/document_service.py**:
 
 ```python
 from google import genai
+from google.genai import types
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 from datetime import datetime, UTC
+import os
 
 Base = declarative_base()
 
@@ -3264,6 +3279,7 @@ class Document(Base):
     name = Column(String)
     size = Column(Integer)
     mime_type = Column(String)
+    uri = Column(String)
     uploaded_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
 class DocumentService:
@@ -3276,30 +3292,45 @@ class DocumentService:
         self.SessionLocal = sessionmaker(bind=self.engine)
     
     def upload_document(self, file_path: str, display_name: str = None) -> dict:
-        """上傳文檔"""
-        # 上傳到 Gemini
+        """上傳文檔
+        
+        Args:
+            file_path: 文件路徑
+            display_name: 顯示名稱（可選，預設使用檔名）
+            
+        Returns:
+            dict: 包含 id, name, size, uri 的文檔資訊
+        """
+        # 上傳到 Gemini（使用正確的 API）
         uploaded_file = self.client.files.upload(
-            path=file_path,
-            display_name=display_name or file_path.split("/")[-1]
+            file=file_path,
+            config=types.UploadFileConfig(
+                display_name=display_name or os.path.basename(file_path)
+            )
         )
         
         # 儲存到資料庫
         db = self.SessionLocal()
-        doc = Document(
-            id=uploaded_file.name,
-            name=uploaded_file.display_name,
-            size=uploaded_file.size_bytes,
-            mime_type=uploaded_file.mime_type,
-        )
-        db.add(doc)
-        db.commit()
-        db.close()
-        
-        return {
-            "id": uploaded_file.name,
-            "name": uploaded_file.display_name,
-            "size": uploaded_file.size_bytes,
-        }
+        try:
+            doc = Document(
+                id=uploaded_file.name,
+                name=uploaded_file.display_name,
+                size=uploaded_file.size_bytes,
+                mime_type=uploaded_file.mime_type,
+                uri=uploaded_file.uri,
+            )
+            db.add(doc)
+            db.commit()
+            
+            return {
+                "id": uploaded_file.name,
+                "name": uploaded_file.display_name,
+                "size": uploaded_file.size_bytes,
+                "uri": uploaded_file.uri,
+                "mime_type": uploaded_file.mime_type,
+            }
+        finally:
+            db.close()
     
     def list_documents(self) -> list:
         """列出所有文檔"""
@@ -3316,6 +3347,31 @@ class DocumentService:
             for d in docs
         ]
     
+    def get_document(self, document_id: str) -> dict:
+        """獲取單一文檔資訊
+        
+        Args:
+            document_id: 文檔 ID
+            
+        Returns:
+            dict: 文檔詳細資訊，如果不存在則返回 None
+        """
+        db = self.SessionLocal()
+        try:
+            doc = db.query(Document).filter_by(id=document_id).first()
+            if not doc:
+                return None
+            return {
+                "id": doc.id,
+                "name": doc.name,
+                "size": doc.size,
+                "mime_type": doc.mime_type,
+                "uri": doc.uri,
+                "uploaded_at": doc.uploaded_at.isoformat(),
+            }
+        finally:
+            db.close()
+
     def delete_document(self, document_id: str):
         """刪除文檔"""
         # 從 Gemini 刪除
@@ -3335,53 +3391,158 @@ class DocumentService:
 **backend/api/routes.py** (新增端點):
 
 ```python
-from fastapi import UploadFile, File
+from fastapi import UploadFile, File, HTTPException
+from google import genai
+from google.genai import types
 from backend.services.document_service import DocumentService
 import tempfile
 import os
+from dotenv import load_dotenv
+
+# 載入環境變數
+load_dotenv()
 
 # 初始化 DocumentService
-client = genai.Client()
-doc_service = DocumentService(client)
+api_key = os.getenv('GOOGLE_API_KEY')
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY not found in environment")
+
+genai_client = genai.Client(api_key=api_key)
+doc_service = DocumentService(genai_client)
 
 @app.post("/api/documents")
 async def upload_document(file: UploadFile = File(...)):
-    """上傳文檔"""
-    # 儲存臨時檔案
-    with tempfile.NamedTemporaryFile(delete=False) as tmp:
-        tmp.write(await file.read())
+    """上傳文檔到 Gemini Files API
+    
+    Args:
+        file: 上傳的文件
+        
+    Returns:
+        dict: 包含文檔資訊的字典
+    """
+    # 建立臨時檔案
+    with tempfile.NamedTemporaryFile(delete=False, suffix=os.path.splitext(file.filename)[1]) as tmp:
+        content = await file.read()
+        tmp.write(content)
         tmp_path = tmp.name
     
     try:
         result = doc_service.upload_document(tmp_path, file.filename)
         return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"文檔上傳失敗: {str(e)}")
     finally:
-        os.unlink(tmp_path)
+        # 清理臨時檔案
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 @app.get("/api/documents")
 async def list_documents():
-    """列出文檔"""
-    return doc_service.list_documents()
+    """列出所有已上傳的文檔
+    
+    Returns:
+        list: 文檔列表
+    """
+    try:
+        return doc_service.list_documents()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"獲取文檔列表失敗: {str(e)}")
 
-@app.delete("/api/documents/{doc_id}")
+@app.delete("/api/documents/{doc_id:path}")
 async def delete_document(doc_id: str):
-    """刪除文檔"""
-    doc_service.delete_document(doc_id)
-    return {"message": "Document deleted"}
+    """刪除指定文檔
+    
+    Args:
+        doc_id: 文檔 ID（例如：files/abc123...）
+                注意：使用 :path 轉換器以支持包含斜線的 ID
+        
+    Returns:
+        dict: 刪除結果
+    """
+    try:
+        doc_service.delete_document(doc_id)
+        return {"message": "Document deleted successfully", "id": doc_id}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"文檔刪除失敗: {str(e)}")
+
+@app.get("/api/documents/{doc_id:path}")
+async def get_document(doc_id: str):
+    """獲取指定文檔的詳細資訊
+    
+    Args:
+        doc_id: 文檔 ID（例如：files/abc123...）
+                注意：使用 :path 轉換器以支持包含斜線的 ID
+    
+    Args:
+        doc_id: 文檔 ID
+        
+    Returns:
+        dict: 文檔詳細資訊
+    """
+    try:
+        doc_info = doc_service.get_document(doc_id)
+        if not doc_info:
+            raise HTTPException(status_code=404, detail="文檔不存在")
+        return doc_info
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"獲取文檔資訊失敗: {str(e)}")
 ```
 
-#### 13.3 測試文檔管理
+#### 13.3 測試文檔管理 API
+
+**啟動伺服器**:
 
 ```bash
-# 上傳文檔
+# 啟動 API 伺服器
+python -m backend.main
+```
+
+**測試端點**:
+
+```bash
+# 1️⃣ 上傳文檔
 curl -X POST http://localhost:8000/api/documents \
   -F "file=@tests/fixtures/sample_doc.txt"
 
-# 列出文檔
+# 預期輸出：
+# {
+#   "id": "files/tlf3zr4mk2m0",
+#   "name": "sample_doc.txt",
+#   "size": 1234,
+#   "uri": "https://generativelanguage.googleapis.com/v1beta/files/...",
+#   "mime_type": "text/plain"
+# }
+
+# 2️⃣ 列出所有文檔
 curl http://localhost:8000/api/documents
 
-# 刪除文檔
-curl -X DELETE http://localhost:8000/api/documents/{doc_id}
+# 預期輸出：
+# [
+#   {
+#     "id": "files/tlf3zr4mk2m0",
+#     "name": "sample_doc.txt",
+#     "size": 1234,
+#     "uploaded_at": "2025-12-31T10:30:00"
+#   }
+# ]
+
+# 3️⃣ 獲取特定文檔資訊（doc_id 包含斜線，直接使用即可）
+curl http://localhost:8000/api/documents/files/tlf3zr4mk2m0
+
+# 💡 注意：doc_id 格式是 "files/xxx"，包含斜線
+#    API 使用 {doc_id:path} 轉換器，無需 URL 編碼
+
+# 4️⃣ 刪除文檔（doc_id 直接使用，無需跳脫）
+curl -X DELETE http://localhost:8000/api/documents/files/tlf3zr4mk2m0
+
+# 預期輸出：
+# {
+#   "message": "Document deleted successfully",
+#   "id": "files/tlf3zr4mk2m0"
+# }
+# }
 ```
 
 **參考**: Day 26 (artifact-agent) - File Management

@@ -27,9 +27,9 @@ async def stream_response(
     Yields:
         str: 回應文字片段
     """
-    from config.mode_config import ModeConfig
-    from guardrails.safety_callbacks import validate_input
-    from guardrails.pii_detector import filter_pii_from_text
+    from backend.config.mode_config import ModeConfig
+    from backend.guardrails.safety_callbacks import validate_input
+    from backend.guardrails.pii_detector import filter_pii_from_text
     
     # 驗證輸入（如果啟用安全防護）
     if enable_safety:
@@ -47,7 +47,7 @@ async def stream_response(
     
     # 如果啟用安全防護，加入 SafetySettings
     if enable_safety:
-        from agents.safe_conversation_agent import create_safe_config
+        from backend.agents.safe_conversation_agent import create_safe_config
         safe_config = create_safe_config(enable_safety=True)
         if safe_config.safety_settings:
             config = types.GenerateContentConfig(
