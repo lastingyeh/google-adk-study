@@ -3022,83 +3022,185 @@ open test_report.html  # macOS
 
 ---
 
-### 步驟 12: Gemini File Search 整合
+### 步驟 12: 文檔上傳與內容查詢
 
-#### 12.1 建立 `file_search.py`
+> **Phase 1 範圍**: 基本文檔上傳和內容查詢功能  
+> **未來擴展**: Phase 2 將實作完整的文檔管理和語料庫系統
 
-**backend/tools/file_search.py**:
+#### 12.1 測試文檔上傳與查詢
+
+**tests/unit/backend/test_file_upload.py**:
+
+```python
+import pytest
+import os
+from google import genai
+from google.genai import types
+
+class TestFileUpload:
+    """測試文檔上傳與內容查詢功能"""
+    
+    def test_file_upload_and_content_query(self, genai_client, model_name):
+        """測試上傳文檔並查詢其內容"""
+        # 1. 確保測試文檔存在
+        fixtures_path = os.path.join(os.path.dirname(__file__), "..", "..", "fixtures")
+        sample_doc_path = os.path.join(fixtures_path, "sample_doc.txt")
+        
+        if not os.path.exists(sample_doc_path):
+            pytest.skip(f"測試文檔不存在: {sample_doc_path}")
+        
+        # 2. 上傳測試文檔
+        test_file = genai_client.files.upload(
+            file=sample_doc_path,
+            config=types.UploadFileConfig(display_name="Test Document")
+        )
+        print(f"✅ 文檔已上傳: {test_file.name}")
+        print(f"   URI: {test_file.uri}")
+        print(f"   MIME類型: {test_file.mime_type}")
+        
+        try:
+            # 3. 使用上傳的文檔進行查詢
+            response = genai_client.models.generate_content(
+                model=model_name,
+                contents=[
+                    types.Part.from_uri(
+                        file_uri=test_file.uri,
+                        mime_type=test_file.mime_type
+                    ),
+                    "這份文檔的主要內容是什麼？請用繁體中文回答。"
+                ]
+            )
+            
+            # 4. 驗證回應
+            assert response.text is not None, "回應不應為空"
+            assert len(response.text) > 0, "回應長度應大於 0"
+            print(f"✅ 查詢成功")
+            print(f"   回應: {response.text[:200]}...")
+            
+        finally:
+            # 5. 清理：刪除測試文檔
+            try:
+                genai_client.files.delete(name=test_file.name)
+                print("✅ 測試文檔已刪除")
+            except Exception as e:
+                print(f"⚠️  清理警告: {e}")
+    
+    def test_file_list_and_get(self, genai_client):
+        """測試列出和獲取文檔資訊"""
+        fixtures_path = os.path.join(os.path.dirname(__file__), "..", "..", "fixtures")
+        sample_doc_path = os.path.join(fixtures_path, "sample_doc.txt")
+        
+        if not os.path.exists(sample_doc_path):
+            pytest.skip(f"測試文檔不存在: {sample_doc_path}")
+        
+        # 上傳文檔
+        test_file = genai_client.files.upload(
+            file=sample_doc_path,
+            config=types.UploadFileConfig(display_name="List Test Document")
+        )
+        
+        try:
+            # 列出所有文檔
+            files_list = list(genai_client.files.list())
+            assert len(files_list) > 0, "應該至少有一個文檔"
+            print(f"✅ 文檔列表: {len(files_list)} 個文檔")
+            
+            # 獲取特定文檔資訊
+            retrieved_file = genai_client.files.get(name=test_file.name)
+            assert retrieved_file.name == test_file.name
+            assert retrieved_file.display_name == "List Test Document"
+            print(f"✅ 文檔資訊獲取成功")
+            
+        finally:
+            genai_client.files.delete(name=test_file.name)
+            print("✅ 測試文檔已刪除")
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "-s"])
+```
+
+**準備測試環境**:
+
+```bash
+# 建立測試文檔目錄
+mkdir -p tests/fixtures
+
+# 建立測試文檔
+cat > tests/fixtures/sample_doc.txt << 'EOF'
+NotChatGPT 是一個基於 Google Gemini API 的智慧對話助理系統。
+
+主要功能：
+1. 多輪對話：支援上下文記憶，能記住之前的對話內容
+2. 思考模式：提供深度思考分析的回應模式
+3. 安全防護：內建 PII 偵測和關鍵字過濾機制
+4. 文檔搜尋：支援上傳文檔並查詢內容
+5. 對話管理：完整的對話歷史儲存和管理功能
+
+技術架構：
+- 後端：Python + FastAPI + SQLAlchemy
+- AI 模型：Google Gemini 2.0 Flash
+- 資料庫：SQLite
+- 測試：pytest + fixtures
+
+系統特色：
+NotChatGPT 專注於提供準確、安全、可追溯的對話體驗。
+EOF
+
+# 執行測試
+python -m pytest tests/unit/backend/test_file_upload.py -v -s
+```
+
+**API 使用說明**:
 
 ```python
 from google import genai
 from google.genai import types
 
-class FileSearchTool:
-    """文檔搜尋工具"""
-    
-    def __init__(self, client: genai.Client):
-        self.client = client
-    
-    def search(self, query: str, corpus_name: str) -> dict:
-        """搜尋文檔內容"""
-        try:
-            # 使用 Gemini File Search API
-            response = self.client.models.generate_content(
-                model="gemini-2.0-flash-exp",
-                contents=query,
-                config=types.GenerateContentConfig(
-                    tools=[types.Tool(
-                        google_search=types.GoogleSearch(),
-                        # 注意: File Search API 的實際配置可能不同
-                        # 需要根據實際 API 調整
-                    )],
-                ),
-            )
-            
-            return {
-                "text": response.text,
-                "grounding_metadata": response.candidates[0].grounding_metadata if response.candidates else None,
-            }
-        except Exception as e:
-            return {"error": str(e)}
+client = genai.Client(api_key="your_key")
+
+# ✅ 正確的文檔上傳
+uploaded_file = client.files.upload(
+    file="path/to/file.txt",  # 參數名稱是 'file'
+    config=types.UploadFileConfig(display_name="My Document")
+)
+
+# ✅ 使用上傳的文檔查詢內容
+response = client.models.generate_content(
+    model="gemini-2.0-flash-exp",
+    contents=[
+        types.Part.from_uri(
+            file_uri=uploaded_file.uri,
+            mime_type=uploaded_file.mime_type
+        ),
+        "你的問題"
+    ]
+)
+
+# ✅ 列出所有文檔
+for file in client.files.list():
+    print(f"{file.name}: {file.display_name}")
+
+# ✅ 獲取特定文檔
+file_info = client.files.get(name="files/abc123...")
+
+# ✅ 刪除文檔
+client.files.delete(name="files/abc123...")
 ```
 
-#### 12.2 測試基本文檔查詢
-
-**backend/test_file_search.py**:
-
-```python
-from google import genai
-from backend.tools.file_search import FileSearchTool
-
-def test_file_search():
-    client = genai.Client()
-    tool = FileSearchTool(client)
-    
-    # 上傳測試文檔
-    test_file = client.files.upload(
-        path="tests/fixtures/sample_doc.txt",
-        display_name="Test Document"
-    )
-    print(f"✅ 文檔已上傳: {test_file.name}")
-    
-    # 執行搜尋
-    result = tool.search("這份文檔的主要內容是什麼？", "test-corpus")
-    print(f"搜尋結果: {result['text'][:200]}")
-
-if __name__ == "__main__":
-    test_file_search()
-```
+**執行測試**:
 
 ```bash
-# 建立測試文檔
-mkdir -p tests/fixtures
-echo "This is a sample document for testing file search functionality." > tests/fixtures/sample_doc.txt
+# 執行文檔上傳測試
+python -m pytest tests/unit/backend/test_file_upload.py::TestFileUpload::test_file_upload_and_content_query -v -s
 
-# 執行測試
-python backend/test_file_search.py
+# 執行所有文檔測試
+python -m pytest tests/unit/backend/test_file_upload.py -v -s
 ```
 
-**參考**: Day 45 (policy-navigator) - Gemini File Search
+**參考**:
+
+- Day 45 (policy-navigator) - Gemini File Search
+- Day 26 (artifact-agent) - File Management
 
 ---
 

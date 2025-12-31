@@ -1,0 +1,17 @@
+NotChatGPT 是一個基於 Google Gemini API 的智慧對話助理系統。
+
+主要功能：
+1. 多輪對話：支援上下文記憶，能記住之前的對話內容
+2. 思考模式：提供深度思考分析的回應模式
+3. 安全防護：內建 PII 偵測和關鍵字過濾機制
+4. 文檔搜尋：支援上傳文檔並查詢內容
+5. 對話管理：完整的對話歷史儲存和管理功能
+
+技術架構：
+- 後端：Python + FastAPI + SQLAlchemy
+- AI 模型：Google Gemini 2.0 Flash
+- 資料庫：SQLite
+- 測試：pytest + fixtures
+
+系統特色：
+NotChatGPT 專注於提供準確、安全、可追溯的對話體驗。
