@@ -2043,3 +2043,23 @@ agents:
       - langchain
       - uvicorn
       - middleware
+  - name: Live Interact Agent
+    description: 使用 ADK 和 Gemini Live API 的即時多模態代理，透過 WebSocket 雙向串流支援語音與文字互動並內建前端介面。
+    code_ref: workspace/python/agents/live-interact-agent
+    type: App
+    models:
+      - gemini-live-2.5-flash-native-audio
+    tools:
+      - name: get_weather
+        type: FunctionTool
+        description: 模擬網路搜尋以回傳指定城市的天氣資訊。
+    server-port: 8000
+    tags:
+      - live-api
+      - websocket
+      - fastapi
+      - frontend
+      - telemetry
+      - gcs
+      - cloud-run
+      - gemini-live
