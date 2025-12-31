@@ -1,0 +1,28 @@
+steps:
+  # 部署步驟：使用 gcloud 部署到 Cloud Run (生產環境)
+  # 使用在 CI/CD 專案中建置並儲存在 Artifact Registry 的映像檔
+  - name: "gcr.io/cloud-builders/gcloud-slim"
+    id: trigger-deployment
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "live-interact-agent"
+      - "--image"
+      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME"
+      - "--region"
+      - "$_REGION"
+      - "--project"
+      - $_PROD_PROJECT_ID
+
+# 替換變數 (這些通常由 Cloud Build 觸發器傳入)
+substitutions:
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID
+  _REGION: us-central1
+
+# 指定存放建置日誌的 GCS 儲存桶
+logsBucket: gs://${PROJECT_ID}-live-interact-agent-logs/build-logs
+
+options:
+  substitutionOption: ALLOW_LOOSE  # 允許使用未定義的變數 (寬鬆模式)
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 使用區域性的使用者擁有儲存桶

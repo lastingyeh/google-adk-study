@@ -1,0 +1,156 @@
+/* Transcription Preview Container */
+/* 轉錄預覽容器 */
+.transcription-preview {
+  width: 0;
+  height: 100%;
+  background: var(--Neutral-00);
+  border-left: 1px solid var(--Neutral-20);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  transition: width 0.2s ease-in-out;
+  flex-shrink: 0;
+
+  /* Open State */
+  /* 開啟狀態 */
+  &.open {
+    width: 300px;
+  }
+
+  /* Transcription Section */
+  /* 轉錄區域 */
+  .transcription-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out 0.1s;
+
+    &:first-child {
+      border-bottom: 1px solid var(--Neutral-20);
+    }
+
+    /* Header */
+    /* 標題 */
+    .transcription-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: var(--Neutral-05);
+      border-bottom: 1px solid var(--Neutral-20);
+      flex-shrink: 0;
+
+      .material-symbols-outlined {
+        font-size: 20px;
+        color: var(--Neutral-70);
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--Neutral-90);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+
+    /* Content Area */
+    /* 內容區域 */
+    .transcription-content {
+      flex: 1;
+      padding: 12px 16px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      word-wrap: break-word;
+
+      p {
+        margin: 0 0 12px 0;
+        color: var(--Neutral-90);
+        font-size: 13px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: var(--font-family);
+
+        /* Placeholder Text */
+        /* 佔位符文字 */
+        &.placeholder {
+          color: var(--Neutral-50);
+          font-style: italic;
+        }
+
+        /* Previous Message */
+        /* 之前的訊息 */
+        &.previous {
+          color: var(--Neutral-60);
+          opacity: 0.7;
+        }
+
+        /* Current Message */
+        /* 當前的訊息 */
+        &.current {
+          color: var(--Neutral-90);
+          font-weight: 500;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  /* Fade in sections when open */
+  /* 開啟時淡入區域 */
+  &.open .transcription-section {
+    opacity: 1;
+  }
+
+  /* Input Section Specifics */
+  /* 輸入區域特定樣式 */
+  .input-section {
+    .transcription-header {
+      .material-symbols-outlined {
+        color: var(--Green-500);
+      }
+
+      h3 {
+        color: var(--Green-500);
+      }
+    }
+
+    .transcription-content {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 200, 100, 0.02),
+        transparent
+      );
+    }
+  }
+
+  /* Output Section Specifics */
+  /* 輸出區域特定樣式 */
+  .output-section {
+    .transcription-header {
+      .material-symbols-outlined {
+        color: var(--Blue-500);
+      }
+
+      h3 {
+        color: var(--Blue-500);
+      }
+    }
+
+    .transcription-content {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 100, 255, 0.02),
+        transparent
+      );
+    }
+  }
+}

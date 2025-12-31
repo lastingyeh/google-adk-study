@@ -1,11 +1,8 @@
 # 部署 (Deployment)
 
 此目錄包含 Terraform 配置，用於為您的代理程式佈建必要的 Google Cloud 基礎架構。
-
 部署基礎架構和設定 CI/CD 管線的建議方法是從專案根目錄執行 `agent-starter-pack setup-cicd` 命令。
-
 然而，若您偏好手動操作，也可以自行手動應用 Terraform 配置。
-
 有關部署流程、基礎架構和 CI/CD 管線的詳細資訊，請參閱官方文件：
 
 **[Agent Starter Pack 部署指南](https://googlecloudplatform.github.io/agent-starter-pack/guide/deployment.html)**
@@ -45,58 +42,13 @@ deployment/terraform
 
 開發環境採用簡化的架構，重點在於快速迭代與測試。資料庫備份預設關閉，且通常部署於單一專案中。
 
+
+## 架構圖
+
+![架構圖](./archi.png)
 ---
 
-#### 開發環境架構圖
-```mermaid
-graph TD
-    subgraph "Google Cloud Project (Dev)"
-        User[Developer / User] --> CR[Cloud Run Service]
-
-        subgraph "Compute Layer"
-            CR
-        end
-
-        subgraph "Data & Storage Layer"
-            CSQL[(Cloud SQL<br/>PostgreSQL 15)]
-            SM["Secret Manager<br/(DB Password)"]
-            GCS_Logs[GCS: Logs Bucket]
-            GCS_RAG[GCS: RAG Pipeline Root]
-        end
-
-        subgraph "AI & Search Layer"
-            DE["Vertex AI Agent Builder<br/(Discovery Engine)"]
-            subgraph "Data Store"
-                DS[Unstructured Data]
-            end
-            DE --- DS
-        end
-
-        subgraph "Observability Layer"
-            CL[Cloud Logging]
-            BQ[BigQuery<br/Telemetry Dataset]
-            LogBucket["Log Bucket<br/(10 Year Retention)"]
-            BQView[Completions View]
-        end
-
-        %% Connections
-        CR -->|"Connects (IAM Auth)"| CSQL
-        CR -->|Reads Secrets| SM
-        CR -->|Search/Retrieve| DE
-        CR -->|Writes Logs| GCS_Logs
-
-        %% Telemetry Flow
-        CL -->|Log Sink| LogBucket
-        CL -->|Linked Dataset| BQ
-        BQ -->|External Table| GCS_Logs
-        BQView -->|Joins| BQ
-
-        %% Note on Dev
-        note[Backup Disabled] -.-> CSQL
-    end
-```
-
-#### 開發流程時序圖
+### 開發流程時序圖
 此圖展示了在開發環境中，從使用者發出請求到系統回覆的典型互動流程。
 
 ```mermaid
@@ -167,64 +119,7 @@ sequenceDiagram
 
 生產環境包含完整的備份機制、高可用性配置，並整合 CI/CD 流程。通常涉及多個專案（CI/CD Runner Project 與 Target Environment Project）。
 
-#### 正式環境架構圖
-```mermaid
-graph TD
-    subgraph "CI/CD Project"
-        AR[Artifact Registry]
-        CB[Cloud Build]
-    end
-
-    subgraph "Google Cloud Project (Prod)"
-        LB[Load Balancer] --> CR[Cloud Run Service]
-
-        subgraph "Compute Layer"
-            CR
-        end
-
-        subgraph "Data & Storage Layer"
-            CSQL[(Cloud SQL<br/PostgreSQL 15)]
-            SM["Secret Manager<br/(DB Password)"]
-            GCS_Logs[GCS: Logs Bucket]
-            GCS_RAG[GCS: RAG Pipeline Root]
-            Backup[Automated Backups]
-        end
-
-        subgraph "AI & Search Layer"
-            DE["Vertex AI Agent Builder<br/(Discovery Engine)"]
-            subgraph "Data Store"
-                DS[Unstructured Data]
-            end
-            DE --- DS
-        end
-
-        subgraph "Observability Layer"
-            CL[Cloud Logging]
-            BQ[BigQuery<br/Telemetry Dataset]
-            LogBucket["Log Bucket<br/(10 Year Retention)"]
-            BQView[Completions View]
-        end
-
-        %% Connections
-        CR -->|"Connects (IAM Auth)"| CSQL
-        CSQL -.->|Daily 03:00| Backup
-        CR -->|Reads Secrets| SM
-        CR -->|Search/Retrieve| DE
-        CR -->|Writes Logs| GCS_Logs
-
-        %% Telemetry Flow
-        CL -->|Log Sink| LogBucket
-        CL -->|Linked Dataset| BQ
-        BQ -->|External Table| GCS_Logs
-        BQView -->|Joins| BQ
-    end
-
-    %% CICD Flow
-    CB -->|Deploys| CR
-    CR -.->|Pulls Image| AR
-```
-
-#### 正式環境時序圖
+### 正式環境時序圖
 此圖展示了在生產環境中，從使用者發出請求到系統回覆的典型互動流程，其中包含了負載平衡器。
 
 ```mermaid
@@ -298,10 +193,8 @@ sequenceDiagram
     %% --- CI/CD Flow (Deployment Time) ---
     note over User, GCSLogs: CI/CD 流程 (Cloud Build) 在部署階段將新版服務推至 Cloud Run。
 ```
-
 ---
-
-## 詳細架構元件 (Detailed Architecture Components)
+### 詳細架構元件 (Detailed Architecture Components)
 
 下表詳細列出了 Terraform 配置中的關鍵元件及其功能說明：
 

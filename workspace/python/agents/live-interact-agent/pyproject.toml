@@ -1,0 +1,150 @@
+# [project] 區塊：定義專案的核心元數據，遵循 PEP 621 標準。
+[project]
+# 專案名稱，用於在 PyPI 等套件索引中識別。
+name = "live-interact-agent"
+# 專案的當前版本號。
+version = "0.1.0"
+# 專案的簡短描述。
+description = ""
+# 專案作者列表，包含姓名和電子郵件。
+authors = [{ name = "Your Name", email = "your@email.com" }]
+# 專案運作所需的主要依賴套件列表。
+dependencies = [
+    "google-adk>=1.16.0,<2.0.0",                                # Google Agent Development Kit (ADK)
+    "click>=8.0.0,<9.0.0",                                      # 用於建立命令列介面的工具。
+    "uvicorn>=0.18.0,<1.0.0",                                   # ASGI 伺服器，用於運行 FastAPI。
+    "fastapi>=0.75.0,<1.0.0",                                   # 高效能的 Web 框架。
+    "backoff>=2.0.0,<3.0.0",                                    # 用於實現重試機制的函式庫。
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0", # Google GenAI 的 OpenTelemetry 檢測工具。
+    "gcsfs>=2024.11.0",                                         # 用於與 Google Cloud Storage 互動的檔案系統介面。
+    "google-cloud-logging>=3.12.0,<4.0.0",                      # Google Cloud Logging 客戶端函式庫。
+    "google-cloud-aiplatform[evaluation]>=1.118.0,<2.0.0",      # Google Cloud AI Platform SDK，包含評估功能。
+    "fastapi~=0.115.8",                                         # FastAPI 的另一個版本約束，與上面的定義可能存在衝突。
+    "uvicorn~=0.34.0",                                          # Uvicorn 的另一個版本約束，與上面的定義可能存在衝突。
+    "asyncpg>=0.30.0,<1.0.0",                                   # 用於 PostgreSQL 的非同步驅動程式。
+]
+# 專案要求的 Python 版本範圍。
+requires-python = ">=3.10,<3.14"
+
+
+# [dependency-groups] 區塊：定義依賴項分組，通常用於開發或測試環境。
+[dependency-groups]
+# 'dev' 群組，包含開發時才需要的工具。
+dev = [
+    "pytest>=8.3.4,<9.0.0",          # 用於撰寫和執行測試的框架。
+    "pytest-asyncio>=0.23.8,<1.0.0", # Pytest 的外掛，用於測試非同步程式碼。
+    "nest-asyncio>=1.6.0,<2.0.0",    # 允許在已運行的事件迴圈中再次運行 asyncio 事件迴圈。
+]
+
+# [project.optional-dependencies] 區塊：定義可選的依賴項，使用者可以根據需要安裝。
+[project.optional-dependencies]
+# 'jupyter' 可選功能，安裝後可支援 Jupyter 環境。
+jupyter = ["jupyter>=1.0.0,<2.0.0"]
+# 'lint' 可選功能，安裝後可使用程式碼風格檢查和靜態分析工具。
+lint = [
+    "ruff>=0.4.6,<1.0.0",                     # 高效能的 Python Linter 和 Formatter。
+    "mypy>=1.15.0,<2.0.0",                    # Python 的靜態型別檢查工具。
+    "codespell>=2.2.0,<3.0.0",                # 檢查程式碼中拼寫錯誤的工具。
+    "types-pyyaml>=6.0.12.20240917,<7.0.0",   # PyYAML 的型別提示。
+    "types-requests>=2.32.0.20240914,<3.0.0", # requests 函式庫的型別提示。
+]
+
+# [tool.ruff] 區塊：Ruff 工具的設定。
+[tool.ruff]
+# 設定每行程式碼的最大長度為 88 個字元。
+line-length = 88
+# 設定 Ruff 檢查時的目標 Python 版本。
+target-version = "py310"
+
+# [tool.ruff.lint] 區塊：Ruff 的 Linter 設定。
+[tool.ruff.lint]
+# 選擇要啟用的規則集。
+select = [
+    "E",   # pycodestyle 錯誤
+    "F",   # pyflakes 錯誤
+    "W",   # pycodestyle 警告
+    "I",   # isort (import 排序)
+    "C",   # flake8-comprehensions (推導式風格)
+    "B",   # flake8-bugbear (常見錯誤)
+    "UP",  # pyupgrade (語法升級)
+    "RUF", # Ruff 的專屬規則
+]
+# 忽略特定的規則。E501: 行過長，C901: 函式過於複雜，B006: 不要將可變物件作為預設參數。
+ignore = ["E501", "C901", "B006"]
+
+# [tool.ruff.lint.isort] 區塊：Ruff 內建的 isort 功能設定。
+[tool.ruff.lint.isort]
+# 將 'app' 和 'frontend' 目錄視為第一方套件，用於 import 排序。
+known-first-party = ["app", "frontend"]
+
+# [tool.mypy] 區塊：Mypy 靜態型別檢查工具的設定。
+[tool.mypy]
+disallow_untyped_calls = true                                     # 不允許呼叫未標註型別的函式。
+disallow_untyped_defs = true                                      # 不允許定義未標註型別的函式。
+disallow_incomplete_defs = true                                   # 不允許不完整的型別定義。
+no_implicit_optional = true                                       # 禁止隱性的 Optional 型別。
+check_untyped_defs = true                                         # 檢查未標註型別的函式內容。
+disallow_subclassing_any = true                                   # 不允許繼承自 Any 型別的類別。
+warn_incomplete_stub = true                                       # 對不完整的 stub 檔案發出警告。
+warn_redundant_casts = true                                       # 對多餘的型別轉換發出警告。
+warn_unused_ignores = true                                        # 對未使用的 # type: ignore 註解發出警告。
+warn_unreachable = true                                           # 對無法觸及的程式碼發出警告。
+follow_imports = "silent"                                         # 靜默地跟隨 import，不報告找不到模組的錯誤。
+ignore_missing_imports = true                                     # 忽略找不到 import 模組的錯誤。
+explicit_package_bases = true                                     # 要求明確的套件基礎路徑。
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"] # 禁用特定的錯誤碼。
+
+# 排除 Mypy 檢查的目錄。
+exclude = [".venv", "./frontend"]
+
+
+# [tool.codespell] 區塊：Codespell 拼寫檢查工具的設定。
+[tool.codespell]
+# 拼寫檢查時要忽略的單字列表。
+ignore-words-list = "rouge"
+# 跳過檢查的檔案或目錄模式。
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
+
+# [build-system] 區塊：定義建構專案所需的工具，遵循 PEP 518。
+[build-system]
+# 建構專案所需的套件。
+requires = ["hatchling"]
+# 用於執行建構過程的後端。
+build-backend = "hatchling.build"
+
+
+# [tool.pytest.ini_options] 區塊：Pytest 測試框架的設定。
+[tool.pytest.ini_options]
+# 將當前目錄加入 Python 搜尋路徑，方便 import。
+pythonpath = "."
+# 設定 pytest-asyncio 的預設事件迴圈範圍為 'function'。
+asyncio_default_fixture_loop_scope = "function"
+
+# [tool.hatch.build.targets.wheel] 區塊：Hatch 建構工具的設定，用於建立 wheel 檔案。
+[tool.hatch.build.targets.wheel]
+# 在建構 wheel 檔案時要包含的套件目錄。
+packages = ["app", "frontend"]
+
+# [tool.agent-starter-pack] 區塊：一個自訂工具的設定，用於專案生成和管理。
+[tool.agent-starter-pack]
+# 產生元數據 - 讓 CLI 命令能夠理解專案上下文。
+# 這些欄位允許任何生成的專案作為遠端模板使用。
+name = "live-interact-agent"
+description = "使用 ADK 和 Gemini Live API 的即時多模態代理，實現低延遲的語音和視訊互動。"
+base_template = "adk_live"
+agent_directory = "app"
+
+# 產生上下文
+generated_at = "2025-12-31T01:00:17.995575+00:00"
+asp_version = "0.29.3"
+
+# [tool.agent-starter-pack.create_params] 區塊：專案建立時使用的參數。
+[tool.agent-starter-pack.create_params]
+# 專案建立時使用的參數
+deployment_target = "cloud_run"    # 部署目標
+session_type = "in_memory"         # 會話類型
+cicd_runner = "google_cloud_build" # CI/CD 執行器
+include_data_ingestion = false     # 是否包含資料擷取功能
+datastore = "none"                 # 使用的資料儲存
+frontend_type = "adk_live_react"   # 前端類型

@@ -1,0 +1,41 @@
+steps:
+  # 步驟 1: 安裝 uv 套件管理器並同步相依性
+  # uv 是一個快速的 Python 套件安裝程式
+  - name: "python:3.12-slim"
+    id: install-dependencies
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        pip install uv==0.8.13 --user && uv sync --locked
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+  # 步驟 2: 使用 pytest 執行單元測試 (Unit Tests)
+  # 這些測試位於 tests/unit 目錄中
+  - name: "python:3.12-slim"
+    id: unit-tests
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        uv run pytest tests/unit
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+  # 步驟 3: 執行整合測試 (Integration Tests)
+  # 這些測試位於 tests/integration 目錄中
+  - name: "python:3.12-slim"
+    id: integration-tests
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        uv run pytest tests/integration
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+# 指定存放建置日誌的 GCS 儲存桶
+logsBucket: gs://${PROJECT_ID}-live-interact-agent-logs/build-logs
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 使用區域性的使用者擁有儲存桶

@@ -1,0 +1,151 @@
+steps:
+  # 步驟 1: 建置 Docker 映像檔
+  # 包含 COMMIT_SHA 作為建置參數
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME",
+        "--build-arg",
+        "COMMIT_SHA=$COMMIT_SHA",
+        ".",
+      ]
+  # 步驟 2: 推送 Docker 映像檔到 Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME",
+      ]
+
+  # 步驟 3: 部署到測試環境 (Staging)
+  # 使用 gcloud 部署到 Cloud Run 服務
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: deploy-staging
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "live-interact-agent"
+      - "--image"
+      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME"
+      - "--region"
+      - "${_REGION}"
+      - "--project"
+      - "${_STAGING_PROJECT_ID}"
+
+  # 步驟 4: 獲取測試環境服務網址
+  # 用於後續測試
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: fetch-staging-url
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        echo $(gcloud run services describe live-interact-agent \
+        --region ${_REGION} --project ${_STAGING_PROJECT_ID} --format="value(status.url)") > staging_url.txt
+
+  # 步驟 5: 獲取 ID Token
+  # 用於身份驗證
+  - name: gcr.io/cloud-builders/gcloud
+    id: fetch-id-token
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        echo $(gcloud auth print-identity-token -q) > id_token.txt
+
+  # 步驟 6: 負載測試 (Load Testing)
+  # 安裝 locust 和 websockets，並透過 Cloud Run Proxy 執行測試
+  - name: "europe-west4-docker.pkg.dev/production-ai-template/starter-pack/e2e-tests"
+    id: load_test
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        # 安裝負載測試相依套件
+        pip install locust==2.31.1 websockets
+
+        # 安裝 Cloud Run proxy 元件
+        apt-get update && apt-get install -y google-cloud-cli-cloud-run-proxy
+
+        # 在背景啟動 Cloud Run proxy
+        gcloud run services proxy live-interact-agent \
+        --port=8080 \
+        --region ${_REGION} \
+        --project ${_STAGING_PROJECT_ID} \
+        --quiet &
+        _PROXY_PID=$$!
+
+        # 等待 proxy 啟動
+        echo "正在等待 proxy 啟動..."
+        sleep 10
+
+        # 執行負載測試並擷取退出代碼
+        locust -f tests/load_test/load_test.py \
+        --headless \
+        -H http://127.0.0.1:8080 \
+        -t 30s -u 2 -r 2 \
+        --csv=tests/load_test/.results/results \
+        --html=tests/load_test/.results/report.html
+        _LOAD_TEST_EXIT_CODE=$$?
+
+        # 清理 proxy 程序
+        kill $$_PROXY_PID || true
+
+        # 如果測試失敗，則以測試結果退出以中斷建置
+        exit $$_LOAD_TEST_EXIT_CODE
+
+  # 步驟 7: 匯出負載測試結果到 GCS
+  - name: gcr.io/cloud-builders/gcloud
+    id: export-results-to-gcs
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        export _TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+        gsutil -m cp -r tests/load_test/.results gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}
+        echo "_________________________________________________________________________"
+        echo "負載測試結果已複製到 gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "HTTP 連結: https://console.cloud.google.com/storage/browser/${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "_________________________________________________________________________"
+
+  # 步驟 8: 觸發已核准的生產環境部署
+  # 使用相同的提交 SHA
+  - name: gcr.io/cloud-builders/gcloud
+    id: trigger-prod-deployment
+    entrypoint: gcloud
+    args:
+      - "beta"
+      - "builds"
+      - "triggers"
+      - "run"
+      - "deploy-live-interact-agent"
+      - "--region"
+      - "$LOCATION"
+      - "--project"
+      - "$PROJECT_ID"
+      - "--sha"
+      - $COMMIT_SHA
+
+  # 步驟 9: 顯示生產環境部署連結
+  - name: gcr.io/cloud-builders/gcloud
+    id: echo-view-build-trigger-link
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        echo "_________________________________________________________________________"
+        echo "生產環境部署已觸發。請在 Cloud Build 控制台查看進度及/或進行核准:"
+        echo "https://console.cloud.google.com/cloud-build/builds;region=$LOCATION"
+        echo "_________________________________________________________________________"
+
+substitutions:
+  _STAGING_PROJECT_ID: YOUR_STAGING_PROJECT_ID
+  _REGION: us-central1
+
+logsBucket: gs://${PROJECT_ID}-live-interact-agent-logs/build-logs
+options:
+  substitutionOption: ALLOW_LOOSE
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
