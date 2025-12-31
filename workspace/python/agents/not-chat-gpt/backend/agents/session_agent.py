@@ -1,5 +1,5 @@
 from google.genai import types
-from services.session_service import SessionService
+from backend.services.session_service import SessionService
 
 def create_session_aware_agent(session_id: str, session_service: SessionService = None):
     """建立具有 Session 上下文記憶的 Agent

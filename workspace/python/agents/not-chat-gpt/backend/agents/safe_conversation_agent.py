@@ -1,6 +1,6 @@
 """具有安全防護的對話 Agent"""
 from google.genai import types
-from guardrails.safety_callbacks import validate_input, sanitize_response
+from backend.guardrails.safety_callbacks import validate_input, sanitize_response
 import logging
 
 logger = logging.getLogger(__name__)
