@@ -2237,26 +2237,84 @@ touch tests/fixtures/sample_conversations.json
 **tests/conftest.py**:
 
 ```python
+"""pytest 共用配置與 fixtures
+
+此檔案提供所有測試共用的 fixtures，避免在每個測試文件中重複定義。
+"""
 import pytest
 from google import genai
+from dotenv import load_dotenv
+import os
 from backend.services.session_service import SessionService
 
+# 載入環境變數
+load_dotenv()
+
+
+@pytest.fixture(scope="session")
+def api_key():
+    """提供 Google API Key"""
+    key = os.getenv('GOOGLE_API_KEY')
+    if not key:
+        pytest.skip("GOOGLE_API_KEY 未設定")
+    return key
+
+
+@pytest.fixture(scope="session")
+def model_name():
+    """提供模型名稱"""
+    return os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
+
+
 @pytest.fixture
-def genai_client():
-    """Genai client fixture"""
-    return genai.Client()
+def genai_client(api_key):
+    """提供 GenAI Client fixture
+    
+    每個測試都會獲得一個新的 client 實例
+    """
+    return genai.Client(api_key=api_key)
+
 
 @pytest.fixture
 def session_service():
-    """Session service fixture with test DB"""
-    return SessionService(database_url="sqlite:///:memory:")
+    """提供 SessionService fixture (使用記憶體資料庫)
+    
+    每個測試都會獲得一個全新的記憶體資料庫，確保測試隔離
+    """
+    service = SessionService(database_url="sqlite:///:memory:")
+    yield service
+    # 清理
+    service.engine.dispose()
+
 
 @pytest.fixture
 def sample_conversation_id(session_service):
-    """建立測試用對話"""
-    conv_id = "test-conv-001"
-    session_service.create_session(conv_id, "Test Chat")
+    """建立測試用對話並返回 ID
+    
+    這個 fixture 依賴 session_service fixture
+    """
+    conv_id = "test-conv-fixture-001"
+    session_service.create_session(conv_id, "Test Chat from Fixture")
     return conv_id
+
+
+@pytest.fixture
+def sample_conversation_with_messages(session_service, sample_conversation_id):
+    """建立包含訊息的測試對話
+    
+    返回: (conversation_id, messages_list)
+    """
+    messages = [
+        ("user", "你好"),
+        ("model", "你好！我是 NotChatGPT"),
+        ("user", "請介紹你自己"),
+        ("model", "我是一個智慧對話助理，專注於提供有用的資訊。"),
+    ]
+    
+    for role, content in messages:
+        session_service.add_message(sample_conversation_id, role, content)
+    
+    return sample_conversation_id, messages
 ```
 
 ---
@@ -2268,11 +2326,8 @@ def sample_conversation_id(session_service):
 **tests/unit/backend/test_agent.py**:
 
 ```python
-import pytest
-from config.mode_config import ModeConfig
-from agents.safe_conversation_agent import safe_generate_response
-from google import genai
-import os
+from backend.config.mode_config import ModeConfig
+from backend.agents.safe_conversation_agent import safe_generate_response
 
 class TestAgent:
     def test_create_config_thinking(self):
@@ -2280,13 +2335,16 @@ class TestAgent:
         config = ModeConfig.create_config_with_mode(thinking_mode=True)
         assert config is not None
         assert config.system_instruction is not None
-        assert "詳細" in config.system_instruction or "深入" in config.system_instruction
+        # 檢查思考模式相關的關鍵字
+        assert "思考" in config.system_instruction or "展示" in config.system_instruction
+        print("✅ 思考模式配置測試通過")
     
     def test_create_config_standard(self):
         """測試標準模式配置建立"""
         config = ModeConfig.create_config_with_mode(thinking_mode=False)
         assert config is not None
         assert config.system_instruction is not None
+        print("✅ 標準模式配置測試通過")
     
     def test_mode_config_difference(self):
         """測試思考模式和標準模式的差異"""
@@ -2294,15 +2352,12 @@ class TestAgent:
         config_standard = ModeConfig.create_config_with_mode(thinking_mode=False)
         
         assert config_thinking.system_instruction != config_standard.system_instruction
+        print("✅ 模式差異測試通過")
     
-    def test_basic_conversation(self):
-        """測試基本對話"""
-        api_key = os.getenv('GOOGLE_API_KEY')
-        client = genai.Client(api_key=api_key)
-        model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
-        
+    def test_basic_conversation(self, api_key, genai_client, model_name):
+        """測試基本對話（使用 fixtures）"""
         result = safe_generate_response(
-            client=client,
+            client=genai_client,
             model_name=model_name,
             user_message="你好",
             enable_safety=True
@@ -2311,6 +2366,13 @@ class TestAgent:
         assert result['success'] is True
         assert result['text'] is not None
         assert len(result['text']) > 0
+        print("✅ 基本對話測試通過")
+```
+
+**執行測試**:
+
+```bash
+python -m pytest tests/unit/backend/test_agent.py -v
 ```
 
 #### 10.2 Guardrails 測試
