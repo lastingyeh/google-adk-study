@@ -6,9 +6,8 @@
 - 管理對話狀態
 """
 from sqlalchemy import create_engine, Column, String, Text, DateTime, ForeignKey, Integer
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from datetime import datetime, UTC
 import json
 
 Base = declarative_base()
@@ -21,7 +20,7 @@ class Message(Base):
     conversation_id = Column(String, ForeignKey("conversations.id"))
     role = Column(String)  # 'user' or 'model'
     content = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     
     conversation = relationship("Conversation", back_populates="messages")
 
@@ -32,8 +31,8 @@ class Conversation(Base):
     id = Column(String, primary_key=True)
     title = Column(String)
     state = Column(Text)  # JSON 格式的 session state
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
     
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan")
 
@@ -78,7 +77,7 @@ class SessionService:
         conv = db.query(Conversation).filter_by(id=session_id).first()
         if conv:
             conv.state = json.dumps(state)
-            conv.updated_at = datetime.utcnow()
+            conv.updated_at = datetime.now(UTC)
             db.commit()
         db.close()
     
@@ -108,7 +107,7 @@ class SessionService:
         # 更新對話的 updated_at
         conv = db.query(Conversation).filter_by(id=conversation_id).first()
         if conv:
-            conv.updated_at = datetime.utcnow()
+            conv.updated_at = datetime.now(UTC)
             
         message = Message(
             conversation_id=conversation_id,

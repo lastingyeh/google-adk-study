@@ -288,9 +288,8 @@ PYTHONPATH=. python tests/unit/backend/test_conversation.py
 
 ```python
 from sqlalchemy import create_engine, Column, String, Text, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from sqlalchemy.orm import declarative_base, sessionmaker
+from datetime import datetime, UTC
 import json
 
 Base = declarative_base()
@@ -301,8 +300,8 @@ class Conversation(Base):
     id = Column(String, primary_key=True)
     title = Column(String)
     state = Column(Text)  # JSON 格式的 session state
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
 
 class SessionService:
     def __init__(self, database_url="sqlite:///./not_chat_gpt.db"):
@@ -325,7 +324,7 @@ class SessionService:
         conv = db.query(Conversation).filter_by(id=session_id).first()
         if conv:
             conv.state = json.dumps(state)
-            conv.updated_at = datetime.utcnow()
+            conv.updated_at = datetime.now(UTC)
             db.commit()
         db.close()
     
@@ -1866,9 +1865,8 @@ curl -X POST http://localhost:8000/api/chat/stream \
 - 管理對話狀態
 """
 from sqlalchemy import create_engine, Column, String, Text, DateTime, ForeignKey, Integer
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
-from datetime import datetime
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
+from datetime import datetime, UTC
 import json
 
 Base = declarative_base()
@@ -1881,7 +1879,7 @@ class Message(Base):
     conversation_id = Column(String, ForeignKey("conversations.id"))
     role = Column(String)  # 'user' or 'model'
     content = Column(Text)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
     
     conversation = relationship("Conversation", back_populates="messages")
 
@@ -1892,8 +1890,8 @@ class Conversation(Base):
     id = Column(String, primary_key=True)
     title = Column(String)
     state = Column(Text)  # JSON 格式的 session state
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(UTC))
+    updated_at = Column(DateTime, default=lambda: datetime.now(UTC), onupdate=lambda: datetime.now(UTC))
     
     messages = relationship("Message", back_populates="conversation", cascade="all, delete-orphan")
 
@@ -1938,7 +1936,7 @@ class SessionService:
         conv = db.query(Conversation).filter_by(id=session_id).first()
         if conv:
             conv.state = json.dumps(state)
-            conv.updated_at = datetime.utcnow()
+            conv.updated_at = datetime.now(UTC)
             db.commit()
         db.close()
     
@@ -1968,7 +1966,7 @@ class SessionService:
         # 更新對話的 updated_at
         conv = db.query(Conversation).filter_by(id=conversation_id).first()
         if conv:
-            conv.updated_at = datetime.utcnow()
+            conv.updated_at = datetime.now(UTC)
             
         message = Message(
             conversation_id=conversation_id,
@@ -2030,7 +2028,7 @@ class SessionService:
 """測試 SessionService 功能"""
 import pytest
 import uuid
-from services.session_service import SessionService
+from backend.services.session_service import SessionService
 import os
 
 @pytest.fixture
@@ -2168,6 +2166,12 @@ async def delete_conversation(conv_id: str):
 #### 8.4 測試會話管理
 
 ```bash
+# 啟動伺服器
+./start_server.sh
+
+# 方法二 啟動伺服器
+python -m backend.main
+
 # 建立對話
 curl -X POST http://localhost:8000/api/conversations
 
@@ -2575,9 +2579,8 @@ python backend/test_file_search.py
 ```python
 from google import genai
 from sqlalchemy import create_engine, Column, String, Integer, DateTime
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime
+from sqlalchemy.orm import declarative_base, sessionmaker
+from datetime import datetime, UTC
 
 Base = declarative_base()
 
@@ -2588,7 +2591,7 @@ class Document(Base):
     name = Column(String)
     size = Column(Integer)
     mime_type = Column(String)
-    uploaded_at = Column(DateTime, default=datetime.utcnow)
+    uploaded_at = Column(DateTime, default=lambda: datetime.now(UTC))
 
 class DocumentService:
     """文檔管理服務"""
