@@ -1,25 +1,25 @@
 Category,Page Name,URL
-最新 (Latest),最新 (Latest),https://a2a-protocol.org/latest/
-社群 (Community),社群 (Community),https://a2a-protocol.org/latest/community/
-定義 (Definitions),定義 (Definitions),https://a2a-protocol.org/latest/definitions/
-合作夥伴 (Partners),合作夥伴 (Partners),https://a2a-protocol.org/latest/partners/
-路線圖 (Roadmap),路線圖 (Roadmap),https://a2a-protocol.org/latest/roadmap/
-規範 (Specification),規範 (Specification),https://a2a-protocol.org/latest/specification/
-SDK (Sdk),SDK (Sdk),https://a2a-protocol.org/latest/sdk/
-主題 (Topics),A2A 與 MCP (A2a And Mcp),https://a2a-protocol.org/latest/topics/a2a-and-mcp/
-主題 (Topics),代理發現 (Agent Discovery),https://a2a-protocol.org/latest/topics/agent-discovery/
-主題 (Topics),企業就緒 (Enterprise Ready),https://a2a-protocol.org/latest/topics/enterprise-ready/
-主題 (Topics),擴充功能 (Extensions),https://a2a-protocol.org/latest/topics/extensions/
-主題 (Topics),關鍵概念 (Key Concepts),https://a2a-protocol.org/latest/topics/key-concepts/
-主題 (Topics),任務生命週期 (Life Of A Task),https://a2a-protocol.org/latest/topics/life-of-a-task/
-主題 (Topics),串流與非同步 (Streaming And Async),https://a2a-protocol.org/latest/topics/streaming-and-async/
-主題 (Topics),什麼是 A2A (What Is A2a),https://a2a-protocol.org/latest/topics/what-is-a2a/
-教學 (Tutorials),教學 (Tutorials),https://a2a-protocol.org/latest/tutorials/
-教學 (Tutorials),1 介紹 (1 Introduction),https://a2a-protocol.org/latest/tutorials/python/1-introduction/
-教學 (Tutorials),2 設定 (2 Setup),https://a2a-protocol.org/latest/tutorials/python/2-setup/
-教學 (Tutorials),3 代理技能與卡片 (3 Agent Skills And Card),https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
-教學 (Tutorials),4 代理執行器 (4 Agent Executor),https://a2a-protocol.org/latest/tutorials/python/4-agent-executor/
-教學 (Tutorials),5 啟動伺服器 (5 Start Server),https://a2a-protocol.org/latest/tutorials/python/5-start-server/
-教學 (Tutorials),6 與伺服器互動 (6 Interact With Server),https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/
-教學 (Tutorials),7 串流與多輪對話 (7 Streaming And Multiturn),https://a2a-protocol.org/latest/tutorials/python/7-streaming-and-multiturn/
-教學 (Tutorials),8 下一步 (8 Next Steps),https://a2a-protocol.org/latest/tutorials/python/8-next-steps/
+Latest,Latest,https://a2a-protocol.org/latest/
+Community,Community,https://a2a-protocol.org/latest/community/
+Definitions,Definitions,https://a2a-protocol.org/latest/definitions/
+Partners,Partners,https://a2a-protocol.org/latest/partners/
+Roadmap,Roadmap,https://a2a-protocol.org/latest/roadmap/
+Specification,Specification,https://a2a-protocol.org/latest/specification/
+Sdk,Sdk,https://a2a-protocol.org/latest/sdk/
+Topics,A2a And Mcp,https://a2a-protocol.org/latest/topics/a2a-and-mcp/
+Topics,Agent Discovery,https://a2a-protocol.org/latest/topics/agent-discovery/
+Topics,Enterprise Ready,https://a2a-protocol.org/latest/topics/enterprise-ready/
+Topics,Extensions,https://a2a-protocol.org/latest/topics/extensions/
+Topics,Key Concepts,https://a2a-protocol.org/latest/topics/key-concepts/
+Topics,Life Of A Task,https://a2a-protocol.org/latest/topics/life-of-a-task/
+Topics,Streaming And Async,https://a2a-protocol.org/latest/topics/streaming-and-async/
+Topics,What Is A2a,https://a2a-protocol.org/latest/topics/what-is-a2a/
+Tutorials,Tutorials,https://a2a-protocol.org/latest/tutorials/
+Tutorials,1 Introduction,https://a2a-protocol.org/latest/tutorials/python/1-introduction/
+Tutorials,2 Setup,https://a2a-protocol.org/latest/tutorials/python/2-setup/
+Tutorials,3 Agent Skills And Card,https://a2a-protocol.org/latest/tutorials/python/3-agent-skills-and-card/
+Tutorials,4 Agent Executor,https://a2a-protocol.org/latest/tutorials/python/4-agent-executor/
+Tutorials,5 Start Server,https://a2a-protocol.org/latest/tutorials/python/5-start-server/
+Tutorials,6 Interact With Server,https://a2a-protocol.org/latest/tutorials/python/6-interact-with-server/
+Tutorials,7 Streaming And Multiturn,https://a2a-protocol.org/latest/tutorials/python/7-streaming-and-multiturn/
+Tutorials,8 Next Steps,https://a2a-protocol.org/latest/tutorials/python/8-next-steps/

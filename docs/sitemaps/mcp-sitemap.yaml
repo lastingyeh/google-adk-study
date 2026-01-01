@@ -1,35 +1,35 @@
-"客戶端 (Clients)":
+clients:
   - https://modelcontextprotocol.io/clients
-"反壟斷 (Antitrust)":
+antitrust:
   - https://modelcontextprotocol.io/community/antitrust
-"溝通 (Communication)":
+communication:
   - https://modelcontextprotocol.io/community/communication
-"治理 (Governance)":
+governance:
   - https://modelcontextprotocol.io/community/governance
-"SEP 指南 (Sep Guidelines)":
+sep-guidelines:
   - https://modelcontextprotocol.io/community/sep-guidelines
-"工作小組 (Working Interest Groups)":
+working-interest-groups:
   - https://modelcontextprotocol.io/community/working-interest-groups
-"路線圖 (Roadmap)":
+roadmap:
   - https://modelcontextprotocol.io/development/roadmap
-"開發 (Develop)":
+develop:
   - https://modelcontextprotocol.io/docs/develop/build-client
   - https://modelcontextprotocol.io/docs/develop/build-server
   - https://modelcontextprotocol.io/docs/develop/connect-local-servers
   - https://modelcontextprotocol.io/docs/develop/connect-remote-servers
-"入門 (Getting Started)":
+getting-started:
   - https://modelcontextprotocol.io/docs/getting-started/intro
-"學習 (Learn)":
+learn:
   - https://modelcontextprotocol.io/docs/learn/architecture
   - https://modelcontextprotocol.io/docs/learn/client-concepts
   - https://modelcontextprotocol.io/docs/learn/server-concepts
-"SDK (Sdk)":
+sdk:
   - https://modelcontextprotocol.io/docs/sdk
-"工具 (Tools)":
+tools:
   - https://modelcontextprotocol.io/docs/tools/inspector
-"教學 (Tutorials)":
+tutorials:
   - https://modelcontextprotocol.io/docs/tutorials/security/authorization
-"範例 (Examples)":
+examples:
   - https://modelcontextprotocol.io/examples
 '2024-11-05':
   - https://modelcontextprotocol.io/specification/2024-11-05/architecture
@@ -117,7 +117,7 @@
   - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion
   - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging
   - https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination
-"草案 (Draft)":
+draft:
   - https://modelcontextprotocol.io/specification/draft/architecture
   - https://modelcontextprotocol.io/specification/draft/basic/authorization
   - https://modelcontextprotocol.io/specification/draft/basic
@@ -141,5 +141,5 @@
   - https://modelcontextprotocol.io/specification/draft/server/utilities/completion
   - https://modelcontextprotocol.io/specification/draft/server/utilities/logging
   - https://modelcontextprotocol.io/specification/draft/server/utilities/pagination
-"版本控制 (Versioning)":
+versioning:
   - https://modelcontextprotocol.io/specification/versioning

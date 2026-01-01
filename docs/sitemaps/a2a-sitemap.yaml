@@ -1,18 +1,18 @@
-"最新 (Latest)":
+latest:
   - https://a2a-protocol.org/latest/
-"社群 (Community)":
+community:
   - https://a2a-protocol.org/latest/community/
-"定義 (Definitions)":
+definitions:
   - https://a2a-protocol.org/latest/definitions/
-"合作夥伴 (Partners)":
+partners:
   - https://a2a-protocol.org/latest/partners/
-"路線圖 (Roadmap)":
+roadmap:
   - https://a2a-protocol.org/latest/roadmap/
-"規範 (Specification)":
+specification:
   - https://a2a-protocol.org/latest/specification/
-"SDK (Sdk)":
+sdk:
   - https://a2a-protocol.org/latest/sdk/
-"主題 (Topics)":
+topics:
   - https://a2a-protocol.org/latest/topics/a2a-and-mcp/
   - https://a2a-protocol.org/latest/topics/agent-discovery/
   - https://a2a-protocol.org/latest/topics/enterprise-ready/
@@ -21,7 +21,7 @@
   - https://a2a-protocol.org/latest/topics/life-of-a-task/
   - https://a2a-protocol.org/latest/topics/streaming-and-async/
   - https://a2a-protocol.org/latest/topics/what-is-a2a/
-"教學 (Tutorials)":
+tutorials:
   - https://a2a-protocol.org/latest/tutorials/
   - https://a2a-protocol.org/latest/tutorials/python/1-introduction/
   - https://a2a-protocol.org/latest/tutorials/python/2-setup/

@@ -1386,4 +1386,24 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </details>
 
+#### 🕗 Day 69
+
+<details>
+<summary>
+Part 1/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 BigQuery 整合，透過自動化瀏覽器爬取分析零售網站搜尋結果，為商品資料（標題、描述、屬性）產生優化建議，解決搜尋查詢低回收率問題，改善商品可發現性。
+
+🏷️ `web-crawling`, `bigquery`, `search-enhancement`, `poetry`, `agent route`, `selenium`
+
+</summary>
+
+- **詳細說明**：
+
+  - [Brand Search Optimization](./workspace/python/agents/brand-search-optimization/)
+
+- **參考資源**
+  - [Brand Search Optimization - Web Browser Agent for Search Optimization](https://github.com/google/adk-samples/tree/main/python/agents/brand-search-optimization)
+  - [Build a Browser Use Agent with ADK and Selenium](https://www.youtube.com/watch?v=hPzjkQFV5yI)
+
+</details>
+
 </details>

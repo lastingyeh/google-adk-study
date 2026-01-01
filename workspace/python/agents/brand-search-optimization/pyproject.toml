@@ -1,0 +1,27 @@
+[project]
+name = "brand-search-optimization"
+version = "0.1.0"
+description = "品牌搜尋優化 ADK 代理，旨在增強零售品牌搜尋的產品標題。它會擷取熱門關鍵字、執行搜尋並分析熱門結果，以提供豐富產品標題的建議"
+authors = []
+license = "Apache License 2.0"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "google-genai (>=1.5.0,<2.0.0)", # 用於生成式 AI 功能
+    "selenium (>=4.30.0,<5.0.0)", # 用於 Web 瀏覽器自動化
+    "webdriver-manager (>=4.0.2,<5.0.0)", # 用於管理 Selenium 的瀏覽器驅動程式
+    "google-cloud-bigquery (>=3.31.0,<4.0.0)", # 用於與 Google BigQuery 互動
+    "absl-py (>=2.2.2,<3.0.0)", # 用於 Python 應用程式
+    "google-cloud-aiplatform[agent-engines] (>=1.93.0,<2.0.0)", # 用於 Google Cloud AI Platform
+    "pillow (>=11.1.0,<12.0.0)", # 用於影像處理
+    "google-adk (>=1.0.0,<2.0.0)", # 用於 Google ADK
+]
+
+[build-system] # 定義專案的建置系統
+requires = ["poetry-core>=2.0.0,<3.0.0"] # 指定建置時的相依性
+build-backend = "poetry.core.masonry.api" # 指定用於建置套件的後端
+
+[tool.poetry.group.dev.dependencies] # 定義僅供開發使用的相依性
+google-adk = { extras = ["eval"], version = "^1.0.0" } # 用於評估的 Google ADK
+pytest-asyncio = "^0.26.0" # 用於測試 asyncio 程式碼的 Pytest 外掛程式
+pytest = "^8.3.5" # 用於撰寫測試的框架
