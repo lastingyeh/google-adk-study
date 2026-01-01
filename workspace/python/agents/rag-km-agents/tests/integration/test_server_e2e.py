@@ -1,0 +1,200 @@
+import json
+import logging
+import os
+import subprocess
+import sys
+import threading
+import time
+from collections.abc import Iterator
+from typing import Any
+
+import pytest
+import requests
+from requests.exceptions import RequestException
+
+# 設定日誌記錄
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+BASE_URL = "http://127.0.0.1:8000/"
+STREAM_URL = BASE_URL + "run_sse"
+FEEDBACK_URL = BASE_URL + "feedback"
+
+HEADERS = {"Content-Type": "application/json"}
+
+
+def log_output(pipe: Any, log_func: Any) -> None:
+    """記錄來自給定管道的輸出。"""
+    for line in iter(pipe.readline, ""):
+        log_func(line.strip())
+
+
+def start_server() -> subprocess.Popen[str]:
+    """使用子程序啟動 FastAPI 伺服器並記錄其輸出。"""
+    command = [
+        sys.executable,
+        "-m",
+        "uvicorn",
+        "app.fast_api_app:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+    ]
+    env = os.environ.copy()
+    env["INTEGRATION_TEST"] = "TRUE"
+    process = subprocess.Popen(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1,
+        env=env,
+    )
+
+    # 啟動執行緒以即時記錄標準輸出和標準錯誤
+    threading.Thread(
+        target=log_output, args=(process.stdout, logger.info), daemon=True
+    ).start()
+    threading.Thread(
+        target=log_output, args=(process.stderr, logger.error), daemon=True
+    ).start()
+
+    return process
+
+
+def wait_for_server(timeout: int = 90, interval: int = 1) -> bool:
+    """等待伺服器準備就緒。"""
+    start_time = time.time()
+    # 迴圈檢查伺服器是否回應
+    while time.time() - start_time < timeout:
+        try:
+            # 嘗試存取 docs 端點以確認伺服器運作中
+            response = requests.get("http://127.0.0.1:8000/docs", timeout=10)
+            if response.status_code == 200:
+                logger.info("Server is ready")
+                return True
+        except RequestException:
+            pass
+        time.sleep(interval)
+    logger.error(f"Server did not become ready within {timeout} seconds")
+    return False
+
+
+@pytest.fixture(scope="session")
+def server_fixture(request: Any) -> Iterator[subprocess.Popen[str]]:
+    """用於測試啟動和停止伺服器的 Pytest fixture。"""
+    logger.info("Starting server process")
+    server_process = start_server()
+    # 等待伺服器啟動完成，若超時則測試失敗
+    if not wait_for_server():
+        pytest.fail("Server failed to start")
+    logger.info("Server process started")
+
+    def stop_server() -> None:
+        logger.info("Stopping server process")
+        server_process.terminate()
+        server_process.wait()
+        logger.info("Server process stopped")
+
+    # 註冊測試結束時的清理函數
+    request.addfinalizer(stop_server)
+    yield server_process
+
+
+def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
+    """測試聊天串流功能。"""
+    logger.info("Starting chat stream test")
+
+    # 首先建立工作階段 (Session)
+    user_id = "test_user_123"
+    session_data = {"state": {"preferred_language": "English", "visit_count": 1}}
+
+    session_url = f"{BASE_URL}/apps/app/users/{user_id}/sessions"
+    session_response = requests.post(
+        session_url,
+        headers=HEADERS,
+        json=session_data,
+        timeout=60,
+    )
+    assert session_response.status_code == 200
+    logger.info(f"Session creation response: {session_response.json()}")
+    session_id = session_response.json()["id"]
+
+    # 然後發送聊天訊息
+    data = {
+        "app_name": "app",
+        "user_id": user_id,
+        "session_id": session_id,
+        "new_message": {
+            "role": "user",
+            "parts": [{"text": "Hi!"}],
+        },
+        "streaming": True,
+    }
+
+    # 發送 POST 請求並開啟串流回應
+    response = requests.post(
+        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=60
+    )
+    assert response.status_code == 200
+    # 解析回應中的 SSE 事件
+    events = []
+    for line in response.iter_lines():
+        if line:
+            # SSE 格式為 "data: {json}"
+            line_str = line.decode("utf-8")
+            if line_str.startswith("data: "):
+                event_json = line_str[6:]  # 移除 "data: " 前綴
+                event = json.loads(event_json)
+                events.append(event)
+
+    assert events, "No events received from stream"
+    # 檢查回應中是否有有效內容
+    has_text_content = False
+    for event in events:
+        content = event.get("content")
+        if (
+            content is not None
+            and content.get("parts")
+            and any(part.get("text") for part in content["parts"])
+        ):
+            has_text_content = True
+            break
+
+
+def test_chat_stream_error_handling(server_fixture: subprocess.Popen[str]) -> None:
+    """測試聊天串流錯誤處理。"""
+    logger.info("Starting chat stream error handling test")
+    # 發送無效的輸入以觸發錯誤
+    data = {
+        "input": {"messages": [{"type": "invalid_type", "content": "Cause an error"}]}
+    }
+    response = requests.post(
+        STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=10
+    )
+
+    # 預期收到 422 Unprocessable Entity 錯誤
+    assert response.status_code == 422, (
+        f"Expected status code 422, got {response.status_code}"
+    )
+    logger.info("Error handling test completed successfully")
+
+
+def test_collect_feedback(server_fixture: subprocess.Popen[str]) -> None:
+    """
+    測試回饋收集端點 (/feedback) 以確保其正確記錄收到的回饋。
+    """
+    # 建立範例回饋資料
+    feedback_data = {
+        "score": 4,
+        "user_id": "test-user-456",
+        "session_id": "test-session-456",
+        "text": "Great response!",
+    }
+
+    # 發送回饋資料
+    response = requests.post(
+        FEEDBACK_URL, json=feedback_data, headers=HEADERS, timeout=10
+    )
+    assert response.status_code == 200

@@ -15,7 +15,15 @@ agents:
 
     # 選填：模型列表
     models: [<MODEL_NAME>] # 例如：[gemini-2.5-flash], [gemini-2.0-flash-exp], [gemini-3-pro-preview], [gemini-2.5-flash-image]
-    # model: [<MODEL_NAME>] # 替代選項：單數形式 (例如在 Multi-LLM Agent 中使用)
+    # 或者使用物件格式設定重試選項 (例如在 RAG Knowledge Management Agent 中使用)
+    # models:
+    #   - name: <MODEL_NAME>
+    #     retry_options:
+    #       attempts: <NUMBER>
+
+    # 選填：模型 (替代 models，例如在 Multi-LLM Agent 中使用)
+    # model:
+    #   - <MODEL_NAME>
 
     # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
     # output_key: <OUTPUT_KEY_NAME>
@@ -27,7 +35,8 @@ agents:
     # invoke: prompting
 
     # 選填：暫停與恢復設定 (例如在 Pause Resume Agent 中)
-    # resumability_config: [is_resumable]
+    # resumability_config:
+    #   - is_resumable
 
     # 選填：初始化參數 (例如在 Deep Research Agent 中使用)
     # init:
@@ -47,11 +56,11 @@ agents:
         type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool
         description: <TOOL_DESCRIPTION>
 
-        # 選填：特定工具類型的額外設定（例如 AgentTool, MCPToolset）
+        # 選填：特定工具類型的額外設定
         # models: [<MODEL_NAME>] # 用於 AgentTool
         # tools: [] # 用於 AgentTool 或 MCPToolset 的巢狀工具
         # tags: []
-        # transports: stdio # 用於 MCPToolset
+        # transports: stdio # 或 streamable，用於 MCPToolset
         # refs: <URL> # 用於 MCPToolset
         # code_executor: # 用於 AgentTool
         #   name: <EXECUTOR_NAME>
@@ -104,7 +113,7 @@ agents:
     #     type: AfterAgentCallback
     #     description: <DESCRIPTION>
 
-    server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none"
+    server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none" 或 null
     tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow, mcp, interactions-api
 
     # 選填：子代理 (Sub-agents)

@@ -1,0 +1,61 @@
+# 重點註解：定義 GitHub Actions 工作流程的名稱。
+name: PR 檢查
+
+# 重點註解：定義觸發此工作流程的事件。
+on:
+  pull_request:
+    # 重點註解：僅針對目標為 'main' 分支的 pull request。
+    branches:
+      - main
+    # 重點註解：僅當變更的檔案符合以下路徑模式時才觸發。
+    paths:
+      - 'app/**'
+      - 'data_ingestion/**'
+      - 'tests/**'
+      - 'deployment/**'
+      - 'uv.lock'
+      - 'data_ingestion/**'
+
+jobs:
+  # 重點註解：定義一個名為 'test' 的作業 (job)。
+  test:
+    # 重點註解：指定此作業將在最新的 Ubuntu 環境中執行。
+    runs-on: ubuntu-latest
+    # 重點註解：設定此作業所需的權限。'id-token: write' 是為了與 Google Cloud 進行身份驗證。
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      # 重點註解：第一步，簽出 (checkout) 程式碼，讓工作流程可以存取它。
+      - name: 簽出程式碼
+        uses: actions/checkout@v4
+
+      # 重點註解：使用 Workload Identity Federation 向 Google Cloud 進行身份驗證。
+      - id: 'auth'
+        name: '向 Google Cloud 進行身份驗證'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          workload_identity_provider: 'projects/${{ vars.GCP_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ secrets.WIF_POOL_ID }}/providers/${{ secrets.WIF_PROVIDER_ID }}'
+          service_account: '${{ secrets.GCP_SERVICE_ACCOUNT }}'
+          create_credentials_file: true
+          project_id: ${{ vars.CICD_PROJECT_ID }}
+
+      # 重點註解：設定 Python 執行環境。
+      - name: 設定 Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      # 重點註解：安裝 uv (一個快速的 Python 套件管理器) 並根據 uv.lock 檔案同步依賴套件。
+      - name: 安裝 uv 與依賴套件
+        run: |
+          pip install uv==0.8.13
+          uv sync --locked
+
+      # 重點註解：使用 uv 執行單元測試。
+      - name: 執行單元測試
+        run: uv run pytest tests/unit
+
+      # 重點註解：使用 uv 執行整合測試。
+      - name: 執行整合測試
+        run: uv run pytest tests/integration

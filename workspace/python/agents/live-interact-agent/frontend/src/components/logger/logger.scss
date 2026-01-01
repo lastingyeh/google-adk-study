@@ -1,0 +1,182 @@
+/* stylelint-disable */
+
+/* Logger Container */
+/* 日誌容器 */
+.logger {
+  color: var(--gray-300);
+  width: 100%;
+  max-width: 100%;
+  display: block;
+
+  /* Log List Styles */
+  /* 日誌列表樣式 */
+  .logger-list {
+    padding: 0 0px 0 25px;
+    overflow-x: hidden;
+    width: calc(100% - 45px);
+  }
+
+  /* User Role Color */
+  /* 使用者角色顏色 */
+  .user h4 {
+    color: var(--Green-500);
+  }
+
+  /* Model Role Color */
+  /* 模型角色顏色 */
+  .model h4 {
+    color: var(--Blue-500);
+  }
+
+  /* Tool Call Role Color */
+  /* 工具調用角色顏色 */
+  .tool-call h4 {
+    color: var(--Orange-500, #ff9800);
+  }
+
+  /* Rich Log (Structured Message) Styles */
+  /* 豐富日誌 (結構化訊息) 樣式 */
+  .rich-log {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+
+    pre {
+      overflow-x: auto;
+    }
+
+    display: block;
+
+    /* Role Header */
+    /* 角色標題 */
+    h4 {
+      font-size: 14px;
+      text-transform: uppercase;
+      padding: 8px 0;
+      margin: 0;
+    }
+
+    /* Sub-header */
+    /* 子標題 */
+    h5 {
+      margin: 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--Neutral-20);
+    }
+
+    /* Message Part */
+    /* 訊息部分 */
+    .part {
+      background: var(--Neutral-5);
+      padding: 14px;
+      margin-bottom: 4px;
+      color: var(--Neutral-90);
+      border-radius: 8px;
+    }
+
+    /* Function Call Specific Styles */
+    /* 函數調用特定樣式 */
+    .part-functioncall {
+      background: rgba(255, 152, 0, 0.1);
+      border-left: 3px solid var(--Orange-500, #ff9800);
+
+      .function-details {
+        margin-top: 8px;
+        font-size: 13px;
+
+        strong {
+          color: var(--Orange-500, #ff9800);
+        }
+
+        pre {
+          background: var(--Neutral-10);
+          padding: 8px;
+          border-radius: 4px;
+          margin: 4px 0;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+
+  /* Plain Log (Simple Text) Styles */
+  /* 純文字日誌樣式 */
+  .plain-log {
+    & > * {
+      padding-right: 4px;
+    }
+  }
+
+  /* Inline Code Styling */
+  /* 內聯程式碼樣式 */
+  .inline-code:not(:last-child) {
+    font-style: italic;
+
+    &::after {
+      content: ", ";
+    }
+  }
+}
+
+/* Log Item Styles */
+/* 日誌項目樣式 */
+.logger li {
+  display: block;
+  padding: 8px 0;
+  color: var(--Neutral-50, #707577);
+  font-family: "Space Mono";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* Timestamp Column */
+/* 時間戳欄位 */
+.logger li .timestamp {
+  width: 70px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  color: var(--Neutral-50);
+}
+
+/* Source Column */
+/* 來源欄位 */
+.logger li .source {
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+/* Server Source Color */
+/* 伺服器來源顏色 */
+.logger li.source-server,
+.logger li.receive {
+  color: var(--Blue-500);
+}
+
+/* Client Source Color */
+/* 客戶端來源顏色 */
+.logger li.source-client,
+.logger li.send:not(.source-server) {
+  color: var(--Green-500);
+}
+
+/* Count Badge */
+/* 計數徽章 */
+.logger li .count {
+  background-color: var(--Neutral-5);
+  font-size: x-small;
+  padding: 0em 0.6em;
+  padding: 0.3em 0.5em;
+  line-height: 1em;
+  vertical-align: middle;
+  border-radius: 8px;
+  color: var(--Blue-500);
+}
+
+/* Message Content */
+/* 訊息內容 */
+.logger li .message {
+  flex-grow: 1;
+  color: var(--Neutral-50);
+}

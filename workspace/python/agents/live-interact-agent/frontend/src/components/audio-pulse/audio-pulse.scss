@@ -1,0 +1,62 @@
+/* 音訊脈衝容器 */
+.audioPulse {
+  display: flex;
+  width: 24px;
+  justify-content: space-evenly;
+  align-items: center;
+  transition: all 0.5s;
+
+  /* Individual Pulse Bars */
+  /* 個別脈衝線條 */
+  & > div {
+    background-color: var(--Neutral-30);
+    border-radius: 1000px;
+    width: 4px;
+    min-height: 4px;
+    border-radius: 1000px;
+    transition: height 0.1s;
+  }
+
+  /* Hover Effect for Bars */
+  /* 線條的懸停效果 */
+  &.hover > div {
+    animation: hover 1.4s infinite alternate ease-in-out;
+  }
+
+  height: 4px;
+  transition: opacity 0.333s;
+
+  /* Active State */
+  /* 啟用狀態 */
+  &.active {
+    opacity: 1;
+
+    & > div {
+      background-color: var(--Neutral-80);
+    }
+  }
+}
+
+/* Hover Animation Keyframes */
+/* 懸停動畫關鍵影格 */
+@keyframes hover {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-3.5px);
+  }
+}
+
+/* Pulse Animation Keyframes (Not currently used in styles above but defined) */
+/* 脈衝動畫關鍵影格 (目前未在上述樣式中使用，但已定義) */
+@keyframes pulse {
+  from {
+    scale: 1 1;
+  }
+
+  to {
+    scale: 1.2 1.2;
+  }
+}

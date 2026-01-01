@@ -2018,3 +2018,48 @@ agents:
           - formatting
           - content-creation
           - adk
+  - name: RAG Knowledge Management Agent
+    description: 採用 RAG (檢索增強生成) 架構的知識管理代理，整合 Vertex AI Search、Vertex AI Rank 與 Gemini 模型，提供基於文件檢索的智能問答服務。
+    code_ref: workspace/python/agents/rag-km-agents
+    type: App
+    models:
+      - name: gemini-3-flash-preview
+        retry_options:
+          attempts: 3
+    tools:
+      - name: retrieve_docs
+        type: FunctionTool
+        description: 根據使用者查詢從 Vertex AI Search 資料儲存庫檢索相關文件，並透過 Vertex AI Rank 進行重新排序，以提供更準確的上下文資訊。
+    tags:
+      - rag
+      - knowledge-management
+      - vertex-ai-search
+      - vertex-ai-rank
+      - fastapi
+      - cloud-run
+      - terraform
+      - observability
+      - embedding-model
+      - langchain
+      - uvicorn
+      - middleware
+  - name: Live Interact Agent
+    description: 使用 ADK 和 Gemini Live API 的即時多模態代理，透過 WebSocket 雙向串流支援語音與文字互動並內建前端介面。
+    code_ref: workspace/python/agents/live-interact-agent
+    type: App
+    models:
+      - gemini-live-2.5-flash-native-audio
+    tools:
+      - name: get_weather
+        type: FunctionTool
+        description: 模擬網路搜尋以回傳指定城市的天氣資訊。
+    server-port: 8000
+    tags:
+      - live-api
+      - websocket
+      - fastapi
+      - frontend
+      - telemetry
+      - gcs
+      - cloud-run
+      - gemini-live

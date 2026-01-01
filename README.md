@@ -1143,6 +1143,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 </summary>
 
 - **詳細說明**：
+
   - [Deep Research Agent](./workspace/python/agents/deep-research-agent/)
   - [ADK Interactions Integration](./workspace/python/agents/adk-interactions-integration/)
 
@@ -1342,6 +1343,46 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
   - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+
+</details>
+
+#### 🕗 Day 67
+
+<details>
+<summary>
+這是一個使用 Google Cloud ADK 入門包建立的 RAG 代理專案，用於文件檢索與問答。它整合了 Vertex AI Search，並包含完整的資料擷取管道、Terraform 部署腳本及可觀測性設定，讓開發者能快速建構、測試與部署生成式 AI 應用。
+
+🏷️ `rag`, `agent-starter-pack`, `gcp`, `vertex-ai`, `terraform`, `logging`, `cloud-sql`, `knowledge-management`, `monitoring`, `cicd`
+
+</summary>
+
+- **詳細說明**：
+
+  - [RAG KM Agent](./workspace/python/agents/rag-km-agents/)
+
+- **參考資源**
+  - [Agent Starter Pack 文件](https://googlecloudplatform.github.io/agent-starter-pack/)
+  - [ADK GitHub 儲存庫](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+
+</details>
+
+#### 🕗 Day 68
+
+<details>
+<summary>
+此專案是一個使用 ADK 和 Gemini Live API 建立的即時多模態代理，能實現低延遲的語音和視訊互動。它基於 agent-starter-pack，提供完整的 FastAPI 後端、CI/CD 管線和部署腳本，並透過 make 指令簡化本機測試與 Cloud Run 部署流程。
+
+🏷️ `multimodal`, `gemini-live-api`, `gcp`, `real-time`, `fastapi`, `uvicorn`, `agent-starter-Pack`, `logging`, `monitoring`, `cicd`
+
+</summary>
+
+- **詳細說明**：
+
+  - [Live Interact Agent](./workspace/python/agents/live-interact-agent/)
+
+- **參考資源**
+  - [Agent Starter Pack 文件](https://googlecloudplatform.github.io/agent-starter-pack/)
+  - [ADK GitHub 儲存庫](https://github.com/GoogleCloudPlatform/agent-starter-pack)
 
 </details>
 
