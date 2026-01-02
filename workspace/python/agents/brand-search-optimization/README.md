@@ -1,357 +1,256 @@
-# 品牌搜尋優化（Brand Search Optimization）- 用於搜尋優化的 Web Browser Agent
+# 品牌搜尋優化 Agent：您的智慧商品文案助理
 
-## 概覽
+## 這是什麼？
 
-此 Agent 的目標是協助零售網站強化商品資料。它會根據商品資料（例如：標題、描述、屬性）產生關鍵字，接著造訪網站進行搜尋，並分析前幾名結果，以提供「如何豐富商品標題」的建議。這能用來改善「Null & low recovery」或「Zero Results」等搜尋問題（通常代表商品資料與使用者搜尋意圖之間存在落差）。此 Agent 也可延伸至強化商品描述與屬性。
+這是一個旨在協助零售網站**強化商品資料**的智慧 Agent。
 
-> **重點註解**
->
-> * 這個流程的核心是：用「商品資料」產生查詢詞，再用「實際站內搜尋結果」回推應補強的商品內容。
-> * 主要依賴的能力是：computer use（瀏覽器操作）與 BigQuery 資料連線。
+想像一下，您網站上的某些商品，顧客怎麼搜都找不到，或是搜尋結果很少。這通常是因為商品標題、描述，沒有包含顧客真正會用的關鍵字。
 
-## Agent 詳細資訊
+這個 Agent 能扮演一位虛擬的「市場研究員」，它會：
 
-此 Agent 示範了 Multi Agent 的設計，並包含 tool calling 與網頁爬取（web crawling）。
+1.  **分析您的商品**：根據您提供的品牌，從資料庫（BigQuery）中讀取商品資料。
+2.  **模擬顧客搜尋**：自動產生相關的搜尋關鍵字。
+3.  **逛您的網站**：實際到網站上用這些關鍵字進行搜尋。
+4.  **提供優化建議**：分析搜尋結果名列前茅的商品，回過頭來建議您「如何豐富商品標題」，以提高曝光率。
 
-| Attribute                   | Detail                                               |
-| --------------------------- | ---------------------------------------------------- |
-| Interaction Type            | Workflow                                             |
-| Complexity                  | Advanced                                             |
-| Agent Type                  | Multi Agent                                          |
-| Multi Agent Design Pattern: | Router Agent                                         |
-| Components                  | BigQuery Connection, Computer use, Tools, Evaluation |
-| Vertical                    | Retail                                               |
+簡單來說，它的核心流程是：**用「您的商品資料」產生查詢詞，再用「真實的搜尋結果」回推應補強的商品內容。**
 
-### Agent 架構
+| Attribute      | Detail                            |
+| -------------- | --------------------------------- |
+| **互動類型**   | 工作流程 (Workflow)               |
+| **複雜度**     | 進階 (Advanced)                   |
+| **Agent 類型** | 多代理 (Multi Agent)              |
+| **設計模式**   | 路由代理 (Router Agent)           |
+| **主要元件**   | BigQuery, 瀏覽器操作, Tools, 評估 |
+| **應用領域**   | 零售 (Retail)                     |
 
-![Brand Search Optimization](./brand_search_optimization.png)
+---
 
-### 主要功能
+## 快速上手指南 (5 分鐘內啟動)
 
-* **Tools：**
+本專案提供了 `Makefile` 來簡化所有繁瑣的步驟。跟著以下流程，即可快速啟動並與 Agent 互動。
 
-  * `function_calling`：根據使用者提供的 brand，從商品目錄（例如 BigQuery table）取得資料。輸入為 brand 字串，輸出為資料庫紀錄清單。
+### 1. 環境準備
 
-  * `load_artifacts_tool`：將網頁原始碼載入為 artifact，以便分析頁面元件並決定後續動作（例如：點擊搜尋按鈕）。
+請先確保您的電腦已安裝以下工具：
 
-  * `Website crawling`：透過多個獨立工具完成，例如 `go_to_url`、`take_screenshot`、`find_element_with_text`、`click_element_with_text`、`enter_text_into_element`、`scroll_down_screen`、`get_page_source`、`analyze_webpage_and_determine_action`。
+- Python 3.11+
+- [Poetry](https://python-poetry.org/docs/) (用於管理 Python 套件)
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) (用於帳號驗證)
+- Git
 
-* **Evaluation：** 使用 ADK 提供的 OOTB evaluation，可透過 `sh deployment/eval.sh` 執行。
+### 2. 專案設定
 
-> **重點註解**
->
-> * `Website crawling` 相關工具多為「瀏覽器自動化」的操作原子（atomic actions），可靠性通常取決於目標網站的 UI 與反自動化策略。
-
-## 設定與安裝
-
-1. **先備條件：**
-    * Python 3.11+
-    * Poetry
-        * 用於相依性管理與打包。請依照官方文件安裝：[Poetry website](https://python-poetry.org/docs/)
-    * Google Cloud Platform 專案
-    * 從 [here](https://aistudio.google.com) 取得 API key（若使用 Vertex AI 的 Gemini 則不需要）
-
-2. **設定：**
-    * Env 檔案設定
-        * 複製範例 env 檔：`cp env.example .env`
-        * 設定 `DISABLE_WEB_DRIVER=1`
-        * 在 `.env` 填入下列變數值
-            * `GOOGLE_CLOUD_PROJECT=<YOUR_PROJECT>`
-            * `GOOGLE_CLOUD_LOCATION=<YOUR_LOCATION>`
-
-    * **API Keys：**
-        * 將 API key 填入 `.env` 的 `GOOGLE_API_KEY`
-        * Google API key 與 Vertex AI 設定不需要同時存在，兩者擇一即可
-
-    * **BigQuery Setup：**
-        * `.env` 內設定 `DATASET_ID`
-        * `.env` 內設定 `TABLE_ID`
-        * BigQuery table 可透過下方 `sh deployment/run.sh` 自動建立/填入樣本資料，或依照 `BigQuery Setup` 章節手動設定
-
-    * **其他設定：**
-        * 可在 `.env` 透過 `MODEL` 切換 Gemini Model
-        * 當 `DISABLE_WEB_DRIVER=1` 時，會讓你可以跑 unit tests（詳見下方 `Unit Tests`）。**NOTE**：非測試情境時，建議預設保持為 0。
-
-> **重點註解**
->
-> * 安裝/測試期間先用 `DISABLE_WEB_DRIVER=1`（便於測試），實際跑 Agent 流程時再切回 `DISABLE_WEB_DRIVER=0`（啟用瀏覽器）。
-
-3. **使用 Google Cloud 帳號進行驗證：**
-
-    ```bash
-    gcloud auth application-default login
-    ```
-
-4. **安裝：**
-
-    * 使用 `deployment/run.sh` 安裝相依套件並填入資料庫
-
-        `````bash
-        # Clone this repository.
-        git clone https://github.com/google/adk-samples.git
-        cd adk-samples/python/agents/brand-search-optimization
-
-        # Run This script
-        # 1. Creates and activates a new virtual env
-        # 2. Installs python packages
-        # 3. Populates BigQuery data using variables set in `.env` file
-        sh deployment/run.sh
-        `````
-
-    * 將 `DISABLE_WEB_DRIVER=0`
-
-## 執行 Agent
-
-你需要執行 `adk run brand_search_optimization` 來啟動 Agent。
-
-你也可以用 `adk web` 啟動 Web App。
-
-`adk web` 會在本機啟動一個 web server 並輸出 URL。你可以開啟該 URL，以聊天介面方式與 Agent 互動（UI 一開始會是空白）。
-
-從下拉選單中選擇 "brand-search-optimization"。
-
-> **NOTE**：此流程應會透過 web-driver 開啟新的 Chrome 視窗。若沒有開啟，請確認 `.env` 中 `DISABLE_WEB_DRIVER=0`。
-
-### Brand Name
-
-* 若你已執行 `deployment/run.sh`，Agent 會預先設定 brand 為 `BSOAgentTestBrand`。當 Agent 詢問 brand name 時，請輸入 `BSOAgentTestBrand`。
-* 若使用自訂資料，請改成你的 brand name。
-* 當你提供 brand name 後，Agent flow 會被觸發。
-
-> **NOTE**
->
-> * 請勿關閉 Agent 額外開啟的 Chrome 視窗。
-> * 當 Agent 提供關鍵字清單後，請要求 Agent 去搜尋網站，例如："Can you search website?"、"Can you search of keywords on website?"、"Help me search for keywords on website" 等。
-> * 第一次造訪 Google Shopping 時可能需要完成 captcha；完成後通常後續執行會更順。
-
-> **重點註解**
->
-> * 常見卡住點出現在「產生關鍵字」後未自動進入「網站搜尋」階段；此時直接請它搜尋 top keyword 通常可繼續流程。
-
-### 範例互動
-
-提供一個範例 session，示範 Brand Search Optimizer 如何針對 `BSOAgentTestBrand` 在 Google Shopping 上運作：[`example_interaction.md`](tests/example_interaction.md)
-
-此檔案包含完整對話紀錄，涵蓋從找關鍵字到產出「top 3 搜尋結果標題」的比較報告。
-
-> **Disclaimer**：此範例以 Google Shopping 做示範，但你必須自行確保符合目標網站的服務條款。
-
-## 評估（Evaluating the Agent）
-
-此範例使用 ADK 的 evaluation component，會以 `eval/data/` 內的 evalset 與 `eval/data/test_config.json` 的設定，來評估 brand search optimization agent。
-
-你必須在 `brand-search-optimization` 目錄下執行：
+只需幾個指令，就能完成專案的初始設定。
 
 ```bash
-sh deployment/eval.sh
+# 1. 複製專案原始碼
+git clone https://github.com/google/adk-samples.git
+cd adk-samples/python/agents/brand-search-optimization
+
+# 2. 複製環境設定檔範本
+cp env.example .env
+
+# 3. 編輯 .env 檔案，填入您的 Google Cloud 專案資訊
+#    - GOOGLE_CLOUD_PROJECT=<YOUR_PROJECT_ID>
+#    - GOOGLE_CLOUD_LOCATION=<YOUR_GCP_LOCATION> (例如：us-central1)
+#    - GOOGLE_API_KEY=<YOUR_API_KEY> (從 aistudio.google.com 取得)
+#    - DATASET_ID=products_data_agent (可使用預設值)
+#    - TABLE_ID=products (可使用預設值)
+
+# 4. 進行 Google Cloud 帳號驗證
+gcloud auth application-default login
 ```
 
-## 單元測試（Unit Tests）
+### 3. 一鍵安裝與啟動
 
-依下列步驟使用 `pytest` 執行單元測試：
-
-1. 在 `.env` 設定 `DISABLE_WEB_DRIVER=1`
-
-2. 執行 `sh deployment/test.sh`
-
-此腳本會使用 BigQuery tool 的 mock BQ client，並執行 `tests/unit/test_tools.py` 中的單元測試。
-
-> **重點註解**
->
-> * 單元測試通常不依賴真實瀏覽器與真實 BigQuery 連線，目標是讓工具邏輯可被穩定驗證。
-
-## 部署（Deploying the Agent）
-
-可透過以下指令將 Agent 部署到 Vertex AI Agent Engine：
-
-在 `.env` 設定 `DISABLE_WEB_DRIVER=1`
-
-```bash
-python deployment/deploy.py --create
-```
-
-你也可以依自身需求修改部署腳本。
-
-## 客製化（Customization）
-
-可客製化的方向包含：
-
-* **調整對話流程：** 若要讓 Agent 比較「描述」而非「標題」，可修改 `brand_search_optimization/sub_agents/search_results/prompt.py`，特別是 `SEARCH_RESULT_AGENT_PROMPT` 中 `<Gather Information>` 段落。
-* **更換資料來源：** 透過修改 `.env` 指向不同 BigQuery table。
-* **更換網站：** 範例使用 Google Shopping；若改用你的網站，請同步調整相關程式碼。
-
-### BigQuery Setup
-
-#### 自動化
-
-`sh deployment/run.sh` 會執行腳本，自動建立/填入 BigQuery table 的樣本資料。其背後會呼叫 `python tools/bq_populate_data.py`。
-
-#### Dataset 與 Table 權限
-
-若你要在「非你擁有」的 BigQuery Table 上執行 Agent，請參考 [here](./customization.md) 以授予必要權限。
-
-#### 手動步驟
-
-若要手動新增資料，請參考 `deployment/bq_data_setup.sql` 中的 SQL。
-
-## 快速指南（Quickstart）
-
-本專案提供 `Makefile` 來簡化常見操作。以下是快速開始步驟：
-
-### 初始設定
-
-1. **複製並設定環境檔：**
-   ```bash
-   cp env.example .env
-   # 編輯 .env 並填入相關配置
-   ```
-
-2. **檢查環境：**
-   ```bash
-   make check-env
-   ```
-
-3. **Google Cloud 驗證：**
-   ```bash
-   gcloud auth application-default login
-   ```
-
-### 完整安裝流程
-
-若要進行完整設定（安裝依賴 + 填入 BigQuery 資料）：
+設定完成後，執行以下指令，它會自動幫您**安裝所有套件**並**建立/填入 BigQuery 樣本資料**。
 
 ```bash
 make setup
 ```
 
-此命令等同於執行 `sh deployment/run.sh`，會自動：
-- 使用 Poetry 安裝所有依賴套件
-- 建立/填入 BigQuery 資料表的樣本資料
+> **提示**：此命令等同於執行 `sh deployment/run.sh`，是整個專案最關鍵的安裝步驟。
 
-### 常用命令
+### 4. 執行 Agent
 
-| 命令           | 說明                           |
-| -------------- | ------------------------------ |
-| `make help`    | 顯示所有可用命令               |
-| `make install` | 安裝專案依賴                   |
-| `make setup`   | 完整設定：安裝 + BigQuery 資料 |
-| `make test`    | 執行單元測試                   |
-| `make eval`    | 執行評估測試                   |
-| `make run`     | 執行主程式                     |
-| `make clean`   | 清理編譯檔案和快取             |
+安裝成功後，有兩種方式可以啟動 Agent：
 
-### 執行 Agent
-
-安裝完成後，使用以下命令執行 Agent：
+**方式一：在終端機中執行 (推薦)**
 
 ```bash
-# 啟動 Agent
-adk run brand_search_optimization
-
-# 或啟動 Web UI
+# 啟動 Web UI 服務
 adk web
 ```
 
-在 Web UI 中：
-- 從下拉選單選擇 "brand-search-optimization"
-- 輸入 brand name（若使用預設資料，輸入 `BSOAgentTestBrand`）
-- 根據提示進行互動
+`adk web` 會在本機啟動一個網頁伺服器。打開它提供的網址（通常是 `http://127.0.0.1:8080`），你將看到一個聊天介面。
 
-> **NOTE**：確保 `.env` 中設定 `DISABLE_WEB_DRIVER=0`（啟用瀏覽器）
+**方式二：直接在終端機互動**
 
-### 測試
-
-**執行單元測試：**
 ```bash
-# 先在 .env 設定 DISABLE_WEB_DRIVER=1
+adk run brand_search_optimization
+```
+
+### 5. 與 Agent 互動
+
+1.  在 Web UI 的下拉選單中，選擇 **"brand-search-optimization"**。
+2.  Agent 會詢問品牌名稱，請輸入 `BSOAgentTestBrand` (這是 `make setup` 建立的預設品牌)。
+3.  Agent 會開始執行，並自動開啟一個新的 Chrome 瀏覽器視窗進行網頁操作。**請勿關閉此視窗**。
+4.  當 Agent 產生關鍵字列表後，它可能會停下來等待指示。此時，請明確地告訴它去搜尋，例如：
+    - `"Can you search the website?"`
+    - `"Help me search for keywords on the website"`
+
+> **重點註解**：
+>
+> - 執行 Agent 前，請確保 `.env` 檔案中的 `DISABLE_WEB_DRIVER=0`。這樣瀏覽器才能被自動控制。
+> - 第一次執行時，目標網站（如 Google Shopping）可能需要手動完成 CAPTCHA 驗證。
+> - 如果流程在「產生關鍵字」後卡住，直接請它搜尋通常就能繼續。
+
+---
+
+## 它是如何運作的？
+
+這個 Agent 之所以強大，是因為它由多個「子 Agent」協同工作，每個子 Agent 都有明確分工。
+
+### Agent 流程圖
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Root Agent as root_agent
+    participant Keyword Finding Agent as keyword_finding_agent
+    participant Search Results Agent as search_results_agent
+
+    box Comparison Agent
+        participant Comparison Root as comparison_root_agent
+        participant Generator as comparison_generator_agent
+        participant Critic as comparsion_critic_agent
+    end
+
+    User->>Root Agent: 提供品牌名稱
+    Root Agent->>Keyword Finding Agent: 根據品牌尋找關鍵字
+    Keyword Finding Agent-->>Root Agent: 回傳關鍵字列表
+    Root Agent->>Search Results Agent: 根據排名最高的關鍵字取得搜尋結果
+    Search Results Agent-->>Root Agent: 回傳搜尋結果
+    Root Agent->>Comparison Root: 根據搜尋結果產生報告
+
+    loop 直到 Critic 滿意為止
+        Comparison Root->>Generator: 生成比較報告
+        Generator-->>Comparison Root: 回傳比較報告
+        Comparison Root->>Critic: 評論比較報告
+        Critic-->>Comparison Root: 回傳評論與建議
+    end
+
+    Comparison Root-->>Root Agent: 回傳最終報告
+    Root Agent-->>User: 呈現最終報告
+```
+
+### 核心流程拆解
+
+1.  **啟動 (User -> Root Agent)**：您提供一個品牌名稱，啟動整個流程。
+2.  **關鍵字尋找 (Root Agent -> Keyword Finding Agent)**：`Root Agent` 指派 `Keyword Finding Agent` 去根據品牌尋找相關的搜尋關鍵字。
+3.  **搜尋結果擷取 (Root Agent -> Search Results Agent)**：`Root Agent` 挑選最重要的關鍵字，交給 `Search Results Agent` 去網站上實際搜尋，並抓取結果頁面的資料。
+4.  **比較與分析 (Root Agent -> Comparison Agent)**：這是最核心的部分。
+    - `Comparison Agent` 內部有一個「生成-評論」的循環機制。
+    - **生成 (Generator)**：比較搜尋結果的標題和您自家產品的標題，產生一份包含改進建議的報告。
+    - **評論 (Critic)**：審查這份報告，若覺得不夠好，會提出修改建議。
+    - 這個循環會一直持續，直到 `Critic` 對報告滿意為止。
+5.  **產出最終報告 (Comparison Agent -> Root Agent -> User)**：`Root Agent` 收到最終報告後，呈現給您。
+
+---
+
+## 進階指南
+
+當您已經成功執行過 Agent，並想進一步探索其內部細節時，可以參考以下內容。
+
+### Makefile 常用命令
+
+`Makefile` 提供了許多便利的指令，以下是常用範例：
+
+| 命令           | 說明                                      |
+| -------------- | ----------------------------------------- |
+| `make help`    | 顯示所有可用命令的說明。                  |
+| `make install` | 僅安裝專案依賴的 Python 套件。            |
+| `make setup`   | 完整設定：安裝套件 + 填入 BigQuery 資料。 |
+| `make test`    | 執行單元測試。                            |
+| `make eval`    | 執行評估測試。                            |
+| `make clean`   | 清理專案中產生的快取和編譯檔案。          |
+
+### 測試與評估
+
+**單元測試 (Unit Tests)**
+
+單元測試用於驗證工具（如 BigQuery 連線）的邏輯是否正確，且不依賴真實的瀏覽器。
+
+```bash
+# 1. 在 .env 中設定 DISABLE_WEB_DRIVER=1
+# 2. 執行測試
 make test
 ```
 
-**執行評估：**
+**評估 (Evaluation)**
+
+評估測試會根據 `eval/data/` 中的設定，對 Agent 的完整流程進行打分。
+
 ```bash
 make eval
 ```
 
-### 部署
+### 部署 (Deploying the Agent)
 
-部署到 Vertex AI Agent Engine：
+您可以將此 Agent 部署到 Vertex AI Agent Engine。
 
 ```bash
+# 1. 在 .env 中設定 DISABLE_WEB_DRIVER=1
+# 2. 執行部署指令
 make deploy-create PROJECT=<your-project> LOCATION=<location> BUCKET=<bucket-name>
-```
 
-刪除已部署的代理：
-
-```bash
+# 若要刪除已部署的代理
 make deploy-delete PROJECT=<your-project> LOCATION=<location> RESOURCE_ID=<resource-id>
 ```
 
-### 開發工具
+### 客製化 (Customization)
 
-```bash
-# 進入 Poetry shell
-make shell
+您可以根據自己的需求調整 Agent 的行為：
 
-# 顯示依賴列表
-make show-deps
+- **調整分析目標**：預設是比較「標題」，若想改為比較「描述」，可以修改 `brand_search_optimization/sub_agents/search_results/prompt.py` 中的 `SEARCH_RESULT_AGENT_PROMPT`。
+- **更換資料來源**：在 `.env` 中修改 `DATASET_ID` 和 `TABLE_ID`，指向您自己的 BigQuery 表格。
+- **更換目標網站**：範例使用 Google Shopping。若要更換，需同步調整 `search_results` 子 Agent 中與網頁互動相關的程式碼。
 
-# 更新依賴
-make update
+詳細的 BigQuery 權限設定，請參考 [customization.md](./customization.md)。
 
-# 新增開發依賴
-make add-dev-pkg PKG=pytest-cov
-```
-
-> **提示**：執行 `make help` 可見完整命令列表及詳細說明
+---
 
 ## 疑難排解與常見問題
 
-### BigQuery data 不存在
+### 1. BigQuery 資料不存在
 
-此問題通常與以下原因相關：找不到 dataset、dataset 不在指定 location、或使用者缺少 BigQuery dataset 權限。
+- **錯誤訊息**：`google.api_core.exceptions.NotFound: 404 Not found: Dataset ... was not found in location ...`
+- **原因**：Dataset 不存在、GCP 地區設定錯誤、或帳號權限不足。
+- **解決方法**：
+  1.  確認 `.env` 中的 `GOOGLE_CLOUD_PROJECT` 和 `GOOGLE_CLOUD_LOCATION` 設定正確。
+  2.  重新執行 `make setup`，確保資料已成功建立。
+  3.  確認您的 GCP 帳號擁有對該 BigQuery Dataset 的存取權限。
 
-Error：
+### 2. Selenium 瀏覽器問題
 
-```bash
-google.api_core.exceptions.NotFound: 404 Not found: Dataset ...:products_data_agent was not found in location US; reason: notFound, message: Not found: Dataset ...:products_data_agent was not found in location US
-```
+- **錯誤訊息**：`selenium.common.exceptions.SessionNotCreatedException: Message: session not created...`
+- **原因**：上次執行的瀏覽器暫存檔案未被正常關閉。
+- **解決方法**：手動刪除暫存目錄。
+  ```bash
+  rm -rf /tmp/selenium
+  ```
 
-Fix：
-請確認你已完整完成 `BigQuery Setup`。
+### 3. Agent 流程中斷
 
-### Selenium 問題
+- **問題**：Agent 產生關鍵字後，沒有下一步動作。
+- **解決方法**：這是已知情況。直接在對話框中提示它繼續，例如 `"can you search for the keyword?"`。
 
-此問題與 Selenium / Webdriver 相關。
+- **問題**：Agent 反過來問你關鍵字是什麼。
+- **解決方法**：再次提供關鍵字給它即可。
 
-Error：
+---
 
-```bash
-selenium.common.exceptions.SessionNotCreatedException: Message: session not created: probably user data directory is already in use, please specify a unique value for --user-data-dir argument, or don't use --user-data-dir
-```
+## 免責聲明 (Disclaimer)
 
-Fix：移除資料目錄
-
-```bash
-rm -rf /tmp/selenium
-```
-
-### Agent flow 問題
-
-#### 已知問題
-
-* 若網站有強力的反 bot 檢查、或搜尋框被隱藏，Agent 可能無法穩定執行。
-* Agent 沒有提示下一步：常發生在關鍵字產生階段之後。此時可要求 Agent 直接搜尋 top keyword，例如："can you search for keyword?"，或更明確地說 "transfer me to web browser agent"。
-* Agent 再次詢問關鍵字：例如 `Okay, I will go to XYZ.com. What keyword do you want to search for on XYZ?`。請再提供一次關鍵字即可。
-
-> **重點註解**
->
-> * 只要流程已切換到網站搜尋，重點是讓「查詢詞」與「目標網站」明確；多補一句 keyword 往往比等待更有效。
->
-
-## 免責聲明（Disclaimer）
-
-此 Agent sample 僅供示範用途，並非用於正式生產環境。它提供一個基礎範例與起點，供個人或團隊在其上進一步開發自己的 agents。
-
-此 sample 未經嚴格測試，可能包含錯誤或限制，且不包含生產環境通常需要的功能或最佳化（例如：健全的錯誤處理、安全性措施、可擴展性、效能考量、完整日誌、或進階設定選項）。
-
-使用者需自行負責後續的開發、測試、安全強化與部署。我們建議在任何實際或關鍵情境使用前，先充分審查、測試並實作適當的防護措施。
+此 Agent 範例僅供示範與學習用途，並非為正式生產環境設計。它提供了一個開發 Agent 的基礎起點，但缺少生產環境所需的完整錯誤處理、安全性措施與效能優化。在任何正式場景使用前，請務必自行進行充分的測試、審查與強化。

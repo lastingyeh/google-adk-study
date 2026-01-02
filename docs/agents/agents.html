@@ -3395,6 +3395,111 @@
             'gemini-live',
           ],
         },
+        {
+          name: 'brand-search-optimization',
+          description:
+            '此代理旨在透過生成關鍵字、進行網站搜尋及分析結果，協助零售網站強化其商品資料，以改善搜尋結果不佳的問題。',
+          code_ref: 'workspace/python/agents/brand-search-optimization/',
+          type: 'Agent',
+          models: ['gemini-2.5-flash'],
+          'server-port': 8000,
+          tags: [
+            'retail',
+            'multi-agent',
+            'web-crawling',
+            'bigquery',
+            'router-agent',
+          ],
+          sub_agents: [
+            {
+              name: 'keyword_finding_agent',
+              description: '根據品牌名稱尋找相關的搜尋關鍵字 (bigquery)。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              tools: [
+                {
+                  name: 'get_product_details_for_brand',
+                  type: 'FunctionTool',
+                  description: '用於在 BigQuery 中執行 SQL 查詢的工具。',
+                },
+              ],
+            },
+            {
+              name: 'search_results_agent',
+              description: '使用關鍵字在網站上執行搜尋並抓取結果。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              tools: [
+                {
+                  name: 'go_to_url',
+                  type: 'FunctionTool',
+                  description: '瀏覽指定的 URL 並返回確認訊息。',
+                },
+                {
+                  name: 'take_screenshot',
+                  type: 'FunctionTool',
+                  description:
+                    "擷取當前畫面的螢幕截圖，並呼叫 'load_artifacts_tool' 來載入圖片。",
+                },
+                {
+                  name: 'find_element_with_text',
+                  type: 'FunctionTool',
+                  description: '在頁面上尋找包含指定文字的元素。',
+                },
+                {
+                  name: 'click_element_with_text',
+                  type: 'FunctionTool',
+                  description: '在頁面上點擊包含指定文字的元素。',
+                },
+                {
+                  name: 'enter_text_into_element',
+                  type: 'FunctionTool',
+                  description: '在具有指定 ID 的元素中輸入文字。',
+                },
+                {
+                  name: 'scroll_down_screen',
+                  type: 'FunctionTool',
+                  description: '將螢幕向下捲動一個固定的距離。',
+                },
+                {
+                  name: 'get_page_source',
+                  type: 'FunctionTool',
+                  description: '返回當前頁面的 HTML 原始碼。',
+                },
+                {
+                  name: 'load_artifacts_tool',
+                  type: 'FunctionTool',
+                  description: '讀取並載入指定路徑的 artifact。',
+                },
+                {
+                  name: 'analyze_webpage_and_determine_action',
+                  type: 'FunctionTool',
+                  description: '分析網頁內容並決定下一個動作（捲動、點擊等）。',
+                },
+              ],
+            },
+            {
+              name: 'comparison_root_agent',
+              description: '路由代理以生成和評論比較。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              sub_agents: [
+                {
+                  name: 'comparison_generator_agent',
+                  description: '根生成產品標題之間的比較報告。',
+                  type: 'Agent',
+                  models: ['gemini-2.5-flash'],
+                },
+                {
+                  name: 'comparison_critic_agent',
+                  description: '評論比較並提供有用的建議。',
+                  type: 'Agent',
+                  models: ['gemini-2.5-flash'],
+                },
+              ],
+            },
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';
