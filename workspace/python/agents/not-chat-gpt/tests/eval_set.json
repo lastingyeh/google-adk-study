@@ -126,6 +126,48 @@
           ]
         }
       ]
+    },
+    {
+      "id": "rag_001",
+      "category": "rag",
+      "description": "RAG 測試 - 休假政策查詢",
+      "input": "根據上傳的文檔，公司的休假政策是什麼？",
+      "expected": {
+        "has_citations": true,
+        "response_accurate": true,
+        "mentions_annual_leave": true
+      }
+    },
+    {
+      "id": "rag_002",
+      "category": "rag",
+      "description": "RAG 測試 - 遠端工作規定",
+      "input": "遠端工作的規定有哪些？",
+      "expected": {
+        "has_citations": true,
+        "references_employee_handbook": true
+      }
+    },
+    {
+      "id": "rag_003",
+      "category": "rag",
+      "description": "RAG 測試 - 代碼審查流程",
+      "input": "代碼審查的流程是什麼？",
+      "expected": {
+        "has_citations": true,
+        "references_project_guidelines": true
+      }
+    },
+    {
+      "id": "rag_004",
+      "category": "rag",
+      "description": "RAG 測試 - 跨文檔比較分析",
+      "input": "比較年假制度和病假制度的差異",
+      "expected": {
+        "references_multiple_sections": true,
+        "has_citations": true,
+        "provides_comparison": true
+      }
     }
   ],
   "metadata": {

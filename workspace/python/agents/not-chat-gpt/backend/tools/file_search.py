@@ -78,7 +78,7 @@ class FileSearchTool:
         citations = []
         
         # 處理 grounding chunks
-        if hasattr(grounding_metadata, 'grounding_chunks'):
+        if hasattr(grounding_metadata, 'grounding_chunks') and grounding_metadata.grounding_chunks:
             for chunk in grounding_metadata.grounding_chunks:
                 citation = {}
                 
