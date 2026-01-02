@@ -10,9 +10,9 @@ from google import genai
 from dotenv import load_dotenv
 import os
 import uuid
-from config.mode_config import ModeConfig
-from agents.safe_conversation_agent import safe_generate_response
-from services.session_service import SessionService
+from backend.config.mode_config import ModeConfig
+from backend.agents.safe_conversation_agent import safe_generate_response
+from backend.services.session_service import SessionService
 
 def main():
     # 載入環境變數

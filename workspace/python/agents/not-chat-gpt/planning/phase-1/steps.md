@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
 ```bash
 # 執行測試
-python backend/agents/conversation_agent.py
+python -m backend.agents.conversation_agent
 
 # 預期輸出: Agent 的自我介紹
 ```
@@ -1166,9 +1166,9 @@ from google import genai
 from dotenv import load_dotenv
 import os
 import uuid
-from config.mode_config import ModeConfig
-from agents.safe_conversation_agent import safe_generate_response
-from services.session_service import SessionService
+from backend.config.mode_config import ModeConfig
+from backend.agents.safe_conversation_agent import safe_generate_response
+from backend.services.session_service import SessionService
 
 def main():
     # 載入環境變數
@@ -1332,10 +1332,7 @@ if __name__ == "__main__":
 #### 6.2 執行 CLI 測試
 
 ```bash
-# 從專案根目錄執行
-python backend/cli.py
-
-# 或使用模組方式
+# 從專案根目錄執行（推薦）
 python -m backend.cli
 ```
 
@@ -1375,7 +1372,7 @@ CLI 功能驗證測試
 
 #### 6.4 互動式測試清單
 
-**基本功能測試** (執行 `python backend/cli.py`):
+**基本功能測試** (執行 `python -m backend.cli`):
 
 ✅ **測試 1: 基本對話功能**
 
@@ -1482,6 +1479,7 @@ You: /history
 
 ```bash
 # 啟動 CLI，進行對話後退出
+python -m backend.cli
 You: 測試訊息
 You: /quit
 
@@ -1495,7 +1493,7 @@ ls -lh not_chat_gpt.db
 
 ```bash
 # 重新啟動 CLI
-python backend/cli.py
+python -m backend.cli
 
 You: /list
 📝 對話清單 (共 3 個):
@@ -1607,7 +1605,7 @@ sqlite3 not_chat_gpt.db "SELECT COUNT(*) FROM messages;"
 
 ```bash
 # 啟動 CLI
-python backend/cli.py
+python -m backend.cli
 
 # === 第一輪測試：基本功能 ===
 You: 你好，我叫小明
@@ -1886,7 +1884,7 @@ if __name__ == "__main__":
 
 ```bash
 # 啟動伺服器
-python backend/main.py
+python -m backend.main
 
 # 在另一個終端測試
 curl -X POST http://localhost:8000/api/chat/stream \
@@ -4735,7 +4733,7 @@ pytest tests/ -v --cov=backend --cov-report=term --cov-report=html
 # 2. 檢查測試覆蓋率（在瀏覽器開啟 htmlcov/index.html）
 
 # 3. 執行 CLI 完整測試
-python backend/cli.py
+python -m backend.cli
 # 測試項目:
 # - 基本對話
 # - 模式切換
@@ -4743,7 +4741,7 @@ python backend/cli.py
 # - 多輪對話記憶
 
 # 4. 啟動 API 並測試
-python backend/main.py
+python -m backend.main
 # 在另一個終端測試各個端點
 
 # 5. 生成測試報告
