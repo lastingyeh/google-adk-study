@@ -3551,36 +3551,134 @@ curl -X DELETE http://localhost:8000/api/documents/files/tlf3zr4mk2m0
 
 ### 步驟 14: 引用來源追蹤
 
-#### 14.1 實作 `groundingMetadata` 提取
+#### 14.1 實作 File Search Tool 與引用來源追蹤
 
-**backend/tools/file_search.py** (擴展):
+**backend/tools/file_search.py**:
 
 ```python
+from google import genai
+from google.genai import types
+
 class FileSearchTool:
-    # ... 原有方法
+    """Gemini File Search RAG 工具
+    
+    支援文檔搜尋和引用來源追蹤功能。
+    """
+    
+    def __init__(self, client: genai.Client):
+        """初始化 FileSearchTool
+        
+        Args:
+            client: Gemini API 客戶端
+        """
+        self.client = client
+    
+    def search(self, query: str, corpus_name: str) -> dict:
+        """基礎文檔搜尋
+        
+        Args:
+            query: 搜尋查詢字串
+            corpus_name: Corpus 名稱（例如：'main-corpus'）
+        
+        Returns:
+            dict: 包含搜尋結果的字典
+                - text: 回應文字
+                - grounding_metadata: 原始的 grounding metadata（如果有）
+                - error: 錯誤訊息（如果失敗）
+        """
+        try:
+            # 使用 Gemini 的 grounding 功能搜尋 corpus
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash-exp',
+                contents=query,
+                config=types.GenerateContentConfig(
+                    tools=[
+                        types.Tool(
+                            google_search=types.GoogleSearch()
+                        )
+                    ]
+                )
+            )
+            
+            result = {
+                "text": response.text if response.text else "",
+            }
+            
+            # 提取 grounding metadata（如果存在）
+            if hasattr(response, 'candidates') and len(response.candidates) > 0:
+                candidate = response.candidates[0]
+                if hasattr(candidate, 'grounding_metadata'):
+                    result["grounding_metadata"] = candidate.grounding_metadata
+            
+            return result
+            
+        except Exception as e:
+            return {
+                "text": "",
+                "error": str(e)
+            }
     
     def extract_citations(self, grounding_metadata) -> list:
-        """提取引用來源"""
+        """提取引用來源
+        
+        Args:
+            grounding_metadata: Gemini 回應中的 grounding metadata
+        
+        Returns:
+            list: 引用來源列表，每個元素包含：
+                - source: 來源 URI
+                - title: 文檔標題
+                - snippet: 相關文字片段
+        """
         if not grounding_metadata:
             return []
         
         citations = []
-        for chunk in grounding_metadata.grounding_chunks:
-            citations.append({
-                "source": chunk.web.uri if hasattr(chunk, 'web') else "Unknown",
-                "title": chunk.web.title if hasattr(chunk, 'web') else "Untitled",
-                "snippet": chunk.text if hasattr(chunk, 'text') else "",
-            })
+        
+        # 處理 grounding chunks
+        if hasattr(grounding_metadata, 'grounding_chunks'):
+            for chunk in grounding_metadata.grounding_chunks:
+                citation = {}
+                
+                # 提取網頁來源
+                if hasattr(chunk, 'web'):
+                    citation["source"] = chunk.web.uri if hasattr(chunk.web, 'uri') else "Unknown"
+                    citation["title"] = chunk.web.title if hasattr(chunk.web, 'title') else "Untitled"
+                else:
+                    citation["source"] = "Unknown"
+                    citation["title"] = "Untitled"
+                
+                # 提取文字片段
+                citation["snippet"] = chunk.text if hasattr(chunk, 'text') else ""
+                
+                citations.append(citation)
         
         return citations
     
     def search_with_citations(self, query: str, corpus_name: str) -> dict:
-        """搜尋並返回引用"""
+        """搜尋並返回引用來源
+        
+        結合基礎搜尋功能與引用來源提取。
+        
+        Args:
+            query: 搜尋查詢字串
+            corpus_name: Corpus 名稱
+        
+        Returns:
+            dict: 包含搜尋結果和引用來源的字典
+                - text: 回應文字
+                - citations: 引用來源列表
+                - grounding_metadata: 原始 metadata（可選）
+                - error: 錯誤訊息（如果失敗）
+        """
         result = self.search(query, corpus_name)
         
-        if "grounding_metadata" in result:
+        # 如果搜尋成功且有 grounding metadata，提取引用
+        if "grounding_metadata" in result and not result.get("error"):
             citations = self.extract_citations(result["grounding_metadata"])
             result["citations"] = citations
+        else:
+            result["citations"] = []
         
         return result
 ```
@@ -3592,12 +3690,31 @@ class FileSearchTool:
 ```python
 from google.genai import types
 from backend.tools.file_search import FileSearchTool
+import os
 
 def create_rag_agent(file_search_tool: FileSearchTool):
-    """建立具有 RAG 能力的 Agent"""
+    """建立具有 RAG 能力的 Agent 配置
     
-    def rag_function(query: str) -> str:
-        """文檔搜尋函式"""
+    Args:
+        file_search_tool: FileSearchTool 實例
+        
+    Returns:
+        dict: 包含 config 和 tool 的字典，用於創建 agent session
+    """
+    
+    # 從環境變數取得模型名稱
+    model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
+    
+    # 定義 RAG 搜尋函數
+    def rag_search(query: str) -> str:
+        """文檔搜尋函式，用於從文檔庫中檢索相關資訊
+        
+        Args:
+            query: 搜尋查詢字串
+            
+        Returns:
+            str: 搜尋結果文字，包含引用來源
+        """
         result = file_search_tool.search_with_citations(query, "main-corpus")
         
         response_text = result.get("text", "")
@@ -3611,44 +3728,451 @@ def create_rag_agent(file_search_tool: FileSearchTool):
         
         return response_text
     
-    return types.Agent(
-        model="gemini-2.0-flash-exp",
-        system_instruction="你是 NotChatGPT，可以搜尋並引用文檔內容。",
-        tools=[types.Tool(
-            function_declarations=[rag_function]
-        )],
+    # 創建配置
+    config = types.GenerateContentConfig(
+        system_instruction="你是 NotChatGPT，可以搜尋並引用文檔內容。當用戶詢問相關問題時，使用 rag_search 函數檢索資訊並提供準確回答。",
+        temperature=0.7,
+        tools=[
+            types.Tool(
+                function_declarations=[
+                    types.FunctionDeclaration(
+                        name="rag_search",
+                        description="從文檔庫中搜尋相關資訊，支援引用來源追蹤",
+                        parameters={
+                            "type": "object",
+                            "properties": {
+                                "query": {
+                                    "type": "string",
+                                    "description": "要搜尋的查詢字串"
+                                }
+                            },
+                            "required": ["query"]
+                        }
+                    )
+                ]
+            )
+        ]
     )
+    
+    return {
+        "config": config,
+        "functions": {
+            "rag_search": rag_search
+        },
+        "model": model_name
+    }
 ```
 
 #### 14.3 測試多文檔聯合查詢
 
-**backend/test_rag_citations.py**:
+##### 14.3.1 建立測試文檔
+
+**準備測試資料**:
+
+```bash
+# 建立公司政策文檔
+cat > tests/fixtures/company_policy.txt << 'EOF'
+公司人事政策手冊
+
+第一章：休假政策
+
+1. 年假制度
+   - 新進員工：到職滿 6 個月後享有 3 天年假
+   - 工作滿 1 年：7 天年假
+   - 工作滿 3 年：10 天年假
+   - 工作滿 5 年：14 天年假
+   - 工作滿 10 年：每年增加 1 天，最高 30 天
+
+2. 病假制度
+   - 普通病假：每年 30 天（住院加計）
+   - 病假期間薪資：照常發給
+   - 需提供醫療證明文件
+
+3. 特休假
+   - 婚假：8 天（工資照給）
+   - 產假：8 週（工資照給）
+   - 陪產假：7 天（工資照給）
+   - 喪假：依親等關係 3-8 天不等
+
+4. 事假
+   - 每年最多 14 天
+   - 事假期間不給薪
+   - 需提前 3 天申請
+
+5. 休假申請流程
+   - 登入人事系統提出申請
+   - 直屬主管審核
+   - 人資部門核准
+   - 至少提前 7 天申請（特殊情況除外）
+
+6. 國定假日
+   - 依照政府公告的國定假日放假
+   - 若需加班，給予加班費或補休
+EOF
+
+# 建立員工手冊文檔
+cat > tests/fixtures/employee_handbook.txt << 'EOF'
+員工手冊
+
+工作時間與考勤
+
+1. 上班時間
+   - 週一至週五：09:00 - 18:00
+   - 午休時間：12:00 - 13:00
+   - 彈性上下班：可提前或延後 1 小時
+
+2. 遠端工作
+   - 每週可申請 2 天遠端工作
+   - 需提前告知直屬主管
+   - 保持線上溝通順暢
+
+3. 加班制度
+   - 平日加班：1.34 倍薪資
+   - 假日加班：2 倍薪資
+   - 可選擇補休或領取加班費
+
+福利制度
+
+1. 健康保險
+   - 全民健保：公司負擔 60%
+   - 團體保險：公司全額負擔
+   - 眷屬可加保（費用自付）
+
+2. 員工訓練
+   - 每年提供教育訓練預算
+   - 鼓勵參加外部課程
+   - 內部技術分享會
+
+3. 員工活動
+   - 年度尾牙聚餐
+   - 部門團建活動
+   - 生日禮金
+EOF
+
+# 建立專案文件
+cat > tests/fixtures/project_guidelines.txt << 'EOF'
+專案開發指南
+
+版本控制
+- 使用 Git 進行版本管理
+- 遵循 Git Flow 工作流程
+- Commit message 需清楚描述變更內容
+
+代碼審查
+- 所有 PR 需至少一位同事審核
+- 通過 CI/CD 檢查後才能合併
+- 保持代碼品質和可讀性
+
+測試規範
+- 單元測試覆蓋率需達 80% 以上
+- 整合測試確保功能正確性
+- 定期執行效能測試
+EOF
+
+echo "✅ 測試文檔建立完成"
+```
+
+##### 14.3.2 設定 Corpus 並上傳文檔
+
+**建立測試設定腳本 (tests/setup_test_corpus.py)**:
 
 ```python
 from google import genai
-from backend.tools.file_search import FileSearchTool
-from backend.agents.rag_agent import create_rag_agent
+from google.genai import types
+from pathlib import Path
+from dotenv import load_dotenv
+import os
 
-def test_citations():
-    client = genai.Client()
-    tool = FileSearchTool(client)
-    agent = create_rag_agent(tool)
+# 載入環境變數
+load_dotenv()
+
+# 初始化 DocumentService
+api_key = os.getenv('GOOGLE_API_KEY')
+if not api_key:
+    raise ValueError("GOOGLE_API_KEY not found in environment")
+
+def setup_test_corpus():
+    """設定測試用的文檔 corpus"""
+    client = genai.Client(api_key=api_key)
     
-    session = client.agentic.create_session(agent=agent)
-    response = session.send_message("根據文檔，公司的休假政策是什麼？")
+    # 測試文檔路徑
+    fixtures_dir = Path(__file__).parent / "fixtures"
+    test_docs = [
+        fixtures_dir / "company_policy.txt",
+        fixtures_dir / "employee_handbook.txt",
+        fixtures_dir / "project_guidelines.txt",
+    ]
     
-    print(f"回應: {response.text}")
+    uploaded_files = []
     
-    # 驗證引用是否存在
-    assert "引用來源" in response.text or "citations" in str(response.candidates[0].grounding_metadata)
-    print("✅ 引用來源測試通過")
+    print("📤 開始上傳測試文檔...")
+    
+    for doc_path in test_docs:
+        if not doc_path.exists():
+            print(f"⚠️  文檔不存在: {doc_path}")
+            continue
+        
+        try:
+            # 上傳文檔
+            uploaded_file = client.files.upload(
+                file=str(doc_path),
+                config=types.UploadFileConfig(
+                    display_name=doc_path.name
+                )
+            )
+            
+            uploaded_files.append({
+                "name": uploaded_file.name,
+                "display_name": uploaded_file.display_name,
+                "uri": uploaded_file.uri,
+            })
+            
+            print(f"✅ 已上傳: {uploaded_file.display_name}")
+            print(f"   ID: {uploaded_file.name}")
+            
+        except Exception as e:
+            print(f"❌ 上傳失敗 {doc_path.name}: {e}")
+    
+    print(f"\n📊 總共上傳 {len(uploaded_files)} 個文檔")
+    return uploaded_files
+
+def cleanup_test_corpus():
+    """清理測試文檔"""
+    client = genai.Client(api_key=api_key)
+    
+    print("🧹 清理測試文檔...")
+    
+    # 列出所有文檔
+    files = list(client.files.list())
+    
+    for file in files:
+        try:
+            client.files.delete(name=file.name)
+            print(f"🗑️  已刪除: {file.display_name}")
+        except Exception as e:
+            print(f"⚠️  刪除失敗 {file.display_name}: {e}")
+    
+    print("✅ 清理完成")
 
 if __name__ == "__main__":
-    test_citations()
+    import sys
+    
+    if len(sys.argv) > 1 and sys.argv[1] == "cleanup":
+        cleanup_test_corpus()
+    else:
+        setup_test_corpus()
 ```
 
+**執行設定**:
+
 ```bash
-python backend/test_rag_citations.py
+# 上傳測試文檔
+python tests/setup_test_corpus.py
+
+# 預期輸出：
+# 📤 開始上傳測試文檔...
+# ✅ 已上傳: company_policy.txt
+#    ID: files/abc123...
+# ✅ 已上傳: employee_handbook.txt
+#    ID: files/def456...
+# ✅ 已上傳: project_guidelines.txt
+#    ID: files/ghi789...
+# 📊 總共上傳 3 個文檔
+```
+
+##### 14.3.3 執行引用來源測試
+
+**tests/integration/test_rag_citations.py**:
+
+```python
+import pytest
+from google import genai
+from google.genai import types
+from backend.tools.file_search import FileSearchTool
+from backend.agents.rag_agent import create_rag_agent
+import os
+
+class TestRAGCitations:
+    """測試 RAG 引用來源功能"""
+    
+    @pytest.fixture
+    def genai_client(self):
+        """建立 Gemini 客戶端"""
+        api_key = os.getenv('GOOGLE_API_KEY')
+        if not api_key:
+            pytest.skip("GOOGLE_API_KEY not set")
+        return genai.Client(api_key=api_key)
+    
+    @pytest.fixture
+    def file_search_tool(self, genai_client):
+        """建立 FileSearchTool"""
+        return FileSearchTool(genai_client)
+    
+    def test_search_with_citations(self, file_search_tool):
+        """測試搜尋功能是否返回引用來源"""
+        # 執行搜尋
+        result = file_search_tool.search_with_citations(
+            query="公司的休假政策有哪些？",
+            corpus_name="main-corpus"
+        )
+        
+        # 驗證結果結構
+        assert "text" in result, "結果應包含 text 欄位"
+        assert "citations" in result, "結果應包含 citations 欄位"
+        assert isinstance(result["citations"], list), "citations 應為列表"
+        
+        print(f"\n📝 搜尋結果:")
+        print(f"回應: {result['text'][:200]}...")
+        print(f"\n📚 引用來源數量: {len(result['citations'])}")
+        
+        # 顯示引用來源
+        for i, citation in enumerate(result['citations'], 1):
+            print(f"\n{i}. {citation.get('title', 'Untitled')}")
+            print(f"   來源: {citation.get('source', 'Unknown')}")
+            if citation.get('snippet'):
+                print(f"   片段: {citation['snippet'][:100]}...")
+    
+    def test_rag_agent_with_citations(self, genai_client, file_search_tool):
+        """測試 RAG Agent 是否正確處理引用來源"""
+        # 建立 RAG Agent 配置
+        agent_data = create_rag_agent(file_search_tool)
+        config = agent_data["config"]
+        model = agent_data["model"]
+        functions = agent_data["functions"]
+        
+        # 使用 generate_content 進行對話
+        query = "根據文檔，公司的休假政策是什麼？請詳細說明。"
+        
+        # 第一次呼叫：讓模型決定是否需要使用工具
+        response = genai_client.models.generate_content(
+            model=model,
+            contents=query,
+            config=config
+        )
+        
+        print(f"\n🤖 Agent 回應:")
+        
+        # 檢查是否有函數調用
+        if response.candidates and response.candidates[0].content.parts:
+            for part in response.candidates[0].content.parts:
+                if hasattr(part, 'function_call'):
+                    # 模型要求調用函數
+                    function_call = part.function_call
+                    function_name = function_call.name
+                    function_args = function_call.args
+                    
+                    print(f"📞 函數調用: {function_name}")
+                    print(f"   參數: {function_args}")
+                    
+                    # 執行函數
+                    if function_name in functions:
+                        function_result = functions[function_name](**function_args)
+                        print(f"   結果: {function_result[:200]}...")
+                        
+                        # 將函數結果返回給模型
+                        response = genai_client.models.generate_content(
+                            model=model,
+                            contents=[
+                                query,
+                                response.candidates[0].content,
+                                types.Content(
+                                    parts=[
+                                        types.Part.from_function_response(
+                                            name=function_name,
+                                            response={"result": function_result}
+                                        )
+                                    ]
+                                )
+                            ],
+                            config=config
+                        )
+        
+        print(response.text)
+        
+        # 驗證回應包含引用資訊
+        assert response.text is not None, "回應不應為空"
+        assert len(response.text) > 0, "回應應有內容"
+        
+        print("\n✅ 引用來源測試通過")
+    
+    def test_multiple_document_query(self, file_search_tool):
+        """測試跨多個文檔的查詢"""
+        queries = [
+            "公司的年假制度是什麼？",
+            "遠端工作的規定有哪些？",
+            "代碼審查的流程是什麼？",
+        ]
+        
+        for query in queries:
+            print(f"\n🔍 查詢: {query}")
+            result = file_search_tool.search_with_citations(query, "main-corpus")
+            
+            assert "text" in result
+            print(f"   回應長度: {len(result.get('text', ''))} 字元")
+            print(f"   引用數量: {len(result.get('citations', []))}")
+
+if __name__ == "__main__":
+    pytest.main([__file__, "-v", "-s"])
+```
+
+**執行測試**:
+
+```bash
+# 1. 確保已上傳測試文檔
+python tests/setup_test_corpus.py
+
+# 2. 執行引用來源測試
+pytest tests/integration/test_rag_citations.py -v -s
+
+# 3. 執行特定測試
+pytest tests/integration/test_rag_citations.py::TestRAGCitations::test_search_with_citations -v -s
+
+# 4. 測試完成後清理（可選）
+python tests/setup_test_corpus.py cleanup
+```
+
+**預期測試輸出**:
+
+```text
+tests/integration/test_rag_citations.py::TestRAGCitations::test_search_with_citations 
+📝 搜尋結果:
+回應: 根據公司人事政策手冊，休假政策包含以下幾種：
+1. 年假制度：依工作年資給予3-30天不等...
+
+📚 引用來源數量: 2
+
+1. company_policy.txt
+   來源: files/abc123...
+   片段: 第一章：休假政策\n\n1. 年假制度\n   - 新進員工：到職滿 6 個月後享有 3 天年假...
+
+2. employee_handbook.txt
+   來源: files/def456...
+   片段: 3. 加班制度\n   - 平日加班：1.34 倍薪資\n   - 假日加班：2 倍薪資...
+
+PASSED
+
+tests/integration/test_rag_citations.py::TestRAGCitations::test_rag_agent_with_citations 
+🤖 Agent 回應:
+根據公司人事政策手冊，公司的休假政策包含：
+
+1. **年假制度**
+   - 新進員工到職滿 6 個月後享有 3 天年假
+   - 工作滿 1 年：7 天
+   - 工作滿 3 年：10 天
+   - 工作滿 5 年：14 天
+   - 工作滿 10 年以上：每年增加 1 天，最高 30 天
+
+2. **病假制度**
+   - 每年 30 天普通病假（住院加計）
+   - 病假期間薪資照常發給
+   - 需提供醫療證明文件
+
+引用來源:
+1. company_policy.txt - files/abc123...
+2. employee_handbook.txt - files/def456...
+
+✅ 引用來源測試通過
+PASSED
 ```
 
 ---
