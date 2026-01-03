@@ -1,0 +1,21 @@
+[
+  {
+    "query": "hi,",
+    "expected_tool_use": [],
+    "reference": "你好！歡迎回到 Cymbal Home & Garden！我看到您是我們的回頭客。今天有什麼我可以幫您讓您的居家與花園變得更好的嗎？",
+    "_comment": "基礎問候語測試。驗證 Agent 是否能識別回頭客並給予適當回應。"
+  },
+  {
+    "query": "tell me what is in my cart?",
+    "expected_tool_use": [
+      {
+        "tool_name": "access_cart_information",
+        "tool_input": {
+          "customer_id": "123"
+        }
+      }
+    ],
+    "reference": "您的購物車中有一袋標準盆栽土（Standard Potting Soil）和一罐通用肥（General Purpose Fertilizer）。",
+    "_comment": "工具調用測試。驗證 Agent 是否會調用 access_cart_information 工具來查詢購物車內容。"
+  }
+]

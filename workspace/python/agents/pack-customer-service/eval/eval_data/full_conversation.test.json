@@ -1,0 +1,112 @@
+[
+  {
+    "query": "hi",
+    "expected_tool_use": [],
+    "reference": "嗨 Alex！歡迎回到 Cymbal Home & Garden。我是 Project Pro，您的 AI 助手。今天有什麼我可以幫您的嗎？",
+    "_comment": "多輪對話開始。測試 Agent 是否能正確識別用戶 Alex 並進行個性化問候。"
+  },
+  {
+    "query": "can you please tell me what i purchased before?",
+    "expected_tool_use": [
+      {
+        "tool_name": "access_cart_information",
+        "tool_input": {
+          "customer_id": "123"
+        }
+      }
+    ],
+    "reference": "當然可以！這是您之前的購買紀錄摘要：\n 2023-03-05: 通用肥料和園藝抹刀 \n 2023-07-12: 番茄種子（綜合包）和陶土花盆（6 英寸） \n 2024-01-20: 園藝手套（皮革）和修枝剪 \n\n 關於這些購買內容，您有什麼具體想了解的嗎？或者今天還有其他我可以幫您的嗎？",
+    "_comment": "歷史紀錄查詢測試。驗證 Agent 是否能調用購物車/歷史資訊工具並格式化輸出。"
+  },
+  {
+    "query": "Ah yes! the tomato seeds. I planted and they grew but they do not look very healthy any more. Do you have a information on how to take care of them?",
+    "expected_tool_use": [
+      {
+        "tool_name": "send_care_instructions",
+        "tool_input": {
+          "customer_id": "123",
+          "plant_type": "Tomato Seeds (Variety Pack)",
+          "delivery_method": "email"
+        }
+      }
+    ],
+    "reference": "喔不，Alex，聽到您的番茄長得不太好我感到很遺憾。種植番茄有時確實很棘手，特別是取決於環境條件。我絕對可以為您發送專門針對番茄的照護指南。既然您的偏好是電子郵件，您希望我將其發送至 alex.johnson@example.com 嗎？",
+    "_comment": "照護指令測試。驗證 Agent 是否能根據歷史提到的產品提供建議，並主動確認發送方式。"
+  },
+  {
+    "query": "yes please",
+    "expected_tool_use": [
+      {
+        "tool_name": "send_care_instructions",
+        "tool_input": {
+          "customer_id": "123",
+          "delivery_method": "email",
+          "plant_type": "Tomatos"
+        }
+      }
+    ],
+    "reference": "太好了，Alex。我剛已經將番茄照護指南發送到您的電子信箱 alex.johnson@example.com。您應該很快就會收到。\n 這些指南應該會涵蓋常見問題以及種植健康番茄的最佳實踐，特別是考慮到當地的環境。\n 今天還有其他我可以幫您的嗎？或許您需要一些產品來幫助您的番茄恢復健康？",
+    "_comment": "執行工具測試。確認用戶同意後，Agent 應執行發送動作並進行後續關懷。"
+  },
+  {
+    "query": "hm, whats currently in my cart?",
+    "expected_tool_use": [
+      {
+        "tool_name": "access_cart_information",
+        "tool_input": {
+          "customer_id": "123"
+        }
+      }
+    ],
+    "reference": "讓我現在為您檢查購物車。好的，Alex，我已經檢查過了。目前您的購物車中有：\n\n1 x 標準盆栽土 (產品 ID: soil-123)\n1 x 通用肥料 (產品 ID: fert-456) \n您的不含稅小計為 $25.98。\n \n 這些都是不錯的基礎園藝用品。您是最近才加入這些內容的嗎？或許是為了您的番茄？根據照護指南的建議或您番茄的具體問題，我們可能需要考慮這些是否是最佳選擇，或者您是否需要更具針對性的產品。",
+    "_comment": "購物車狀態檢查。驗證 Agent 能否將當前購物車內容與之前的對話脈絡（番茄照護）結合。"
+  },
+  {
+    "query": "will that Fertilizer do for the tomatoes?",
+    "expected_tool_use": [],
+    "reference": "這是一個好問題，Alex。您購物車中的通用肥料 (fert-456) 可以提供基本的養分，但番茄（特別是在生長不良時）通常會從專門為其或蔬菜設計的肥料中受益。這些肥料通常具有不同的營養平衡（如磷和鉀），可促進結果與植物整體健康。\n 讓我快速檢查一下針對番茄的具體建議。",
+    "_comment": "專業知識諮詢。Agent 應展現專業性，不只是點點頭，還要提供額外建議並主動提議搜尋。"
+  },
+  {
+    "query": "ok",
+    "expected_tool_use": [
+      {
+        "tool_name": "get_product_recommendations",
+        "tool_input": {
+          "plant_type": "Tomatos",
+          "customer_id": "123"
+        }
+      }
+    ],
+    "reference": " 好的，Alex，我檢查了針對番茄的建議，有趣的是，系統確實將您購物車中現有的通用肥料 (fert-456) 列為適用。它還推薦了您已有的標準盆栽土 (soil-123)。\n 所以，根據我們的系統，您選擇的肥料被認為適合番茄。\n 然而，既然您提到番茄看起來不健康，可能值得查看我發送的那些照護指南，看看是否建議針對特定的營養缺乏問題。有時，具有特定 N-P-K 比例（氮-磷-鉀）的專門蔬菜或番茄肥料，能比通用肥料更有效地為生長不良的植物提供針對性的提振。\n 目前，根據我們的建議，通用肥料是一個合理的選擇。您想將它留在購物車中，還是希望我看看我們是否有更專業的番茄肥料？",
+    "_comment": "產品推薦工具。驗證 Agent 是否能根據工具回報的結果與用戶進行深度討論。"
+  },
+  {
+    "query": "no thats okey. lets check out now",
+    "expected_tool_use": [],
+    "reference": "好的，Alex，您現在想結帳。讓我們快速瀏覽一下您的購物車：\n 1 x 標準盆栽土 (產品 ID: soil-123)\n 1 x 通用肥料 (產品 ID: fert-456) \n 您的不含稅小計為 $25.98。\n 由於我無法直接處理付款，我可以協助您在我們的線上商店準備結帳，或為您在偏好的實體店（Anytown Garden Store）準備取貨。您想如何進行？\n 此外，為了感謝您成為忠實客戶，您是否希望我產生一個 QR Code，在您下次店內購物時提供 10% 的折扣？有效期為 30 天。",
+    "_comment": "結帳流程導引。Agent 應明確說明其限制（無法處理付款）並提供替代方案與促銷活動。"
+  },
+  {
+    "query": "yes for the 10%!",
+    "expected_tool_use": [
+      {
+        "tool_name": "generate_qr_code",
+        "tool_input": {
+          "customer_id": "123",
+          "discount_type": "percentage",
+          "expiration_days": 30,
+          "discount_value": 10
+        }
+      }
+    ],
+    "reference": "太棒了！我已經為您產生了一個 10% 折扣的 QR Code，在接下來的 30 天內於店內購物時有效。您應該可以透過您的帳戶或電子郵件存取它，請留意查收！\n 現在，關於您目前的訂單（盆栽土和肥料，小計 $25.98 + 稅）：您想在線上完成購買，還是由我為您在 Anytown Garden Store 安排取貨？",
+    "_comment": "促銷工具執行。驗證 Agent 是否能正確調用產生 QR Code 的工具並繼續引導結帳。"
+  },
+  {
+    "query": "nop thats all, thanks for the help",
+    "expected_tool_use": [],
+    "reference": "不客氣，Alex！很高興今天能幫上忙。\n 您的標準盆栽土和通用肥料已在購物車中，隨時等候您決定線上結帳或造訪門市。記得查看我發給您的番茄照護指南，希望您的植物能趕快恢復活力！\n 我也會在您的檔案中記錄我們的對話以及我們為您產生的折扣碼。\n感謝您選擇 Cymbal Home & Garden。祝您有美好的一天，享受園藝樂趣！",
+    "_comment": "對話結束。驗證 Agent 是否能得體地結束對話並進行總結。"
+  }
+]

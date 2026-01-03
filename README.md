@@ -1426,4 +1426,24 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </details>
 
+#### 🕗 Day 71
+
+<details>
+<summary>
+本專案實作了一個為園藝零售商「Cymbal Home & Garden」設計的 AI 客戶服務 Agent。此 Agent 運用 Gemini 模型，透過多模態互動（文字與影像）提供個人化產品推薦、訂單管理及服務預約。專案基於 Google ADK 範例，並整合 Agent Starter Pack，作為一個學習與實作的參考。
+
+🏷️ `agent-starter-pack`, `customer`, `opentelemetry`, `poetry`, `global-instruction`, `fastapi`, `cloud-logging`, `uvicorn`
+
+</summary>
+
+- **詳細說明**：
+
+  - [Pack Customer Service](./workspace/python/agents/pack-customer-service/)
+
+- **參考資源**
+  - [[ADK-Samples] customer-service](https://github.com/google/adk-samples/tree/main/python/agents/customer-service)
+  - [Agent Starter Pack](https://goo.gle/agent-starter-pack)
+
+</details>
+
 </details>

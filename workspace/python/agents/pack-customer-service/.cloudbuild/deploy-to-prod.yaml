@@ -1,0 +1,40 @@
+############################################################
+# 部署到正式環境（Prod）的 Cloud Build 設定
+#
+# 重點說明：
+# - 使用 gcloud 於 Cloud Run 執行 deploy
+# - 透過 substitutions 注入正式專案與區域等參數
+# - 將建置/部署日誌輸出到指定的 GCS bucket
+############################################################
+
+steps:
+  # 單一步驟：使用精簡版 gcloud builder 執行部署
+  - name: 'gcr.io/cloud-builders/gcloud-slim' # 使用的 builder 映像
+    id: trigger-deployment # 步驟識別名稱（方便在 Cloud Build 介面中追蹤）
+    entrypoint: gcloud # 入口指令：gcloud
+    args:
+      # 以下參數等同於在命令列執行：
+      # gcloud run deploy pack-customer-service --image <IMAGE> --region <REGION> --project <PROD_PROJECT>
+      - 'run' # 指定 Cloud Run
+      - 'deploy' # 部署服務
+      - 'pack-customer-service' # Cloud Run service 名稱
+      - '--image' # 指定要部署的容器映像
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME' # Artifact Registry 映像路徑
+      - '--region' # 指定部署區域
+      - '$_REGION' # 由 substitutions 提供（預設：us-central1）
+      - '--project' # 指定要部署到的 GCP 專案（正式環境）
+      - $_PROD_PROJECT_ID # 由 substitutions 提供（請改成你的正式專案 ID）
+
+substitutions:
+  # 自訂替換變數（可在觸發器或建置時覆寫）
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID # 正式環境的 GCP 專案 ID（請務必更新）
+  _REGION: us-central1 # 部署區域
+
+# 建置日誌輸出位置（GCS）
+logsBucket: gs://${PROJECT_ID}-pack-customer-service-logs/build-logs
+
+options:
+  # 允許 substitutions 中存在未宣告或額外的變數（降低觸發器/環境差異造成的失敗）
+  substitutionOption: ALLOW_LOOSE
+  # 使用「區域使用者自有」的預設日誌 bucket 行為
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
