@@ -1,16 +1,3 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 import uuid
 from typing import (
     Literal,
@@ -25,22 +12,32 @@ from pydantic import (
 
 
 class Request(BaseModel):
-    """Represents the input for a chat request with optional configuration."""
+    """表示帶有可選配置的對話請求輸入。"""
 
+    # 訊息內容
     message: Content
+    # 事件清單
     events: list[Event]
+    # 使用者 ID，預設隨機生成一個 UUID
     user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    # 會話 ID，預設隨機生成一個 UUID
     session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
 
     model_config = {"extra": "allow"}
 
 
 class Feedback(BaseModel):
-    """Represents feedback for a conversation."""
+    """表示對話的回饋資訊。"""
 
+    # 評分（整數或浮點數）
     score: int | float
+    # 評論文字內容
     text: str | None = ""
+    # 調用 ID，用於關聯特定的回應
     invocation_id: str
+    # 日誌類型，固定為 "feedback"
     log_type: Literal["feedback"] = "feedback"
+    # 服務名稱，固定為 "pack-customer-service"
     service_name: Literal["pack-customer-service"] = "pack-customer-service"
+    # 使用者 ID
     user_id: str = ""

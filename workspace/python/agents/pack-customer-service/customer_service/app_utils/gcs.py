@@ -1,17 +1,3 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import logging
 
 import google.cloud.storage as storage
@@ -19,24 +5,28 @@ from google.api_core import exceptions
 
 
 def create_bucket_if_not_exists(bucket_name: str, project: str, location: str) -> None:
-    """Creates a new bucket if it doesn't already exist.
+    """如果儲存桶（Bucket）不存在，則建立一個新的。
 
-    Args:
-        bucket_name: Name of the bucket to create
-        project: Google Cloud project ID
-        location: Location to create the bucket in (defaults to us-central1)
+    參數:
+        bucket_name: 要建立的儲存桶名稱
+        project: Google Cloud 專案 ID
+        location: 建立儲存桶的地區（預設為 us-central1）
     """
+    # 初始化 GCS 客戶端
     storage_client = storage.Client(project=project)
 
+    # 處理以 gs:// 開頭的名稱
     if bucket_name.startswith("gs://"):
         bucket_name = bucket_name[5:]
     try:
+        # 嘗試獲取儲存桶，若存在則不做任何事
         storage_client.get_bucket(bucket_name)
-        logging.info(f"Bucket {bucket_name} already exists")
+        logging.info(f"儲存桶 {bucket_name} 已存在")
     except exceptions.NotFound:
+        # 若儲存桶不存在，則建立之
         bucket = storage_client.create_bucket(
             bucket_name,
             location=location,
             project=project,
         )
-        logging.info(f"Created bucket {bucket.name} in {bucket.location}")
+        logging.info(f"已在 {bucket.location} 建立儲存桶 {bucket.name}")

@@ -1,13 +1,12 @@
-# Copyright 2025 Google LLC
+# 版權所有 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache 許可證 2.0 版（「許可證」）授權；
+# 除非遵守許可證，否則不得使用此檔案。
+# 您可以在以下網址獲得許可證副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則根據許可證分發的軟體
+# 是按「現狀」分發的，無任何明示或暗示的保證或條件。
+# 請參閱許可證以瞭解管理權限和
+# 許可證下的限制。

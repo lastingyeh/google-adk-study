@@ -1,682 +1,808 @@
-Coding Agent guidance:
-# Google Agent Development Kit (ADK) Python Cheatsheet
+編碼代理指南：
 
-This document serves as a long-form, comprehensive reference for building, orchestrating, and deploying AI agents using the Python Agent Development Kit (ADK). It aims to cover every significant aspect with greater detail, more code examples, and in-depth best practices.
+# Google Agent Development Kit (ADK) Python 速查表
 
-## Table of Contents
+本文件可作為使用 Python Agent Development Kit (ADK) 建構、編排和部署 AI 代理的長篇綜合參考。其旨在以更詳盡的細節、更多的程式碼範例和深入的最佳實踐，涵蓋每個重要面向。
 
-1.  [Core Concepts & Project Structure](#1-core-concepts--project-structure)
-    *   1.1 ADK's Foundational Principles
-    *   1.2 Essential Primitives
-    *   1.3 Standard Project Layout
-    *   1.A Build Agents without Code (Agent Config)
-2.  [Agent Definitions (`LlmAgent`)](#2-agent-definitions-llmagent)
-    *   2.1 Basic `LlmAgent` Setup
-    *   2.2 Advanced `LlmAgent` Configuration
-    *   2.3 LLM Instruction Crafting
-    *   2.4 Production Wrapper (`App`)
-3.  [Orchestration with Workflow Agents](#3-orchestration-with-workflow-agents)
-    *   3.1 `SequentialAgent`: Linear Execution
-    *   3.2 `ParallelAgent`: Concurrent Execution
-    *   3.3 `LoopAgent`: Iterative Processes
-4.  [Multi-Agent Systems & Communication](#4-multi-agent-systems--communication)
-    *   4.1 Agent Hierarchy
-    *   4.2 Inter-Agent Communication Mechanisms
-    *   4.3 Common Multi-Agent Patterns
-    *   4.A Distributed Communication (A2A Protocol)
-5.  [Building Custom Agents (`BaseAgent`)](#5-building-custom-agents-baseagent)
-    *   5.1 When to Use Custom Agents
-    *   5.2 Implementing `_run_async_impl`
-6.  [Models: Gemini, LiteLLM, and Vertex AI](#6-models-gemini-litellm-and-vertex-ai)
-    *   6.1 Google Gemini Models (AI Studio & Vertex AI)
-    *   6.2 Other Cloud & Proprietary Models via LiteLLM
-    *   6.3 Open & Local Models via LiteLLM (Ollama, vLLM)
-    *   6.4 Customizing LLM API Clients
-7.  [Tools: The Agent's Capabilities](#7-tools-the-agents-capabilities)
-    *   7.1 Defining Function Tools: Principles & Best Practices
-    *   7.2 The `ToolContext` Object: Accessing Runtime Information
-    *   7.3 All Tool Types & Their Usage
-    *   7.4 Tool Confirmation (Human-in-the-Loop)
-8.  [Context, State, and Memory Management](#8-context-state-and-memory-management)
-    *   8.1 The `Session` Object & `SessionService`
-    *   8.2 `State`: The Conversational Scratchpad
-    *   8.3 `Memory`: Long-Term Knowledge & Retrieval
-    *   8.4 `Artifacts`: Binary Data Management
-9.  [Runtime, Events, and Execution Flow](#9-runtime-events-and-execution-flow)
-    *   9.1 Runtime Configuration (`RunConfig`)
-    *   9.2 The `Runner`: The Orchestrator
-    *   9.3 The Event Loop: Core Execution Flow
-    *   9.4 `Event` Object: The Communication Backbone
-    *   9.5 Asynchronous Programming (Python Specific)
-10. [Control Flow with Callbacks](#10-control-flow-with-callbacks)
-    *   10.1 Callback Mechanism: Interception & Control
-    *   10.2 Types of Callbacks
-    *   10.3 Callback Best Practices
-    *   10.A Global Control with Plugins
-11. [Authentication for Tools](#11-authentication-for-tools)
-    *   11.1 Core Concepts: `AuthScheme` & `AuthCredential`
-    *   11.2 Interactive OAuth/OIDC Flows
-    *   11.3 Custom Tool Authentication
-12. [Deployment Strategies](#12-deployment-strategies)
-    *   12.1 Local Development & Testing (`adk web`, `adk run`, `adk api_server`)
-    *   12.2 Vertex AI Agent Engine
-    *   12.3 Cloud Run
-    *   12.4 Google Kubernetes Engine (GKE)
-    *   12.5 CI/CD Integration
-13. [Evaluation and Safety](#13-evaluation-and-safety)
-    *   13.1 Agent Evaluation (`adk eval`)
-    *   13.2 Safety & Guardrails
-14. [Debugging, Logging & Observability](#14-debugging-logging--observability)
-15. [Streaming & Advanced I/O](#15-streaming--advanced-io)
-16. [Performance Optimization](#16-performance-optimization)
-17. [General Best Practices & Common Pitfalls](#17-general-best-practices--common-pitfalls)
-18. [Official API & CLI References](#18-official-api--cli-references)
+## 目錄
+
+1.  [核心概念與專案結構](#1-核心概念與專案結構)
+    - 1.1 ADK 的基礎原則
+    - 1.2 基本元素
+    - 1.3 標準專案佈局
+    - 1.A 無需程式碼建構代理 (代理設定)
+2.  [代理定義 (`LlmAgent`)](#2-代理定義-llmagent)
+    - 2.1 基本 `LlmAgent` 設定
+    - 2.2 進階 `LlmAgent` 設定
+    - 2.3 LLM 指令設計
+    - 2.4 生產環境包裝器 (`App`)
+3.  [使用工作流代理進行編排](#3-使用工作流代理進行編排)
+    - 3.1 `SequentialAgent`：線性執行
+    - 3.2 `ParallelAgent`：並行執行
+    - 3.3 `LoopAgent`：迭代過程
+4.  [多代理系統與通訊](#4-多代理系統與通訊)
+    - 4.1 代理層級結構
+    - 4.2 代理間通訊機制
+    - 4.3 常見的多代理模式
+    - 4.A 分散式通訊 (A2A 協定)
+5.  [建構自訂代理 (`BaseAgent`)](#5-建構自訂代理-baseagent)
+    - 5.1 何時使用自訂代理
+    - 5.2 實作 `_run_async_impl`
+6.  [模型：Gemini、LiteLLM 和 Vertex AI](#6-模型-gemini-litellm-和-vertex-ai)
+    - 6.1 Google Gemini 模型 (AI Studio & Vertex AI)
+    - 6.2 透過 LiteLLM 使用其他雲端和專有模型
+    - 6.3 透過 LiteLLM 使用開放和本地模型 (Ollama, vLLM)
+    - 6.4 自訂 LLM API 客戶端
+7.  [工具：代理的能力](#7-工具-代理的能力)
+    - 7.1 定義函式工具：原則與最佳實踐
+    - 7.2 `ToolContext` 物件：存取執行期資訊
+    - 7.3 所有工具類型及其用法
+    - 7.4 工具確認 (人在迴路中)
+8.  [上下文、狀態和記憶體管理](#8-上下文-狀態和記憶體管理)
+    - 8.1 `Session` 物件與 `SessionService`
+    - 8.2 `State`：對話暫存區
+    - 8.3 `Memory`：長期知識與檢索
+    - 8.4 `Artifacts`：二進位資料管理
+9.  [執行期、事件和執行流程](#9-執行期-事件和執行流程)
+    - 9.1 執行期設定 (`RunConfig`)
+    - 9.2 `Runner`：編排器
+    - 9.3 事件迴圈：核心執行流程
+    - 9.4 `Event` 物件：通訊骨幹
+    - 9.5 非同步程式設計 (Python 特定)
+10. [使用回呼函式進行流程控制](#10-使用回呼函式進行流程控制)
+    - 10.1 回呼機制：攔截與控制
+    - 10.2 回呼類型
+    - 10.3 回呼最佳實踐
+    - 10.A 使用外掛程式進行全域控制
+11. [工具的驗證](#11-工具的驗證)
+    - 11.1 核心概念：`AuthScheme` 與 `AuthCredential`
+    - 11.2 互動式 OAuth/OIDC 流程
+    - 11.3 自訂工具驗證
+12. [部署策略](#12-部署策略)
+    - 12.1 本地開發與測試 (`adk web`, `adk run`, `adk api_server`)
+    - 12.2 Vertex AI Agent Engine
+    - 12.3 Cloud Run
+    - 12.4 Google Kubernetes Engine (GKE)
+    - 12.5 CI/CD 整合
+13. [評估與安全性](#13-評估與安全性)
+    - 13.1 代理評估 (`adk eval`)
+    - 13.2 安全性與防護機制
+14. [偵錯、日誌與可觀測性](#14-偵錯-日誌與可觀測性)
+15. [串流與進階 I/O](#15-串流與進階-io)
+16. [效能優化](#16-效能優化)
+17. [通用最佳實踐與常見陷阱](#17-通用最佳實踐與常見陷阱)
+18. [官方 API 與 CLI 參考](#18-官方-api-與-cli-參考)
 
 ---
 
-## 1. Core Concepts & Project Structure
+## 1. 核心概念與專案結構
 
-### 1.1 ADK's Foundational Principles
+### 1.1 ADK 的基礎原則
 
-*   **Modularity**: Break down complex problems into smaller, manageable agents and tools.
-*   **Composability**: Combine simple agents and tools to build sophisticated systems.
-*   **Observability**: Detailed event logging and tracing capabilities to understand agent behavior.
-*   **Extensibility**: Easily integrate with external services, models, and frameworks.
-*   **Deployment-Agnostic**: Design agents once, deploy anywhere.
+- **模組化**：將複雜問題分解為更小、可管理的代理和工具。
+- **可組合性**：結合簡單的代理和工具來建構複雜的系統。
+- **可觀測性**：詳細的事件日誌和追蹤功能，以了解代理行為。
+- **可擴充性**：輕鬆與外部服務、模型和框架整合。
+- **部署無關性**：設計一次代理，隨處部署。
 
-### 1.2 Essential Primitives
+### 1.2 基本元素
 
-*   **`Agent`**: The core intelligent unit. Can be `LlmAgent` (LLM-driven) or `BaseAgent` (custom/workflow).
-*   **`Tool`**: Callable function/class providing external capabilities (`FunctionTool`, `OpenAPIToolset`, etc.).
-*   **`Session`**: A unique, stateful conversation thread with history (`events`) and short-term memory (`state`).
-*   **`State`**: Key-value dictionary within a `Session` for transient conversation data.
-*   **`Memory`**: Long-term, searchable knowledge base beyond a single session (`MemoryService`).
-*   **`Artifact`**: Named, versioned binary data (files, images) associated with a session or user.
-*   **`Runner`**: The execution engine; orchestrates agent activity and event flow.
-*   **`Event`**: Atomic unit of communication and history; carries content and side-effect `actions`.
-*   **`InvocationContext`**: The comprehensive root context object holding all runtime information for a single `run_async` call.
+- **`Agent`**：核心智慧單元。可以是 `LlmAgent` (由 LLM 驅動) 或 `BaseAgent` (自訂/工作流)。
+- **`Tool`**：提供外部功能的可呼叫函式/類別 (`FunctionTool`, `OpenAPIToolset` 等)。
+- **`Session`**：一個獨特的、有狀態的對話線程，包含歷史 (`events`) 和短期記憶體 (`state`)。
+- **`State`**：`Session` 內的鍵值字典，用於儲存短暫的對話資料。
+- **`Memory`**：超越單一會話的長期、可搜尋的知識庫 (`MemoryService`)。
+- **`Artifact`**：與會話或使用者相關聯的具名、版本化的二進位資料 (檔案、圖片)。
+- **`Runner`**：執行引擎；編排代理活動和事件流。
+- **`Event`**：通訊和歷史的原子單元；攜帶內容和副作用 `actions`。
+- **`InvocationContext`**：全面的根上下文物件，包含單次 `run_async` 呼叫的所有執行期資訊。
 
-### 1.3 Standard Project Layout
+### 1.3 標準專案佈局
 
-A well-structured ADK project is crucial for maintainability and leveraging `adk` CLI tools.
+一個結構良好的 ADK 專案對於可維護性和利用 `adk` CLI 工具至關重要。
 
 ```
 your_project_root/
-├── my_first_agent/             # Each folder is a distinct agent app
-│   ├── __init__.py             # Makes `my_first_agent` a Python package (`from . import agent`)
-│   ├── agent.py                # Contains `root_agent` definition and `LlmAgent`/WorkflowAgent instances
-│   ├── tools.py                # Custom tool function definitions
-│   ├── data/                   # Optional: static data, templates
-│   └── .env                    # Environment variables (API keys, project IDs)
+├── my_first_agent/             # 每個資料夾都是一個獨立的代理應用程式
+│   ├── __init__.py             # 使 `my_first_agent` 成為一個 Python 套件 (`from . import agent`)
+│   ├── agent.py                # 包含 `root_agent` 定義和 `LlmAgent`/WorkflowAgent 實例
+│   ├── tools.py                # 自訂工具函式定義
+│   ├── data/                   # 可選：靜態資料、範本
+│   └── .env                    # 環境變數 (API 金鑰、專案 ID)
 ├── my_second_agent/
 │   ├── __init__.py
 │   └── agent.py
-├── requirements.txt            # Project's Python dependencies (e.g., google-adk, litellm)
-├── tests/                      # Unit and integration tests
+├── requirements.txt            # 專案的 Python 依賴項 (例如 google-adk, litellm)
+├── tests/                      # 單元和整合測試
 │   ├── unit/
 │   │   └── test_tools.py
 │   └── integration/
 │       └── test_my_first_agent.py
-│       └── my_first_agent.evalset.json # Evaluation dataset for `adk eval`
-└── main.py                     # Optional: Entry point for custom FastAPI server deployment
+│       └── my_first_agent.evalset.json # 用於 `adk eval` 的評估資料集
+└── main.py                     # 可選：自訂 FastAPI 伺服器部署的進入點
 ```
-*   `adk web` and `adk run` automatically discover agents in subdirectories with `__init__.py` and `agent.py`.
-*   `.env` files are automatically loaded by `adk` tools when run from the root or agent directory.
 
-### 1.A Build Agents without Code (Agent Config)
+- `adk web` 和 `adk run` 會自動發現在子目錄中帶有 `__init__.py` 和 `agent.py` 的代理。
+- 當從根目錄或代理目錄執行時，`adk` 工具會自動載入 `.env` 檔案。
 
-ADK allows you to define agents, tools, and even multi-agent workflows using a simple YAML format, eliminating the need to write Python code for orchestration. This is ideal for rapid prototyping and for non-programmers to configure agents.
+### 1.A 無需程式碼建構代理 (代理設定)
 
-#### **Getting Started with Agent Config**
+ADK 允許您使用簡單的 YAML 格式定義代理、工具，甚至多代理工作流，無需為編排編寫 Python 程式碼。這對於快速原型設計和讓非程式設計師設定代理非常理想。
 
-*   **Create a Config-based Agent**:
-    ```bash
-    adk create --type=config my_yaml_agent
-    ```
-    This generates a `my_yaml_agent/` folder with `root_agent.yaml` and `.env` files.
+#### **開始使用代理設定**
 
-*   **Environment Setup** (in `.env` file):
-    ```bash
-    # For Google AI Studio (simpler setup)
-    GOOGLE_GENAI_USE_VERTEXAI=0
-    GOOGLE_API_KEY=<your-Google-Gemini-API-key>
-    
-    # For Google Cloud Vertex AI (production)
-    GOOGLE_GENAI_USE_VERTEXAI=1
-    GOOGLE_CLOUD_PROJECT=<your_gcp_project>
-    GOOGLE_CLOUD_LOCATION=us-central1
-    ```
+- **建立一個基於設定的代理**：
 
-#### **Core Agent Config Structure**
+  ```bash
+  # 使用 adk create 指令並指定類型為 config
+  adk create --type=config my_yaml_agent
+  ```
 
-*   **Basic Agent (`root_agent.yaml`)**:
-    ```yaml
-    # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
-    name: assistant_agent
-    model: gemini-2.5-flash
-    description: A helper agent that can answer users' various questions.
-    instruction: You are an agent to help answer users' various questions.
-    ```
+  這會產生一個 `my_yaml_agent/` 資料夾，其中包含 `root_agent.yaml` 和 `.env` 檔案。
 
-*   **Agent with Built-in Tools**:
-    ```yaml
-    name: search_agent
-    model: gemini-2.0-flash
-    description: 'an agent whose job it is to perform Google search queries and answer questions about the results.'
-    instruction: You are an agent whose job is to perform Google search queries and answer questions about the results.
-    tools:
-      - name: google_search # Built-in ADK tool
-    ```
+- **環境設定** (在 `.env` 檔案中)：
 
-*   **Agent with Custom Tools**:
-    ```yaml
-    agent_class: LlmAgent
-    model: gemini-2.5-flash
-    name: prime_agent
-    description: Handles checking if numbers are prime.
-    instruction: |
-      You are responsible for checking whether numbers are prime.
-      When asked to check primes, you must call the check_prime tool with a list of integers.
-      Never attempt to determine prime numbers manually.
-    tools:
-      - name: ma_llm.check_prime # Reference to Python function
-    ```
+  ```bash
+  # 對於 Google AI Studio (設定較簡單)
+  GOOGLE_GENAI_USE_VERTEXAI=0
+  GOOGLE_API_KEY=<your-Google-Gemini-API-key>
 
-*   **Multi-Agent System with Sub-Agents**:
-    ```yaml
-    agent_class: LlmAgent
-    model: gemini-2.5-flash
-    name: root_agent
-    description: Learning assistant that provides tutoring in code and math.
-    instruction: |
-      You are a learning assistant that helps students with coding and math questions.
-      
-      You delegate coding questions to the code_tutor_agent and math questions to the math_tutor_agent.
-      
-      Follow these steps:
-      1. If the user asks about programming or coding, delegate to the code_tutor_agent.
-      2. If the user asks about math concepts or problems, delegate to the math_tutor_agent.
-      3. Always provide clear explanations and encourage learning.
-    sub_agents:
-      - config_path: code_tutor_agent.yaml
-      - config_path: math_tutor_agent.yaml
-    ```
+  # 對於 Google Cloud Vertex AI (生產環境)
+  GOOGLE_GENAI_USE_VERTEXAI=1
+  GOOGLE_CLOUD_PROJECT=<your_gcp_project>
+  GOOGLE_CLOUD_LOCATION=us-central1
+  ```
 
-#### **Loading Agent Config in Python**
+#### **核心代理設定結構**
+
+- **基本代理 (`root_agent.yaml`)**：
+
+  ```yaml
+  # yaml-language-server: $schema=https://raw.githubusercontent.com/google/adk-python/refs/heads/main/src/google/adk/agents/config_schemas/AgentConfig.json
+  # 代理的名稱
+  name: assistant_agent
+  # 使用的 LLM 模型
+  model: gemini-2.5-flash
+  # 代理的描述，用於多代理委派
+  description: 一個可以回答使用者各種問題的助手代理。
+  # 給予 LLM 的指令，定義其角色和行為
+  instruction: 你是一個幫助回答使用者各種問題的代理。
+  ```
+
+- **帶有內建工具的代理**：
+
+  ```yaml
+  # 代理名稱
+  name: search_agent
+  # 使用的模型
+  model: gemini-2.0-flash
+  # 代理描述
+  description: '一個負責執行 Google 搜尋查詢並回答有關結果問題的代理。'
+  # 代理指令
+  instruction: 你是一個負責執行 Google 搜尋查詢並回答有關結果問題的代理。
+  # 此代理可用的工具列表
+  tools:
+    - name: google_search # ADK 內建工具
+  ```
+
+- **帶有自訂工具的代理**：
+
+  ```yaml
+  # 指定代理的類別
+  agent_class: LlmAgent
+  # 使用的模型
+  model: gemini-2.5-flash
+  # 代理名稱
+  name: prime_agent
+  # 代理描述
+  description: 處理檢查數字是否為質數。
+  # 代理指令，指導 LLM 如何使用工具
+  instruction: |
+    你負責檢查數字是否為質數。
+    當被要求檢查質數時，你必須使用整數列表呼叫 check_prime 工具。
+    絕不嘗試手動判斷質數。
+  # 工具列表，這裡參考一個 Python 函式
+  tools:
+    - name: ma_llm.check_prime # 參考 Python 函式
+  ```
+
+- **帶有子代理的多代理系統**：
+
+  ```yaml
+  # 指定代理類別
+  agent_class: LlmAgent
+  # 使用的模型
+  model: gemini-2.5-flash
+  # 根代理的名稱
+  name: root_agent
+  # 代理描述
+  description: 提供程式碼和數學輔導的學習助手。
+  # 代理指令，指導如何委派任務給子代理
+  instruction: |
+    你是一個幫助學生解決程式碼和數學問題的學習助手。
+
+    你將程式碼問題委派給 code_tutor_agent，將數學問題委派給 math_tutor_agent。
+
+    請遵循以下步驟：
+    1. 如果使用者詢問有關程式設計或編碼的問題，委派給 code_tutor_agent。
+    2. 如果使用者詢問有關數學概念或問題，委派給 math_tutor_agent。
+    3. 始終提供清晰的解釋並鼓勵學習。
+  # 子代理列表，透過設定檔路徑引用
+  sub_agents:
+    - config_path: code_tutor_agent.yaml
+    - config_path: math_tutor_agent.yaml
+  ```
+
+#### **在 Python 中載入代理設定**
 
 ```python
+# 從 ADK 匯入代理設定工具程式
 from google.adk.agents import config_agent_utils
+
+# 從 YAML 設定檔載入根代理
+# "{agent_folder}/root_agent.yaml" 是你的 YAML 檔案路徑
 root_agent = config_agent_utils.from_config("{agent_folder}/root_agent.yaml")
 ```
 
-#### **Running Agent Config Agents**
+#### **執行代理設定代理**
 
-From the agent directory, use any of these commands:
-*   `adk web` - Launch web UI interface
-*   `adk run` - Run in terminal without UI
-*   `adk api_server` - Run as a service for other applications
+從代理目錄中，使用以下任一指令：
 
-#### **Deployment Support**
+- `adk web` - 啟動網頁 UI 介面
+- `adk run` - 在終端機中執行，無 UI
+- `adk api_server` - 作為服務執行，供其他應用程式使用
 
-Agent Config agents can be deployed using:
-*   `adk deploy cloud_run` - Deploy to Google Cloud Run
-*   `adk deploy agent_engine` - Deploy to Vertex AI Agent Engine
+#### **部署支援**
 
-#### **Key Features & Capabilities**
+代理設定代理可以使用以下方式部署：
 
-*   **Supported Built-in Tools**: `google_search`, `load_artifacts`, `url_context`, `exit_loop`, `preload_memory`, `get_user_choice`, `enterprise_web_search`, `load_web_page`
-*   **Custom Tool Integration**: Reference Python functions using fully qualified module paths
-*   **Multi-Agent Orchestration**: Link agents via `config_path` references
-*   **Schema Validation**: Built-in YAML schema for IDE support and validation
+- `adk deploy cloud_run` - 部署到 Google Cloud Run
+- `adk deploy agent_engine` - 部署到 Vertex AI Agent Engine
 
-#### **Current Limitations** (Experimental Feature)
+#### **主要功能與能力**
 
-*   **Model Support**: Only Gemini models currently supported
-*   **Language Support**: Custom tools must be written in Python
-*   **Unsupported Agent Types**: `LangGraphAgent`, `A2aAgent`
-*   **Unsupported Tools**: `AgentTool`, `LongRunningFunctionTool`, `VertexAiSearchTool`, `MCPToolset`, `CrewaiTool`, `LangchainTool`, `ExampleTool`
+- **支援的內建工具**：`google_search`, `load_artifacts`, `url_context`, `exit_loop`, `preload_memory`, `get_user_choice`, `enterprise_web_search`, `load_web_page`
+- **自訂工具整合**：使用完整的模組路徑參考 Python 函式
+- **多代理編排**：透過 `config_path` 參考連結代理
+- **結構驗證**：內建的 YAML 結構，用於 IDE 支援和驗證
 
-For complete examples and reference, see the [ADK samples repository](https://github.com/search?q=repo%3Agoogle%2Fadk-python+path%3A%2F%5Econtributing%5C%2Fsamples%5C%2F%2F+.yaml&type=code).
+#### **目前限制** (實驗性功能)
+
+- **模型支援**：目前僅支援 Gemini 模型
+- **語言支援**：自訂工具必須用 Python 編寫
+- **不支援的代理類型**：`LangGraphAgent`, `A2aAgent`
+- **不支援的工具**：`AgentTool`, `LongRunningFunctionTool`, `VertexAiSearchTool`, `MCPToolset`, `LangchainTool`, `ExampleTool`
+
+有關完整範例和參考，請參閱 [ADK 範例儲存庫](https://github.com/search?q=repo%3Agoogle%2Fadk-python+path%3A%2F%5Econtributing%5C%2Fsamples%5C%2F%2F+.yaml&type=code)。
 
 ---
 
-## 2. Agent Definitions (`LlmAgent`)
+## 2. 代理定義 (`LlmAgent`)
 
-The `LlmAgent` is the cornerstone of intelligent behavior, leveraging an LLM for reasoning and decision-making.
+`LlmAgent` 是智慧行為的基石，利用 LLM 進行推理和決策。
 
-### 2.1 Basic `LlmAgent` Setup
+### 2.1 基本 `LlmAgent` 設定
 
 ```python
+# 從 ADK 匯入 Agent 類別
 from google.adk.agents import Agent
 
+# 定義一個工具函式，用於獲取指定城市的目前時間
 def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city."""
-    # Mock implementation
+    """返回指定城市的目前時間。"""
+    # 模擬實作
     if city.lower() == "new york":
         return {"status": "success", "time": "10:30 AM EST"}
-    return {"status": "error", "message": f"Time for {city} not available."}
+    return {"status": "error", "message": f"無法取得 {city} 的時間。"}
 
+# 建立你的第一個 LlmAgent 實例
 my_first_llm_agent = Agent(
+    # 代理的名稱
     name="time_teller_agent",
-    model="gemini-2.5-flash", # Essential: The LLM powering the agent
-    instruction="You are a helpful assistant that tells the current time in cities. Use the 'get_current_time' tool for this purpose.",
-    description="Tells the current time in a specified city.", # Crucial for multi-agent delegation
-    tools=[get_current_time] # List of callable functions/tool instances
+    # 必要：驅動代理的 LLM 模型
+    model="gemini-3-flash-preview",
+    # 給予 LLM 的指令，指導其行為和工具使用
+    instruction="你是一個樂於助人的助手，可以告知城市的目前時間。請使用 'get_current_time' 工具來完成此任務。",
+    # 代理的描述，對於多代理委派至關重要
+    description="告知指定城市的目前時間。",
+    # 提供給代理的工具列表，可以是函式或工具實例
+    tools=[get_current_time]
 )
 ```
 
-### 2.2 Advanced `LlmAgent` Configuration
+### 2.2 進階 `LlmAgent` 設定
 
-*   **`generate_content_config`**: Controls LLM generation parameters (temperature, token limits, safety).
+- **`generate_content_config`**：控制 LLM 生成參數 (溫度、權杖限制、安全性)。
+
+  ```python
+  # 從 google.genai 匯入類型定義
+  from google.genai import types as genai_types
+  # 從 ADK 匯入 Agent 類別
+  from google.adk.agents import Agent
+
+  # 設定內容生成組態
+  gen_config = genai_types.GenerateContentConfig(
+      # 控制隨機性 (0.0-1.0)，值越低越具確定性。
+      temperature=0.2,
+      # 核心取樣：從 top_p 機率質量中取樣。
+      top_p=0.9,
+      # Top-k 取樣：從 k 個最可能的權杖中取樣。
+      top_k=40,
+      # LLM 回應的最大權杖數。
+      max_output_tokens=1024,
+      # LLM 生成時遇到這些序列會停止。
+      stop_sequences=["## END"]
+  )
+  # 建立 Agent 實例並傳入生成組態
+  agent = Agent(
+      # ... 基本設定 ...
+      generate_content_config=gen_config
+  )
+  ```
+
+- **`output_key`**：自動將代理的最終文字或結構化 (如果使用 `output_schema`) 回應儲存到 `session.state` 中，並使用此鍵。這有助於代理之間的資料流動。
+
+  ```python
+  # 建立 Agent 實例並設定 output_key
+  agent = Agent(
+      # ... 基本設定 ...
+      output_key="llm_final_response_text"
+  )
+  # 代理執行後，session.state['llm_final_response_text'] 將包含其輸出。
+  ```
+
+- **`input_schema` & `output_schema`**：使用 Pydantic 模型定義嚴格的 JSON 輸入/輸出格式。
+  > **警告**：使用 `output_schema` 會強制 LLM 生成 JSON，並**停用**其使用工具或委派給其他代理的能力。
+
+#### **範例：定義和使用結構化輸出**
+
+這是讓 LLM 產生可預測、可解析的 JSON 最可靠的方法，這對於多代理工作流至關重要。
+
+1.  **使用 Pydantic 定義結構：**
+
     ```python
-    from google.genai import types as genai_types
-    from google.adk.agents import Agent
-
-    gen_config = genai_types.GenerateContentConfig(
-        temperature=0.2,            # Controls randomness (0.0-1.0), lower for more deterministic.
-        top_p=0.9,                  # Nucleus sampling: sample from top_p probability mass.
-        top_k=40,                   # Top-k sampling: sample from top_k most likely tokens.
-        max_output_tokens=1024,     # Max tokens in LLM's response.
-        stop_sequences=["## END"]   # LLM will stop generating if these sequences appear.
-    )
-    agent = Agent(
-        # ... basic config ...
-        generate_content_config=gen_config
-    )
-    ```
-
-*   **`output_key`**: Automatically saves the agent's final text or structured (if `output_schema` is used) response to the `session.state` under this key. Facilitates data flow between agents.
-    ```python
-    agent = Agent(
-        # ... basic config ...
-        output_key="llm_final_response_text"
-    )
-    # After agent runs, session.state['llm_final_response_text'] will contain its output.
-    ```
-
-*   **`input_schema` & `output_schema`**: Define strict JSON input/output formats using Pydantic models.
-    > **Warning**: Using `output_schema` forces the LLM to generate JSON and **disables** its ability to use tools or delegate to other agents.
-
-#### **Example: Defining and Using Structured Output**
-
-This is the most reliable way to make an LLM produce predictable, parseable JSON, which is essential for multi-agent workflows.
-
-1.  **Define the Schema with Pydantic:**
-    ```python
+    # 從 pydantic 匯入 BaseModel 和 Field
     from pydantic import BaseModel, Field
+    # 從 typing 匯入 Literal
     from typing import Literal
 
+    # 定義一個模型，代表用於網頁搜尋的特定搜尋查詢
     class SearchQuery(BaseModel):
-        """Model representing a specific search query for web search."""
+        """代表用於網頁搜尋的特定搜尋查詢的模型。"""
         search_query: str = Field(
-            description="A highly specific and targeted query for web search."
+            description="一個用於網頁搜尋的高度具體和有針對性的查詢。"
         )
 
+    # 定義一個模型，用於提供對研究品質的評估回饋
     class Feedback(BaseModel):
-        """Model for providing evaluation feedback on research quality."""
+        """用於提供對研究品質評估回饋的模型。"""
+        # 評估結果。如果研究足夠，則為 'pass'；如果需要修訂，則為 'fail'。
         grade: Literal["pass", "fail"] = Field(
-            description="Evaluation result. 'pass' if the research is sufficient, 'fail' if it needs revision."
+            description="評估結果。如果研究足夠，則為 'pass'；如果需要修訂，則為 'fail'。"
         )
+        # 評估的詳細解釋，突顯研究的優點和/或缺點。
         comment: str = Field(
-            description="Detailed explanation of the evaluation, highlighting strengths and/or weaknesses of the research."
+            description="評估的詳細解釋，突顯研究的優點和/或缺點。"
         )
+        # 一個具體的、有針對性的後續搜尋查詢列表，用於修補研究空白。如果評分為 'pass'，此項應為 null 或空。
         follow_up_queries: list[SearchQuery] | None = Field(
             default=None,
-            description="A list of specific, targeted follow-up search queries needed to fix research gaps. This should be null or empty if the grade is 'pass'."
+            description="一個具體的、有針對性的後續搜尋查詢列表，用於修補研究空白。如果評分為 'pass'，此項應為 null 或空。"
         )
     ```
-    *   **`BaseModel` & `Field`**: Define data types, defaults, and crucial `description` fields. These descriptions are sent to the LLM to guide its output.
-    *   **`Literal`**: Enforces strict enum-like values (`"pass"` or `"fail"`), preventing the LLM from hallucinating unexpected values.
 
-2.  **Assign the Schema to an `LlmAgent`:**
+    - **`BaseModel` & `Field`**：定義資料類型、預設值和至關重要的 `description` 欄位。這些描述會被傳送給 LLM 以指導其輸出。
+    - **`Literal`**：強制執行嚴格的列舉式值 (`"pass"` 或 `"fail"`)，防止 LLM 產生意想不到的值。
+
+2.  **將結構指派給 `LlmAgent`：**
     ```python
+    # 建立一個研究評估員 LlmAgent
     research_evaluator = LlmAgent(
         name="research_evaluator",
-        model="gemini-2.5-pro",
-        instruction="""You are a meticulous quality assurance analyst. Evaluate the research findings in 'section_research_findings' and be very critical.
-        If you find significant gaps, assign a grade of 'fail', write a detailed comment, and generate 5-7 specific follow-up queries.
-        If the research is thorough, grade it 'pass'.
-        Your response must be a single, raw JSON object validating against the 'Feedback' schema.
+        model="gemini-3-pro-preview",
+        instruction="""你是一位一絲不苟的品質保證分析師。評估 'section_research_findings' 中的研究發現，並要非常挑剔。
+        如果你發現重大空白，給予 'fail' 的評分，撰寫詳細評論，並產生 5-7 個具體的後續查詢。
+        如果研究很詳盡，則評分為 'pass'。
+        你的回應必須是一個符合 'Feedback' 結構的單一、原始 JSON 物件。
         """,
-        output_schema=Feedback, # This forces the LLM to output JSON matching the Feedback model.
-        output_key="research_evaluation", # The resulting JSON object will be saved to state.
-        disallow_transfer_to_peers=True, # Prevents this agent from delegating. Its job is only to evaluate.
+        # 這會強制 LLM 輸出符合 Feedback 模型的 JSON。
+        output_schema=Feedback,
+        # 產生的 JSON 物件將被儲存到狀態中。
+        output_key="research_evaluation",
+        # 防止此代理進行委派。它的工作只是評估。
+        disallow_transfer_to_peers=True,
     )
     ```
 
-*   **`include_contents`**: Controls whether the conversation history is sent to the LLM.
-    *   `'default'` (default): Sends relevant history.
-    *   `'none'`: Sends no history; agent operates purely on current turn's input and `instruction`. Useful for stateless API wrapper agents.
+- **`include_contents`**：控制是否將對話歷史記錄傳送給 LLM。
+
+  - `'default'` (預設)：傳送相關歷史記錄。
+  - `'none'`：不傳送任何歷史記錄；代理僅根據當前回合的輸入和 `instruction` 運作。適用於無狀態的 API 包裝代理。
+
+  ```python
+  # 建立 Agent 實例並設定 include_contents
+  agent = Agent(..., include_contents='none')
+  ```
+
+- **`planner`**：指派一個 `BasePlanner` 實例以啟用多步驟推理。
+
+  - **`BuiltInPlanner`**：利用模型原生的「思考」或規劃能力 (例如 Gemini)。
+
     ```python
-    agent = Agent(..., include_contents='none')
+    # 從 ADK 規劃器匯入 BuiltInPlanner
+    from google.adk.planners import BuiltInPlanner
+    # 從 google.genai.types 匯入 ThinkingConfig
+    from google.genai.types import ThinkingConfig
+
+    # 建立 Agent 實例並設定 planner
+    agent = Agent(
+        model="gemini-3-flash-preview",
+        planner=BuiltInPlanner(
+            # 設定思考組態以包含思考過程
+            thinking_config=ThinkingConfig(include_thoughts=True)
+        ),
+        # ... 其他工具 ...
+    )
     ```
 
-*   **`planner`**: Assign a `BasePlanner` instance to enable multi-step reasoning.
-    *   **`BuiltInPlanner`**: Leverages a model's native "thinking" or planning capabilities (e.g., Gemini).
-        ```python
-        from google.adk.planners import BuiltInPlanner
-        from google.genai.types import ThinkingConfig
+  - **`PlanReActPlanner`**：指示模型遵循結構化的 Plan-Reason-Act 輸出格式，適用於沒有內建規劃能力的模型。
 
-        agent = Agent(
-            model="gemini-2.5-flash",
-            planner=BuiltInPlanner(
-                thinking_config=ThinkingConfig(include_thoughts=True)
-            ),
-            # ... tools ...
-        )
-        ```
-    *   **`PlanReActPlanner`**: Instructs the model to follow a structured Plan-Reason-Act output format, useful for models without built-in planning.
+- **`code_executor`**：指派一個 `BaseCodeExecutor` 以允許代理執行程式碼區塊。
 
-*   **`code_executor`**: Assign a `BaseCodeExecutor` to allow the agent to execute code blocks.
-    *   **`BuiltInCodeExecutor`**: The standard, sandboxed code executor provided by ADK for safe execution.
-        ```python
-        from google.adk.code_executors import BuiltInCodeExecutor
-        agent = Agent(
-            name="code_agent",
-            model="gemini-2.5-flash",
-            instruction="Write and execute Python code to solve math problems.",
-            code_executor=BuiltInCodeExecutor() # Corrected from a list to an instance
-        )
-        ```
+  - **`BuiltInCodeExecutor`**：ADK 提供的標準、沙箱化的程式碼執行器，用於安全執行。
+    ```python
+    # 從 ADK 程式碼執行器匯入 BuiltInCodeExecutor
+    from google.adk.code_executors import BuiltInCodeExecutor
+    # 建立 Agent 實例並設定 code_executor
+    agent = Agent(
+        name="code_agent",
+        model="gemini-3-flash-preview",
+        instruction="編寫並執行 Python 程式碼來解決數學問題。",
+        # 從列表更正為實例
+        code_executor=BuiltInCodeExecutor()
+    )
+    ```
 
-*   **Callbacks**: Hooks for observing and modifying agent behavior at key lifecycle points (`before_model_callback`, `after_tool_callback`, etc.). (Covered in Callbacks).
+- **Callbacks**：在關鍵生命週期點觀察和修改代理行為的掛鉤 (`before_model_callback`, `after_tool_callback` 等)。(在回呼函式章節中介紹)。
 
-### 2.3 LLM Instruction Crafting (`instruction`)
+### 2.3 LLM 指令設計 (`instruction`)
 
-The `instruction` is critical. It guides the LLM's behavior, persona, and tool usage. The following examples demonstrate powerful techniques for creating specialized, reliable agents.
+`instruction` 至關重要。它指導 LLM 的行為、角色和工具使用。以下範例展示了創建專業、可靠代理的強大技術。
 
-**Best Practices & Examples:**
+**最佳實踐與範例：**
 
-*   **Be Specific & Concise**: Avoid ambiguity.
-*   **Define Persona & Role**: Give the LLM a clear role.
-*   **Constrain Behavior & Tool Use**: Explicitly state what the LLM *and should not* do.
-*   **Define Output Format**: Tell the LLM *exactly* what its output should look like, especially when not using `output_schema`.
-*   **Dynamic Injection**: Use `{state_key}` to inject runtime data from `session.state` into the prompt.
-*   **Iteration**: Test, observe, and refine instructions.
+- **具體且簡潔**：避免模稜兩可。
+- **定義角色與職責**：給予 LLM 一個清晰的角色。
+- **約束行為與工具使用**：明確說明 LLM *應該*和*不應該*做什麼。
+- **定義輸出格式**：告訴 LLM 它的輸出*確切*應該是什麼樣子，尤其是在不使用 `output_schema` 時。
+- **動態注入**：使用 `{state_key}` 將執行期資料從 `session.state` 注入到提示中。
+- **迭代**：測試、觀察並改進指令。
 
-**Example 1: Constraining Tool Use and Output Format**
+**範例 1：約束工具使用和輸出格式**
+
 ```python
+# 匯入 datetime 模組
 import datetime
-from google.adk.tools import google_search   
+# 從 ADK 工具匯入 google_search
+from google.adk.tools import google_search
 
-
+# 建立一個計畫生成器 LlmAgent
 plan_generator = LlmAgent(
-    model="gemini-2.5-flash",
+    model="gemini-3-flash-preview",
     name="plan_generator",
-    description="Generates a 4-5 line action-oriented research plan.",
+    description="產生一個 4-5 行以行動為導向的研究計畫。",
     instruction=f"""
-    You are a research strategist. Your job is to create a high-level RESEARCH PLAN, not a summary.
-    **RULE: Your output MUST be a bulleted list of 4-5 action-oriented research goals or key questions.**
-    - A good goal starts with a verb like "Analyze," "Identify," "Investigate."
-    - A bad output is a statement of fact like "The event was in April 2024."
-    **TOOL USE IS STRICTLY LIMITED:**
-    Your goal is to create a generic, high-quality plan *without searching*.
-    Only use `google_search` if a topic is ambiguous and you absolutely cannot create a plan without it.
-    You are explicitly forbidden from researching the *content* or *themes* of the topic.
-    Current date: {datetime.datetime.now().strftime("%Y-%m-%d")}
+    你是一位研究策略師。你的工作是創建一個高層次的「研究計畫」，而不是摘要。
+    **規則：你的輸出必須是一個包含 4-5 個以行動為導向的研究目標或關鍵問題的項目符號列表。**
+    - 一個好的目標以動詞開頭，如「分析」、「識別」、「調查」。
+    - 一個不好的輸出是事實陳述，如「該事件發生在 2024 年 4 月」。
+    **工具使用受到嚴格限制：**
+    你的目標是創建一個通用的、高品質的計畫，*而無需搜尋*。
+    只有當主題模稜兩可且你絕對無法在沒有它的情況下創建計畫時，才使用 `google_search`。
+    你被明確禁止研究主題的*內容*或*主題*。
+    目前日期：{datetime.datetime.now().strftime("%Y-%m-%d")}
     """,
     tools=[google_search],
 )
 ```
 
-**Example 2: Injecting Data from State and Specifying Custom Tags**
-This agent's `instruction` relies on data placed in `session.state` by previous agents.
+**範例 2：從狀態注入資料並指定自訂標籤**
+此代理的 `instruction` 依賴於先前代理放置在 `session.state` 中的資料。
+
 ```python
+# 建立一個報告撰寫器 LlmAgent
 report_composer = LlmAgent(
-    model="gemini-2.5-pro",
+    model="gemini-3-pro-preview",
     name="report_composer_with_citations",
-    include_contents="none", # History not needed; all data is injected.
-    description="Transforms research data and a markdown outline into a final, cited report.",
+    # 不需要歷史記錄；所有資料都已注入。
+    include_contents="none",
+    description="將研究資料和 markdown 大綱轉換為最終的、帶有引用的報告。",
     instruction="""
-    Transform the provided data into a polished, professional, and meticulously cited research report.
+    將提供的資料轉換為一份精美、專業且引用嚴謹的研究報告。
 
     ---
-    ### INPUT DATA
-    *   Research Plan: `{research_plan}`
-    *   Research Findings: `{section_research_findings}`
-    *   Citation Sources: `{sources}`
-    *   Report Structure: `{report_sections}`
+    ### 輸入資料
+    *   研究計畫：`{research_plan}`
+    *   研究發現：`{section_research_findings}`
+    *   引用來源：`{sources}`
+    *   報告結構：`{report_sections}`
 
     ---
-    ### CRITICAL: Citation System
-    To cite a source, you MUST insert a special citation tag directly after the claim it supports.
+    ### 關鍵：引用系統
+    要引用一個來源，你必須在其支持的主張之後直接插入一個特殊的引用標籤。
 
-    **The only correct format is:** `<cite source="src-ID_NUMBER" />`
+    **唯一正確的格式是：**`<cite source="src-ID_NUMBER" />`
 
     ---
-    ### Final Instructions
-    Generate a comprehensive report using ONLY the `<cite source="src-ID_NUMBER" />` tag system for all citations.
-    The final report must strictly follow the structure provided in the **Report Structure** markdown outline.
-    Do not include a "References" or "Sources" section; all citations must be in-line.
+    ### 最終指令
+    使用「僅」`<cite source="src-ID_NUMBER" />` 標籤系統為所有引用生成一份綜合報告。
+    最終報告必須嚴格遵循**報告結構** markdown 大綱中提供的結構。
+    不要包含「參考文獻」或「來源」部分；所有引用都必須是行內引用。
     """,
     output_key="final_cited_report",
 )
 ```
 
-### 2.4 Production Wrapper (`App`)
-Wraps the `root_agent` to enable production-grade runtime features that an `Agent` cannot handle alone.
+### 2.4 生產環境包裝器 (`App`)
+
+包裝 `root_agent` 以啟用 `Agent` 單獨無法處理的生產級執行期功能。
 
 ```python
+# 從 ADK 應用程式匯入 App
 from google.adk.apps.app import App
+# 從 ADK 匯入上下文快取設定
 from google.adk.agents.context_cache_config import ContextCacheConfig
+# 從 ADK 匯入事件壓縮設定
 from google.adk.apps.events_compaction_config import EventsCompactionConfig
+# 從 ADK 匯入可恢復性設定
 from google.adk.apps.resumability_config import ResumabilityConfig
 
+# 建立一個生產環境 App 實例
 production_app = App(
     name="my_app",
     root_agent=my_agent,
-    # 1. Reduce costs/latency for long contexts
+    # 1. 為長上下文降低成本/延遲
     context_cache_config=ContextCacheConfig(min_tokens=2048, ttl_seconds=600),
-    # 2. Allow resuming crashed workflows from last state
+    # 2. 允許從上次狀態恢復崩潰的工作流
     resumability_config=ResumabilityConfig(is_resumable=True),
-    # 3. Manage long conversation history automatically
+    # 3. 自動管理長對話歷史
     events_compaction_config=EventsCompactionConfig(compaction_interval=5, overlap_size=1)
 )
 
-# Usage: Pass 'app' instead of 'agent' to the Runner
+# 用法：將 'app' 而不是 'agent' 傳遞給 Runner
 # runner = Runner(app=production_app, ...)
 ```
 
 ---
 
-## 3. Orchestration with Workflow Agents
+## 3. 使用工作流代理進行編排
 
-Workflow agents (`SequentialAgent`, `ParallelAgent`, `LoopAgent`) provide deterministic control flow, combining LLM capabilities with structured execution. They do **not** use an LLM for their own orchestration logic.
+工作流代理 (`SequentialAgent`, `ParallelAgent`, `LoopAgent`) 提供確定性的流程控制，將 LLM 的能力與結構化執行相結合。它們**不**使用 LLM 來進行自身的編排邏輯。
 
-### 3.1 `SequentialAgent`: Linear Execution
+### 3.1 `SequentialAgent`：線性執行
 
-Executes `sub_agents` one after another in the order defined. The `InvocationContext` is passed along, allowing state changes to be visible to subsequent agents.
+按照定義的順序一個接一個地執行 `sub_agents`。`InvocationContext` 會被傳遞下去，使得狀態變更對後續的代理可見。
 
 ```python
+# 從 ADK 匯入 SequentialAgent 和 Agent
 from google.adk.agents import SequentialAgent, Agent
 
-# Agent 1: Summarizes a document and saves to state
+# 代理 1：摘要文件並儲存到狀態
 summarizer = Agent(
     name="DocumentSummarizer",
-    model="gemini-2.5-flash",
-    instruction="Summarize the provided document in 3 sentences.",
-    output_key="document_summary" # Output saved to session.state['document_summary']
+    model="gemini-3-flash-preview",
+    instruction="用 3 個句子摘要提供的文件。",
+    # 輸出儲存到 session.state['document_summary']
+    output_key="document_summary"
 )
 
-# Agent 2: Generates questions based on the summary from state
+# 代理 2：根據狀態中的摘要生成問題
 question_generator = Agent(
     name="QuestionGenerator",
-    model="gemini-2.5-flash",
-    instruction="Generate 3 comprehension questions based on this summary: {document_summary}",
-    # 'document_summary' is dynamically injected from session.state
+    model="gemini-3-flash-preview",
+    instruction="根據此摘要生成 3 個理解問題：{document_summary}",
+    # 'document_summary' 從 session.state 動態注入
 )
 
+# 建立一個循序代理來串連 summarizer 和 question_generator
 document_pipeline = SequentialAgent(
     name="SummaryQuestionPipeline",
-    sub_agents=[summarizer, question_generator], # Order matters!
-    description="Summarizes a document then generates questions."
+    # 順序很重要！
+    sub_agents=[summarizer, question_generator],
+    description="摘要文件然後生成問題。"
 )
 ```
 
-### 3.2 `ParallelAgent`: Concurrent Execution
+### 3.2 `ParallelAgent`：並行執行
 
-Executes `sub_agents` simultaneously. Useful for independent tasks to reduce overall latency. All sub-agents share the same `session.state`.
+同時執行 `sub_agents`。適用於獨立任務以減少總體延遲。所有子代理共享相同的 `session.state`。
 
 ```python
+# 從 ADK 匯入 ParallelAgent, Agent, SequentialAgent
 from google.adk.agents import ParallelAgent, Agent, SequentialAgent
 
-# Agents to fetch data concurrently
+# 並行獲取資料的代理
 fetch_stock_price = Agent(name="StockPriceFetcher", ..., output_key="stock_data")
 fetch_news_headlines = Agent(name="NewsFetcher", ..., output_key="news_data")
 fetch_social_sentiment = Agent(name="SentimentAnalyzer", ..., output_key="sentiment_data")
 
-# Agent to merge results (runs after ParallelAgent, usually in a SequentialAgent)
+# 合併結果的代理 (在 ParallelAgent 之後執行，通常在 SequentialAgent 中)
 merger_agent = Agent(
     name="ReportGenerator",
-    model="gemini-2.5-flash",
-    instruction="Combine stock data: {stock_data}, news: {news_data}, and sentiment: {sentiment_data} into a market report."
+    model="gemini-3-flash-preview",
+    instruction="將股票資料：{stock_data}、新聞：{news_data} 和情緒：{sentiment_data} 合併成一份市場報告。"
 )
 
-# Pipeline to run parallel fetching then sequential merging
+# 執行並行獲取然後循序合併的管線
 market_analysis_pipeline = SequentialAgent(
     name="MarketAnalyzer",
     sub_agents=[
+        # 建立一個並行代理來同時執行多個獲取任務
         ParallelAgent(
             name="ConcurrentFetch",
             sub_agents=[fetch_stock_price, fetch_news_headlines, fetch_social_sentiment]
         ),
-        merger_agent # Runs after all parallel agents complete
+        # 在所有並行代理完成後執行
+        merger_agent
     ]
 )
 ```
-*   **Concurrency Caution**: When parallel agents write to the same `state` key, race conditions can occur. Always use distinct `output_key`s or manage concurrent writes explicitly.
 
-### 3.3 `LoopAgent`: Iterative Processes
+- **並行性警告**：當並行代理寫入相同的 `state` 鍵時，可能會發生競爭條件。請務必使用不同的 `output_key` 或明確管理並行寫入。
 
-Repeatedly executes its `sub_agents` (sequentially within each loop iteration) until a condition is met or `max_iterations` is reached.
+### 3.3 `LoopAgent`：迭代過程
 
-#### **Termination of `LoopAgent`**
-A `LoopAgent` terminates when:
-1.  `max_iterations` is reached.
-2.  Any `Event` yielded by a sub-agent (or a tool within it) sets `actions.escalate = True`. This provides dynamic, content-driven loop termination.
+重複執行其 `sub_agents` (在每個迴圈迭代中循序執行)，直到滿足條件或達到 `max_iterations`。
 
-#### **Example: Iterative Refinement Loop with a Custom `BaseAgent` for Control**
-This example shows a loop that continues until a condition, determined by an evaluation agent, is met.
+#### **`LoopAgent` 的終止**
+
+`LoopAgent` 在以下情況下終止：
+
+1.  達到 `max_iterations`。
+2.  子代理 (或其內部的工具) 產生的任何 `Event` 將 `actions.escalate = True`。這提供了動態的、由內容驅動的迴圈終止。
+
+#### **範例：使用自訂 `BaseAgent` 進行控制的迭代改進迴圈**
+
+此範例顯示一個迴圈，該迴圈會持續進行，直到滿足由評估代理決定的條件為止。
 
 ```python
+# 從 ADK 匯入 LoopAgent, Agent, BaseAgent
 from google.adk.agents import LoopAgent, Agent, BaseAgent
+# 從 ADK 匯入 Event, EventActions
 from google.adk.events import Event, EventActions
+# 從 ADK 匯入 InvocationContext
 from google.adk.agents.invocation_context import InvocationContext
+# 從 typing 匯入 AsyncGenerator
 from typing import AsyncGenerator
 
-# An LLM Agent that evaluates research and produces structured JSON output
+# 一個評估研究並產生結構化 JSON 輸出的 LLM 代理
 research_evaluator = Agent(
     name="research_evaluator",
-    # ... configuration from Section 2.2 ...
+    # ... 來自第 2.2 節的設定 ...
     output_schema=Feedback,
     output_key="research_evaluation",
 )
 
-# An LLM Agent that performs additional searches based on feedback
+# 一個根據回饋執行額外搜尋的 LLM 代理
 enhanced_search_executor = Agent(
     name="enhanced_search_executor",
-    instruction="Execute the follow-up queries from 'research_evaluation' and combine with existing findings.",
-    # ... other configurations ...
+    instruction="執行 'research_evaluation' 中的後續查詢，並與現有發現結合。",
+    # ... 其他設定 ...
 )
 
-# A custom BaseAgent to check the evaluation and stop the loop
+# 一個自訂的 BaseAgent，用於檢查評估並停止迴圈
 class EscalationChecker(BaseAgent):
-    """Checks research evaluation and escalates to stop the loop if grade is 'pass'."""
+    """檢查研究評估，如果評分為 'pass'，則提升以停止迴圈。"""
     async def _run_async_impl(self, ctx: InvocationContext) -> AsyncGenerator[Event, None]:
+        # 從會話狀態中獲取評估結果
         evaluation = ctx.session.state.get("research_evaluation")
+        # 如果評估結果存在且評分為 'pass'
         if evaluation and evaluation.get("grade") == "pass":
-            # The key to stopping the loop: yield an Event with escalate=True
+            # 停止迴圈的關鍵：產生一個 escalate=True 的事件
             yield Event(author=self.name, actions=EventActions(escalate=True))
         else:
-            # Let the loop continue
+            # 讓迴圈繼續
             yield Event(author=self.name)
 
-# Define the loop
+# 定義迴圈
 iterative_refinement_loop = LoopAgent(
     name="IterativeRefinementLoop",
     sub_agents=[
-        research_evaluator, # Step 1: Evaluate
-        EscalationChecker(name="EscalationChecker"), # Step 2: Check and maybe stop
-        enhanced_search_executor, # Step 3: Refine (only runs if loop didn't stop)
+        # 步驟 1：評估
+        research_evaluator,
+        # 步驟 2：檢查並可能停止
+        EscalationChecker(name="EscalationChecker"),
+        # 步驟 3：改進 (僅在迴圈未停止時執行)
+        enhanced_search_executor,
     ],
-    max_iterations=5, # Fallback to prevent infinite loops
-    description="Iteratively evaluates and refines research until it passes quality checks."
+    # 後備措施，防止無限迴圈
+    max_iterations=5,
+    description="迭代評估和改進研究，直到通過品質檢查。"
 )
 ```
 
 ---
 
-## 4. Multi-Agent Systems & Communication
+## 4. 多代理系統與通訊
 
-Building complex applications by composing multiple, specialized agents.
+透過組合多個專業化的代理來建構複雜的應用程式。
 
-### 4.1 Agent Hierarchy
+### 4.1 代理層級結構
 
-A hierarchical (tree-like) structure of parent-child relationships defined by the `sub_agents` parameter during `BaseAgent` initialization. An agent can only have one parent.
+在 `BaseAgent` 初始化期間由 `sub_agents` 參數定義的父子關係的層級 (樹狀) 結構。一個代理只能有一個父代理。
 
 ```python
-# Conceptual Hierarchy
-# Root
-# └── Coordinator (LlmAgent)
-#     ├── SalesAgent (LlmAgent)
-#     └── SupportAgent (LlmAgent)
-#     └── DataPipeline (SequentialAgent)
-#         ├── DataFetcher (LlmAgent)
-#         └── DataProcessor (LlmAgent)
+# 概念層級結構
+# 根
+# └── 協調器 (LlmAgent)
+#     ├── 銷售代理 (LlmAgent)
+#     └── 支援代理 (LlmAgent)
+#     └── 資料管線 (SequentialAgent)
+#         ├── 資料獲取器 (LlmAgent)
+#         └── 資料處理器 (LlmAgent)
 ```
 
-### 4.2 Inter-Agent Communication Mechanisms
+### 4.2 代理間通訊機制
 
-1.  **Shared Session State (`session.state`)**: The most common and robust method. Agents read from and write to the same mutable dictionary.
-    *   **Mechanism**: Agent A sets `ctx.session.state['key'] = value`. Agent B later reads `ctx.session.state.get('key')`. `output_key` on `LlmAgent` is a convenient auto-setter.
-    *   **Best for**: Passing intermediate results, shared configurations, and flags in pipelines (Sequential, Loop agents).
+1.  **共享會話狀態 (`session.state`)**：最常見且最穩健的方法。代理讀取和寫入同一個可變字典。
 
-2.  **LLM-Driven Delegation (`transfer_to_agent`)**: A `LlmAgent` can dynamically hand over control to another agent based on its reasoning.
-    *   **Mechanism**: The LLM generates a special `transfer_to_agent` function call. The ADK framework intercepts this, routes the next turn to the target agent.
-    *   **Prerequisites**:
-        *   The initiating `LlmAgent` needs `instruction` to guide delegation and `description` of the target agent(s).
-        *   Target agents need clear `description`s to help the LLM decide.
-        *   Target agent must be discoverable within the current agent's hierarchy (direct `sub_agent` or a descendant).
-    *   **Configuration**: Can be enabled/disabled via `disallow_transfer_to_parent` and `disallow_transfer_to_peers` on `LlmAgent`.
+    - **機制**：代理 A 設定 `ctx.session.state['key'] = value`。代理 B 稍後讀取 `ctx.session.state.get('key')`。`LlmAgent` 上的 `output_key` 是一個方便的自動設定器。
+    - **最適用於**：在管線 (循序、迴圈代理) 中傳遞中間結果、共享設定和旗標。
 
-3.  **Explicit Invocation (`AgentTool`)**: An `LlmAgent` can treat another `BaseAgent` instance as a callable tool.
-    *   **Mechanism**: Wrap the target agent (`target_agent`) in `AgentTool(agent=target_agent)` and add it to the calling `LlmAgent`'s `tools` list. The `AgentTool` generates a `FunctionDeclaration` for the LLM. When called, `AgentTool` runs the target agent and returns its final response as the tool result.
-    *   **Best for**: Hierarchical task decomposition, where a higher-level agent needs a specific output from a lower-level agent.
+2.  **LLM 驅動的委派 (`transfer_to_agent`)**：`LlmAgent` 可以根據其推理動態地將控制權移交給另一個代理。
 
-**Delegation vs. Agent-as-a-Tool**
-*   **Delegation (`sub_agents`)**: The parent agent *transfers control*. The sub-agent interacts directly with the user for subsequent turns until it finishes.
-*   **Agent-as-a-Tool (`AgentTool`)**: The parent agent *calls* another agent like a function. The parent remains in control, receives the sub-agent's entire interaction as a single tool result, and summarizes it for the user.
+    - **機制**：LLM 生成一個特殊的 `transfer_to_agent` 函式呼叫。ADK 框架會攔截此呼叫，將下一輪路由到目標代理。
+    - **先決條件**：
+      - 發起的 `LlmAgent` 需要 `instruction` 來指導委派，以及目標代理的 `description`。
+      - 目標代理需要清晰的 `description` 來幫助 LLM 做出決定。
+      - 目標代理必須在目前代理的層級結構中可被發現 (直接的 `sub_agent` 或後代)。
+    - **設定**：可以透過 `LlmAgent` 上的 `disallow_transfer_to_parent` 和 `disallow_transfer_to_peers` 來啟用/停用。
+
+3.  **明確呼叫 (`AgentTool`)**：`LlmAgent` 可以將另一個 `BaseAgent` 實例視為可呼叫的工具。
+    - **機制**：將目標代理 (`target_agent`) 包裝在 `AgentTool(agent=target_agent)` 中，並將其添加到呼叫 `LlmAgent` 的 `tools` 列表中。`AgentTool` 會為 LLM 生成一個 `FunctionDeclaration`。當被呼叫時，`AgentTool` 會執行目標代理並將其最終回應作為工具結果返回。
+    - **最適用於**：層級任務分解，其中較高層級的代理需要來自較低層級代理的特定輸出。
+
+**委派 vs. 代理即工具**
+
+- **委派 (`sub_agents`)**：父代理*轉移控制權*。子代理在後續的回合中直接與使用者互動，直到完成。
+- **代理即工具 (`AgentTool`)**：父代理像函式一樣*呼叫*另一個代理。父代理保持控制，接收子代理的整個互動作為單一工具結果，並為使用者總結。
 
 ```python
-# Delegation: "I'll let the specialist handle this conversation."
+# 委派：「我讓專家來處理這次對話。」
+# 根代理將專家代理設定為其子代理
 root = Agent(name="root", sub_agents=[specialist])
 
-# Agent-as-a-Tool: "I need the specialist to do a task and give me the results."
+# 代理即工具：「我需要專家完成一項任務並給我結果。」
+# 從 ADK 工具匯入 AgentTool
 from google.adk.tools import AgentTool
+# 根代理將專家代理包裝成工具使用
 root = Agent(name="root", tools=[AgentTool(specialist)])
 ```
 
-### 4.3 Common Multi-Agent Patterns
+### 4.3 常見的多代理模式
 
-*   **Coordinator/Dispatcher**: A central agent routes requests to specialized sub-agents (often via LLM-driven delegation).
-*   **Sequential Pipeline**: `SequentialAgent` orchestrates a fixed sequence of tasks, passing data via shared state.
-*   **Parallel Fan-Out/Gather**: `ParallelAgent` runs concurrent tasks, followed by a final agent that synthesizes results from state.
-*   **Review/Critique (Generator-Critic)**: `SequentialAgent` with a generator followed by a critic, often in a `LoopAgent` for iterative refinement.
-*   **Hierarchical Task Decomposition (Planner/Executor)**: High-level agents break down complex problems, delegating sub-tasks to lower-level agents (often via `AgentTool` and delegation).
+- **協調器/調度器**：一個中央代理將請求路由到專業的子代理 (通常透過 LLM 驅動的委派)。
+- **循序管線**：`SequentialAgent` 編排一個固定的任務序列，透過共享狀態傳遞資料。
+- **並行扇出/收集**：`ParallelAgent` 執行並行任務，然後由一個最終代理從狀態中合成結果。
+- **審查/評論 (生成器-評論家)**：`SequentialAgent` 帶有一個生成器，後跟一個評論家，通常在 `LoopAgent` 中進行迭代改進。
+- **層級任務分解 (規劃器/執行器)**：高層級代理分解複雜問題，將子任務委派給低層級代理 (通常透過 `AgentTool` 和委派)。
 
-#### **Example: Hierarchical Planner/Executor Pattern**
-This pattern combines several mechanisms. A top-level `interactive_planner_agent` uses another agent (`plan_generator`) as a tool to create a plan, then delegates the execution of that plan to a complex `SequentialAgent` (`research_pipeline`).
+#### **範例：層級規劃器/執行器模式**
+
+此模式結合了多種機制。一個頂層的 `interactive_planner_agent` 使用另一個代理 (`plan_generator`) 作為工具來創建計畫，然後將該計畫的執行委派給一個複雜的 `SequentialAgent` (`research_pipeline`)。
 
 ```python
+# 從 ADK 匯入 LlmAgent, SequentialAgent, LoopAgent
 from google.adk.agents import LlmAgent, SequentialAgent, LoopAgent
+# 從 ADK 工具匯入 AgentTool
 from google.adk.tools.agent_tool import AgentTool
 
-# Assume plan_generator, section_planner, research_evaluator, etc. are defined.
+# 假設 plan_generator, section_planner, research_evaluator 等都已定義。
 
-# The execution pipeline itself is a complex agent.
+# 執行管線本身就是一個複雜的代理。
 research_pipeline = SequentialAgent(
     name="research_pipeline",
-    description="Executes a pre-approved research plan. It performs iterative research, evaluation, and composes a final, cited report.",
+    description="執行一個預先批准的研究計畫。它執行迭代研究、評估，並撰寫一份最終的、帶有引用的報告。",
     sub_agents=[
         section_planner,
         section_researcher,
@@ -693,1033 +819,1201 @@ research_pipeline = SequentialAgent(
     ],
 )
 
-# The top-level agent that interacts with the user.
+# 與使用者互動的頂層代理。
 interactive_planner_agent = LlmAgent(
     name="interactive_planner_agent",
-    model="gemini-2.5-flash",
-    description="The primary research assistant. It collaborates with the user to create a research plan, and then executes it upon approval.",
+    model="gemini-3-flash-preview",
+    description="主要的研助理。它與使用者合作創建研究計畫，然後在批准後執行。",
     instruction="""
-    You are a research planning assistant. Your workflow is:
-    1.  **Plan:** Use the `plan_generator` tool to create a draft research plan.
-    2.  **Refine:** Incorporate user feedback until the plan is approved.
-    3.  **Execute:** Once the user gives EXPLICIT approval (e.g., "looks good, run it"), you MUST delegate the task to the `research_pipeline` agent.
-    Your job is to Plan, Refine, and Delegate. Do not do the research yourself.
+    你是一位研究規劃助理。你的工作流程是：
+    1.  **計畫：** 使用 `plan_generator` 工具創建一份研究計畫草案。
+    2.  **改進：** 納入使用者回饋，直到計畫被批准。
+    3.  **執行：** 一旦使用者給予「明確」批准 (例如，「看起來不錯，執行吧」)，你「必須」將任務委派給 `research_pipeline` 代理。
+    你的工作是計畫、改進和委派。不要自己做研究。
     """,
-    # The planner delegates to the pipeline.
+    # 規劃器將任務委派給管線。
     sub_agents=[research_pipeline],
-    # The planner uses another agent as a tool.
+    # 規劃器使用另一個代理作為工具。
     tools=[AgentTool(plan_generator)],
     output_key="research_plan",
 )
 
-# The root agent of the application is the top-level planner.
+# 應用程式的根代理是頂層規劃器。
 root_agent = interactive_planner_agent
 ```
 
-### 4.A. Distributed Communication (A2A Protocol)
+### 4.A. 分散式通訊 (A2A 協定)
 
-The Agent-to-Agent (A2A) Protocol enables agents to communicate over a network, even if they are written in different languages or run as separate services. Use A2A for integrating with third-party agents, building microservice-based agent architectures, or when a strong, formal API contract is needed. For internal code organization, prefer local sub-agents.
+代理對代理 (A2A) 協定使代理能夠透過網路進行通訊，即使它們是用不同的語言編寫或作為獨立的服務執行。使用 A2A 來與第三方代理整合、建構基於微服務的代理架構，或當需要強大、正式的 API 合約時。對於內部程式碼組織，請優先使用本地子代理。
 
-*   **Exposing an Agent**: Make an existing ADK agent available to others over A2A.
-    *   **`to_a2a()` Utility**: The simplest method. Wraps your `root_agent` and creates a runnable FastAPI app, auto-generating the required `agent.json` card.
-        ```python
-        from google.adk.a2a.utils.agent_to_a2a import to_a2a
-        # root_agent is your existing ADK Agent instance
-        a2a_app = to_a2a(root_agent, port=8001)
-        # Run with: uvicorn your_module:a2a_app --host localhost --port 8001
-        ```
-    *   **`adk api_server --a2a`**: A CLI command that serves agents from a directory. Requires you to manually create an `agent.json` card for each agent you want to expose.
+- **公開代理**：讓您現有的 ADK 代理可供其他代理透過 A2A 使用。
 
-*   **Consuming a Remote Agent**: Use a remote A2A agent as if it were a local agent.
-    *   **`RemoteA2aAgent`**: This agent acts as a client proxy. You initialize it with the URL to the remote agent's card.
-        ```python
-        from google.adk.a2a.remote_a2a_agent import RemoteA2aAgent
+  - **`to_a2a()` 工具程式**：最簡單的方法。包裝您的 `root_agent` 並創建一個可執行的 FastAPI 應用程式，自動生成所需的 `agent.json` 卡片。
+    ```python
+    # 從 ADK A2A 工具程式匯入 to_a2a
+    from google.adk.a2a.utils.agent_to_a2a import to_a2a
+    # root_agent 是您現有的 ADK Agent 實例
+    # 將代理轉換為 A2A 應用程式，並指定埠號
+    a2a_app = to_a2a(root_agent, port=8001)
+    # 使用 uvicorn 執行：uvicorn your_module:a2a_app --host localhost --port 8001
+    ```
+  - **`adk api_server --a2a`**：一個從目錄中提供代理服務的 CLI 指令。需要您為每個要公開的代理手動創建一個 `agent.json` 卡片。
 
-        # This agent can now be used as a sub-agent or tool
-        prime_checker_agent = RemoteA2aAgent(
-            name="prime_agent",
-            description="A remote agent that checks if numbers are prime.",
-            agent_card="http://localhost:8001/a2a/check_prime_agent/.well-known/agent.json"
-        )
-        ```
+- **使用遠端代理**：像使用本地代理一樣使用遠端 A2A 代理。
+
+  - **`RemoteA2aAgent`**：此代理作為客戶端代理。您使用遠端代理卡片的 URL 來初始化它。
+
+    ```python
+    # 從 ADK A2A 匯入 RemoteA2aAgent
+    from google.adk.a2a.remote_a2a_agent import RemoteA2aAgent
+
+    # 此代理現在可以作為子代理或工具使用
+    prime_checker_agent = RemoteA2aAgent(
+        name="prime_agent",
+        description="一個檢查數字是否為質數的遠端代理。",
+        # 遠端代理的 agent.json 卡片 URL
+        agent_card="http://localhost:8001/a2a/check_prime_agent/.well-known/agent.json"
+    )
+    ```
 
 ---
 
-## 5. Building Custom Agents (`BaseAgent`)
+## 5. 建構自訂代理 (`BaseAgent`)
 
-For unique orchestration logic that doesn't fit standard workflow agents, inherit directly from `BaseAgent`.
+對於不符合標準工作流代理的獨特編排邏輯，直接從 `BaseAgent` 繼承。
 
-### 5.1 When to Use Custom Agents
+### 5.1 何時使用自訂代理
 
-*   **Complex Conditional Logic**: `if/else` branching based on multiple state variables.
-*   **Dynamic Agent Selection**: Choosing which sub-agent to run based on runtime evaluation.
-*   **Direct External Integrations**: Calling external APIs or libraries directly within the orchestration flow.
-*   **Custom Loop/Retry Logic**: More sophisticated iteration patterns than `LoopAgent`, such as the `EscalationChecker` example.
+- **複雜的條件邏輯**：基於多個狀態變數的 `if/else` 分支。
+- **動態代理選擇**：根據執行期評估選擇要執行的子代理。
+- **直接的外部整合**：在編排流程中直接呼叫外部 API 或函式庫。
+- **自訂迴圈/重試邏輯**：比 `LoopAgent` 更複雜的迭代模式，例如 `EscalationChecker` 範例。
 
-### 5.2 Implementing `_run_async_impl`
+### 5.2 實作 `_run_async_impl`
 
-This is the core asynchronous method you must override.
+這是您必須覆寫的核心非同步方法。
 
-#### **Example: A Custom Agent for Loop Control**
-This agent reads state, applies simple Python logic, and yields an `Event` with an `escalate` action to control a `LoopAgent`.
+#### **範例：用於迴圈控制的自訂代理**
+
+此代理讀取狀態，應用簡單的 Python 邏輯，並產生一個帶有 `escalate` 動作的 `Event` 來控制 `LoopAgent`。
 
 ```python
+# 從 ADK 匯入 BaseAgent
 from google.adk.agents import BaseAgent
+# 從 ADK 匯入 InvocationContext
 from google.adk.agents.invocation_context import InvocationContext
+# 從 ADK 匯入 Event, EventActions
 from google.adk.events import Event, EventActions
+# 從 typing 匯入 AsyncGenerator
 from typing import AsyncGenerator
+# 匯入 logging 模組
 import logging
 
 class EscalationChecker(BaseAgent):
-    """Checks research evaluation and escalates to stop the loop if grade is 'pass'."""
+    """檢查研究評估，如果評分為 'pass'，則提升以停止迴圈。"""
 
     def __init__(self, name: str):
+        # 呼叫父類別的建構函式
         super().__init__(name=name)
 
     async def _run_async_impl(
         self, ctx: InvocationContext
     ) -> AsyncGenerator[Event, None]:
-        # 1. Read from session state.
+        # 1. 從會話狀態讀取。
         evaluation_result = ctx.session.state.get("research_evaluation")
 
-        # 2. Apply custom Python logic.
+        # 2. 應用自訂 Python 邏輯。
         if evaluation_result and evaluation_result.get("grade") == "pass":
             logging.info(
-                f"[{self.name}] Research passed. Escalating to stop loop."
+                f"[{self.name}] 研究通過。提升以停止迴圈。"
             )
-            # 3. Yield an Event with a control Action.
+            # 3. 產生一個帶有控制動作的事件。
             yield Event(author=self.name, actions=EventActions(escalate=True))
         else:
             logging.info(
-                f"[{self.name}] Research failed or not found. Loop continues."
+                f"[{self.name}] 研究失敗或未找到。迴圈繼續。"
             )
-            # Yielding an event without actions lets the flow continue.
+            # 產生一個沒有動作的事件讓流程繼續。
             yield Event(author=self.name)
 ```
-*   **Asynchronous Generator**: `async def ... yield Event`. This allows pausing and resuming execution.
-*   **`ctx: InvocationContext`**: Provides access to all session state (`ctx.session.state`).
-*   **Calling Sub-Agents**: Use `async for event in self.sub_agent_instance.run_async(ctx): yield event`.
-*   **Control Flow**: Use standard Python `if/else`, `for/while` loops for complex logic.
+
+- **非同步生成器**：`async def ... yield Event`。這允許暫停和恢復執行。
+- **`ctx: InvocationContext`**：提供對所有會話狀態 (`ctx.session.state`) 的存取。
+- **呼叫子代理**：使用 `async for event in self.sub_agent_instance.run_async(ctx): yield event`。
+- **流程控制**：使用標準的 Python `if/else`, `for/while` 迴圈來實現複雜邏輯。
 
 ---
 
-## 6. Models: Gemini, LiteLLM, and Vertex AI
+## 6. 模型：Gemini、LiteLLM 和 Vertex AI
 
-ADK's model flexibility allows integrating various LLMs for different needs.
+ADK 的模型靈活性允許整合各種 LLM 以滿足不同需求。
 
-### 6.1 Google Gemini Models (AI Studio & Vertex AI)
+### 6.1 Google Gemini 模型 (AI Studio & Vertex AI)
 
-*   **Default Integration**: Native support via `google-genai` library.
-*   **AI Studio (Easy Start)**:
-    *   Set `GOOGLE_API_KEY="YOUR_API_KEY"` (environment variable).
-    *   Set `GOOGLE_GENAI_USE_VERTEXAI="False"`.
-    *   Model strings: `"gemini-2.5-flash"`, `"gemini-2.5-pro"`, etc.
-*   **Vertex AI (Production)**:
-    *   Authenticate via `gcloud auth application-default login` (recommended).
-    *   Set `GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"`, `GOOGLE_CLOUD_LOCATION="your-region"` (environment variables).
-    *   Set `GOOGLE_GENAI_USE_VERTEXAI="True"`.
-    *   Model strings: `"gemini-2.5-flash"`, `"gemini-2.5-pro"`, or full Vertex AI endpoint resource names for specific deployments.
+- **預設整合**：透過 `google-genai` 函式庫原生支援。
+- **AI Studio (輕鬆入門)**：
+  - 設定 `GOOGLE_API_KEY="YOUR_API_KEY"` (環境變數)。
+  - 設定 `GOOGLE_GENAI_USE_VERTEXAI="False"`。
+  - 模型字串：`"gemini-3-flash-preview"`, `"gemini-3-pro-preview"` 等。
+- **Vertex AI (生產環境)**：
+  - 透過 `gcloud auth application-default login` 進行驗證 (建議)。
+  - 設定 `GOOGLE_CLOUD_PROJECT="YOUR_PROJECT_ID"`, `GOOGLE_CLOUD_LOCATION="your-region"` (環境變數)。
+  - 設定 `GOOGLE_GENAI_USE_VERTEXAI="True"`。
+  - 模型字串：`"gemini-3-flash-preview"`, `"gemini-3-pro-preview"`，或特定部署的完整 Vertex AI 端點資源名稱。
 
-### 6.2 Other Cloud & Proprietary Models via LiteLLM
+### 6.2 透過 LiteLLM 使用其他雲端和專有模型
 
-`LiteLlm` provides a unified interface to 100+ LLMs (OpenAI, Anthropic, Cohere, etc.).
+`LiteLlm` 提供了一個統一的介面來存取 100 多種 LLM (OpenAI, Anthropic, Cohere 等)。
 
-*   **Installation**: `pip install litellm`
-*   **API Keys**: Set environment variables as required by LiteLLM (e.g., `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`).
-*   **Usage**:
-    ```python
-    from google.adk.models.lite_llm import LiteLlm
-    agent_openai = Agent(model=LiteLlm(model="openai/gpt-4o"), ...)
-    agent_claude = Agent(model=LiteLlm(model="anthropic/claude-3-haiku-20240307"), ...)
-    ```
+- **安裝**：`pip install litellm`
+- **API 金鑰**：根據 LiteLLM 的要求設定環境變數 (例如 `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`)。
+- **用法**：
 
-### 6.3 Open & Local Models via LiteLLM (Ollama, vLLM)
+  ```python
+  # 從 ADK 模型匯入 LiteLlm
+  from google.adk.models.lite_llm import LiteLlm
 
-For self-hosting, cost savings, privacy, or offline use.
+  # 建立使用 OpenAI GPT-4o 模型的代理
+  agent_openai = Agent(model=LiteLlm(model="openai/gpt-4o"), ...)
 
-*   **Ollama Integration**: Run Ollama locally (`ollama run <model>`).
-    ```bash
-    export OLLAMA_API_BASE="http://localhost:11434" # Ensure Ollama server is running
-    ```
-    ```python
-    from google.adk.models.lite_llm import LiteLlm
-    # Use 'ollama_chat' provider for tool-calling capabilities with Ollama models
-    agent_ollama = Agent(model=LiteLlm(model="ollama_chat/llama3:instruct"), ...)
-    ```
+  # 建立使用 Anthropic Claude 3 Haiku 模型的代理
+  agent_claude = Agent(model=LiteLlm(model="anthropic/claude-3-haiku-20240307"), ...)
+  ```
 
-*   **Self-Hosted Endpoint (e.g., vLLM)**:
-    ```python
-    from google.adk.models.lite_llm import LiteLlm
-    api_base_url = "https://your-vllm-endpoint.example.com/v1"
-    agent_vllm = Agent(
-        model=LiteLlm(
-            model="your-model-name-on-vllm",
-            api_base=api_base_url,
-            extra_headers={"Authorization": "Bearer YOUR_TOKEN"},
-        ),
-        ...
-    )
-    ```
+### 6.3 透過 LiteLLM 使用開放和本地模型 (Ollama, vLLM)
 
-### 6.4 Customizing LLM API Clients
+用於自架、節省成本、隱私或離線使用。
 
-For `google-genai` (used by Gemini models), you can configure the underlying client.
+- **Ollama 整合**：在本地執行 Ollama (`ollama run <model>`)。
+
+  ```bash
+  # 確保 Ollama 伺服器正在執行
+  export OLLAMA_API_BASE="http://localhost:11434"
+  ```
+
+  ```python
+  # 從 ADK 模型匯入 LiteLlm
+  from google.adk.models.lite_llm import LiteLlm
+
+  # 對於 Ollama 模型，使用 'ollama_chat' 提供者以獲得工具呼叫能力
+  agent_ollama = Agent(model=LiteLlm(model="ollama_chat/llama3:instruct"), ...)
+  ```
+
+- **自架端點 (例如 vLLM)**：
+
+  ```python
+  # 從 ADK 模型匯入 LiteLlm
+  from google.adk.models.lite_llm import LiteLlm
+
+  # 您的 vLLM 端點的 API 基礎 URL
+  api_base_url = "https://your-vllm-endpoint.example.com/v1"
+
+  # 建立使用自架 vLLM 模型的代理
+  agent_vllm = Agent(
+      model=LiteLlm(
+          # 您在 vLLM 上的模型名稱
+          model="your-model-name-on-vllm",
+          # API 基礎 URL
+          api_base=api_base_url,
+          # 額外的標頭，例如用於驗證的 Bearer Token
+          extra_headers={"Authorization": "Bearer YOUR_TOKEN"},
+      ),
+      ...
+  )
+  ```
+
+### 6.4 自訂 LLM API 客戶端
+
+對於 `google-genai` (由 Gemini 模型使用)，您可以設定底層的客戶端。
 
 ```python
+# 匯入 os 模組
 import os
+# 從 google.genai 匯入 configure
 from google.genai import configure as genai_configure
 
+# 設定 google-genai 的預設值
 genai_configure.use_defaults(
-    timeout=60, # seconds
+    # 設定請求逾時時間為 60 秒
+    timeout=60,
+    # 設定客戶端選項，例如從環境變數讀取 API 金鑰
     client_options={"api_key": os.getenv("GOOGLE_API_KEY")},
 )
 ```
 
 ---
 
-## 7. Tools: The Agent's Capabilities
+## 7. 工具：代理的能力
 
-Tools extend an agent's abilities beyond text generation.
+工具擴展了代理超越文字生成的能力。
 
-### 7.1 Defining Function Tools: Principles & Best Practices
+### 7.1 定義函式工具：原則與最佳實踐
 
-*   **Signature**: `def my_tool(param1: Type, param2: Type, tool_context: ToolContext) -> dict:`
-*   **Function Name**: Descriptive verb-noun (e.g., `schedule_meeting`).
-*   **Parameters**: Clear names, required type hints, **NO DEFAULT VALUES**.
-*   **Return Type**: **Must** be a `dict` (JSON-serializable), preferably with a `'status'` key.
-*   **Docstring**: **CRITICAL**. Explain purpose, when to use, arguments, and return value structure. **AVOID** mentioning `tool_context`.
+- **簽章**：`def my_tool(param1: Type, param2: Type, tool_context: ToolContext) -> dict:`
+- **函式名稱**：描述性的動詞-名詞 (例如 `schedule_meeting`)。
+- **參數**：清晰的名稱，必要的類型提示，**沒有預設值**。
+- **返回類型**：**必須**是 `dict` (可 JSON 序列化)，最好帶有 `'status'` 鍵。
+- **文件字串**：**至關重要**。解釋目的、何時使用、參數和返回值結構。**避免**提及 `tool_context`。
+
+  ```python
+  # 定義一個計算複利的工具函式
+  def calculate_compound_interest(
+      principal: float,
+      rate: float,
+      years: int,
+      compounding_frequency: int,
+      tool_context: ToolContext
+  ) -> dict:
+      """計算帶有複利的投資的未來價值。
+
+      使用此工具計算給定本金、利率、年數以及每年複利次數的投資未來價值。
+
+      Args:
+          principal (float): 投資的初始金額。
+          rate (float): 年利率 (例如，5% 為 0.05)。
+          years (int): 投資的年數。
+          compounding_frequency (int): 每年複利的次數 (例如，每年為 1，每月為 12)。
+
+      Returns:
+          dict: 包含計算結果。
+                - 'status' (str): "success" 或 "error"。
+                - 'future_value' (float, optional): 計算出的未來價值。
+                - 'error_message' (str, optional): 錯誤描述 (如果有的話)。
+      """
+      # ... 實作細節 ...
+  ```
+
+### 7.2 `ToolContext` 物件：存取執行期資訊
+
+`ToolContext` 是工具與 ADK 執行期互動的閘道。
+
+- `tool_context.state`：讀取和寫入目前 `Session` 的 `state` 字典。
+- `tool_context.actions`：修改 `EventActions` 物件 (例如 `tool_context.actions.escalate = True`)。
+- `tool_context.load_artifact(filename)` / `tool_context.save_artifact(filename, part)`：管理二進位資料。
+- `tool_context.search_memory(query)`：查詢長期 `MemoryService`。
+
+### 7.3 所有工具類型及其用法
+
+1.  **自訂函式工具**：
+
+    - **`FunctionTool`**：最常見的類型，包裝一個標準的 Python 函式。
+    - **`LongRunningFunctionTool`**：包裝一個 `async` 函式，該函式 `yields` 中間結果，用於提供進度更新的任務。
+    - **`AgentTool`**：包裝另一個 `BaseAgent` 實例，允許它被父代理作為工具呼叫。
+
+2.  **內建工具**：ADK 提供的即用型工具。
+
+    - `google_search`：提供 Google 搜尋基礎。
+    - **程式碼執行**：
+      - `BuiltInCodeExecutor`：本地，方便開發。**不**適用於不受信任的生產環境。
+      - `GkeCodeExecutor`：生產級。在 Google Kubernetes Engine (GKE) 上的臨時、沙箱化 pod 中執行程式碼，使用 gVisor 進行隔離。需要 GKE 叢集設定。
+    - `VertexAiSearchTool`：從您的私有 Vertex AI Search 資料儲存中提供基礎。
+    - `BigQueryToolset`：用於與 BigQuery 互動的工具集合 (例如 `list_datasets`, `execute_sql`)。
+      > **警告**：一個代理一次只能使用一種內建工具，且它們不能在子代理中使用。
+
+3.  **第三方工具包裝器**：用於與其他框架無縫整合。
+
+    - `LangchainTool`：包裝來自 LangChain 生態系統的工具。
+
+4.  **OpenAPI & 協定工具**：用於與 API 和服務互動。
+
+    - **`OpenAPIToolset`**：從 OpenAPI (Swagger) v3 規範自動生成一組 `RestApiTool`。
+    - **`MCPToolset`**：連接到外部模型上下文協定 (MCP) 伺服器，以動態載入其工具。
+
+5.  **Google Cloud 工具**：用於與 Google Cloud 服務深度整合。
+
+    - **`ApiHubToolset`**：將 Apigee API Hub 中任何有文件的 API 轉換為工具。
+    - **`ApplicationIntegrationToolset`**：將 Application Integration 工作流和 Integration Connectors (例如 Salesforce, SAP) 轉換為可呼叫的工具。
+    - **Toolbox for Databases**：一個開源的 MCP 伺服器，ADK 可以連接到它以進行資料庫互動。
+
+6.  **動態工具集 (`BaseToolset`)**：與其使用靜態的工具列表，不如使用 `Toolset` 根據目前上下文 (例如使用者權限) 動態決定代理可以使用哪些工具。
 
     ```python
-    def calculate_compound_interest(
-        principal: float,
-        rate: float,
-        years: int,
-        compounding_frequency: int,
-        tool_context: ToolContext
-    ) -> dict:
-        """Calculates the future value of an investment with compound interest.
-
-        Use this tool to calculate the future value of an investment given a
-        principal amount, interest rate, number of years, and how often the
-        interest is compounded per year.
-
-        Args:
-            principal (float): The initial amount of money invested.
-            rate (float): The annual interest rate (e.g., 0.05 for 5%).
-            years (int): The number of years the money is invested.
-            compounding_frequency (int): The number of times interest is compounded
-                                         per year (e.g., 1 for annually, 12 for monthly).
-            
-        Returns:
-            dict: Contains the calculation result.
-                  - 'status' (str): "success" or "error".
-                  - 'future_value' (float, optional): The calculated future value.
-                  - 'error_message' (str, optional): Description of error, if any.
-        """
-        # ... implementation ...
-    ```
-
-### 7.2 The `ToolContext` Object: Accessing Runtime Information
-
-`ToolContext` is the gateway for tools to interact with the ADK runtime.
-
-*   `tool_context.state`: Read and write to the current `Session`'s `state` dictionary.
-*   `tool_context.actions`: Modify the `EventActions` object (e.g., `tool_context.actions.escalate = True`).
-*   `tool_context.load_artifact(filename)` / `tool_context.save_artifact(filename, part)`: Manage binary data.
-*   `tool_context.search_memory(query)`: Query the long-term `MemoryService`.
-
-### 7.3 All Tool Types & Their Usage
-
-1.  **Custom Function Tools**:
-    *   **`FunctionTool`**: The most common type, wrapping a standard Python function.
-    *   **`LongRunningFunctionTool`**: Wraps an `async` function that `yields` intermediate results, for tasks that provide progress updates.
-    *   **`AgentTool`**: Wraps another `BaseAgent` instance, allowing it to be invoked as a tool by a parent agent.
-
-2.  **Built-in Tools**: Ready-to-use tools provided by ADK.
-    *   `google_search`: Provides Google Search grounding.
-    *   **Code Execution**:
-        *   `BuiltInCodeExecutor`: Local, convenient for development. **Not** for untrusted production use.
-        *   `GkeCodeExecutor`: Production-grade. Executes code in ephemeral, sandboxed pods on Google Kubernetes Engine (GKE) using gVisor for isolation. Requires GKE cluster setup.
-    *   `VertexAiSearchTool`: Provides grounding from your private Vertex AI Search data stores.
-    *   `BigQueryToolset`: A collection of tools for interacting with BigQuery (e.g., `list_datasets`, `execute_sql`).
-    > **Warning**: An agent can only use one type of built-in tool at a time and they cannot be used in sub-agents.
-
-3.  **Third-Party Tool Wrappers**: For seamless integration with other frameworks.
-    *   `LangchainTool`: Wraps a tool from the LangChain ecosystem.
-    *   `CrewaiTool`: Wraps a tool from the CrewAI library.
-
-4.  **OpenAPI & Protocol Tools**: For interacting with APIs and services.
-    *   **`OpenAPIToolset`**: Automatically generates a set of `RestApiTool`s from an OpenAPI (Swagger) v3 specification.
-    *   **`MCPToolset`**: Connects to an external Model Context Protocol (MCP) server to dynamically load its tools.
-
-5.  **Google Cloud Tools**: For deep integration with Google Cloud services.
-    *   **`ApiHubToolset`**: Turns any documented API from Apigee API Hub into a tool.
-    *   **`ApplicationIntegrationToolset`**: Turns Application Integration workflows and Integration Connectors (e.g., Salesforce, SAP) into callable tools.
-    *   **Toolbox for Databases**: An open-source MCP server that ADK can connect to for database interactions.
-
-6.  **Dynamic Toolsets (`BaseToolset`)**: Instead of a static list of tools, use a `Toolset` to dynamically determine which tools an agent can use based on the current context (e.g., user permissions).
-    ```python
+    # 從 ADK 工具匯入 BaseToolset
     from google.adk.tools.base_toolset import BaseToolset
 
+    # 定義一個感知管理員權限的工具集
     class AdminAwareToolset(BaseToolset):
         async def get_tools(self, context: ReadonlyContext) -> list[BaseTool]:
-            # Check state to see if user is admin
+            # 檢查狀態以查看使用者是否為管理員
             if context.state.get('user:role') == 'admin':
+                 # 如果是管理員，返回管理員工具和標準工具
                  return [admin_delete_tool, standard_query_tool]
+            # 否則，只返回標準工具
             return [standard_query_tool]
 
-    # Usage:
+    # 用法：
+    # 在建立代理時，將工具集實例傳入 tools 列表
     agent = Agent(tools=[AdminAwareToolset()])
     ```
 
-### 7.4 Tool Confirmation (Human-in-the-Loop)
-ADK can pause tool execution to request human or system confirmation before proceeding, essential for sensitive actions.
+### 7.4 工具確認 (人在迴路中)
 
-*   **Boolean Confirmation**: Simple yes/no via `FunctionTool(..., require_confirmation=True)`.
-*   **Dynamic Confirmation**: Pass a function to `require_confirmation` to decide at runtime based on arguments.
-*   **Advanced/Payload Confirmation**: Use `tool_context.request_confirmation()` inside the tool for structured feedback.
+ADK 可以在繼續執行之前暫停工具執行以請求人類或系統確認，這對於敏感操作至關重要。
+
+- **布林確認**：透過 `FunctionTool(..., require_confirmation=True)` 進行簡單的是/否確認。
+- **動態確認**：將一個函式傳遞給 `require_confirmation`，以在執行期根據參數決定。
+- **進階/負載確認**：在工具內部使用 `tool_context.request_confirmation()` 以獲得結構化回饋。
 
 ```python
+# 從 ADK 工具匯入 FunctionTool, ToolContext
 from google.adk.tools import FunctionTool, ToolContext
 
-# 1. Simple Boolean Confirmation
-# Pauses execution until a 'confirmed': True/False event is received.
+# 1. 簡單的布林確認
+# 暫停執行，直到收到 'confirmed': True/False 事件。
 sensitive_tool = FunctionTool(delete_database, require_confirmation=True)
 
-# 2. Dynamic Threshold Confirmation
+# 2. 動態閾值確認
+# 定義一個函式，根據金額決定是否需要批准
 def needs_approval(amount: float, **kwargs) -> bool:
     return amount > 10000
 
+# 建立一個工具，並將上述函式作為確認條件
 transfer_tool = FunctionTool(wire_money, require_confirmation=needs_approval)
 
-# 3. Advanced Payload Confirmation (inside tool definition)
+# 3. 進階負載確認 (在工具定義內部)
 def book_flight(destination: str, price: float, tool_context: ToolContext):
-    # Pause and ask user to select a seat class before continuing
+    # 暫停並要求使用者在繼續之前選擇座位等級
     tool_context.request_confirmation(
-        hint="Please confirm booking and select seat class.",
-        payload={"seat_class": ["economy", "business", "first"]} # Expected structure
+        hint="請確認預訂並選擇座位等級。",
+        # 預期的結構化回饋
+        payload={"seat_class": ["economy", "business", "first"]}
     )
     return {"status": "pending_confirmation"}
 ```
 
 ---
 
-## 8. Context, State, and Memory Management
+## 8. 上下文、狀態和記憶體管理
 
-Effective context management is crucial for coherent, multi-turn conversations.
+有效的上下文管理對於連貫的多輪對話至關重要。
 
-### 8.1 The `Session` Object & `SessionService`
+### 8.1 `Session` 物件與 `SessionService`
 
-*   **`Session`**: The container for a single, ongoing conversation (`id`, `state`, `events`).
-*   **`SessionService`**: Manages the lifecycle of `Session` objects (`create_session`, `get_session`, `append_event`).
-*   **Implementations**: `InMemorySessionService` (dev), `VertexAiSessionService` (prod), `DatabaseSessionService` (self-managed).
+- **`Session`**：單一、持續對話的容器 (`id`, `state`, `events`)。
+- **`SessionService`**：管理 `Session` 物件的生命週期 (`create_session`, `get_session`, `append_event`)。
+- **實作**：`InMemorySessionService` (開發)、`VertexAiSessionService` (生產)、`DatabaseSessionService` (自行管理)。
 
-### 8.2 `State`: The Conversational Scratchpad
+### 8.2 `State`：對話暫存區
 
-A mutable dictionary within `session.state` for short-term, dynamic data.
+`session.state` 中的一個可變字典，用於儲存短期、動態的資料。
 
-*   **Update Mechanism**: Always update via `context.state` (in callbacks/tools) or `LlmAgent.output_key`.
-*   **Prefixes for Scope**:
-    *   **(No prefix)**: Session-specific (e.g., `session.state['booking_step']`).
-    *   `user:`: Persistent for a `user_id` across all their sessions (e.g., `session.state['user:preferred_currency']`).
-    *   `app:`: Persistent for `app_name` across all users and sessions.
-    *   `temp:`: Ephemeral state that only exists for the current **invocation** (one user request -> final agent response cycle). It is discarded afterwards.
+- **更新機制**：始終透過 `context.state` (在回呼/工具中) 或 `LlmAgent.output_key` 進行更新。
+- **範圍前綴**：
+  - **(無前綴)**：會話特定 (例如 `session.state['booking_step']`)。
+  - `user:`：在使用者所有會話中對 `user_id` 持久 (例如 `session.state['user:preferred_currency']`)。
+  - `app:`：在所有使用者和會話中對 `app_name` 持久。
+  - `temp:`：僅存在於目前**呼叫** (一個使用者請求 -> 最終代理回應週期) 的臨時狀態。之後會被丟棄。
 
-### 8.3 `Memory`: Long-Term Knowledge & Retrieval
+### 8.3 `Memory`：長期知識與檢索
 
-For knowledge beyond a single conversation.
+用於超越單一對話的知識。
 
-*   **`BaseMemoryService`**: Defines the interface (`add_session_to_memory`, `search_memory`).
-*   **Implementations**: `InMemoryMemoryService`, `VertexAiRagMemoryService`.
-*   **Usage**: Agents interact via tools (e.g., the built-in `load_memory` tool).
+- **`BaseMemoryService`**：定義介面 (`add_session_to_memory`, `search_memory`)。
+- **實作**：`InMemoryMemoryService`, `VertexAiRagMemoryService`。
+- **用法**：代理透過工具互動 (例如內建的 `load_memory` 工具)。
 
-### 8.4 `Artifacts`: Binary Data Management
+### 8.4 `Artifacts`：二進位資料管理
 
-For named, versioned binary data (files, images).
+用於具名、版本化的二進位資料 (檔案、圖片)。
 
-*   **Representation**: `google.genai.types.Part` (containing a `Blob` with `data: bytes` and `mime_type: str`).
-*   **`BaseArtifactService`**: Manages storage (`save_artifact`, `load_artifact`).
-*   **Implementations**: `InMemoryArtifactService`, `GcsArtifactService`.
+- **表示**：`google.genai.types.Part` (包含一個帶有 `data: bytes` 和 `mime_type: str` 的 `Blob`)。
+- **`BaseArtifactService`**：管理儲存 (`save_artifact`, `load_artifact`)。
+- **實作**：`InMemoryArtifactService`, `GcsArtifactService`。
 
 ---
 
-## 9. Runtime, Events, and Execution Flow
+## 9. 執行期、事件和執行流程
 
-The `Runner` is the central orchestrator of an ADK application.
+`Runner` 是 ADK 應用程式的中央編排器。
 
-### 9.1 Runtime Configuration (`RunConfig`)
-Passed to `run` or `run_live` to control execution limits and output formats.
+### 9.1 執行期設定 (`RunConfig`)
+
+傳遞給 `run` 或 `run_live` 以控制執行限制和輸出格式。
 
 ```python
+# 從 ADK 匯入 RunConfig
 from google.adk.agents.run_config import RunConfig
+# 從 google.genai 匯入 types
 from google.genai import types
 
+# 建立 RunConfig 實例
 config = RunConfig(
-    # Safety limits
-    max_llm_calls=100,  # Prevent infinite agent loops
-    
-    # Streaming & Modality
-    response_modalities=["AUDIO", "TEXT"], # Request specific output formats
-    
-    # Voice configuration (for AUDIO modality)
+    # 安全限制
+    # 防止無限代理迴圈
+    max_llm_calls=100,
+
+    # 串流與模態
+    # 請求特定的輸出格式
+    response_modalities=["AUDIO", "TEXT"],
+
+    # 語音設定 (用於 AUDIO 模態)
     speech_config=types.SpeechConfig(
         voice_config=types.VoiceConfig(
             prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name="Kore")
         )
     ),
-    
-    # Debugging
-    save_input_blobs_as_artifacts=True # Save uploaded files to ArtifactService
+
+    # 偵錯
+    # 將上傳的檔案儲存為 Artifact
+    save_input_blobs_as_artifacts=True
 )
 ```
 
-### 9.2 The `Runner`: The Orchestrator
+### 9.2 `Runner`：編排器
 
-*   **Role**: Manages the agent's lifecycle, the event loop, and coordinates with services.
-*   **Entry Point**: `runner.run_async(user_id, session_id, new_message)`.
+- **角色**：管理代理的生命週期、事件迴圈，並與服務協調。
+- **進入點**：`runner.run_async(user_id, session_id, new_message)`。
 
-### 9.3 The Event Loop: Core Execution Flow
+### 9.3 事件迴圈：核心執行流程
 
-1.  User input becomes a `user` `Event`.
-2.  `Runner` calls `agent.run_async(invocation_context)`.
-3.  Agent `yield`s an `Event` (e.g., tool call, text response). Execution pauses.
-4.  `Runner` processes the `Event` (applies state changes, etc.) and yields it to the client.
-5.  Execution resumes. This cycle repeats until the agent is done.
+1.  使用者輸入成為一個 `user` `Event`。
+2.  `Runner` 呼叫 `agent.run_async(invocation_context)`。
+3.  代理 `yield` 一個 `Event` (例如工具呼叫、文字回應)。執行暫停。
+4.  `Runner` 處理 `Event` (應用狀態變更等) 並將其 `yield` 給客戶端。
+5.  執行恢復。此循環重複直到代理完成。
 
-### 9.4 `Event` Object: The Communication Backbone
+### 9.4 `Event` 物件：通訊骨幹
 
-`Event` objects carry all information and signals.
+`Event` 物件攜帶所有資訊和信號。
 
-*   `Event.author`: Source of the event (`'user'`, agent name, `'system'`).
-*   `Event.content`: The primary payload (text, function calls, function responses).
-*   `Event.actions`: Signals side effects (`state_delta`, `transfer_to_agent`, `escalate`).
-*   `Event.is_final_response()`: Helper to identify the complete, displayable message.
+- `Event.author`：事件的來源 (`'user'`, 代理名稱, `'system'`)。
+- `Event.content`：主要負載 (文字、函式呼叫、函式回應)。
+- `Event.actions`：信號副作用 (`state_delta`, `transfer_to_agent`, `escalate`)。
+- `Event.is_final_response()`：用於識別完整、可顯示訊息的輔助函式。
 
-### 9.5 Asynchronous Programming (Python Specific)
+### 9.5 非同步程式設計 (Python 特定)
 
-ADK is built on `asyncio`. Use `async def`, `await`, and `async for` for all I/O-bound operations.
+ADK 建構在 `asyncio` 之上。對所有 I/O 密集型操作使用 `async def`, `await`, 和 `async for`。
 
 ---
 
-## 10. Control Flow with Callbacks
+## 10. 使用回呼函式進行流程控制
 
-Callbacks are functions that intercept and control agent execution at specific points.
+回呼函式是在特定點攔截和控制代理執行的函式。
 
-### 10.1 Callback Mechanism: Interception & Control
+### 10.1 回呼機制：攔截與控制
 
-*   **Definition**: A Python function assigned to an agent's `callback` parameter (e.g., `after_agent_callback=my_func`).
-*   **Context**: Receives a `CallbackContext` (or `ToolContext`) with runtime info.
-*   **Return Value**: **Crucially determines flow.**
-    *   `return None`: Allow the default action to proceed.
-    *   `return <Specific Object>`: **Override** the default action/result.
+- **定義**：指派給代理 `callback` 參數的 Python 函式 (例如 `after_agent_callback=my_func`)。
+- **上下文**：接收帶有執行期資訊的 `CallbackContext` (或 `ToolContext`)。
+- **返回值**：**關鍵地決定流程。**
+  - `return None`：允許預設動作繼續。
+  - `return <Specific Object>`：**覆寫**預設動作/結果。
 
-### 10.2 Types of Callbacks
+### 10.2 回呼類型
 
-1.  **Agent Lifecycle**: `before_agent_callback`, `after_agent_callback`.
-2.  **LLM Interaction**: `before_model_callback`, `after_model_callback`.
-3.  **Tool Execution**: `before_tool_callback`, `after_tool_callback`.
+1.  **代理生命週期**：`before_agent_callback`, `after_agent_callback`。
+2.  **LLM 互動**：`before_model_callback`, `after_model_callback`。
+3.  **工具執行**：`before_tool_callback`, `after_tool_callback`。
 
-### 10.3 Callback Best Practices
+### 10.3 回呼最佳實踐
 
-*   **Keep Focused**: Each callback for a single purpose.
-*   **Performance**: Avoid blocking I/O or heavy computation.
-*   **Error Handling**: Use `try...except` to prevent crashes.
+- **保持專注**：每個回呼函式只用於單一目的。
+- **效能**：避免阻塞 I/O 或繁重的計算。
+- **錯誤處理**：使用 `try...except` 來防止崩潰。
 
-#### **Example 1: Data Aggregation with `after_agent_callback`**
-This callback runs after an agent, inspects the `session.events` to find structured data from tool calls (like `google_search` results), and saves it to state for later use.
+#### **範例 1：使用 `after_agent_callback` 進行資料聚合**
+
+此回呼函式在代理執行後執行，檢查 `session.events` 以尋找來自工具呼叫的結構化資料 (如 `google_search` 結果)，並將其儲存到狀態中以供後續使用。
 
 ```python
+# 從 ADK 匯入 CallbackContext
 from google.adk.agents.callback_context import CallbackContext
 
+# 定義一個回呼函式來收集研究來源
 def collect_research_sources_callback(callback_context: CallbackContext) -> None:
-    """Collects and organizes web research sources from agent events."""
+    """從代理事件中收集並組織網頁研究來源。"""
+    # 獲取會話物件
     session = callback_context._invocation_context.session
-    # Get existing sources from state to append to them.
+    # 從狀態中獲取現有的 URL 到短 ID 的對應，以便附加。
     url_to_short_id = callback_context.state.get("url_to_short_id", {})
+    # 從狀態中獲取現有的來源資料
     sources = callback_context.state.get("sources", {})
+    # 初始化 ID 計數器
     id_counter = len(url_to_short_id) + 1
 
-    # Iterate through all events in the session to find grounding metadata.
+    # 迭代會話中的所有事件以尋找 grounding metadata。
     for event in session.events:
         if not (event.grounding_metadata and event.grounding_metadata.grounding_chunks):
             continue
-        # ... logic to parse grounding_chunks and grounding_supports ...
-        # (See full implementation in the original code snippet)
+        # ... 解析 grounding_chunks 和 grounding_supports 的邏輯 ...
+        # (請參閱原始程式碼片段中的完整實作)
 
-    # Save the updated source map back to state.
+    # 將更新後的來源對應儲存回狀態。
     callback_context.state["url_to_short_id"] = url_to_short_id
     callback_context.state["sources"] = sources
 
-# Used in an agent like this:
+# 在代理中像這樣使用：
 # section_researcher = LlmAgent(..., after_agent_callback=collect_research_sources_callback)
 ```
 
-#### **Example 2: Output Transformation with `after_agent_callback`**
-This callback takes an LLM's raw output (containing custom tags), uses Python to format it into markdown, and returns the modified content, overriding the original.
+#### **範例 2：使用 `after_agent_callback` 進行輸出轉換**
+
+此回呼函式接收 LLM 的原始輸出 (包含自訂標籤)，使用 Python 將其格式化為 markdown，並返回修改後的內容，覆寫原始內容。
 
 ```python
+# 匯入 re 模組
 import re
+# 從 ADK 匯入 CallbackContext
 from google.adk.agents.callback_context import CallbackContext
+# 從 google.genai 匯入 types
 from google.genai import types as genai_types
 
+# 定義一個回呼函式來替換引用標籤
 def citation_replacement_callback(callback_context: CallbackContext) -> genai_types.Content:
-    """Replaces <cite> tags in a report with Markdown-formatted links."""
-    # 1. Get raw report and sources from state.
+    """將報告中的 <cite> 標籤替換為 Markdown 格式的連結。"""
+    # 1. 從狀態中獲取原始報告和來源。
     final_report = callback_context.state.get("final_cited_report", "")
     sources = callback_context.state.get("sources", {})
 
-    # 2. Define a replacer function for regex substitution.
+    # 2. 為正則表達式替換定義一個替換函式。
     def tag_replacer(match: re.Match) -> str:
         short_id = match.group(1)
         if not (source_info := sources.get(short_id)):
-            return "" # Remove invalid tags
+            return "" # 移除無效標籤
         title = source_info.get("title", short_id)
         return f" [{title}]({source_info['url']})"
 
-    # 3. Use regex to find all <cite> tags and replace them.
+    # 3. 使用正則表達式找到所有 <cite> 標籤並替換它們。
     processed_report = re.sub(
         r'<cite\s+source\s*=\s*["\']?(src-\d+)["\']?\s*/>',
         tag_replacer,
         final_report,
     )
-    processed_report = re.sub(r"\s+([.,;:])", r"\1", processed_report) # Fix spacing
+    # 修正間距
+    processed_report = re.sub(r"\s+([.,;:])", r"\1", processed_report)
 
-    # 4. Save the new version to state and return it to override the original agent output.
+    # 4. 將新版本儲存到狀態並返回它以覆寫原始代理輸出。
     callback_context.state["final_report_with_citations"] = processed_report
     return genai_types.Content(parts=[genai_types.Part(text=processed_report)])
 
-# Used in an agent like this:
+# 在代理中像這樣使用：
 # report_composer = LlmAgent(..., after_agent_callback=citation_replacement_callback)
 ```
 
-### 10.A. Global Control with Plugins
+### 10.A. 使用外掛程式進行全域控制
 
-Plugins are stateful, reusable modules for implementing cross-cutting concerns that apply globally to all agents, tools, and model calls managed by a `Runner`. Unlike Callbacks which are configured per-agent, Plugins are registered once on the `Runner`.
+外掛程式是可狀態化、可重用的模組，用於實作適用於由 `Runner` 管理的所有代理、工具和模型呼叫的橫切關注點。與每個代理單獨設定的回呼函式不同，外掛程式在 `Runner` 上註冊一次。
 
-*   **Use Cases**: Ideal for universal logging, application-wide policy enforcement, global caching, and collecting metrics.
-*   **Execution Order**: Plugin callbacks run **before** their corresponding agent-level callbacks. If a plugin callback returns a value, the agent-level callback is skipped.
-*   **Defining a Plugin**: Inherit from `BasePlugin` and implement callback methods.
-    ```python
-    from google.adk.plugins import BasePlugin
-    from google.adk.agents.callback_context import CallbackContext
-    from google.adk.models.llm_request import LlmRequest
+- **使用案例**：非常適合通用日誌記錄、應用程式範圍的策略執行、全域快取和收集指標。
+- **執行順序**：外掛程式回呼函式在其對應的代理級回呼函式**之前**執行。如果外掛程式回呼函式返回值，則會跳過代理級回呼函式。
+- **定義外掛程式**：繼承自 `BasePlugin` 並實作回呼方法。
 
-    class AuditLoggingPlugin(BasePlugin):
-        def __init__(self):
-            super().__init__(name="audit_logger")
+  ```python
+  # 從 ADK 外掛程式匯入 BasePlugin
+  from google.adk.plugins import BasePlugin
+  # 從 ADK 匯入 CallbackContext
+  from google.adk.agents.callback_context import CallbackContext
+  # 從 ADK 模型匯入 LlmRequest
+  from google.adk.models.llm_request import LlmRequest
 
-        async def before_model_callback(self, callback_context: CallbackContext, llm_request: LlmRequest):
-            # Log every prompt sent to any LLM
-            print(f"[AUDIT] Agent {callback_context.agent_name} calling LLM with: {llm_request.contents[-1]}")
+  # 定義一個審計日誌外掛程式
+  class AuditLoggingPlugin(BasePlugin):
+      def __init__(self):
+          super().__init__(name="audit_logger")
 
-        async def on_tool_error_callback(self, tool, error, **kwargs):
-            # Global error handler for all tools
-            print(f"[ALERT] Tool {tool.name} failed: {error}")
-            # Optionally return a dict to suppress the exception and provide fallback
-            return {"status": "error", "message": "An internal error occurred, handled by plugin."}
-    ```
-*   **Registering a Plugin**:
-    ```python
-    from google.adk.runners import Runner
-    # runner = Runner(agent=root_agent, ..., plugins=[AuditLoggingPlugin()])
-    ```
-*   **Error Handling Callbacks**: Plugins support unique error hooks like `on_model_error_callback` and `on_tool_error_callback` for centralized error management.
-*   **Limitation**: Plugins are not supported by the `adk web` interface.
+      async def before_model_callback(self, callback_context: CallbackContext, llm_request: LlmRequest):
+          # 記錄發送到任何 LLM 的每個提示
+          print(f"[AUDIT] 代理 {callback_context.agent_name} 正在使用以下內容呼叫 LLM：{llm_request.contents[-1]}")
 
----
+      async def on_tool_error_callback(self, tool, error, **kwargs):
+          # 所有工具的全域錯誤處理器
+          print(f"[ALERT] 工具 {tool.name} 失敗：{error}")
+          # 可選地返回一個字典以抑制異常並提供後備方案
+          return {"status": "error", "message": "發生內部錯誤，已由外掛程式處理。"}
+  ```
 
-## 11. Authentication for Tools
-
-Enabling agents to securely access protected external resources.
-
-### 11.1 Core Concepts: `AuthScheme` & `AuthCredential`
-
-*   **`AuthScheme`**: Defines *how* an API expects authentication (e.g., `APIKey`, `HTTPBearer`, `OAuth2`, `OpenIdConnectWithConfig`).
-*   **`AuthCredential`**: Holds *initial* information to *start* the auth process (e.g., API key value, OAuth client ID/secret).
-
-### 11.2 Interactive OAuth/OIDC Flows
-
-When a tool requires user interaction (OAuth consent), ADK pauses and signals your `Agent Client` application.
-
-1.  **Detect Auth Request**: `runner.run_async()` yields an event with a special `adk_request_credential` function call.
-2.  **Redirect User**: Extract `auth_uri` from `auth_config` in the event. Your client app redirects the user's browser to this `auth_uri` (appending `redirect_uri`).
-3.  **Handle Callback**: Your client app has a pre-registered `redirect_uri` to receive the user after authorization. It captures the full callback URL (containing `authorization_code`).
-4.  **Send Auth Result to ADK**: Your client prepares a `FunctionResponse` for `adk_request_credential`, setting `auth_config.exchanged_auth_credential.oauth2.auth_response_uri` to the captured callback URL.
-5.  **Resume Execution**: `runner.run_async()` is called again with this `FunctionResponse`. ADK performs the token exchange, stores the access token, and retries the original tool call.
-
-### 11.3 Custom Tool Authentication
-
-If building a `FunctionTool` that needs authentication:
-
-1.  **Check for Cached Creds**: `tool_context.state.get("my_token_cache_key")`.
-2.  **Check for Auth Response**: `tool_context.get_auth_response(my_auth_config)`.
-3.  **Initiate Auth**: If no creds, call `tool_context.request_credential(my_auth_config)` and return a pending status. This triggers the external flow.
-4.  **Cache Credentials**: After obtaining, store in `tool_context.state`.
-5.  **Make API Call**: Use the valid credentials (e.g., `google.oauth2.credentials.Credentials`).
+- **註冊外掛程式**：
+  ```python
+  # 從 ADK 執行器匯入 Runner
+  from google.adk.runners import Runner
+  # runner = Runner(agent=root_agent, ..., plugins=[AuditLoggingPlugin()])
+  ```
+- **錯誤處理回呼**：外掛程式支援獨特的錯誤掛鉤，如 `on_model_error_callback` 和 `on_tool_error_callback`，用於集中式錯誤管理。
+- **限制**：`adk web` 介面不支援外掛程式。
 
 ---
 
-## 12. Deployment Strategies
+## 11. 工具的驗證
 
-From local dev to production.
+使代理能夠安全地存取受保護的外部資源。
 
-### 12.1 Local Development & Testing (`adk web`, `adk run`, `adk api_server`)
+### 11.1 核心概念：`AuthScheme` & `AuthCredential`
 
-*   **`adk web`**: Launches a local web UI for interactive chat, session inspection, and visual tracing.
-    ```bash
-    adk web /path/to/your/project_root
-    ```
-*   **`adk run`**: Command-line interactive chat.
-    ```bash
-    adk run /path/to/your/agent_folder
-    ```
-*   **`adk api_server`**: Launches a local FastAPI server exposing `/run`, `/run_sse`, `/list-apps`, etc., for API testing with `curl` or client libraries.
-    ```bash
-    adk api_server /path/to/your/project_root
-    ```
+- **`AuthScheme`**：定義 API *如何*期望驗證 (例如 `APIKey`, `HTTPBearer`, `OAuth2`, `OpenIdConnectWithConfig`)。
+- **AuthCredential`**：持有*啟動*驗證過程的*初始*資訊 (例如 API 金鑰值、OAuth 客戶端 ID/密碼)。
+
+### 11.2 互動式 OAuth/OIDC 流程
+
+當工具需要使用者互動 (OAuth 同意) 時，ADK 會暫停並向您的 `Agent Client` 應用程式發出信號。
+
+1.  **偵測驗證請求**：`runner.run_async()` 產生一個帶有特殊 `adk_request_credential` 函式呼叫的事件。
+2.  **重新導向使用者**：從事件的 `auth_config` 中提取 `auth_uri`。您的客戶端應用程式將使用者的瀏覽器重新導向到此 `auth_uri` (附加 `redirect_uri`)。
+3.  **處理回呼**：您的客戶端應用程式有一個預先註冊的 `redirect_uri`，用於在授權後接收使用者。它會捕獲完整的的回呼 URL (包含 `authorization_code`)。
+4.  **將驗證結果傳送給 ADK**：您的客戶端為 `adk_request_credential` 準備一個 `FunctionResponse`，將 `auth_config.exchanged_auth_credential.oauth2.auth_response_uri` 設定為捕獲的回呼 URL。
+5.  **恢復執行**：再次使用此 `FunctionResponse` 呼叫 `runner.run_async()`。ADK 執行權杖交換，儲存存取權杖，並重試原始的工具呼叫。
+
+### 11.3 自訂工具驗證
+
+如果建構需要驗證的 `FunctionTool`：
+
+1.  **檢查快取的憑證**：`tool_context.state.get("my_token_cache_key")`。
+2.  **檢查驗證回應**：`tool_context.get_auth_response(my_auth_config)`。
+3.  **啟動驗證**：如果沒有憑證，呼叫 `tool_context.request_credential(my_auth_config)` 並返回一個待處理狀態。這會觸發外部流程。
+4.  **快取憑證**：獲取後，儲存在 `tool_context.state` 中。
+5.  **進行 API 呼叫**：使用有效的憑證 (例如 `google.oauth2.credentials.Credentials`)。
+
+---
+
+## 12. 部署策略
+
+從本地開發到生產環境。
+
+### 12.1 本地開發與測試 (`adk web`, `adk run`, `adk api_server`)
+
+- **`adk web`**：啟動一個本地網頁 UI，用於互動式聊天、會話檢查和視覺化追蹤。
+  ```bash
+  # 啟動 adk web UI，指向您的專案根目錄
+  adk web /path/to/your/project_root
+  ```
+- **`adk run`**：命令列互動式聊天。
+  ```bash
+  # 在命令列中執行代理
+  adk run /path/to/your/agent_folder
+  ```
+- **`adk api_server`**：啟動一個本地 FastAPI 伺服器，公開 `/run`, `/run_sse`, `/list-apps` 等端點，用於使用 `curl` 或客戶端函式庫進行 API 測試。
+  ```bash
+  # 啟動 API 伺服器
+  adk api_server /path/to/your/project_root
+  ```
 
 ### 12.2 Vertex AI Agent Engine
 
-Fully managed, scalable service for ADK agents on Google Cloud.
+Google Cloud 上用於 ADK 代理的全託管、可擴展服務。
 
-*   **Features**: Auto-scaling, session management, observability integration.
-*   **ADK CLI**: `adk deploy agent_engine --project <id> --region <loc> ... /path/to/agent`
-*   **Deployment**: Use `vertexai.agent_engines.create()`.
-    ```python
-    from vertexai.preview import reasoning_engines # or agent_engines directly in later versions
-    
-    # Wrap your root_agent for deployment
-    app_for_engine = reasoning_engines.AdkApp(agent=root_agent, enable_tracing=True)
-    
-    # Deploy
-    remote_app = agent_engines.create(
-        agent_engine=app_for_engine,
-        requirements=["google-cloud-aiplatform[adk,agent_engines]"],
-        display_name="My Production Agent"
-    )
-    print(remote_app.resource_name) # projects/PROJECT_NUM/locations/REGION/reasoningEngines/ID
-    ```
-*   **Interaction**: Use `remote_app.stream_query()`, `create_session()`, etc.
+- **功能**：自動擴展、會話管理、可觀測性整合。
+- **ADK CLI**：`adk deploy agent_engine --project <id> --region <loc> ... /path/to/agent`
+- **部署**：使用 `vertexai.agent_engines.create()`。
+
+  ```python
+  # 從 vertexai.preview 匯入 reasoning_engines (或在較新版本中直接匯入 agent_engines)
+  from vertexai.preview import reasoning_engines
+
+  # 為部署包裝您的根代理
+  app_for_engine = reasoning_engines.AdkApp(agent=root_agent, enable_tracing=True)
+
+  # 部署
+  remote_app = agent_engines.create(
+      agent_engine=app_for_engine,
+      requirements=["google-cloud-aiplatform[adk,agent_engines]"],
+      display_name="My Production Agent"
+  )
+  # 印出遠端應用程式的資源名稱
+  print(remote_app.resource_name) # projects/PROJECT_NUM/locations/REGION/reasoningEngines/ID
+  ```
+
+- **互動**：使用 `remote_app.stream_query()`, `create_session()` 等。
 
 ### 12.3 Cloud Run
 
-Serverless container platform for custom web applications.
+用於自訂 Web 應用程式的無伺服器容器平台。
 
-*   **ADK CLI**: `adk deploy cloud_run --project <id> --region <loc> ... /path/to/agent`
-*   **Deployment**:
-    1.  Create a `Dockerfile` for your FastAPI app (using `google.adk.cli.fast_api.get_fast_api_app`).
-    2.  Use `gcloud run deploy --source .`.
-    3.  Alternatively, `adk deploy cloud_run` (simpler, opinionated).
-*   **Example `main.py`**:
-    ```python
-    import os
-    from fastapi import FastAPI
-    from google.adk.cli.fast_api import get_fast_api_app
+- **ADK CLI**：`adk deploy cloud_run --project <id> --region <loc> ... /path/to/agent`
+- **部署**：
+  1.  為您的 FastAPI 應用程式創建一個 `Dockerfile` (使用 `google.adk.cli.fast_api.get_fast_api_app`)。
+  2.  使用 `gcloud run deploy --source .`。
+  3.  或者，使用 `adk deploy cloud_run` (更簡單、更具主見)。
+- **`main.py` 範例**：
 
-    # Ensure your agent_folder (e.g., 'my_first_agent') is in the same directory as main.py
-    app: FastAPI = get_fast_api_app(
-        agents_dir=os.path.dirname(os.path.abspath(__file__)),
-        session_service_uri="sqlite:///./sessions.db", # In-container SQLite, for simple cases
-        # For production: use a persistent DB (Cloud SQL) or VertexAiSessionService
-        allow_origins=["*"],
-        web=True # Serve ADK UI
-    )
-    # uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080))) # If running directly
-    ```
+  ```python
+  # 匯入 os 模組
+  import os
+  # 從 fastapi 匯入 FastAPI
+  from fastapi import FastAPI
+  # 從 ADK CLI 匯入 get_fast_api_app
+  from google.adk.cli.fast_api import get_fast_api_app
+
+  # 確保您的代理資料夾 (例如 'my_first_agent') 與 main.py 在同一目錄中
+  app: FastAPI = get_fast_api_app(
+      # 代理所在的目錄
+      agents_dir=os.path.dirname(os.path.abspath(__file__)),
+      # 會話服務 URI，此處使用容器內的 SQLite，適用於簡單情況
+      session_service_uri="sqlite:///./sessions.db",
+      # 對於生產環境：使用持久性資料庫 (Cloud SQL) 或 VertexAiSessionService
+      # 允許的來源
+      allow_origins=["*"],
+      # 提供 ADK UI
+      web=True
+  )
+  # 如果直接執行，使用 uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+  ```
 
 ### 12.4 Google Kubernetes Engine (GKE)
 
-For maximum control, run your containerized agent in a Kubernetes cluster.
+為了最大程度的控制，在 Kubernetes 叢集中執行您的容器化代理。
 
-*   **ADK CLI**: `adk deploy gke --project <id> --cluster_name <name> ... /path/to/agent`
-*   **Deployment**:
-    1.  Build Docker image (`gcloud builds submit`).
-    2.  Create Kubernetes Deployment and Service YAMLs.
-    3.  Apply with `kubectl apply -f deployment.yaml`.
-    4.  Configure Workload Identity for GCP permissions.
+- **ADK CLI**：`adk deploy gke --project <id> --cluster_name <name> ... /path/to/agent`
+- **部署**：
+  1.  建構 Docker 映像 (`gcloud builds submit`)。
+  2.  創建 Kubernetes Deployment 和 Service YAML 檔案。
+  3.  使用 `kubectl apply -f deployment.yaml` 應用。
+  4.  為 GCP 權限設定 Workload Identity。
 
-### 12.5 CI/CD Integration
+### 12.5 CI/CD 整合
 
-*   Automate testing (`pytest`, `adk eval`) in CI.
-*   Automate container builds and deployments (e.g., Cloud Build, GitHub Actions).
-*   Use environment variables for secrets.
+- 在 CI 中自動化測試 (`pytest`, `adk eval`)。
+- 自動化容器建構和部署 (例如 Cloud Build, GitHub Actions)。
+- 使用環境變數管理密鑰。
 
 ---
 
-## 13. Evaluation and Safety
+## 13. 評估與安全性
 
-Critical for robust, production-ready agents.
+對於穩健、生產就緒的代理至關重要。
 
-### 13.1 Agent Evaluation (`adk eval`)
+### 13.1 代理評估 (`adk eval`)
 
-Systematically assess agent performance using predefined test cases.
+使用預定義的測試案例系統地評估代理效能。
 
-*   **Evalset File (`.evalset.json`)**: Contains `eval_cases`, each with a `conversation` (user queries, expected tool calls, expected intermediate/final responses) and `session_input` (initial state).
-    ```json
-    {
-      "eval_set_id": "weather_bot_eval",
-      "eval_cases": [
-        {
-          "eval_id": "london_weather_query",
-          "conversation": [
-            {
-              "user_content": {"parts": [{"text": "What's the weather in London?"}]},
-              "final_response": {"parts": [{"text": "The weather in London is cloudy..."}]},
-              "intermediate_data": {
-                "tool_uses": [{"name": "get_weather", "args": {"city": "London"}}]
-              }
+- **Evalset 檔案 (`.evalset.json`)**：包含 `eval_cases`，每個案例都有一個 `conversation` (使用者查詢、預期的工具呼叫、預期的中間/最終回應) 和 `session_input` (初始狀態)。
+  ```json
+  {
+    "eval_set_id": "weather_bot_eval",
+    "eval_cases": [
+      {
+        "eval_id": "london_weather_query",
+        "conversation": [
+          {
+            "user_content": { "parts": [{ "text": "倫敦天氣如何？" }] },
+            "final_response": { "parts": [{ "text": "倫敦天氣多雲..." }] },
+            "intermediate_data": {
+              "tool_uses": [
+                { "name": "get_weather", "args": { "city": "London" } }
+              ]
             }
-          ],
-          "session_input": {"app_name": "weather_app", "user_id": "test_user", "state": {}}
+          }
+        ],
+        "session_input": {
+          "app_name": "weather_app",
+          "user_id": "test_user",
+          "state": {}
         }
-      ]
-    }
-    ```
-*   **Running Evaluation**:
-    *   `adk web`: Interactive UI for creating/running eval cases.
-    *   `adk eval /path/to/agent_folder /path/to/evalset.json`: CLI execution.
-    *   `pytest`: Integrate `AgentEvaluator.evaluate()` into unit/integration tests.
-*   **Metrics**: `tool_trajectory_avg_score` (tool calls match expected), `response_match_score` (final response similarity using ROUGE). Configurable via `test_config.json`.
+      }
+    ]
+  }
+  ```
+- **執行評估**：
+  - `adk web`：用於創建/執行評估案例的互動式 UI。
+  - `adk eval /path/to/agent_folder /path/to/evalset.json`：CLI 執行。
+  - `pytest`：將 `AgentEvaluator.evaluate()` 整合到單元/整合測試中。
+- **指標**：`tool_trajectory_avg_score` (工具呼叫與預期匹配)，`response_match_score` (使用 ROUGE 的最終回應相似度)。可透過 `test_config.json` 設定。
 
-### 13.2 Safety & Guardrails
+### 13.2 安全性與防護機制
 
-Multi-layered defense against harmful content, misalignment, and unsafe actions.
+多層次防禦有害內容、未對齊和不安全的操作。
 
-1.  **Identity and Authorization**:
-    *   **Agent-Auth**: Tool acts with the agent's service account (e.g., `Vertex AI User` role). Simple, but all users share access level. Logs needed for attribution.
-    *   **User-Auth**: Tool acts with the end-user's identity (via OAuth tokens). Reduces risk of abuse.
-2.  **In-Tool Guardrails**: Design tools defensively. Tools can read policies from `tool_context.state` (set deterministically by developer) and validate model-provided arguments before execution.
+1.  **身份和授權**：
+    - **代理驗證**：工具以代理的服務帳號身份行事 (例如 `Vertex AI User` 角色)。簡單，但所有使用者共享存取級別。需要日誌進行歸因。
+    - **使用者驗證**：工具以終端使用者的身份行事 (透過 OAuth 權杖)。降低濫用風險。
+2.  **工具內防護機制**：防禦性地設計工具。工具可以從 `tool_context.state` 讀取策略 (由開發人員確定性地設定) 並在執行前驗證模型提供的參數。
     ```python
+    # 定義一個執行 SQL 查詢的工具
     def execute_sql(query: str, tool_context: ToolContext) -> dict:
+        # 從狀態中獲取使用者的 SQL 策略
         policy = tool_context.state.get("user:sql_policy", {})
+        # 如果策略不允許寫入且查詢包含寫入操作
         if not policy.get("allow_writes", False) and ("INSERT" in query.upper() or "DELETE" in query.upper()):
-            return {"status": "error", "message": "Policy: Write operations are not allowed."}
-        # ... execute query ...
+            # 返回錯誤訊息
+            return {"status": "error", "message": "策略：不允許寫入操作。"}
+        # ... 執行查詢 ...
     ```
-3.  **Built-in Gemini Safety Features**:
-    *   **Content Safety Filters**: Automatically block harmful content (CSAM, PII, hate speech, etc.). Configurable thresholds.
-    *   **System Instructions**: Guide model behavior, define prohibited topics, brand tone, disclaimers.
-4.  **Model and Tool Callbacks (LLM as a Guardrail)**: Use callbacks to inspect inputs/outputs.
-    *   `before_model_callback`: Intercept `LlmRequest` before it hits the LLM. Block (return `LlmResponse`) or modify.
-    *   `before_tool_callback`: Intercept tool calls (name, args) before execution. Block (return `dict`) or modify.
-    *   **LLM-based Safety**: Use a cheap/fast LLM (e.g., Gemini Flash) in a callback to classify input/output safety.
-        ```python
-        def safety_checker_callback(context: CallbackContext, llm_request: LlmRequest) -> Optional[LlmResponse]:
-            # Use a separate, small LLM to classify safety
-            safety_llm_agent = Agent(name="SafetyChecker", model="gemini-2.5-flash-001", instruction="Classify input as 'safe' or 'unsafe'. Output ONLY the word.")
-            # Run the safety agent (might need a new runner instance or direct model call)
-            # For simplicity, a mock:
-            user_input = llm_request.contents[-1].parts[0].text
-            if "dangerous_phrase" in user_input.lower():
-                context.state["safety_violation"] = True
-                return LlmResponse(content=genai_types.Content(parts=[genai_types.Part(text="I cannot process this request due to safety concerns.")]))
-            return None
-        ```
-5.  **Sandboxed Code Execution**:
-    *   `BuiltInCodeExecutor`: Uses secure, sandboxed execution environments.
-    *   Vertex AI Code Interpreter Extension.
-    *   If custom, ensure hermetic environments (no network, isolated).
-6.  **Network Controls & VPC-SC**: Confine agent activity within secure perimeters (VPC Service Controls) to prevent data exfiltration.
-7.  **Output Escaping in UIs**: Always properly escape LLM-generated content in web UIs to prevent XSS attacks and indirect prompt injections.
+3.  **內建 Gemini 安全功能**：
+    - **內容安全過濾器**：自動阻止有害內容 (CSAM, PII, 仇恨言論等)。可設定閾值。
+    - **系統指令**：指導模型行為，定義禁止的主題、品牌語氣、免責聲明。
+4.  **模型和工具回呼 (LLM 作為防護機制)**：使用回呼函式檢查輸入/輸出。
+    - `before_model_callback`：在 `LlmRequest` 到達 LLM 之前攔截它。阻止 (返回 `LlmResponse`) 或修改。
+    - `before_tool_callback`：在執行前攔截工具呼叫 (名稱、參數)。阻止 (返回 `dict`) 或修改。
+    - **基於 LLM 的安全性**：在回呼函式中使用一個便宜/快速的 LLM (例如 Gemini Flash) 來對輸入/輸出的安全性進行分類。
+      ```python
+      # 定義一個安全檢查回呼函式
+      def safety_checker_callback(context: CallbackContext, llm_request: LlmRequest) -> Optional[LlmResponse]:
+          # 使用一個獨立的、小型的 LLM 來分類安全性
+          safety_llm_agent = Agent(name="SafetyChecker", model="gemini-2.5-flash-001", instruction="將輸入分類為 'safe' 或 'unsafe'。僅輸出該單詞。")
+          # 執行安全代理 (可能需要一個新的 runner 實例或直接的模型呼叫)
+          # 為簡單起見，使用模擬：
+          user_input = llm_request.contents[-1].parts[0].text
+          if "dangerous_phrase" in user_input.lower():
+              # 標記安全違規
+              context.state["safety_violation"] = True
+              # 返回一個安全回應，阻止原始請求
+              return LlmResponse(content=genai_types.Content(parts=[genai_types.Part(text="由於安全考量，我無法處理此請求。")]))
+          # 如果安全，則不返回任何內容，讓流程繼續
+          return None
+      ```
+5.  **沙箱化程式碼執行**：
+    - `BuiltInCodeExecutor`：使用安全、沙箱化的執行環境。
+    - Vertex AI Code Interpreter Extension。
+    - 如果自訂，確保封閉環境 (無網路、隔離)。
+6.  **網路控制與 VPC-SC**：將代理活動限制在安全邊界內 (VPC Service Controls) 以防止資料外洩。
+7.  **UI 中的輸出轉義**：始終在 Web UI 中正確轉義 LLM 生成的內容，以防止 XSS 攻擊和間接提示注入。
 
-**Grounding**: A key safety and reliability feature that connects agent responses to verifiable information.
-*   **Mechanism**: Uses tools like `google_search` or `VertexAiSearchTool` to fetch real-time or private data.
-*   **Benefit**: Reduces model hallucination by basing responses on retrieved facts.
-*   **Requirement**: When using `google_search`, your application UI **must** display the provided search suggestions and citations to comply with terms of service.
+**Grounding (基礎)**：一個關鍵的安全性和可靠性功能，將代理的回應與可驗證的資訊聯繫起來。
+
+- **機制**：使用 `google_search` 或 `VertexAiSearchTool` 等工具來獲取即時或私有資料。
+- **好處**：透過將回應基於檢索到的事實來減少模型幻覺。
+- **要求**：使用 `google_search` 時，您的應用程式 UI **必須**顯示提供的搜尋建議和引用，以符合服務條款。
 
 ---
 
-## 14. Debugging, Logging & Observability
+## 14. 偵錯、日誌與可觀測性
 
-*   **`adk web` UI**: Best first step. Provides visual trace, session history, and state inspection.
-*   **Event Stream Logging**: Iterate `runner.run_async()` events and print relevant fields.
+- **`adk web` UI**：最佳的第一步。提供視覺化追蹤、會話歷史和狀態檢查。
+- **事件串流日誌**：迭代 `runner.run_async()` 事件並印出相關欄位。
+  ```python
+  # 非同步迭代 runner.run_async() 產生的事件
+  async for event in runner.run_async(...):
+      # 印出事件的基本資訊
+      print(f"[{event.author}] 事件 ID: {event.id}, 呼叫 ID: {event.invocation_id}")
+      # 如果事件有內容且有部分
+      if event.content and event.content.parts:
+          # 如果有文字內容，印出前 100 個字元
+          if event.content.parts[0].text:
+              print(f"  文字: {event.content.parts[0].text[:100]}...")
+          # 如果有工具呼叫，印出工具名稱和參數
+          if event.get_function_calls():
+              print(f"  工具呼叫: {event.get_function_calls()[0].name} 參數 {event.get_function_calls()[0].args}")
+          # 如果有工具回應，印出回應內容
+          if event.get_function_responses():
+              print(f"  工具回應: {event.get_function_responses()[0].response}")
+      # 如果事件有動作
+      if event.actions:
+          # 如果有狀態變更，印出變更內容
+          if event.actions.state_delta:
+              print(f"  狀態變更: {event.actions.state_delta}")
+          # 如果有代理轉移，印出目標代理
+          if event.actions.transfer_to_agent:
+              print(f"  轉移至: {event.actions.transfer_to_agent}")
+      # 如果有錯誤訊息，印出錯誤
+      if event.error_message:
+          print(f"  錯誤: {event.error_message}")
+  ```
+- **工具/回呼 `print` 語句**：在您的函式中直接進行簡單的日誌記錄。
+- **日誌**：使用 Python 的標準 `logging` 模組。使用 `adk web --log_level DEBUG` 或 `adk web -v` 控制詳細程度。
+- **一行式可觀測性整合**：ADK 對流行的追蹤平台有原生掛鉤。
+  - **AgentOps**：
     ```python
-    async for event in runner.run_async(...):
-        print(f"[{event.author}] Event ID: {event.id}, Invocation: {event.invocation_id}")
-        if event.content and event.content.parts:
-            if event.content.parts[0].text:
-                print(f"  Text: {event.content.parts[0].text[:100]}...")
-            if event.get_function_calls():
-                print(f"  Tool Call: {event.get_function_calls()[0].name} with {event.get_function_calls()[0].args}")
-            if event.get_function_responses():
-                print(f"  Tool Response: {event.get_function_responses()[0].response}")
-        if event.actions:
-            if event.actions.state_delta:
-                print(f"  State Delta: {event.actions.state_delta}")
-            if event.actions.transfer_to_agent:
-                print(f"  TRANSFER TO: {event.actions.transfer_to_agent}")
-        if event.error_message:
-            print(f"  ERROR: {event.error_message}")
+    # 匯入 agentops
+    import agentops
+    # 初始化 agentops，它會自動檢測並監控 ADK 代理
+    agentops.init(api_key="...")
     ```
-*   **Tool/Callback `print` statements**: Simple logging directly within your functions.
-*   **Logging**: Use Python's standard `logging` module. Control verbosity with `adk web --log_level DEBUG` or `adk web -v`.
-*   **One-Line Observability Integrations**: ADK has native hooks for popular tracing platforms.
-    *   **AgentOps**:
-        ```python
-        import agentops
-        agentops.init(api_key="...") # Automatically instruments ADK agents
-        ```
-    *   **Arize Phoenix**:
-        ```python
-        from phoenix.otel import register
-        register(project_name="my_agent", auto_instrument=True)
-        ```
-    *   **Google Cloud Trace**: Enable via flag during deployment: `adk deploy [cloud_run|agent_engine] --trace_to_cloud ...`
-*   **Session History (`session.events`)**: Persisted for detailed post-mortem analysis.
+  - **Arize Phoenix**：
+    ```python
+    # 從 phoenix.otel 匯入 register
+    from phoenix.otel import register
+    # 註冊專案，自動檢測
+    register(project_name="my_agent", auto_instrument=True)
+    ```
+  - **Google Cloud Trace**：在部署期間透過旗標啟用：`adk deploy [cloud_run|agent_engine] --trace_to_cloud ...`
+- **會話歷史 (`session.events`)**：持久化以進行詳細的事後分析。
 
 ---
 
-## 15. Streaming & Advanced I/O
+## 15. 串流與進階 I/O
 
-ADK supports real-time, bidirectional communication for interactive experiences like live voice conversations.
+ADK 支援即時、雙向通訊，以實現如即時語音對話等互動式體驗。
 
-#### Bidirectional Streaming Loop (`run_live`)
-For real-time voice/video, use `run_live` with a `LiveRequestQueue`. This enables low-latency, two-way communication where the user can interrupt the agent.
+#### 雙向串流迴圈 (`run_live`)
+
+對於即時語音/影像，請使用 `run_live` 搭配 `LiveRequestQueue`。這能實現低延遲的雙向通訊，使用者可以打斷代理。
 
 ```python
+# 匯入 asyncio
 import asyncio
+# 從 ADK 匯入 LiveRequestQueue
 from google.adk.agents import LiveRequestQueue
+# 從 ADK 匯入 RunConfig
 from google.adk.agents.run_config import RunConfig
 
 async def start_streaming_session(runner, session, user_id):
-    # 1. Configure modalities (e.g., AUDIO output for voice agents)
+    # 1. 設定模態 (例如，語音代理的 AUDIO 輸出)
     run_config = RunConfig(response_modalities=["AUDIO"])
-    
-    # 2. Create input queue for client data (audio chunks, text)
+
+    # 2. 建立用於客戶端資料 (音訊區塊、文字) 的輸入佇列
     live_queue = LiveRequestQueue()
 
-    # 3. Start the bidirectional stream
+    # 3. 啟動雙向串流
     live_events = runner.run_live(
         session=session,
         live_request_queue=live_queue,
         run_config=run_config
     )
 
-    # 4. Process events (simplified loop)
+    # 4. 處理事件 (簡化迴圈)
     try:
         async for event in live_events:
-            # Handle agent output (text or audio bytes)
+            # 處理代理輸出 (文字或音訊位元組)
             if event.content and event.content.parts:
                 part = event.content.parts[0]
                 if part.inline_data and part.inline_data.mime_type.startswith("audio/"):
-                    # Send audio bytes to client
+                    # 將音訊位元組傳送給客戶端
                     await client.send_audio(part.inline_data.data)
                 elif part.text:
-                     # Send text to client
+                     # 將文字傳送給客戶端
                      await client.send_text(part.text)
-            
-            # Handle turn signals
+
+            # 處理回合信號
             if event.turn_complete:
-                 pass # Signal client that agent finished speaking
+                 pass # 向客戶端發出信號，表示代理已說完
     finally:
+        # 關閉佇列
         live_queue.close()
 
-# To send user input to agent during the stream:
+# 在串流期間向代理傳送使用者輸入：
 # await live_queue.send_content(Content(role="user", parts=[Part(text="Hello")]))
 # await live_queue.send_realtime(Blob(mime_type="audio/pcm", data=audio_bytes))
 ```
 
-*   **Streaming Tools**: A special type of `FunctionTool` that can stream intermediate results back to the agent.
-    *   **Definition**: Must be an `async` function with a return type of `AsyncGenerator`.
-        ```python
-        from typing import AsyncGenerator
+- **串流工具**：一種特殊的 `FunctionTool`，可以將中間結果串流回代理。
 
-        async def monitor_stock_price(symbol: str) -> AsyncGenerator[str, None]:
-            """Yields stock price updates as they occur."""
-            while True:
-                price = await get_live_price(symbol)
-                yield f"Update for {symbol}: ${price}"
-                await asyncio.sleep(5)
-        ```
+  - **定義**：必須是一個返回類型為 `AsyncGenerator` 的 `async` 函式。
 
-*   **Advanced I/O Modalities**: ADK (especially with Gemini Live API models) supports richer interactions.
-    *   **Audio**: Input via `Blob(mime_type="audio/pcm", data=bytes)`, Output via `genai_types.SpeechConfig` in `RunConfig`.
-    *   **Vision (Images/Video)**: Input via `Blob(mime_type="image/jpeg", data=bytes)` or `Blob(mime_type="video/mp4", data=bytes)`. Models like `gemini-2.5-flash-exp` can process these.
-    *   **Multimodal Input in `Content`**:
-        ```python
-        multimodal_content = genai_types.Content(
-            parts=[
-                genai_types.Part(text="Describe this image:"),
-                genai_types.Part(inline_data=genai_types.Blob(mime_type="image/jpeg", data=image_bytes))
-            ]
-        )
-        ```
+    ```python
+    # 從 typing 匯入 AsyncGenerator
+    from typing import AsyncGenerator
 
----
+    # 定義一個監控股價的非同步生成器函式
+    async def monitor_stock_price(symbol: str) -> AsyncGenerator[str, None]:
+        """當股價更新時產生更新。"""
+        while True:
+            # 獲取即時價格
+            price = await get_live_price(symbol)
+            # 產生更新訊息
+            yield f"{symbol} 的更新：${price}"
+            # 等待 5 秒
+            await asyncio.sleep(5)
+    ```
 
-## 16. Performance Optimization
-
-*   **Model Selection**: Choose the smallest model that meets requirements (e.g., `gemini-2.5-flash` for simple tasks).
-*   **Instruction Prompt Engineering**: Concise, clear instructions reduce tokens and improve accuracy.
-*   **Tool Use Optimization**:
-    *   Design efficient tools (fast API calls, optimize database queries).
-    *   Cache tool results (e.g., using `before_tool_callback` or `tool_context.state`).
-*   **State Management**: Store only necessary data in state to avoid large context windows.
-*   **`include_contents='none'`**: For stateless utility agents, saves LLM context window.
-*   **Parallelization**: Use `ParallelAgent` for independent tasks.
-*   **Streaming**: Use `StreamingMode.SSE` or `BIDI` for perceived latency reduction.
-*   **`max_llm_calls`**: Limit LLM calls to prevent runaway agents and control costs.
+- **進階 I/O 模態**：ADK (特別是與 Gemini Live API 模型一起使用時) 支援更豐富的互動。
+  - **音訊**：透過 `Blob(mime_type="audio/pcm", data=bytes)` 輸入，透過 `RunConfig` 中的 `genai_types.SpeechConfig` 輸出。
+  - **視覺 (圖片/影像)**：透過 `Blob(mime_type="image/jpeg", data=bytes)` 或 `Blob(mime_type="video/mp4", data=bytes)` 輸入。像 `gemini-2.5-flash-exp` 這樣的模型可以處理這些。
+  - **`Content` 中的多模態輸入**：
+    ```python
+    # 建立一個包含文字和圖片的多模態內容物件
+    multimodal_content = genai_types.Content(
+        parts=[
+            # 文字部分
+            genai_types.Part(text="描述這張圖片："),
+            # 圖片部分，使用內聯資料
+            genai_types.Part(inline_data=genai_types.Blob(mime_type="image/jpeg", data=image_bytes))
+        ]
+    )
+    ```
 
 ---
 
-## 17. General Best Practices & Common Pitfalls
+## 16. 效能優化
 
-*   **Start Simple**: Begin with `LlmAgent`, mock tools, and `InMemorySessionService`. Gradually add complexity.
-*   **Iterative Development**: Build small features, test, debug, refine.
-*   **Modular Design**: Use agents and tools to encapsulate logic.
-*   **Clear Naming**: Descriptive names for agents, tools, state keys.
-*   **Error Handling**: Implement robust `try...except` blocks in tools and callbacks. Guide LLMs on how to handle tool errors.
-*   **Testing**: Write unit tests for tools/callbacks, integration tests for agent flows (`pytest`, `adk eval`).
-*   **Dependency Management**: Use virtual environments (`venv`) and `requirements.txt`.
-*   **Secrets Management**: Never hardcode API keys. Use `.env` for local dev, environment variables or secret managers (Google Cloud Secret Manager) for production.
-*   **Avoid Infinite Loops**: Especially with `LoopAgent` or complex LLM tool-calling chains. Use `max_iterations`, `max_llm_calls`, and strong instructions.
-*   **Handle `None` & `Optional`**: Always check for `None` or `Optional` values when accessing nested properties (e.g., `event.content and event.content.parts and event.content.parts[0].text`).
-*   **Immutability of Events**: Events are immutable records. If you need to change something *before* it's processed, do so in a `before_*` callback and return a *new* modified object.
-*   **Understand `output_key` vs. direct `state` writes**: `output_key` is for the agent's *final conversational* output. Direct `tool_context.state['key'] = value` is for *any other* data you want to save.
-*   **Example Agents**: Find practical examples and reference implementations in the [ADK Samples repository](https://github.com/google/adk-samples).
+- **模型選擇**：選擇滿足需求的最小模型 (例如，簡單任務使用 `gemini-2.5-flash`)。
+- **指令提示工程**：簡潔、清晰的指令可以減少權杖並提高準確性。
+- **工具使用優化**：
+  - 設計高效的工具 (快速的 API 呼叫、優化資料庫查詢)。
+  - 快取工具結果 (例如，使用 `before_tool_callback` 或 `tool_context.state`)。
+- **狀態管理**：僅在狀態中儲存必要的資料，以避免過大的上下文視窗。
+- **`include_contents='none'`**：對於無狀態的工具代理，可以節省 LLM 上下文視窗。
+- **並行化**：對獨立任務使用 `ParallelAgent`。
+- **串流**：使用 `StreamingMode.SSE` 或 `BIDI` 來降低感知延遲。
+- **`max_llm_calls`**：限制 LLM 呼叫以防止失控的代理並控制成本。
 
+---
 
-### Testing the output of an agent
+## 17. 通用最佳實踐與常見陷阱
 
-The following script demonstrates how to programmatically test an agent's output. This approach is extremely useful when an LLM or coding agent needs to interact with a work-in-progress agent, as well as for automated testing, debugging, or when you need to integrate agent execution into other workflows:
+- **從簡單開始**：從 `LlmAgent`、模擬工具和 `InMemorySessionService` 開始。逐步增加複雜性。
+- **迭代開發**：建構小功能、測試、偵錯、改進。
+- **模組化設計**：使用代理和工具來封裝邏輯。
+- **清晰命名**：為代理、工具、狀態鍵使用描述性的名稱。
+- **錯誤處理**：在工具和回呼函式中實作穩健的 `try...except` 區塊。指導 LLM 如何處理工具錯誤。
+- **測試**：為工具/回呼函式編寫單元測試，為代理流程編寫整合測試 (`pytest`, `adk eval`)。
+- **依賴管理**：使用虛擬環境 (`venv`) 和 `requirements.txt`。
+- **密鑰管理**：切勿硬式編碼 API 金鑰。本地開發使用 `.env`，生產環境使用環境變數或密鑰管理器 (Google Cloud Secret Manager)。
+- **避免無限迴圈**：尤其是在使用 `LoopAgent` 或複雜的 LLM 工具呼叫鏈時。使用 `max_iterations`、`max_llm_calls` 和強有力的指令。
+- **處理 `None` & `Optional`**：在存取巢狀屬性時，始終檢查 `None` 或 `Optional` 值 (例如 `event.content and event.content.parts and event.content.parts[0].text`)。
+- **事件的不可變性**：事件是不可變的記錄。如果您需要在處理*之前*更改某些內容，請在 `before_*` 回呼函式中進行，並返回一個*新的*修改後的物件。
+- **理解 `output_key` vs. 直接 `state` 寫入**：`output_key` 用於代理的*最終對話*輸出。直接 `tool_context.state['key'] = value` 用於您想要儲存的*任何其他*資料。
+- **範例代理**：在 [ADK 範例儲存庫](https://github.com/google/adk-samples) 中尋找實用範例和參考實作。
+
+### 測試代理的輸出
+
+以下腳本展示了如何以程式設計方式測試代理的輸出。當 LLM 或編碼代理需要與正在開發中的代理互動時，以及用於自動化測試、偵錯或需要將代理執行整合到其他工作流中時，這種方法非常有用：
+
 ```python
+# 匯入 asyncio 模組，用於非同步程式設計
 import asyncio
 
+# 從 ADK 執行器匯入 Runner 類別
 from google.adk.runners import Runner
+# 從 ADK 會話匯入 InMemorySessionService，用於在記憶體中管理會話
 from google.adk.sessions import InMemorySessionService
-from customer_service.agent import root_agent
+# 從您的應用程式程式碼中匯入根代理
+from app.agent import root_agent
+# 從 google.genai 匯入 types，用於建立內容物件
 from google.genai import types as genai_types
 
 
+# 定義一個非同步主函式
 async def main():
-    """Runs the agent with a sample query."""
+    """使用範例查詢執行代理。"""
+    # 建立一個記憶體會話服務實例
     session_service = InMemorySessionService()
+    # 建立一個新的會話
     await session_service.create_session(
-        app_name="customer_service", user_id="test_user", session_id="test_session"
+        app_name="app", user_id="test_user", session_id="test_session"
     )
+    # 建立一個 Runner 實例，傳入代理、應用程式名稱和會話服務
     runner = Runner(
-        agent=root_agent, app_name="customer_service", session_service=session_service
+        agent=root_agent, app_name="app", session_service=session_service
     )
-    query = "I want a recipe for pancakes"
+    # 定義要傳送給代理的查詢
+    query = "我想要一個鬆餅的食譜"
+    # 非同步迭代執行代理並獲取事件
     async for event in runner.run_async(
         user_id="test_user",
         session_id="test_session",
+        # 建立一個新的使用者訊息內容物件
         new_message=genai_types.Content(
-            role="user", 
+            role="user",
             parts=[genai_types.Part.from_text(text=query)]
         ),
     ):
+        # 檢查事件是否為最終回應
         if event.is_final_response():
+            # 如果是，印出回應的文字內容
             print(event.content.parts[0].text)
 
 
+# 如果此腳本是主程式，則執行 main 函式
 if __name__ == "__main__":
     asyncio.run(main())
 ```
 
 ---
 
-## 18. Official API & CLI References
+## 18. 官方 API 與 CLI 參考
 
-For detailed specifications of all classes, methods, and commands, refer to the official reference documentation.
+有關所有類別、方法和指令的詳細規格，請參閱官方參考文件。
 
-*   [Python API Reference](https://github.com/google/adk-docs/tree/main/docs/api-reference/python)
-*   [Java API Reference](https://github.com/google/adk-docs/tree/main/docs/api-reference/java)
-*   [CLI Reference](https://github.com/google/adk-docs/tree/main/docs/api-reference/cli)
-*   [REST API Reference](https://github.com/google/adk-docs/tree/main/docs/api-reference/rest)
-*   [Agent Config YAML Reference](https://github.com/google/adk-docs/tree/main/docs/api-reference/agentconfig)
-
----
-**llm.txt** documents the "Agent Starter Pack" repository, providing a source of truth on its purpose, features, and usage.
----
-
-### Section 1: Project Overview
-
-*   **Project Name:** Agent Starter Pack
-*   **Purpose:** Accelerate development of production-ready GenAI Agents on Google Cloud.
-*   **Tagline:** Production-Ready Agents on Google Cloud, faster.
-
-**The "Production Gap":**
-While prototyping GenAI agents is quick, production deployment often takes 3-9 months.
-
-**Key Challenges Addressed:**
-*   **Customization:** Business logic, data grounding, security/compliance.
-*   **Evaluation:** Metrics, quality assessment, test datasets.
-*   **Deployment:** Cloud infrastructure, CI/CD, UI integration.
-*   **Observability:** Performance tracking, user feedback.
-
-**Solution: Agent Starter Pack**
-Provides MLOps and infrastructure templates so developers focus on agent logic.
-
-*   **You Build:** Prompts, LLM interactions, business logic, agent orchestration.
-*   **We Provide:**
-    *   Deployment infrastructure, CI/CD, testing
-    *   Logging, monitoring
-    *   Evaluation tools
-    *   Data connections, UI playground
-    *   Security best practices
-
-Establishes production patterns from day one, saving setup time.
+- [Python API 參考](https://github.com/google/adk-docs/tree/main/docs/api-reference/python)
+- [Java API 參考](https://github.com/google/adk-docs/tree/main/docs/api-reference/java)
+- [CLI 參考](https://github.com/google/adk-docs/tree/main/docs/api-reference/cli)
+- [REST API 參考](https://github.com/google/adk-docs/tree/main/docs/api-reference/rest)
+- [代理設定 YAML 參考](https://github.com/google/adk-docs/tree/main/docs/api-reference/agentconfig)
 
 ---
-### Section 2: Creating & Enhancing Agent Projects
 
-Start by creating a new agent project from a predefined template, or enhance an existing project with agent capabilities. Both processes support interactive and fully automated setup.
+## **llm.txt** 記錄了「代理入門包」儲存庫，提供了關於其目的、功能和用法的真實來源。
 
-**Prerequisites:**
-Before you begin, ensure you have `uv`/`uvx`, `gcloud` CLI, `terraform`, `git`, and `gh` CLI (for automated CI/CD setup) installed and authenticated.
+### 第 1 節：專案概覽
 
-**Installing the `agent-starter-pack` CLI:**
-Choose one method to get the `agent-starter-pack` command:
+- **專案名稱：** 代理入門包 (Agent Starter Pack)
+- **目的：** 加速在 Google Cloud 上開發可投入生產的 GenAI 代理。
+- **標語：** 在 Google Cloud 上更快地建構可投入生產的代理。
 
-1.  **`uvx` (Recommended for Zero-Install/Automation):** Run directly without prior installation.
+**「生產差距」：**
+雖然 GenAI 代理的原型製作很快，但生產部署通常需要 3-9 個月。
+
+**解決的關鍵挑戰：**
+
+- **客製化：** 業務邏輯、資料基礎、安全性/合規性。
+- **評估：** 指標、品質評估、測試資料集。
+- **部署：** 雲端基礎設施、CI/CD、UI 整合。
+- **可觀測性：** 效能追蹤、使用者回饋。
+
+**解決方案：代理入門包**
+提供 MLOps 和基礎設施範本，讓開發人員專注於代理邏輯。
+
+- **您建構：** 提示、LLM 互動、業務邏輯、代理編排。
+- **我們提供：**
+  - 部署基礎設施、CI/CD、測試
+  - 日誌、監控
+  - 評估工具
+  - 資料連接、UI 遊樂場
+  - 安全性最佳實踐
+
+從第一天起就建立生產模式，節省設定時間。
+
+---
+
+### 第 2 節：建立與增強代理專案
+
+從預定義的範本開始建立一個新的代理專案，或用代理功能增強現有專案。這兩個過程都支援互動式和全自動設定。
+
+**先決條件：**
+在開始之前，請確保您已安裝並驗證了 `uv`/`uvx`、`gcloud` CLI、`terraform`、`git` 和 `gh` CLI (用於自動化 CI/CD 設定)。
+
+**安裝 `agent-starter-pack` CLI：**
+選擇一種方法來獲取 `agent-starter-pack` 指令：
+
+1.  **`uvx` (推薦用於零安裝/自動化)：** 無需事先安裝即可直接執行。
     ```bash
+    # 使用 uvx 直接執行 agent-starter-pack create 指令
     uvx agent-starter-pack create ...
     ```
-2.  **Virtual Environment (`pip` or `uv`):**
+2.  **虛擬環境 (`pip` 或 `uv`)：**
     ```bash
+    # 使用 pip 安裝 agent-starter-pack
     pip install agent-starter-pack
     ```
-3.  **Persistent CLI Install (`pipx` or `uv tool`):** Installs globally in an isolated environment.
+3.  **持久性 CLI 安裝 (`pipx` 或 `uv tool`)：** 在隔離的環境中全域安裝。
 
 ---
-### `agent-starter-pack create` Command
 
-Generates a new agent project directory based on a chosen template and configuration.
+### `agent-starter-pack create` 指令
 
-**Usage:**
+根據選擇的範本和設定生成一個新的代理專案目錄。
+
+**用法：**
+
 ```bash
+# agent-starter-pack create 指令的基本用法
 agent-starter-pack create PROJECT_NAME [OPTIONS]
 ```
 
-**Arguments:**
-*   `PROJECT_NAME`: Name for your new project directory and base for GCP resource naming (max 26 chars, converted to lowercase).
+**參數：**
 
-**Template Selection:**
-*   `-a, --agent`: Agent template - built-in agents (e.g., `adk_base`, `agentic_rag`), remote templates (`adk@gemini-fullstack`, `github.com/user/repo@branch`), or local projects (`local@./path`).
+- `PROJECT_NAME`：您的新專案目錄名稱，也是 GCP 資源命名的基礎 (最多 26 個字元，轉換為小寫)。
 
-**Deployment Options:**
-*   `-d, --deployment-target`: Target environment (`cloud_run` or `agent_engine`).
-*   `--cicd-runner`: CI/CD runner (`google_cloud_build` or `github_actions`).
-*   `--region`: GCP region (default: `us-central1`).
+**範本選擇：**
 
-**Data & Storage:**
-*   `-i, --include-data-ingestion`: Include data ingestion pipeline.
-*   `-ds, --datastore`: Datastore type (`vertex_ai_search`, `vertex_ai_vector_search`, `alloydb`).
-*   `--session-type`: Session storage (`in_memory`, `alloydb`, `agent_engine`).
+- `-a, --agent`：代理範本 - 內建代理 (例如 `adk_base`, `agentic_rag`)、遠端範本 (`adk@gemini-fullstack`, `github.com/user/repo@branch`) 或本地專案 (`local@./path`)。
 
-**Project Creation:**
-*   `-o, --output-dir`: Output directory (default: current directory).
-*   `--agent-directory, -dir`: Agent code directory name (default: `app`).
-*   `--in-folder`: Create files in current directory instead of new subdirectory.
+**部署選項：**
 
-**Automation:**
-*   `--auto-approve`: **Skip all interactive prompts (crucial for automation).**
-*   `--skip-checks`: Skip GCP/Vertex AI verification checks.
-*   `--debug`: Enable debug logging.
+- `-d, --deployment-target`：目標環境 (`cloud_run` 或 `agent_engine`)。
+- `--cicd-runner`：CI/CD 執行器 (`google_cloud_build` 或 `github_actions`)。
+- `--region`：GCP 區域 (預設：`us-central1`)。
 
-**Automated Creation Example:**
+**資料與儲存：**
+
+- `-i, --include-data-ingestion`：包含資料擷取管線。
+- `-ds, --datastore`：資料儲存類型 (`vertex_ai_search`, `vertex_ai_vector_search`, `cloud_sql`)。
+- `--session-type`：會話儲存 (`in_memory`, `cloud_sql`, `agent_engine`)。
+
+**專案建立：**
+
+- `-o, --output-dir`：輸出目錄 (預設：目前目錄)。
+- `--agent-directory, -dir`：代理程式碼目錄名稱 (預設：`app`)。
+- `--in-folder`：在目前目錄中建立檔案，而不是在新的子目錄中。
+
+**自動化：**
+
+- `--auto-approve`：**跳過所有互動式提示 (對自動化至關重要)。**
+- `--skip-checks`：跳過 GCP/Vertex AI 驗證檢查。
+- `--debug`：啟用偵錯日誌。
+
+**自動化建立範例：**
+
 ```bash
+# 使用 uvx 自動化建立一個名為 my-automated-agent 的代理專案
 uvx agent-starter-pack create my-automated-agent \
   -a adk_base \
   -d cloud_run \
@@ -1729,24 +2023,28 @@ uvx agent-starter-pack create my-automated-agent \
 
 ---
 
-### `agent-starter-pack enhance` Command
+### `agent-starter-pack enhance` 指令
 
-Enhance your existing project with AI agent capabilities by adding agent-starter-pack features in-place. This command supports all the same options as `create` but templates directly into the current directory instead of creating a new project directory.
+透過就地添加 agent-starter-pack 功能來增強您現有的專案，賦予其 AI 代理能力。此指令支援與 `create` 相同的所有選項，但會直接在目前目錄中套用範本，而不是建立新的專案目錄。
 
-**Usage:**
+**用法：**
+
 ```bash
+# agent-starter-pack enhance 指令的基本用法
 agent-starter-pack enhance [TEMPLATE_PATH] [OPTIONS]
 ```
 
-**Key Differences from `create`:**
-*   Templates into current directory (equivalent to `create --in-folder`)
-*   `TEMPLATE_PATH` defaults to current directory (`.`)
-*   Project name defaults to current directory name
-*   Additional `--base-template` option to override template inheritance
+**與 `create` 的主要區別：**
 
-**Enhanced Project Example:**
+- 在目前目錄中套用範本 (相當於 `create --in-folder`)
+- `TEMPLATE_PATH` 預設為目前目錄 (`.`)
+- 專案名稱預設為目前目錄名稱
+- 額外的 `--base-template` 選項以覆寫範本繼承
+
+**增強專案範例：**
+
 ```bash
-# Enhance current directory with agent capabilities
+# 增強目前目錄，賦予其代理能力
 uvx agent-starter-pack enhance . \
   --base-template adk_base \
   -d cloud_run \
@@ -1754,31 +2052,32 @@ uvx agent-starter-pack enhance . \
   --auto-approve
 ```
 
-**Project Structure:** Expects agent code in `app/` directory (configurable via `--agent-directory`).
+**專案結構：** 預期代理程式碼在 `app/` 目錄中 (可透過 `--agent-directory` 設定)。
 
 ---
 
-### Available Agent Templates
+### 可用代理範本
 
-Templates for the `create` command (via `-a` or `--agent`):
+`create` 指令的範本 (透過 `-a` 或 `--agent`)：
 
-| Agent Name             | Description                                  |
-| :--------------------- | :------------------------------------------- |
-| `adk_base`             | Base ReAct agent (ADK)                       |
-| `adk_gemini_fullstack` | Production-ready fullstack research agent    |
-| `agentic_rag`          | RAG agent for document retrieval & Q&A       |
-| `langgraph_base_react` | Base ReAct agent (LangGraph)                 |
-| `crewai_coding_crew`   | Multi-agent collaborative coding assistance  |
-| `adk_live`             | Real-time multimodal RAG agent               |
+| 代理名稱               | 描述                          |
+| :--------------------- | :---------------------------- |
+| `adk_base`             | 基礎 ReAct 代理 (ADK)         |
+| `adk_gemini_fullstack` | 可投入生產的全端研究代理      |
+| `agentic_rag`          | 用於文件檢索和問答的 RAG 代理 |
+| `langgraph_base`       | 基礎 ReAct 代理 (LangGraph)   |
+| `adk_live`             | 即時多模態 RAG 代理           |
 
 ---
 
-### Including a Data Ingestion Pipeline (for RAG agents)
+### 包含資料擷取管線 (適用於 RAG 代理)
 
-For RAG agents needing custom document search, enabling this option automates loading, chunking, embedding documents with Vertex AI, and storing them in a vector database.
+對於需要自訂文件搜尋的 RAG 代理，啟用此選項可自動化載入、分塊、使用 Vertex AI 嵌入文件，並將其儲存在向量資料庫中。
 
-**How to enable:**
+**如何啟用：**
+
 ```bash
+# 建立一個 RAG 代理，並包含資料擷取管線
 uvx agent-starter-pack create my-rag-agent \
   -a agentic_rag \
   -d cloud_run \
@@ -1786,128 +2085,153 @@ uvx agent-starter-pack create my-rag-agent \
   -ds vertex_ai_search \
   --auto-approve
 ```
-**Post-creation:** Follow your new project's `data_ingestion/README.md` to deploy the necessary infrastructure.
+
+**建立後：** 遵循新專案的 `data_ingestion/README.md` 來部署必要的基礎設施。
 
 ---
-### Section 3: Development & Automated Deployment Workflow
+
+### 第 3 節：開發與自動化部署工作流
+
 ---
 
-This section describes the end-to-end lifecycle of an agent, with emphasis on automation.
+本節描述了代理的端到端生命週期，重點在於自動化。
 
+### 1. 本地開發與迭代
 
-### 1. Local Development & Iteration
+專案建立後，進入其目錄開始開發。
 
-Once your project is created, navigate into its directory to begin development.
+**首先，安裝依賴項 (執行一次)：**
 
-**First, install dependencies (run once):**
 ```bash
+# 執行 make install 來安裝專案所需的所有依賴項
 make install
 ```
 
-**Next, test your agent. The recommended method is to use a programmatic script.**
+**接下來，測試您的代理。推薦的方法是使用程式化腳本。**
 
-#### Programmatic Testing (Recommended Workflow)
+#### 程式化測試 (推薦工作流)
 
-This method allows for quick, automated validation of your agent's logic.
+此方法可以快速、自動地驗證您的代理邏輯。
 
-1.  **Create a script:** In the project's root directory, create a Python script named `run_agent.py`.
-2.  **Invoke the agent:** In the script, write code to programmatically call your agent with sample input and `print()` the output for inspection.
-    *   **Guidance:** If you're unsure or no guidance exists, you can look at files in the `tests/` directory for examples of how to import and call the agent's main function.
-    *   **Important:** This script is for simple validation. **Assertions are not required**, and you should not create a formal `pytest` file.
-3.  **Run the test:** Execute your script from the terminal using `uv`.
-    ```bash
+1.  **建立腳本：** 在專案的根目錄中，建立一個名為 `run_agent.py` 的 Python 腳本。
+2.  **呼叫代理：** 在腳本中，編寫程式碼以程式設計方式呼叫您的代理，並使用範例輸入，然後 `print()` 輸出以供檢查。
+    - **指南：** 如果您不確定或沒有指南，可以查看 `tests/` 目錄中的檔案，以獲取如何匯入和呼叫代理主函式的範例。
+    - **重要：** 此腳本用於簡單驗證。**不需要斷言**，您不應建立正式的 `pytest` 檔案。
+3.  **執行測試：** 使用 `uv` 從終端機執行您的腳本。
+    `bash
+    # 使用 uv 執行 Python 腳本
     uv run python run_agent.py
-    ```
-You can keep the test file for future testing.
+    `
+    您可以保留此測試檔案以供將來測試。
 
-#### Manual Testing with the UI Playground (Optional)
+#### 使用 UI 遊樂場進行手動測試 (可選)
 
-If the user needs to interact with your agent manually in a chat interface for debugging:
+如果使用者需要在庫中手動與您的代理在聊天介面中互動以進行偵錯：
 
-1.  Run the following command to start the local web UI:
+1.  執行以下指令以啟動本地 Web UI：
     ```bash
+    # 啟動本地開發伺服器和 UI 遊樂場
     make playground
     ```
-    This is useful for human-in-the-loop testing and features hot-reloading.
+    這對於人在迴路中的測試很有用，並具有熱重載功能。
 
-### 2. Deploying to a Cloud Development Environment
-Before setting up full CI/CD, you can deploy to a personal cloud dev environment.
+### 2. 部署到雲端開發環境
 
-1.  **Set Project:** `gcloud config set project YOUR_DEV_PROJECT_ID`
-2.  **Provision Resources:** `make setup-dev-env` (uses Terraform).
-3.  **Deploy Backend:** `make deploy` (builds and deploys the agent).
+在設定完整的 CI/CD 之前，您可以部署到個人的雲端開發環境。
 
-### 3. Automated Production-Ready Deployment with CI/CD
-For reliable deployments, the `setup-cicd` command streamlines the entire process. It creates a GitHub repo, connects it to your chosen CI/CD runner (Google Cloud Build or GitHub Actions), provisions staging/prod infrastructure, and configures deployment triggers.
+1.  **設定專案：** `gcloud config set project YOUR_DEV_PROJECT_ID`
+2.  **佈建資源：** `make setup-dev-env` (使用 Terraform)。
+3.  **部署後端：** `make deploy` (建構並部署代理)。
 
-**Automated CI/CD Setup Example (Recommended):**
+### 3. 使用 CI/CD 進行自動化生產就緒部署
+
+為了可靠的部署，`setup-cicd` 指令簡化了整個過程。它會建立一個 GitHub 儲存庫，將其連接到您選擇的 CI/CD 執行器 (Google Cloud Build 或 GitHub Actions)，佈建預備/生產基礎設施，並設定部署觸發器。
+
+**自動化 CI/CD 設定範例 (推薦)：**
+
 ```bash
-# Run from the project root. This command will guide you or can be automated with flags.
+# 從專案根目錄執行。此指令將引導您或可使用旗標自動化。
 uvx agent-starter-pack setup-cicd
 ```
 
-**CI/CD Workflow Logic:**
-*   **On Pull Request:** CI pipeline runs tests.
-*   **On Merge to `main`:** CD pipeline deploys to staging.
-*   **Manual Approval:** A manual approval step triggers the production deployment.
+**CI/CD 工作流邏輯：**
+
+- **發起拉取請求時：** CI 管線執行測試。
+- **合併到 `main` 分支時：** CD 管線部署到預備環境。
+- **手動批准：** 手動批准步驟觸發生產部署。
 
 ---
-### Section 4: Key Features & Customization
----
 
-### Deploying with a User Interface (UI)
-*   **Unified Deployment (for Dev/Test):** The backend and frontend can be packaged and served from a single Cloud Run service, secured with Identity-Aware Proxy (IAP).
-*   **Deploying with UI:** `make deploy IAP=true`
-*   **Access Control:** After deploying with IAP, grant users the `IAP-secured Web App User` role in IAM to give them access.
-
-### Session Management
-
-For stateful agents, the starter pack supports persistent sessions.
-*   **Cloud Run:** Choose between `in_memory` (for testing) and durable `alloydb` sessions using the `--session-type` flag.
-*   **Agent Engine:** Provides session management automatically.
-
-### Monitoring & Observability
-*   **Technology:** Uses OpenTelemetry to emit events to Google Cloud Trace and Logging.
-*   **Custom Tracer:** A custom tracer in `app/utils/tracing.py` (or a different agent directory instead of app) handles large payloads by linking to GCS, overcoming default service limits.
-*   **Infrastructure:** A Log Router to sink data to BigQuery is provisioned by Terraform.
+### 第 4 節：主要功能與客製化
 
 ---
-### Section 5: CLI Reference for CI/CD Setup
+
+### 使用使用者介面 (UI) 進行部署
+
+- **統一化部署 (用於開發/測試)：** 後端和前端可以打包並從單一的 Cloud Run 服務提供，並使用 Identity-Aware Proxy (IAP) 進行保護。
+- **使用 UI 部署：** `make deploy IAP=true`
+- **存取控制：** 使用 IAP 部署後，在 IAM 中授予使用者 `IAP-secured Web App User` 角色以給予他們存取權限。
+
+### 會話管理
+
+對於有狀態的代理，入門包支援持久性會話。
+
+- **Cloud Run：** 使用 `--session-type` 旗標在 `in_memory` (用於測試) 和持久的 `cloud_sql` 會話之間進行選擇。
+- **Agent Engine：** 自動提供會話管理。
+
+### 監控與可觀測性
+
+- **技術：** 使用 OpenTelemetry 將事件發送到 Google Cloud Trace 和 Logging。
+- **自訂追蹤器：** `app/utils/tracing.py` (或 app 以外的其他代理目錄) 中的自訂追蹤器透過連結到 GCS 來處理大型負載，克服了預設服務限制。
+- **基礎設施：** Terraform 會佈建一個 Log Router，將資料匯出到 BigQuery。
+
+---
+
+### 第 5 節：CI/CD 設定的 CLI 參考
+
 ---
 
 ### `agent-starter-pack setup-cicd`
-Automates the complete CI/CD infrastructure setup for GitHub-based deployments. Intelligently detects your CI/CD runner (Google Cloud Build or GitHub Actions) and configures everything automatically.
 
-**Usage:**
+自動化基於 GitHub 的部署的完整 CI/CD 基礎設施設定。智慧地偵測您的 CI/CD 執行器 (Google Cloud Build 或 GitHub Actions) 並自動設定所有內容。
+
+**用法：**
+
 ```bash
+# setup-cicd 指令的基本用法
 uvx agent-starter-pack setup-cicd [OPTIONS]
 ```
 
-**Prerequisites:** 
-- Run from the project root (directory with `pyproject.toml`)
-- Required tools: `gh` CLI (authenticated), `gcloud` CLI (authenticated), `terraform`
-- `Owner` role on GCP projects
-- GitHub token with `repo` and `workflow` scopes
+**先決條件：**
 
-**Key Options:**
-*   `--staging-project`, `--prod-project`: GCP project IDs (will prompt if omitted).
-*   `--repository-name`, `--repository-owner`: GitHub repo details (will prompt if omitted).
-*   `--cicd-project`: CI/CD resources project (defaults to prod project).
-*   `--dev-project`: Development project ID (optional).
-*   `--region`: GCP region (default: `us-central1`).
-*   `--auto-approve`: Skip all interactive prompts.
-*   `--local-state`: Use local Terraform state instead of GCS backend.
-*   `--debug`: Enable debug logging.
+- 從專案根目錄 (帶有 `pyproject.toml` 的目錄) 執行
+- 所需工具：`gh` CLI (已驗證)、`gcloud` CLI (已驗證)、`terraform`
+- GCP 專案的 `Owner` 角色
+- 具有 `repo` 和 `workflow` 範圍的 GitHub 權杖
 
-**What it does:**
-1. Creates/connects GitHub repository
-2. Sets up Terraform infrastructure with remote state
-3. Configures CI/CD runner connection (Cloud Build or GitHub Actions with WIF)
-4. Provisions staging/prod environments
-5. Sets up local Git repository with origin remote
+**主要選項：**
 
-**Automated Example:**
+- `--staging-project`, `--prod-project`：GCP 專案 ID (如果省略將會提示)。
+- `--repository-name`, `--repository-owner`：GitHub 儲存庫詳細資訊 (如果省略將會提示)。
+- `--cicd-project`：CI/CD 資源專案 (預設為生產專案)。
+- `--dev-project`：開發專案 ID (可選)。
+- `--region`：GCP 區域 (預設：`us-central1`)。
+- `--auto-approve`：跳過所有互動式提示。
+- `--local-state`：使用本地 Terraform 狀態而不是 GCS 後端。
+- `--debug`：啟用偵錯日誌。
+
+**它會做什麼：**
+
+1. 建立/連接 GitHub 儲存庫
+2. 使用遠端狀態設定 Terraform 基礎設施
+3. 設定 CI/CD 執行器連接 (Cloud Build 或帶有 WIF 的 GitHub Actions)
+4. 佈建預備/生產環境
+5. 設定帶有 origin 遠端的本地 Git 儲存庫
+
+**自動化範例：**
+
 ```bash
+# 自動化設定 CI/CD 的範例指令
 uvx agent-starter-pack setup-cicd \
   --staging-project your-staging-project \
   --prod-project your-prod-project \
@@ -1916,79 +2240,93 @@ uvx agent-starter-pack setup-cicd \
   --auto-approve
 ```
 
-**After setup, push to trigger pipeline:**
+**設定後，推送以觸發管線：**
+
 ```bash
+# 將程式碼推送到遠端儲存庫以觸發 CI/CD
 git add . && git commit -m "Initial commit" && git push -u origin main
 ```
 
-* Note: For coding agents - ask user for required project IDs and repo details before running with `--auto-approve`.
-* Note: If user prefers different git provider, refer to `deployment/README.md` for manual deployment.
----
-### Section 6: Operational Guidelines for Coding Agents
-
-These guidelines are essential for interacting with the Agent Starter Pack project effectively.
+- 注意：對於編碼代理 - 在使用 `--auto-approve` 執行之前，請向使用者詢問所需的專案 ID 和儲存庫詳細資訊。
+- 注意：如果使用者偏好不同的 git 提供者，請參閱 `deployment/README.md` 以進行手動部署。
 
 ---
 
-### Principle 1: Code Preservation & Isolation
+### 第 6 節：編碼代理的操作指南
 
-When executing code modifications using tools like `replace` or `write_file`, your paramount objective is surgical precision. You **must alter only the code segments directly targeted** by the user's request, while **strictly preserving all surrounding and unrelated code.**
-
-**Mandatory Pre-Execution Verification:**
-
-Before finalizing any `new_string` for a `replace` operation, meticulously verify the following:
-
-1.  **Target Identification:** Clearly define the exact lines or expressions to be changed, based *solely* on the user's explicit instructions.
-2.  **Preservation Check:** Compare your proposed `new_string` against the `old_string`. Ensure all code, configuration values (e.g., `model`, `version`, `api_key`), comments, and formatting *outside* the identified target remain identical and verbatim.
-
-**Example: Adhering to Preservation**
-
-*   **User Request:** "Change the agent's instruction to be a recipe suggester."
-*   **Original Code Snippet:**
-    ```python
-    root_agent = Agent(
-        name="root_agent",
-        model="gemini-2.5-flash",
-        instruction="You are a helpful AI assistant."
-    )
-    ```
-*   **Incorrect Modification (VIOLATION):**
-    ```python
-    root_agent = Agent(
-        name="recipe_suggester",
-        model="gemini-1.5-flash", # UNINTENDED MUTATION - model was not requested to change
-        instruction="You are a recipe suggester."
-    )
-    ```
-*   **Correct Modification (COMPLIANT):**
-    ```python
-    root_agent = Agent(
-        name="recipe_suggester", # OK, related to new purpose
-        model="gemini-2.5-flash", # MUST be preserved
-        instruction="You are a recipe suggester." # OK, the direct target
-    )
-    ```
-
-**Critical Error:** Failure to adhere to this preservation principle is a critical error. Always prioritize the integrity of existing, unchanged code over the convenience of rewriting entire blocks.
+這些指南對於有效地與代理入門包專案互動至關重要。
 
 ---
 
-### Principle 2: Workflow & Execution Best Practices
+### 原則 1：程式碼保存與隔離
 
-*   **Standard Workflow:**
-    The validated end-to-end process is: `create` → `test` → `setup-cicd` → push to deploy. Trust this high-level workflow as the default for developing and shipping agents.
+當使用 `replace` 或 `write_file` 等工具執行程式碼修改時，您的首要目標是精準操作。您**必須僅更改使用者請求直接針對的程式碼片段**，同時**嚴格保留所有周圍和無關的程式碼。**
 
-*   **Agent Testing:**
-    *   **Avoid `make playground`** unless specifically instructed; it is designed for human interaction. Focus on programmatic testing.
+**強制性執行前驗證：**
 
-*   **Model Selection:**
-    *   **When using Gemini, prefer the 2.5 model family** for optimal performance and capabilities: "gemini-2.5-pro" and "gemini-2.5-flash"
+在為 `replace` 操作最終確定任何 `new_string` 之前，請仔細驗證以下內容：
 
-*   **Running Python Commands:**
-    *   Always use `uv` to execute Python commands within this repository (e.g., `uv run run_agent.py`).
-    *   Ensure project dependencies are installed by running `make install` before executing scripts.
-    *   Consult the project's `Makefile` and `README.md` for other useful development commands.
+1.  **目標識別：** *僅*根據使用者的明確指示，清楚定義要更改的確切行或表達式。
+2.  **保存檢查：** 將您提議的 `new_string` 與 `old_string` 進行比較。確保在已識別目標*之外*的所有程式碼、設定值 (例如 `model`, `version`, `api_key`)、註解和格式保持相同且逐字不變。
 
-*   **Further Reading & Troubleshooting:**
-    *   For questions about specific frameworks (e.g., LangGraph) or Google Cloud products (e.g., Cloud Run), their official documentation and online resources are the best source of truth.
-    *   **When encountering persistent errors or if you're unsure how to proceed after initial troubleshooting, a targeted Google Search is strongly recommended.** It is often the fastest way to find relevant documentation, community discussions, or direct solutions to your problem.
+**範例：遵守保存原則**
+
+- **使用者請求：** 「將代理的指令更改為食譜建議者。」
+- **原始程式碼片段：**
+  ```python
+  # 原始的代理定義
+  root_agent = Agent(
+      name="root_agent",
+      model="gemini-3-flash-preview",
+      instruction="你是一個樂於助人的 AI 助理。"
+  )
+  ```
+- **不正確的修改 (違規)：**
+  ```python
+  # 錯誤的修改，意外更改了模型
+  root_agent = Agent(
+      name="recipe_suggester",
+      # 未經請求的變動 - 模型不應更改
+      model="gemini-1.5-flash",
+      instruction="你是一個食譜建議者。"
+  )
+  ```
+- **正確的修改 (合規)：**
+  ```python
+  # 正確的修改，僅更改了指令和相關的名稱
+  root_agent = Agent(
+      # 可以，與新目的相關
+      name="recipe_suggester",
+      # 必須保留
+      model="gemini-3-flash-preview",
+      # 可以，是直接目標
+      instruction="你是一個食譜建議者。"
+  )
+  ```
+
+**嚴重錯誤：** 未能遵守此保存原則是嚴重錯誤。始終將現有、未更改程式碼的完整性置於重寫整個區塊的便利性之上。
+
+---
+
+### 原則 2：工作流與執行最佳實踐
+
+- **標準工作流：**
+  經過驗證的端到端流程是：`create` → `test` → `setup-cicd` → 推送以部署。請將此高層次工作流視為開發和交付代理的預設流程。
+
+- **代理測試：**
+
+  - 除非特別指示，否則**避免使用 `make playground`**；它專為人類互動而設計。專注於程式化測試。
+
+- **模型選擇：**
+
+  - **使用 Gemini 時，請優先選擇現代模型系列**以獲得最佳效能和功能：「gemini-2.5-pro」、「gemini-2.5-flash」和「gemini-3-flash-preview」
+
+- **執行 Python 指令：**
+
+  - 始終使用 `uv` 在此儲存庫中執行 Python 指令 (例如 `uv run run_agent.py`)。
+  - 在執行腳本之前，請執行 `make install` 以確保已安裝專案依賴項。
+  - 查閱專案的 `Makefile` 和 `README.md` 以獲取其他有用的開發指令。
+
+- **進一步閱讀與疑難排解：**
+  - 有關特定框架 (例如 LangGraph) 或 Google Cloud 產品 (例如 Cloud Run) 的問題，其官方文件和線上資源是最佳的真實來源。
+  - **當遇到持續性錯誤或在初步疑難排解後不確定如何繼續時，強烈建議進行有針對性的 Google 搜尋。** 這通常是找到相關文件、社群討論或直接解決方案的最快方法。

@@ -1,51 +1,47 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 以下為本 PR 檢查用的 Cloud Build 設定檔。
+# 重點：依序安裝依賴、執行單元測試、執行整合測試；確保每次 PR 都能自動驗證。
 
 steps:
-  # Install uv package manager and sync dependencies
-  - name: "python:3.12-slim"
+  # 安裝 uv 套件管理器並同步依賴
+  # 重點：使用 uv sync --locked 以鎖定檔為準，確保依賴可重現。
+  - name: 'python:3.12-slim'
     id: install-dependencies
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         pip install uv==0.8.13 --user && uv sync --locked
     env:
+      # 重點：將使用者層級安裝路徑 (~/.local/bin) 加入 PATH，讓 uv 指令可被找到。
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run unit tests using pytest
-  - name: "python:3.12-slim"
+  # 使用 pytest 執行單元測試
+  # 重點：tests/unit 通常為快速、隔離的測試，優先驗證核心邏輯。
+  - name: 'python:3.12-slim'
     id: unit-tests
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         uv run pytest tests/unit
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run integration tests
-  - name: "python:3.12-slim"
+  # 執行整合測試
+  # 重點：tests/integration 通常涵蓋跨模組/外部依賴的流程驗證，可能較耗時。
+  - name: 'python:3.12-slim'
     id: integration-tests
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         uv run pytest tests/integration
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
+# 建置記錄輸出位置
+# 重點：logsBucket 使用每個專案專屬的 GCS bucket，便於集中檢視與稽核。
 logsBucket: gs://${PROJECT_ID}-pack-customer-service-logs/build-logs
 options:
+  # 重點：使用區域化且由使用者擁有的 bucket 行為，避免預設 bucket 權限/區域不符造成失敗。
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

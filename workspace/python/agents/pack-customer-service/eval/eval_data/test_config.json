@@ -2,5 +2,6 @@
   "criteria": {
     "tool_trajectory_avg_score": 0.2,
     "response_match_score": 0.2
-  }
+  },
+  "_comment": "評估標準設定檔。tool_trajectory_avg_score 代表工具調用路徑的平均分數權重，response_match_score 代表回覆內容匹配度的分數權重。"
 }

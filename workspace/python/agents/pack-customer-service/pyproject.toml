@@ -1,118 +1,134 @@
 [project]
+# 專案基本資訊
 name = "customer-service"
 version = "0.1.0"
-description = "customer service demo using Agent Development Kit"
-authors = [{ name = "Christos Aniftos", email = "aniftos@google.com" }]
+description = "customer service demo using Agent Development Kit" # 使用 Agent Development Kit 的客戶服務展示專案
+authors = [{ name = "lastingyeh", email = "lastingyeh@gmail.com" }]
 license = "Apache-2.0"
 readme = "README.md"
+
+# 執行階段依賴套件 (Production Dependencies)
+# 這些是運行專案所必需的套件
 dependencies = [
-    "google-cloud-aiplatform[adk,agent_engine]>=1.93.0",
-    "google-adk>=1.0.0",
-    "pydantic-settings>=2.8.1",
-    "tabulate>=0.9.0",
-    "cloudpickle>=3.1.1",
-    "pylint>=3.3.6",
-    "jsonschema>=4.23.0",
+    "google-cloud-aiplatform[adk,agent_engine]>=1.93.0", # Google Cloud AI 平台與 ADK/Agent Engine 支援
+    "google-adk>=1.0.0",                               # Google Agent Development Kit
+    "pydantic-settings>=2.8.1",                        # 設定管理工具，基於 Pydantic
+    "tabulate>=0.9.0",                                 # 格式化表格輸出
+    "cloudpickle>=3.1.1",                              # 物件序列化工具，用於傳輸 Python 對象
+    "pylint>=3.3.6",                                   # 程式碼靜態分析
+    "jsonschema>=4.23.0",                              # JSON Schema 驗證
 ]
 
+# 要求的 Python 版本範圍
 requires-python = ">=3.10,<3.13"
 
 [dependency-groups]
+# 開發環境依賴套件 (Development Dependencies)
+# 僅在開發、測試與 CI/CD 流程中使用
 dev = [
-    "pytest>=8.3.5",
-    "pytest-mock>=3.14.0",
-    "pytest-cov>=6.0.0",
-    "pytest-asyncio>=0.25.3",
-    "flake8-pyproject>=1.2.3",
-    "pylint>=3.3.6",
-    "pyink>=24.10.1",
-    "jsonschema>=4.23.0",
-    "google-cloud-aiplatform[evaluation]>=1.93.0",
-    "agent-starter-pack>=0.14.1",
+    "pytest>=8.3.5",                                   # 單元測試框架
+    "pytest-mock>=3.14.0",                             # 測試模擬工具 (Mocking)
+    "pytest-cov>=6.0.0",                               # 測試覆蓋率分析
+    "pytest-asyncio>=0.25.3",                          # 支援非同步測試
+    "flake8-pyproject>=1.2.3",                         # 程式碼風格檢查 (Linting)
+    "pylint>=3.3.6",                                   # 靜態分析工具
+    "pyink>=24.10.1",                                  # 程式碼格式化工具 (Black 的衍生版本)
+    "jsonschema>=4.23.0",                              # JSON Schema 驗證
+    "google-cloud-aiplatform[evaluation]>=1.93.0",      # AI 平台模型評估支援
+    "agent-starter-pack>=0.14.1",                      # 代理程式啟動套件包
 ]
 
 [project.optional-dependencies]
+# 選配依賴套件 - 用於 Lint 檢查
 lint = [
-    "ruff>=0.4.6",
-    "mypy>=1.15.0",
-    "codespell>=2.2.0",
-    "types-pyyaml>=6.0.12.20240917",
-    "types-requests>=2.32.0.20240914",
+    "ruff>=0.4.6",                                     # 極速 Python Linter 與格式化工具
+    "mypy>=1.15.0",                                    # 靜態型別檢查器
+    "codespell>=2.2.0",                                # 拼字檢查工具
+    "types-pyyaml>=6.0.12.20240917",                   # PyYAML 型別定義
+    "types-requests>=2.32.0.20240914",                 # Requests 型別定義
 ]
 
 
 [tool.pytest.ini_options]
-console_output_style = "progress"
-addopts = "-vv -s"
-#addopts = "-vv -s --pdb"
-testpaths = ["tests/", "eval/"]
-markers = ["unit"]
-log_level = "ERROR"
-log_cli = false
-log_auto_indent = true
-log_cli_date_format = "%Y-%m-%d %H:%M:%S"
-log_cli_format = "[%(asctime)s] %(levelname)s (%(funcName)s) \t [%(pathname)s:%(lineno)d] %(message)s"
-filterwarnings = ["ignore::UserWarning"]
+# Pytest 測試配置
+console_output_style = "progress" # 控制台輸出風格
+addopts = "-vv -s"                # 增加詳細度 (-vv) 並允許捕獲 stdout (-s)
+#addopts = "-vv -s --pdb"         # 測試失敗時進入除錯模式 (PDB)
+testpaths = ["tests/", "eval/"]    # 測試程式碼所在的目錄
+markers = ["unit"]                # 註冊自定義標記
+log_level = "ERROR"               # 日誌紀錄層級
+log_cli = false                   # 是否在控制台即時顯示日誌
+log_auto_indent = true            # 日誌自動縮排
+log_cli_date_format = "%Y-%m-%d %H:%M:%S" # 日誌日期格式
+log_cli_format = "[%(asctime)s] %(levelname)s (%(funcName)s) \t [%(pathname)s:%(lineno)d] %(message)s" # 日誌內容格式
+filterwarnings = ["ignore::UserWarning"] # 忽略特定類型的警告
 
 
 [tool.ruff]
-line-length = 88
-target-version = "py310"
+# Ruff 配置 - 高效率的 Linting 工具
+line-length = 88         # 每行最大長度
+target-version = "py310" # 目標 Python 版本
 
 [tool.ruff.lint]
+# 啟用的規則檢查
 select = [
-    "E",   # pycodestyle
+    "E",   # pycodestyle (錯誤)
     "F",   # pyflakes
-    "W",   # pycodestyle warnings
-    "I",   # isort
-    "C",  # flake8-comprehensions
+    "W",   # pycodestyle (警告)
+    "I",   # isort (匯入排序)
+    "C",   # flake8-comprehensions
     "B",   # flake8-bugbear
-    "UP", # pyupgrade
-    "RUF", # ruff specific rules
+    "UP",  # pyupgrade (自動升級語法)
+    "RUF", # Ruff 專屬規則
 ]
-ignore = ["E501", "C901"] # ignore line too long, too complex
+ignore = ["E501", "C901"] # 忽略：行太長 (E501)、程式碼過於複雜 (C901)
 
 [tool.ruff.lint.isort]
-known-first-party = ["customer_service"]
+# isort 匯入排序設定
+known-first-party = ["customer_service"] # 標記為本專案內部的模組
 
 [tool.mypy]
-disallow_untyped_calls = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-no_implicit_optional = true
-check_untyped_defs = true
-disallow_subclassing_any = true
-warn_incomplete_stub = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_unreachable = true
-follow_imports = "silent"
-ignore_missing_imports = true
-explicit_package_bases = true
-disable_error_code = ["misc", "no-untyped-call", "no-any-return"]
+# Mypy 靜態型別檢查配置
+disallow_untyped_calls = true     # 不允許呼叫未定義型別的函數
+disallow_untyped_defs = true      # 不允許定義未指定型別的函數
+disallow_incomplete_defs = true   # 不允許定義不完整的型別資訊
+no_implicit_optional = true       # 禁止隱含的 Optional[None]
+check_untyped_defs = true         # 檢查未標記型別的函數體內部
+disallow_subclassing_any = true   # 禁止繼承 Any
+warn_incomplete_stub = true       # 警告不完整的存根檔案
+warn_redundant_casts = true       # 警告冗餘的型別轉換
+warn_unused_ignores = true        # 警告沒用到的 # type: ignore
+warn_unreachable = true           # 警告偵測到無法觸及的程式碼
+follow_imports = "silent"         # 靜態檢查時處理匯入套件的方式
+ignore_missing_imports = true     # 忽略找不到的匯入套件
+explicit_package_bases = true     # 明確指定套件根路徑
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"] # 停用特定的錯誤代碼
 
-exclude = [".venv"]
+exclude = [".venv"] # 排除檢查的目錄
 
 [tool.codespell]
-ignore-words-list = "rouge"
-skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+# 拼字檢查配置
+ignore-words-list = "rouge" # 忽略特定單字 (例如 NLP 常用的 ROUGE 指標)
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb" # 跳過不需要檢查的路徑
 
 [build-system]
-requires = ["uv_build>=0.8.14,<0.9.0"]
+# 建置系統設定
+requires = ["uv_build>=0.8.14,<0.9.0"] # 使用 uv_build 作為建置工具
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
 module-root = ""
 
 [tool.pyink]
-line-length = 80
-pyink-indentation = 4
-pyink-use-majority-quotes = true
+# Pyink 配置 (改良版的 Black 格式化工具)
+line-length = 80              # 每行最大長度
+pyink-indentation = 4         # 縮排格數
+pyink-use-majority-quotes = true # 自動選擇使用頻率較高的引號 (單/雙)
 
-# This configuration file is used by goo.gle/agent-starter-pack to power remote templating.
-# It defines the template's properties and settings.
+# 此設定由 goo.gle/agent-starter-pack 用於遠端模板驅動
+# 定義模板的屬性與設定
 [tool.agent-starter-pack]
-example_question = "Hi there, I need help with my garden"
+example_question = "Hi there, I need help with my garden" # 範例提問內容
 
 [tool.agent-starter-pack.settings]
-agent_directory = "customer_service"
+agent_directory = "customer_service" # 代理程式程式碼所在的目錄名

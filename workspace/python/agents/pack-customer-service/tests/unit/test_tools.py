@@ -35,6 +35,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_send_call_companion_link():
+    """測試發送通話伴侶連結。"""
     phone_number = "+1-555-123-4567"
     result = send_call_companion_link(phone_number)
     assert result == {
@@ -44,6 +45,7 @@ def test_send_call_companion_link():
 
 
 def test_approve_discount_ok():
+    """測試核准折扣（成功情況）。"""
     result = approve_discount(
         discount_type="percentage", value=10.0, reason="Test discount"
     )
@@ -51,6 +53,7 @@ def test_approve_discount_ok():
 
 
 def test_approve_discount_rejected():
+    """測試核准折扣（被拒絕情況）。"""
     result = approve_discount(
         discount_type="percentage", value=15.0, reason="Test large discount"
     )
@@ -61,6 +64,7 @@ def test_approve_discount_rejected():
 
 
 def test_update_salesforce_crm():
+    """測試更新 Salesforce CRM 記錄。"""
     customer_id = "123"
     details = "Updated customer details"
     result = update_salesforce_crm(customer_id, details)
@@ -71,6 +75,7 @@ def test_update_salesforce_crm():
 
 
 def test_access_cart_information():
+    """測試存取購物車資訊。"""
     customer_id = "123"
     result = access_cart_information(customer_id)
     assert result == {
@@ -91,6 +96,7 @@ def test_access_cart_information():
 
 
 def test_modify_cart_add_and_remove():
+    """測試修改購物車（新增和移除項目）。"""
     customer_id = "123"
     items_to_add = [{"product_id": "tree-789", "quantity": 1}]
     items_to_remove = [{"product_id": "soil-123"}]
@@ -104,6 +110,7 @@ def test_modify_cart_add_and_remove():
 
 
 def test_get_product_recommendations_petunias():
+    """測試獲取產品推薦（針對 Petunias）。"""
     plant_type = "petunias"
     customer_id = "123"
     result = get_product_recommendations(plant_type, customer_id)
@@ -124,6 +131,7 @@ def test_get_product_recommendations_petunias():
 
 
 def test_get_product_recommendations_other():
+    """測試獲取產品推薦（針對其他植物）。"""
     plant_type = "other"
     customer_id = "123"
     result = get_product_recommendations(plant_type, customer_id)
@@ -144,6 +152,7 @@ def test_get_product_recommendations_other():
 
 
 def test_check_product_availability():
+    """測試檢查產品庫存。"""
     product_id = "soil-123"
     store_id = "Main Store"
     result = check_product_availability(product_id, store_id)
@@ -151,6 +160,7 @@ def test_check_product_availability():
 
 
 def test_schedule_planting_service():
+    """測試預約種植服務。"""
     customer_id = "123"
     date = "2024-07-29"
     time_range = "9-12"
@@ -164,12 +174,14 @@ def test_schedule_planting_service():
 
 
 def test_get_available_planting_times():
+    """測試獲取可用種植時間。"""
     date = "2024-07-29"
     result = get_available_planting_times(date)
     assert result == ["9-12", "13-16"]
 
 
 def test_send_care_instructions():
+    """測試發送照護說明。"""
     customer_id = "123"
     plant_type = "Petunias"
     delivery_method = "email"
@@ -181,6 +193,7 @@ def test_send_care_instructions():
 
 
 def test_generate_qr_code():
+    """測試生成 QR Code。"""
     customer_id = "123"
     discount_value = 10.0
     discount_type = "percentage"

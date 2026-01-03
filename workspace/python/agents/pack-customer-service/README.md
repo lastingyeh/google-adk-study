@@ -1,137 +1,146 @@
-# Cymbal Home & Garden Customer Service Agent
+```
+⚠️ 專案說明
+1. 主要參考 https://github.com/google/adk-samples/tree/main/python/agents/customer-service
+2. 根據 adk-samples 中的 README.md 內容進行翻譯與修改
+3. 使用 agent-starter-pack 整合 adk-samples 的 customer-service 範例完成本專案
+4. 部分內容依照實際情況進行調整與補充
+5. 本專案僅供學習與參考使用，請勿用於商業用途
+```
 
-This project implements an AI-powered customer service agent for Cymbal Home & Garden, a big-box retailer specializing in home improvement, gardening, and related supplies. The agent is designed to provide excellent customer service, assist customers with product selection, manage orders, schedule services, and offer personalized recommendations.
+---
 
-## Overview
+# Cymbal Home & Garden 客戶服務 Agent
 
-The Cymbal Home & Garden Customer Service Agent is designed to provide a seamless and personalized shopping experience for customers. It leverages Gemini to understand customer needs, offer tailored product recommendations, manage orders, and schedule services. The agent is designed to be friendly, empathetic, and highly efficient, ensuring that customers receive the best possible service.
+本專案為 Cymbal Home & Garden 實作了一個 AI 驅動的客戶服務 Agent。Cymbal Home & Garden 是一家專門從事居家修繕、園藝和相關用品的大型零售商。此 Agent 旨在提供卓越的客戶服務，協助客戶選擇產品、管理訂單、安排服務並提供個性化建議。
 
-## Agent Details
+## 概述
 
-The key features of the Customer Service Agent include:
+Cymbal Home & Garden 客戶服務 Agent 旨在為客戶提供無縫且個性化的購物體驗。它利用 Gemini 來理解客戶需求，提供量身定制的產品建議，管理訂單並安排服務。此 Agent 被設計成友好、富有同理心且高效，確保客戶獲得最佳服務。
 
-| Feature            | Description             |
+## Agent 詳情
+
+🔗 Customer Service ➡ [說明連結](./customer_service/README.md)
+
+客戶服務 Agent 的主要功能包括：
+
+| 功能 | 描述 |
 | ------------------ | ----------------------- |
-| _Interaction Type_ | Conversational          |
-| _Complexity_       | Intermediate            |
-| _Agent Type_       | Single Agent            |
-| _Components_       | Tools, Multimodal, Live |
-| _Vertical_         | Retail                  |
+| _互動類型_ | 對話式 (Conversational) |
+| _複雜度_ | 中級 (Intermediate) |
+| _Agent 類型_ | 單一 Agent (Single Agent) |
+| _組件_ | 工具、多模態、即時 (Tools, Multimodal, Live) |
+| _垂直領域_ | 零售 (Retail) |
 
-### Agent Architecture
+### Agent 架構
 
-![Customer Service Agent Workflow](customer_service_workflow.png)
+![客戶服務 Agent 工作流程](customer_service_workflow.png)
 
-The agent is built using a multi-modal architecture, combining text and video inputs to provide a rich and interactive experience. It mocks interactions with various tools and services, including a product catalog, inventory management, order processing, and appointment scheduling systems. The agent also utilizes a session management system to maintain context across interactions and personalize the customer experience.
+此 Agent 使用多模態架構構建，結合了文字和影片輸入，以提供豐富且互動式的體驗。它模擬了與各種工具和服務的互動，包括產品型錄、庫存管理、訂單處理和預約排程系統。該 Agent 還利用會話管理系統來維護互動過程中的上下文並個性化客戶體驗。
 
-It is important to notice that this agent is not integrated to an actual backend and the behaviour is based on mocked tools. If you would like to implement this agent with actual backend integration you will need to edit [customer_service/tools.py](./customer_service/tools/tools.py)
+請注意，此 Agent 未整合到實際的後端，其行為基於模擬工具。如果您想使用實際的後端整合來實作此 Agent，您需要編輯 [customer_service/tools.py](./customer_service/tools/tools.py)
 
-Because the tools are mocked you might notice that some requested changes will not be applied. For instance newly added item to cart will not show if later a user asks the agent to list all items.
+由於工具是模擬的，您可能會注意到某些請求的變更不會被套用。例如，如果使用者稍後要求 Agent 列出所有品項，新加入購物車的品項將不會顯示。
 
-### Key Features
+### 關鍵功能
 
-- **Personalized Customer Assistance:**
-  - Greets returning customers by name and acknowledges their purchase history.
-  - Maintains a friendly, empathetic, and helpful tone.
-- **Product Identification and Recommendation:**
-  - Assists customers in identifying plants, even from vague descriptions.
-  - Requests and utilizes visual aids (video) to accurately identify plants.
-  - Provides tailored product recommendations based on identified plants, customer needs, and location (e.g., Las Vegas, NV).
-  - Offers alternatives to items in the customer's cart if better options exist.
-- **Order Management:**
-  - Accesses and displays the contents of a customer's shopping cart.
-  - Modifies the cart by adding and removing items based on recommendations and customer approval.
-  - Informs customers about relevant sales and promotions.
-- **Upselling and Service Promotion:**
-  - Suggests relevant services, such as professional planting services.
-  - Handles inquiries about pricing and discounts, including competitor offers.
-  - Requests manager approval for discounts when necessary.
-- **Appointment Scheduling:**
-  - Schedules appointments for planting services (or other services).
-  - Checks available time slots and presents them to the customer.
-  - Confirms appointment details and sends a confirmation/calendar invite.
-- **Customer Support and Engagement:**
-  - Sends via sms or email plant care instructions relevant to the customer's purchases and location.
-  - Offers a discount QR code for future in-store purchases to loyal customers.
-- **Tool-Based Interactions:**
-  - The agent interacts with the user using a set of tools.
-  - The agent can use multiple tools in a single interaction.
-  - The agent can use the tools to get information and to modify the user's transaction state.
-- **Evaluation:**
-  - The agent can be evaluated using a set of test cases.
-  - The evaluation is based on the agent's ability to use the tools and to respond to the user's requests.
+- **個性化客戶協助：**
+  - 稱呼回訪客戶的姓名並確認其購買歷史。
+  - 保持友好、富有同理心且樂於助人的語氣。
+- **產品識別與建議：**
+  - 協助客戶識別植物，即使是模糊的描述。
+  - 請求並利用視覺輔助工具（影片）來準確識別植物。
+  - 根據識別出的植物、客戶需求和位置（例如：內華達州拉斯維加斯）提供量身定制的產品建議。
+  - 如果存在更好的選擇，則為客戶購物車中的品項提供替代方案。
+- **訂單管理：**
+  - 訪問並顯示客戶購物車的內容。
+  - 根據建議和客戶批准，透過新增或移除品項來修改購物車。
+  - 向客戶告知相關的銷售和促銷活動。
+- **加購銷售與服務推廣：**
+  - 建議相關服務，例如專業種植服務。
+  - 處理有關價格和折扣的詢問，包括競爭對手的報價。
+  - 必要時請求經理批准折扣。
+- **預約排程：**
+  - 安排種植服務（或其他服務）的預約。
+  - 檢查可用的時段並向客戶展示。
+  - 確認預約詳情並發送確認/行事曆邀請。
+- **客戶支援與參與：**
+  - 通過簡訊或電子郵件發送與客戶購買和位置相關的植物護理指南。
+  - 向忠實客戶提供用於未來店內購買的折扣 QR code。
+- **基於工具的互動：**
+  - Agent 使用一組工具與使用者互動。
+  - Agent 可以在單次互動中使用多個工具。
+  - Agent 可以使用工具來獲取資訊並修改使用者的交易狀態。
+- **評估：**
+  - 可以使用一組測試案例對 Agent 進行評估。
+  - 評估基於 Agent 使用工具和回應使用者請求的能力。
 
-#### Agent State - Default customer information
+#### Agent 狀態 - 預設客戶資訊
 
-The agent's session state is preloaded with sample customer data, simulating a real conversation. Ideally, this state should be loaded from a CRM system at the start of the conversation, using the user's information. This assumes that either the agent authenticates the user or the user is already logged in. If this behavior is expected to be modified edit the [get_customer(current_customer_id: str) in customer.py](./customer_service/entities/customer.py)
+Agent 的會話狀態預載了範例客戶數據，模擬真實對話。理想情況下，此狀態應在對話開始時使用使用者的資訊從 CRM 系統載入。這假設 Agent 驗證了使用者身分或使用者已登入。如果需要修改此行為，請編輯 [customer.py 中的 get_customer(current_customer_id: str)](./customer_service/entities/customer.py)
 
-#### Tools
+#### 工具
 
-The agent has access to the following tools:
+Agent 可以存取以下工具：
 
-- `send_call_companion_link(phone_number: str) -> str`: Sends a link for video connection.
-- `approve_discount(type: str, value: float, reason: str) -> str`: Approves a discount (within pre-defined limits).
-- `sync_ask_for_approval(type: str, value: float, reason: str) -> str`: Requests discount approval from a manager.
-- `update_salesforce_crm(customer_id: str, details: str) -> dict`: Updates customer records in Salesforce.
-- `access_cart_information(customer_id: str) -> dict`: Retrieves the customer's cart contents.
-- `modify_cart(customer_id: str, items_to_add: list, items_to_remove: list) -> dict`: Updates the customer's cart.
-- `get_product_recommendations(plant_type: str, customer_id: str) -> dict`: Suggests suitable products.
-- `check_product_availability(product_id: str, store_id: str) -> dict`: Checks product stock.
-- `schedule_planting_service(customer_id: str, date: str, time_range: str, details: str) -> dict`: Books a planting service appointment.
-- `get_available_planting_times(date: str) -> list`: Retrieves available time slots.
-- `send_care_instructions(customer_id: str, plant_type: str, delivery_method: str) -> dict`: Sends plant care information.
-- `generate_qr_code(customer_id: str, discount_value: float, discount_type: str, expiration_days: int) -> dict`: Creates a discount QR code.
+- `send_call_companion_link(phone_number: str) -> str`: 發送影片連接連結。
+- `approve_discount(type: str, value: float, reason: str) -> str`: 批准折扣（在預定義限制內）。
+- `sync_ask_for_approval(type: str, value: float, reason: str) -> str`: 向經理請求折扣批准。
+- `update_salesforce_crm(customer_id: str, details: str) -> dict`: 更新 Salesforce 中的客戶記錄。
+- `access_cart_information(customer_id: str) -> dict`: 檢索客戶的購物車內容。
+- `modify_cart(customer_id: str, items_to_add: list, items_to_remove: list) -> dict`: 更新客戶的購物車。
+- `get_product_recommendations(plant_type: str, customer_id: str) -> dict`: 建議合適的產品。
+- `check_product_availability(product_id: str, store_id: str) -> dict`: 檢查產品庫存。
+- `schedule_planting_service(customer_id: str, date: str, time_range: str, details: str) -> dict`: 預約種植服務。
+- `get_available_planting_times(date: str) -> list`: 檢索可用的時間段。
+- `send_care_instructions(customer_id: str, plant_type: str, delivery_method: str) -> dict`: 發送植物護理說明。
+- `generate_qr_code(customer_id: str, discount_value: float, discount_type: str, expiration_days: int) -> dict`: 建立折扣 QR code。
 
-## Setup and Installations
+## 設置與安裝
 
-### Prerequisites
+### 前置條件
 
 - Python 3.10+
-- uv (for dependency management)
-- Google ADK SDK (installed via uv)
-- Google Cloud Project (for Vertex AI Gemini integration)
+- uv (用於依賴管理)
+- Google ADK SDK (透過 uv 安裝)
+- Google Cloud 專案 (用於 Vertex AI Gemini 整合)
 
-### Installation
-1.  **Prerequisites:**
+### 安裝
+1.  **前置條件：**
 
-    For the Agent Engine deployment steps, you will need
-    a Google Cloud Project. Once you have created your project,
-    [install the Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
-    Then run the following command to authenticate with your project:
+    對於 Agent Engine 部署步驟，您將需要一個 Google Cloud 專案。建立專案後，請[安裝 Google Cloud SDK](https://cloud.google.com/sdk/docs/install)。然後執行以下指令來驗證您的專案：
     ```bash
     gcloud auth login
     ```
-    You also need to enable certain APIs. Run the following command to enable
-    the required APIs:
+    您還需要啟用某些 API。執行以下指令以啟用必要的 API：
     ```bash
     gcloud services enable aiplatform.googleapis.com
     ```
 
-    Install uv for dependency management:
+    安裝 uv 進行依賴管理：
     ```bash
     curl -LsSf https://astral.sh/uv/install.sh | sh
     ```
 
-1.  Clone the repository:
+1.  複製儲存庫：
 
     ```bash
     git clone https://github.com/google/adk-samples.git
     cd adk-samples/python/agents/customer-service
     ```
 
-    For the rest of this tutorial **ensure you remain in the `agents/customer-service` directory**.
+    在接下來的教程中，**請確保您留在 `agents/customer-service` 目錄中**。
 
-2.  Install dependencies:
+2.  安裝依賴：
 
     ```bash
     uv sync
     ```
 
-3.  Set up Google Cloud credentials:
+3.  設置 Google Cloud 憑證：
 
-    - Ensure you have a Google Cloud project.
-    - Make sure you have the Vertex AI API enabled in your project.
-    - Set the `GOOGLE_GENAI_USE_VERTEXAI`, `GOOGLE_CLOUD_PROJECT`, and `GOOGLE_CLOUD_LOCATION` environment variables. You can set them in your `.env` file (modify and rename .env_sample file to .env) or directly in your shell. Alternatively you can edit [customer_service/config.py](./customer_service/config.py)
+    - 確保您有一個 Google Cloud 專案。
+    - 確保您的專案中啟用了 Vertex AI API。
+    - 設置 `GOOGLE_GENAI_USE_VERTEXAI`、`GOOGLE_CLOUD_PROJECT` 和 `GOOGLE_CLOUD_LOCATION` 環境變數。您可以在 `.env` 檔案中設置它們（修改 `.env_sample` 檔案並重新命名為 `.env`），或直接在 shell 中設置。或者，您可以編輯 [customer_service/config.py](./customer_service/config.py)
 
     ```bash
     export GOOGLE_CLOUD_PROJECT=YOUR_PROJECT_NAME_HERE
@@ -139,44 +148,44 @@ The agent has access to the following tools:
     export GOOGLE_CLOUD_LOCATION=us-central1
     ```
 
-## Running the Agent
+## 執行 Agent
 
-You can run the agent using the ADK commant in your terminal.
-from the root project directory:
+您可以在終端機中使用 ADK 指令執行 Agent。
+從專案根目錄執行：
 
-1.  Run agent in CLI:
+1.  在 CLI 中執行 Agent：
 
     ```bash
     adk run customer_service
     ```
 
-2.  Run agent with ADK Web UI:
+2.  使用 ADK Web UI 執行 Agent：
     ```bash
     adk web
     ```
-    Select the customer_service from the dropdown
+    從下拉式選單中選擇 customer_service
 
-### Example Interaction
+### 互動範例
 
-Here's a quick example of how a user might interact with the agent:
+以下是使用者可能如何與 Agent 互動的快速範例：
 
-**User:**:
-hi there
-
-**Agent**:
-Hey Alex, I see you've been a Cymbal Home & Garden customer for a couple of years now - we appreciate your business! I also see you have a few things in your cart already. How can I help you get your garden growing today?
-
-**User**:
-Yeah, so I'm a bit confused. I just bought some...uh...plants or flowers that I wanted to put in the backyard. They just say "sun loving annuals" on them. I totally spaced on picking up potting soil so I'm placing an order for pickup now. The problem is, I'm not sure if the potting soil and fertilizer I picked out are the right ones.
+**使用者：**:
+嗨
 
 **Agent**:
-I understand – it can be tricky when you're not quite sure what you've got! Let's figure this out together. Don't worry, we'll get your plants the right care. To best help you, would you be willing to share a quick video of the plants you've purchased? That will help me identify them and make sure you have the right supplies.
+嘿 Alex，我看到您已經成為 Cymbal Home & Garden 的客戶幾年了 - 我們感謝您的光顧！我也看到您的購物車裡已經有一些東西了。我今天能如何幫您打造您的花園？
 
-**User**:
-Sure, how do I do that?
+**使用者**:
+是的，我有點困惑。我剛買了一些……呃……植物或花，我想把它們放在後院。上面只寫著「喜陽一年生植物」。我完全忘記買盆栽土了，所以我現在正下單準備取貨。問題是，我不確定我選的盆栽土和肥料是否正確。
 
 **Agent**:
-I just texted you a link to the number in your profile. Just click on that, and it'll open a secure video connection.
+我理解 – 當您不太確定自己買了什麼時，這可能會很棘手！讓我們一起解決這個問題。別擔心，我們會為您的植物提供合適的護理。為了更好地幫助您，您願意分享一段您購買的植物的簡短影片嗎？這將幫助我識別它們並確保您擁有合適的用品。
+
+**使用者**:
+當然，我該怎麼做？
+
+**Agent**:
+我剛給您個人資料中的號碼傳送了一個連結。只需點擊該連結，它就會開啟一個安全的影片連接。
 
 ```tool_code
 print(send_call_companion_link(phone_number='+12065550123'))
@@ -186,70 +195,70 @@ print(send_call_companion_link(phone_number='+12065550123'))
 {'status': 'success', 'message': 'Link sent to +12065550123'}
 ```
 
-**User**:
-Okay, I clicked the link...can you see this?
+**使用者**:
+好的，我點了連結……你能看到這個嗎？
 
 **Agent**:
-Yes I can see you Alex! Can you go ahead and point the camera at your plants so I can inspect them?
+是的，我看到您了 Alex！您可以把相機對準您的植物，以便我檢查它們嗎？
 
-**User**:
-Yes of course!
+**使用者**:
+沒問題！
 ...
 
-## Evaluating the Agent
+## 評估 Agent
 
-Evaluation tests assess the overall performance and capabilities of the agent in a holistic manner.
+評估測試以整體方式評估 Agent 的全面效能和能力。
 
-**Steps:**
+**步驟：**
 
-1.  **Run Evaluation Tests:**
+1.  **執行評估測試：**
 
     ```bash
     uv sync --dev
     uv run pytest eval
     ```
 
-    - This command executes all test files within the `eval` directory.
+    - 此指令執行 `eval` 目錄中的所有測試檔案。
 
-## Unit Tests
+## 單元測試
 
-Unit tests focus on testing individual units or components of the code in isolation.
+單元測試側重於單獨測試程式碼的各個單元或組件。
 
-**Steps:**
+**步驟：**
 
-1.  **Run Unit Tests:**
+1.  **執行單元測試：**
 
     ```bash
     uv run pytest tests/unit
     ```
 
-    - This command executes all test files within the `tests/unit` directory.
+    - 此指令執行 `tests/unit` 目錄中的所有測試檔案。
 
-## Configuration
+## 配置
 
-You can find further configuration parameters in [customer_service/config.py](./customer_service/config.py). This incudes parameters such as agent name, app name and llm model used by the agent.
+您可以在 [customer_service/config.py](./customer_service/config.py) 中找到進一步的配置參數。這包括 Agent 名稱、應用程式名稱以及 Agent 使用的 LLM 模型等參數。
 
-## Deployment on Google Agent Engine
+## 在 Google Agent Engine 上部署
 
-In order to inherit all dependencies of your agent you can build the wheel file of the agent and run the deployment.
+為了繼承 Agent 的所有依賴項，您可以構建 Agent 的 wheel 檔案並執行部署。
 
-1.  **Build Customer Service Agent WHL file**
+1.  **構建客戶服務 Agent WHL 檔案**
 
     ```bash
     uv build --wheel --out-dir deployment
     ```
 
-1.  **Deploy the agent to agents engine**
-    It is important to run deploy.py from within deployment folder so paths are correct
+1.  **將 Agent 部署到 Agent Engine**
+    務必在 deployment 資料夾中執行 deploy.py，以便路徑正確
 
     ```bash
     cd deployment
     uv run python deploy.py
     ```
 
-### Testing deployment
+### 測試部署
 
-This code snippet is an example of how to test the deployed agent.
+此程式碼片段是如何測試已部署 Agent 的範例。
 
 ```python
 import vertexai
@@ -276,36 +285,46 @@ for event in remote_agent.stream_query(
 
 ```
 
-### Alternative: Using Agent Starter Pack
+### 本範本使用 Agent Starter Pack
 
-You can also use the [Agent Starter Pack](https://goo.gle/agent-starter-pack) to create a production-ready version of this agent with additional deployment options:
+您還可以使用 [Agent Starter Pack](https://goo.gle/agent-starter-pack) 建立此 Agent 的生產就緒版本，並提供額外的部署選項：
 
 ```bash
-# Create and activate a virtual environment
-python -m venv .venv && source .venv/bin/activate # On Windows: .venv\Scripts\activate
+# 建立並啟動虛擬環境
+python -m venv .venv && source .venv/bin/activate # Windows 上執行: .venv\Scripts\activate
 
-# Install the starter pack and create your project
+# 安裝 starter pack 並建立專案
 pip install --upgrade agent-starter-pack
 agent-starter-pack create my-customer-service -a adk@customer-service
 ```
 
 <details>
-<summary>⚡️ Alternative: Using uv</summary>
+<summary>⚡️ 替代方案：使用 uv</summary>
 
-If you have [`uv`](https://github.com/astral-sh/uv) installed, you can create and set up your project with a single command:
+如果您安裝了 [`uv`](https://github.com/astral-sh/uv)，您可以使用單一指令建立並設置專案：
 ```bash
 uvx agent-starter-pack create my-customer-service -a adk@customer-service
 ```
-This command handles creating the project without needing to pre-install the package into a virtual environment.
+此指令會處理專案建立，無需預先將套件安裝到虛擬環境中。
 
 </details>
 
-The starter pack will prompt you to select deployment options and provides additional production-ready features including automated CI/CD deployment scripts.
+Starter pack 會提示您選擇部署選項，並提供額外的生產就緒功能，包括自動化 CI/CD 部署腳本。
 
-## Disclaimer
+## 部署與 CI/CD 資源
 
-This agent sample is provided for illustrative purposes only and is not intended for production use. It serves as a basic example of an agent and a foundational starting point for individuals or teams to develop their own agents.
+- [Terraform README](./deployment/README.md) 包含有關使用 Agent Starter Pack 部署 Agent 的詳細資訊。
+- [CI/CD pipelines](./.cloudbuild) 包含使用 Cloud Build 的 CI/CD 範例。
 
-This sample has not been rigorously tested, may contain bugs or limitations, and does not include features or optimizations typically required for a production environment (e.g., robust error handling, security measures, scalability, performance considerations, comprehensive logging, or advanced configuration options).
+## 免責聲明
 
-Users are solely responsible for any further development, testing, security hardening, and deployment of agents based on this sample. We recommend thorough review, testing, and the implementation of appropriate safeguards before using any derived agent in a live or critical system.
+此 Agent 範例僅供說明之用，不適用於生產環境。它作為 Agent 的基本範例，也是個人或團隊開發自己 Agent 的基礎起點。
+
+此範例未經過嚴格測試，可能包含錯誤或限制，且不包含生產環境通常需要的各項功能或優化（例如：強大的錯誤處理、安全措施、擴展性、效能考量、全面日誌記錄或進階配置選項）。
+
+使用者全權負責基於此範例的 Agent 的任何進一步開發、測試、安全加固和部署。我們建議在實際或關鍵系統中使用任何衍生 Agent 之前，進行徹底的審查、測試並實施適當的安全防護措施。
+
+
+## 參考資源
+- [[ADK-Samples] customer-service](https://github.com/google/adk-samples/tree/main/python/agents/customer-service)
+- [Agent Starter Pack](https://goo.gle/agent-starter-pack)

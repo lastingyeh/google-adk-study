@@ -23,8 +23,8 @@ from customer_service.agent import root_agent
 
 def test_agent_stream() -> None:
     """
-    Integration test for the agent stream functionality.
-    Tests that the agent returns valid streaming responses.
+    代理程式串流功能的整合測試。
+    驗證代理程式是否返回有效的串流回應。
     """
 
     session_service = InMemorySessionService()

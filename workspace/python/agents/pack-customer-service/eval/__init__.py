@@ -11,3 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+"""
+客戶服務 Agent 評估包
+此模組定義了用於評估客戶服務 Agent 表現的測試工具與資料。
+"""

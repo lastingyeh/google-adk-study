@@ -3500,6 +3500,114 @@
             },
           ],
         },
+        {
+          name: 'pack-customer-service',
+          description:
+            '整合 Google Cloud 服務與大型語言模型 (LLM) 的進階客戶服務 AI 代理系統。\n透過 FastAPI 提供 API，並整合了分散式追蹤與結構化日誌，確保系統在生產環境中的穩定性與可維護性。',
+          code_ref: 'workspace/python/agents/pack-customer-service',
+          type: 'Agent',
+          models: ['gemini-2.5-flash'],
+          tools: [
+            {
+              name: 'send_call_companion_link',
+              type: 'FunctionTool',
+              description: '發送連結至使用者的電話號碼以啟動視訊會話。',
+            },
+            {
+              name: 'approve_discount',
+              type: 'FunctionTool',
+              description: '批准使用者請求的固定金額或百分比折扣。',
+            },
+            {
+              name: 'sync_ask_for_approval',
+              type: 'FunctionTool',
+              description: '向經理請求折扣批准。',
+            },
+            {
+              name: 'update_salesforce_crm',
+              type: 'FunctionTool',
+              description: '使用客戶詳情更新 Salesforce CRM。',
+            },
+            {
+              name: 'access_cart_information',
+              type: 'FunctionTool',
+              description: '獲取購物車資訊。',
+            },
+            {
+              name: 'modify_cart',
+              type: 'FunctionTool',
+              description: '透過添加和/或刪除商品來修改使用者的購物車。',
+            },
+            {
+              name: 'get_product_recommendations',
+              type: 'FunctionTool',
+              description: '根據植物類型提供產品建議。',
+            },
+            {
+              name: 'check_product_availability',
+              type: 'FunctionTool',
+              description: '在指定商店（或自取）檢查產品庫存。',
+            },
+            {
+              name: 'schedule_planting_service',
+              type: 'FunctionTool',
+              description: '預約種植服務。',
+            },
+            {
+              name: 'get_available_planting_times',
+              type: 'FunctionTool',
+              description: '檢索給定日期的可用種植服務時段。',
+            },
+            {
+              name: 'send_care_instructions',
+              type: 'FunctionTool',
+              description: '發送有關如何照顧特定植物類型的電子郵件或簡訊說明。',
+            },
+            {
+              name: 'generate_qr_code',
+              type: 'FunctionTool',
+              description: '生成折扣的 QR Code。',
+            },
+          ],
+          before_agent_callback: [
+            {
+              name: 'before_agent',
+              type: 'BeforeAgentCallback',
+              description: '在會話開始時，將客戶的完整資料載入到會話狀態中。',
+            },
+          ],
+          before_model_callback: [
+            {
+              name: 'rate_limit_callback',
+              type: 'BeforeModelCallback',
+              description: '在 LLM 調用前，實作 RPM (每分鐘請求數) 限制。',
+            },
+          ],
+          before_tool_callback: [
+            {
+              name: 'before_tool',
+              type: 'BeforeToolCallback',
+              description: '在工具執行前，進行參數標準化、安全驗證和業務規則捷徑處理。',
+            },
+          ],
+          after_tool_callback: [
+            {
+              name: 'after_tool',
+              type: 'AfterToolCallback',
+              description: '在工具執行後，根據工具結果執行確定性的後續操作。',
+            },
+          ],
+          'server-port': 8000,
+          tags: [
+            'customer-service',
+            'fastapi',
+            'observability',
+            'gcs',
+            'otel',
+            'callbacks',
+            'pydantic',
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';

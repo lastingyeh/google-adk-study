@@ -1,25 +1,10 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-"""Customer entity module."""
-
 from typing import List, Dict, Optional
 from pydantic import BaseModel, Field, ConfigDict
 
 
 class Address(BaseModel):
     """
-    Represents a customer's address.
+    表示客戶的地址。
     """
 
     street: str
@@ -31,7 +16,7 @@ class Address(BaseModel):
 
 class Product(BaseModel):
     """
-    Represents a product in a customer's purchase history.
+    表示客戶購買歷史中的產品。
     """
 
     product_id: str
@@ -42,7 +27,7 @@ class Product(BaseModel):
 
 class Purchase(BaseModel):
     """
-    Represents a customer's purchase.
+    表示一次客戶購買紀錄。
     """
 
     date: str
@@ -53,7 +38,7 @@ class Purchase(BaseModel):
 
 class CommunicationPreferences(BaseModel):
     """
-    Represents a customer's communication preferences.
+    表示客戶的通訊偏好設定。
     """
 
     email: bool = True
@@ -64,61 +49,61 @@ class CommunicationPreferences(BaseModel):
 
 class GardenProfile(BaseModel):
     """
-    Represents a customer's garden profile.
+    表示客戶的園藝檔案資訊。
     """
 
-    type: str
-    size: str
-    sun_exposure: str
-    soil_type: str
-    interests: List[str]
+    type: str # 類型
+    size: str # 大小
+    sun_exposure: str # 日照情況
+    soil_type: str # 土壤類型
+    interests: List[str] # 興趣愛好
     model_config = ConfigDict(from_attributes=True)
 
 
 class Customer(BaseModel):
     """
-    Represents a customer.
+    表示客戶實體。
     """
 
-    account_number: str
-    customer_id: str
-    customer_first_name: str
-    customer_last_name: str
-    email: str
-    phone_number: str
-    customer_start_date: str
-    years_as_customer: int
-    billing_address: Address
-    purchase_history: List[Purchase]
-    loyalty_points: int
-    preferred_store: str
-    communication_preferences: CommunicationPreferences
-    garden_profile: GardenProfile
-    scheduled_appointments: Dict = Field(default_factory=dict)
+    account_number: str # 帳號
+    customer_id: str # 客戶 ID
+    customer_first_name: str # 名
+    customer_last_name: str # 姓
+    email: str # 電子郵件
+    phone_number: str # 電話號碼
+    customer_start_date: str # 成為客戶的日期
+    years_as_customer: int # 成為客戶的年數
+    billing_address: Address # 帳單地址
+    purchase_history: List[Purchase] # 購買歷史
+    loyalty_points: int # 忠誠度積分
+    preferred_store: str # 偏好商店
+    communication_preferences: CommunicationPreferences # 通訊偏好
+    garden_profile: GardenProfile # 園藝檔案
+    scheduled_appointments: Dict = Field(default_factory=dict) # 已預約的項目
     model_config = ConfigDict(from_attributes=True)
 
     def to_json(self) -> str:
         """
-        Converts the Customer object to a JSON string.
+        將 Customer 物件轉換為 JSON 字串。
 
-        Returns:
-            A JSON string representing the Customer object.
+        回傳:
+            代表 Customer 物件的 JSON 字串。
         """
         return self.model_dump_json(indent=4)
 
     @staticmethod
     def get_customer(current_customer_id: str) -> Optional["Customer"]:
         """
-        Retrieves a customer based on their ID.
+        根據 ID 檢索客戶。
 
-        Args:
-            customer_id: The ID of the customer to retrieve.
+        參數:
+            current_customer_id: 要檢索的客戶 ID。
 
-        Returns:
-            The Customer object if found, None otherwise.
+        回傳:
+            如果找到則回傳 Customer 物件，否則回傳 None。
         """
-        # In a real application, this would involve a database lookup.
-        # For this example, we'll just return a dummy customer.
+        # 在實際應用中，這會涉及資料庫查詢。
+        # 在此範例中，我們僅回傳一個虛構客戶。
         return Customer(
             customer_id=current_customer_id,
             account_number="428765091",
@@ -131,18 +116,18 @@ class Customer(BaseModel):
             billing_address=Address(
                 street="123 Main St", city="Anytown", state="CA", zip="12345"
             ),
-            purchase_history=[  # Example purchase history
+            purchase_history=[  # 範例購買歷史
                 Purchase(
                     date="2023-03-05",
                     items=[
                         Product(
                             product_id="fert-111",
-                            name="All-Purpose Fertilizer",
+                            name="All-Purpose Fertilizer", # 全效肥料
                             quantity=1,
                         ),
                         Product(
                             product_id="trowel-222",
-                            name="Gardening Trowel",
+                            name="Gardening Trowel", # 園藝小鏟子
                             quantity=1,
                         ),
                     ],
@@ -153,12 +138,12 @@ class Customer(BaseModel):
                     items=[
                         Product(
                             product_id="seeds-333",
-                            name="Tomato Seeds (Variety Pack)",
+                            name="Tomato Seeds (Variety Pack)", # 番茄種子（綜合包）
                             quantity=2,
                         ),
                         Product(
                             product_id="pots-444",
-                            name="Terracotta Pots (6-inch)",
+                            name="Terracotta Pots (6-inch)", # 陶土花盆（6英吋）
                             quantity=4,
                         ),
                     ],
@@ -169,12 +154,12 @@ class Customer(BaseModel):
                     items=[
                         Product(
                             product_id="gloves-555",
-                            name="Gardening Gloves (Leather)",
+                            name="Gardening Gloves (Leather)", # 園藝手套（皮革）
                             quantity=1,
                         ),
                         Product(
                             product_id="pruner-666",
-                            name="Pruning Shears",
+                            name="Pruning Shears", # 修枝剪
                             quantity=1,
                         ),
                     ],
@@ -187,11 +172,11 @@ class Customer(BaseModel):
                 email=True, sms=False, push_notifications=True
             ),
             garden_profile=GardenProfile(
-                type="backyard",
-                size="medium",
-                sun_exposure="full sun",
-                soil_type="unknown",
-                interests=["flowers", "vegetables"],
+                type="backyard", # 後院
+                size="medium", # 中型
+                sun_exposure="full sun", # 全日照
+                soil_type="unknown", # 未知
+                interests=["flowers", "vegetables"], # 興趣：花卉、蔬菜
             ),
             scheduled_appointments={},
         )

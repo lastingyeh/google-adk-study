@@ -31,13 +31,13 @@ logger = logging.getLogger(__name__)
 
 
 class ChatStreamUser(HttpUser):
-    """Simulates a user interacting with the chat stream API."""
+    """模擬使用者與聊天串流 API 的互動。"""
 
     wait_time = between(1, 3)  # Wait 1-3 seconds between tasks
 
     @task
     def chat_stream(self) -> None:
-        """Simulates a chat stream interaction."""
+        """模擬聊天串流互動。"""
         headers = {"Content-Type": "application/json"}
         if os.environ.get("_ID_TOKEN"):
             headers["Authorization"] = f"Bearer {os.environ['_ID_TOKEN']}"

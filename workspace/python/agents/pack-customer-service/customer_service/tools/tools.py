@@ -1,19 +1,3 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# add docstring to this module
-"""Tools module for the customer service agent."""
-
 import logging
 import uuid
 from datetime import datetime, timedelta
@@ -22,72 +6,74 @@ from google.adk.tools import ToolContext
 logger = logging.getLogger(__name__)
 
 
-def send_call_companion_link(phone_number: str) -> str:
+def send_call_companion_link(phone_number: str) -> dict:
     """
-    Sends a link to the user's phone number to start a video session.
+    發送連結至使用者的電話號碼以啟動視訊會話。
 
-    Args:
-        phone_number (str): The phone number to send the link to.
+    參數:
+        phone_number (str): 要發送連結的電話號碼。
 
-    Returns:
-        dict: A dictionary with the status and message.
+    回傳:
+        dict: 包含狀態與訊息的字典。
 
-    Example:
+    範例:
         >>> send_call_companion_link(phone_number='+12065550123')
         {'status': 'success', 'message': 'Link sent to +12065550123'}
     """
 
-    logger.info("Sending call companion link to %s", phone_number)
+    logger.info("正在向 %s 發送直播連接連結", phone_number)
 
-    return {"status": "success", "message": f"Link sent to {phone_number}"}
+    return {"status": "success", "message": f"連結已發送至 {phone_number}"}
 
 
-def approve_discount(discount_type: str, value: float, reason: str) -> str:
+def approve_discount(discount_type: str, value: float, reason: str) -> dict:
     """
-    Approve the flat rate or percentage discount requested by the user.
+    批准使用者請求的固定金額或百分比折扣。
 
-    Args:
-        discount_type (str): The type of discount, either "percentage" or "flat".
-        value (float): The value of the discount.
-        reason (str): The reason for the discount.
+    參數:
+        discount_type (str): 折扣類型，"percentage"（百分比）或 "flat"（固定金額）。
+        value (float): 折扣數值。
+        reason (str): 折扣原因。
 
-    Returns:
-        str: A JSON string indicating the status of the approval.
+    回傳:
+        dict: 代表審核狀態的字典。
 
-    Example:
-        >>> approve_discount(type='percentage', value=10.0, reason='Customer loyalty')
-        '{"status": "ok"}'
+    範例:
+        >>> approve_discount(discount_type='percentage', value=10.0, reason='Customer loyalty')
+        {'status': 'ok'}
     """
+    # 限制自動批准的上限，超過 10 則拒絕
     if value > 10:
-        logger.info("Denying %s discount of %s", discount_type, value)
-        # Send back a reason for the error so that the model can recover.
+        logger.info("拒絕類型為 %s 且數值為 %s 的折扣", discount_type, value)
+        # 回傳錯誤原因，以便模型可以進行補救處理。
         return {"status": "rejected",
-                "message": "discount too large. Must be 10 or less."}
+                "message": "折扣金額過大。必須等於或小於 10。"}
+
     logger.info(
-        "Approving a %s discount of %s because %s", discount_type, value, reason
+        "已批准百分比為 %s 且數值為 %s 的折扣，原因為：%s", discount_type, value, reason
     )
     return {"status": "ok"}
 
-def sync_ask_for_approval(discount_type: str, value: float, reason: str) -> str:
+def sync_ask_for_approval(discount_type: str, value: float, reason: str) -> dict:
     """
-    Asks the manager for approval for a discount.
+    向經理請求折扣批准。
 
-    Args:
-        discount_type (str): The type of discount, either "percentage" or "flat".
-        value (float): The value of the discount.
-        reason (str): The reason for the discount.
+    參數:
+        discount_type (str): 折扣類型，"percentage"（百分比）或 "flat"（固定金額）。
+        value (float): 折扣數值。
+        reason (str): 折扣原因。
 
-    Returns:
-        str: A JSON string indicating the status of the approval.
+    回傳:
+        dict: 代表審核狀態的字典。
 
-    Example:
-        >>> sync_ask_for_approval(type='percentage', value=15, reason='Customer loyalty')
-        '{"status": "approved"}'
+    範例:
+        >>> sync_ask_for_approval(discount_type='percentage', value=15, reason='Customer loyalty')
+        {'status': 'approved'}
     """
     logger.info(
-        "Asking for approval for a %s discount of %s because %s",
-        discount_type,
+        "正在為數值為 %s 的 %s 折扣請求經理批准，原因為：%s",
         value,
+        discount_type,
         reason,
     )
     return {"status": "approved"}
@@ -95,16 +81,16 @@ def sync_ask_for_approval(discount_type: str, value: float, reason: str) -> str:
 
 def update_salesforce_crm(customer_id: str, details: dict) -> dict:
     """
-    Updates the Salesforce CRM with customer details.
+    使用客戶詳情更新 Salesforce CRM。
 
-    Args:
-        customer_id (str): The ID of the customer.
-        details (str): A dictionary of details to update in Salesforce.
+    參數:
+        customer_id (str): 客戶 ID。
+        details (dict): 要在 Salesforce 中更新的詳情字典。
 
-    Returns:
-        dict: A dictionary with the status and message.
+    回傳:
+        dict: 包含狀態與訊息的字典。
 
-    Example:
+    範例:
         >>> update_salesforce_crm(customer_id='123', details={
             'appointment_date': '2024-07-25',
             'appointment_time': '9-12',
@@ -114,38 +100,40 @@ def update_salesforce_crm(customer_id: str, details: dict) -> dict:
         {'status': 'success', 'message': 'Salesforce record updated.'}
     """
     logger.info(
-        "Updating Salesforce CRM for customer ID %s with details: %s",
+        "正在為客戶 ID %s 更新 Salesforce CRM，詳情為：%s",
         customer_id,
         details,
     )
-    return {"status": "success", "message": "Salesforce record updated."}
+    return {"status": "success", "message": "Salesforce 紀錄已更新。"}
 
 
 def access_cart_information(customer_id: str) -> dict:
     """
-    Args:
-        customer_id (str): The ID of the customer.
+    獲取購物車資訊。
 
-    Returns:
-        dict: A dictionary representing the cart contents.
+    參數:
+        customer_id (str): 客戶 ID。
 
-    Example:
+    回傳:
+        dict: 代表購物車內容的字典。
+
+    範例:
         >>> access_cart_information(customer_id='123')
         {'items': [{'product_id': 'soil-123', 'name': 'Standard Potting Soil', 'quantity': 1}, {'product_id': 'fert-456', 'name': 'General Purpose Fertilizer', 'quantity': 1}], 'subtotal': 25.98}
     """
-    logger.info("Accessing cart information for customer ID: %s", customer_id)
+    logger.info("正在存取客戶 ID %s 的購物車資訊", customer_id)
 
-    # MOCK API RESPONSE - Replace with actual API call
+    # 模擬 API 回應 - 應替換為實際的 API 調用
     mock_cart = {
         "items": [
             {
                 "product_id": "soil-123",
-                "name": "Standard Potting Soil",
+                "name": "標準盆栽土",
                 "quantity": 1,
             },
             {
                 "product_id": "fert-456",
-                "name": "General Purpose Fertilizer",
+                "name": "通用肥料",
                 "quantity": 1,
             },
         ],
@@ -157,65 +145,60 @@ def access_cart_information(customer_id: str) -> dict:
 def modify_cart(
     customer_id: str, items_to_add: list[dict], items_to_remove: list[dict]
 ) -> dict:
-    """Modifies the user's shopping cart by adding and/or removing items.
+    """透過添加和/或刪除商品來修改使用者的購物車。
 
-    Args:
-        customer_id (str): The ID of the customer.
-        items_to_add (list): A list of dictionaries, each with 'product_id' and 'quantity'.
-        items_to_remove (list): A list of product_ids to remove.
+    參數:
+        customer_id (str): 客戶 ID。
+        items_to_add (list): 字典清單，每個字典包含 'product_id' 和 'quantity'。
+        items_to_remove (list): 要刪除的產品 ID 清單。
 
-    Returns:
-        dict: A dictionary indicating the status of the cart modification.
-    Example:
-        >>> modify_cart(customer_id='123', items_to_add=[{'product_id': 'soil-456', 'quantity': 1}, {'product_id': 'fert-789', 'quantity': 1}], items_to_remove=[{'product_id': 'fert-112', 'quantity': 1}])
+    回傳:
+        dict: 指示購物車修改狀態的字典。
+    範例:
+        >>> modify_cart(customer_id='123', items_to_add=[{'product_id': 'soil-456', 'quantity': 1}], items_to_remove=[{'product_id': 'fert-112', 'quantity': 1}])
         {'status': 'success', 'message': 'Cart updated successfully.', 'items_added': True, 'items_removed': True}
     """
 
-    logger.info("Modifying cart for customer ID: %s", customer_id)
-    logger.info("Adding items: %s", items_to_add)
-    logger.info("Removing items: %s", items_to_remove)
-    # MOCK API RESPONSE - Replace with actual API call
+    logger.info("正在為客戶 ID %s 修改購物車", customer_id)
+    logger.info("新增商品：%s", items_to_add)
+    logger.info("刪除商品：%s", items_to_remove)
+    # 模擬 API 回應
     return {
         "status": "success",
-        "message": "Cart updated successfully.",
+        "message": "購物車更新成功。",
         "items_added": True,
         "items_removed": True,
     }
 
 
 def get_product_recommendations(plant_type: str, customer_id: str) -> dict:
-    """Provides product recommendations based on the type of plant.
+    """根據植物類型提供產品建議。
 
-    Args:
-        plant_type: The type of plant (e.g., 'Petunias', 'Sun-loving annuals').
-        customer_id: Optional customer ID for personalized recommendations.
+    參數:
+        plant_type: 植物類型（例如：「矮牽牛」、「喜陽的一年生植物」）。
+        customer_id: 選填的客戶 ID，用於個性化推薦。
 
-    Returns:
-        A dictionary of recommended products. Example:
-        {'recommendations': [
-            {'product_id': 'soil-456', 'name': 'Bloom Booster Potting Mix', 'description': '...'},
-            {'product_id': 'fert-789', 'name': 'Flower Power Fertilizer', 'description': '...'}
-        ]}
+    回傳:
+        推薦產品的字典。
     """
-    #
     logger.info(
-        "Getting product recommendations for plant " "type: %s and customer %s",
+        "正在為植物類型 %s 和客戶 %s 獲取產品推薦",
         plant_type,
         customer_id,
     )
-    # MOCK API RESPONSE - Replace with actual API call or recommendation engine
-    if plant_type.lower() == "petunias":
+    # 模擬 API 回應
+    if plant_type.lower() == "petunias" or plant_type == "矮牽牛":
         recommendations = {
             "recommendations": [
                 {
                     "product_id": "soil-456",
-                    "name": "Bloom Booster Potting Mix",
-                    "description": "Provides extra nutrients that Petunias love.",
+                    "name": "Bloom Booster 盆栽混合土",
+                    "description": "提供矮牽牛喜愛的額外養分。",
                 },
                 {
                     "product_id": "fert-789",
-                    "name": "Flower Power Fertilizer",
-                    "description": "Specifically formulated for flowering annuals.",
+                    "name": "Flower Power 肥料",
+                    "description": "專為開花一年生植物配製。",
                 },
             ]
         }
@@ -224,13 +207,13 @@ def get_product_recommendations(plant_type: str, customer_id: str) -> dict:
             "recommendations": [
                 {
                     "product_id": "soil-123",
-                    "name": "Standard Potting Soil",
-                    "description": "A good all-purpose potting soil.",
+                    "name": "標準盆栽土",
+                    "description": "良好的通用型盆栽土。",
                 },
                 {
                     "product_id": "fert-456",
-                    "name": "General Purpose Fertilizer",
-                    "description": "Suitable for a wide variety of plants.",
+                    "name": "通用型肥料",
+                    "description": "適用於多種植物。",
                 },
             ]
         }
@@ -238,60 +221,50 @@ def get_product_recommendations(plant_type: str, customer_id: str) -> dict:
 
 
 def check_product_availability(product_id: str, store_id: str) -> dict:
-    """Checks the availability of a product at a specified store (or for pickup).
+    """在指定商店（或自取）檢查產品庫存。
 
-    Args:
-        product_id: The ID of the product to check.
-        store_id: The ID of the store (or 'pickup' for pickup availability).
+    參數:
+        product_id: 要檢查的產品 ID。
+        store_id: 商店 ID（或輸入 'pickup' 代表自取可用性）。
 
-    Returns:
-        A dictionary indicating availability.  Example:
-        {'available': True, 'quantity': 10, 'store': 'Main Store'}
-
-    Example:
-        >>> check_product_availability(product_id='soil-456', store_id='pickup')
-        {'available': True, 'quantity': 10, 'store': 'pickup'}
+    回傳:
+        指示可用性的字典。
     """
     logger.info(
-        "Checking availability of product ID: %s at store: %s",
+        "正在檢查產品 ID %s 在商店 %s 的庫存",
         product_id,
         store_id,
     )
-    # MOCK API RESPONSE - Replace with actual API call
+    # 模擬 API 回應
     return {"available": True, "quantity": 10, "store": store_id}
 
 
 def schedule_planting_service(
     customer_id: str, date: str, time_range: str, details: str
 ) -> dict:
-    """Schedules a planting service appointment.
+    """預約種植服務。
 
-    Args:
-        customer_id: The ID of the customer.
-        date:  The desired date (YYYY-MM-DD).
-        time_range: The desired time range (e.g., "9-12").
-        details: Any additional details (e.g., "Planting Petunias").
+    參數:
+        customer_id: 客戶 ID。
+        date: 期望日期 (YYYY-MM-DD)。
+        time_range: 期望時段 (例如："9-12")。
+        details: 任何額外詳情 (例如："種植矮牽牛")。
 
-    Returns:
-        A dictionary indicating the status of the scheduling. Example:
-        {'status': 'success', 'appointment_id': '12345', 'date': '2024-07-29', 'time': '9:00 AM - 12:00 PM'}
-
-    Example:
-        >>> schedule_planting_service(customer_id='123', date='2024-07-29', time_range='9-12', details='Planting Petunias')
-        {'status': 'success', 'appointment_id': 'some_uuid', 'date': '2024-07-29', 'time': '9-12', 'confirmation_time': '2024-07-29 9:00'}
+    回傳:
+        指示預約狀態的字典。
     """
     logger.info(
-        "Scheduling planting service for customer ID: %s on %s (%s)",
+        "正在為客戶 ID %s 安排 %s (%s) 的種植服務",
         customer_id,
         date,
         time_range,
     )
-    logger.info("Details: %s", details)
-    # MOCK API RESPONSE - Replace with actual API call to your scheduling system
-    # Calculate confirmation time based on date and time_range
-    start_time_str = time_range.split("-")[0]  # Get the start time (e.g., "9")
+    logger.info("詳情：%s", details)
+    # 模擬 API 回應
+    # 根據日期和時段計算確認時間
+    start_time_str = time_range.split("-")[0]
     confirmation_time_str = (
-        f"{date} {start_time_str}:00"  # e.g., "2024-07-29 9:00"
+        f"{date} {start_time_str}:00"
     )
 
     return {
@@ -299,56 +272,47 @@ def schedule_planting_service(
         "appointment_id": str(uuid.uuid4()),
         "date": date,
         "time": time_range,
-        "confirmation_time": confirmation_time_str,  # formatted time for calendar
+        "confirmation_time": confirmation_time_str,
     }
 
 
 def get_available_planting_times(date: str) -> list:
-    """Retrieves available planting service time slots for a given date.
+    """檢索給定日期的可用種植服務時段。
 
-    Args:
-        date: The date to check (YYYY-MM-DD).
+    參數:
+        date: 要檢查的日期 (YYYY-MM-DD)。
 
-    Returns:
-        A list of available time ranges.
-
-    Example:
-        >>> get_available_planting_times(date='2024-07-29')
-        ['9-12', '13-16']
+    回傳:
+        可用時段清單。
     """
-    logger.info("Retrieving available planting times for %s", date)
-    # MOCK API RESPONSE - Replace with actual API call
-    # Generate some mock time slots, ensuring they're in the correct format:
+    logger.info("正在檢索 %s 的可用種植時間", date)
+    # 模擬 API 回應
     return ["9-12", "13-16"]
 
 
 def send_care_instructions(
     customer_id: str, plant_type: str, delivery_method: str
 ) -> dict:
-    """Sends an email or SMS with instructions on how to take care of a specific plant type.
+    """發送有關如何照顧特定植物類型的電子郵件或簡訊說明。
 
-    Args:
-        customer_id:  The ID of the customer.
-        plant_type: The type of plant.
-        delivery_method: 'email' (default) or 'sms'.
+    參數:
+        customer_id: 客戶 ID。
+        plant_type: 植物類型。
+        delivery_method: 'email' (預設) 或 'sms'。
 
-    Returns:
-        A dictionary indicating the status.
-
-    Example:
-        >>> send_care_instructions(customer_id='123', plant_type='Petunias', delivery_method='email')
-        {'status': 'success', 'message': 'Care instructions for Petunias sent via email.'}
+    回傳:
+        指示狀態的字典。
     """
     logger.info(
-        "Sending care instructions for %s to customer: %s via %s",
-        plant_type,
-        customer_id,
+        "正在透過 %s 向客戶 %s 發送 %s 的護理說明",
         delivery_method,
+        customer_id,
+        plant_type,
     )
-    # MOCK API RESPONSE - Replace with actual API call or email/SMS sending logic
+    # 模擬 API 回應
     return {
         "status": "success",
-        "message": f"Care instructions for {plant_type} sent via {delivery_method}.",
+        "message": f"已透過 {delivery_method} 發送 {plant_type} 的護理說明。",
     }
 
 
@@ -358,44 +322,38 @@ def generate_qr_code(
     discount_type: str,
     expiration_days: int,
 ) -> dict:
-    """Generates a QR code for a discount.
+    """生成折扣的 QR Code。
 
-    Args:
-        customer_id: The ID of the customer.
-        discount_value: The value of the discount (e.g., 10 for 10%).
-        discount_type: "percentage" (default) or "fixed".
-        expiration_days: Number of days until the QR code expires.
+    參數:
+        customer_id: 客戶 ID。
+        discount_value: 折扣數值 (例如：百分比 10 代表 10%)。
+        discount_type: "percentage" (預設) 或 "fixed"。
+        expiration_days: QR Code 到期天數。
 
-    Returns:
-        A dictionary containing the QR code data (or a link to it). Example:
-        {'status': 'success', 'qr_code_data': '...', 'expiration_date': '2024-08-28'}
-
-    Example:
-        >>> generate_qr_code(customer_id='123', discount_value=10.0, discount_type='percentage', expiration_days=30)
-        {'status': 'success', 'qr_code_data': 'MOCK_QR_CODE_DATA', 'expiration_date': '2024-08-24'}
+    回傳:
+        包含 QR Code 數據（或連結）的字典。
     """
-    
-    # Guardrails to validate the amount of discount is acceptable for a auto-approved discount.
-    # Defense-in-depth to prevent malicious prompts that could circumvent system instructions and
-    # be able to get arbitrary discounts.
+
+    # 安全護欄：驗證自動批准的折扣金額是否可接受。
+    # 縱深防禦，防止惡意提示繞過系統指令獲取任意折扣。
     if discount_type == "" or discount_type == "percentage":
         if discount_value > 10:
-            return "cannot generate a QR code for this amount, must be 10% or less"
+            return "無法為此金額生成 QR Code，必須等於或小於 10%"
     if discount_type == "fixed" and discount_value > 20:
-        return "cannot generate a QR code for this amount, must be 20 or less"
-    
+        return "無法為此金額生成 QR Code，必須等於或小於 20"
+
     logger.info(
-        "Generating QR code for customer: %s with %s - %s discount.",
+        "正在為客戶 %s 生成數值為 %s 的 %s 折扣 QR Code。",
         customer_id,
         discount_value,
         discount_type,
     )
-    # MOCK API RESPONSE - Replace with actual QR code generation library
+    # 模擬 API 回應
     expiration_date = (
         datetime.now() + timedelta(days=expiration_days)
     ).strftime("%Y-%m-%d")
     return {
         "status": "success",
-        "qr_code_data": "MOCK_QR_CODE_DATA",  # Replace with actual QR code
+        "qr_code_data": "MOCK_QR_CODE_DATA",
         "expiration_date": expiration_date,
     }

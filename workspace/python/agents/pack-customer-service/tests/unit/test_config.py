@@ -24,5 +24,6 @@ def conf():
 
 
 def test_settings_loading(conf):
+    """測試設定載入功能，確保模型設定正確。"""
     logging.info(conf.model_dump())
     assert conf.agent_settings.model.startswith("gemini")

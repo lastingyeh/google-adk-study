@@ -2,7 +2,8 @@
   {
     "query": "hi,",
     "expected_tool_use": [],
-    "reference": "Hi there! Welcome back to Cymbal Home & Garden! I see you're a returning customer. How can I help you make your home and garden even better today"
+    "reference": "你好！歡迎回到 Cymbal Home & Garden！我看到您是我們的回頭客。今天有什麼我可以幫您讓您的居家與花園變得更好的嗎？",
+    "_comment": "基礎問候語測試。驗證 Agent 是否能識別回頭客並給予適當回應。"
   },
   {
     "query": "tell me what is in my cart?",
@@ -14,6 +15,7 @@
         }
       }
     ],
-    "reference": "you have one bag of Standard Potting Soil and one container of General Purpose Fertilizer in your cart"
+    "reference": "您的購物車中有一袋標準盆栽土（Standard Potting Soil）和一罐通用肥（General Purpose Fertilizer）。",
+    "_comment": "工具調用測試。驗證 Agent 是否會調用 access_cart_information 工具來查詢購物車內容。"
   }
 ]
