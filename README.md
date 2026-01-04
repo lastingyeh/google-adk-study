@@ -1446,4 +1446,25 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </details>
 
+#### 🕗 Day 72
+
+<details>
+<summary>
+以官方 adk-docs 為主，彙整 Google ADK 多語言快速入門：安裝、建立 Agent、設定 Gemini API 金鑰、註冊工具並以 CLI/Web 測試執行。
+
+🏷️ `adk-docs`, `ai-agent`, `dev-tools`, `get-started`, `adk-python`, `adk-js`, `adk-java`, `adk-go`
+
+</summary>
+
+- **詳細說明**：
+
+  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md)
+
+- **參考資源**
+  - [ADK 官方文件網站](https://google.github.io/adk-docs/)
+  - [Google AI Studio](https://aistudio.google.com/app/api-keys)
+  - [Gemini API Models](https://ai.google.dev/gemini-api/docs/models)
+
+</details>
+
 </details>
