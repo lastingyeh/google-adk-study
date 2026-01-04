@@ -1,18 +1,42 @@
 # Not ChatGPT
 
-基於 Google Gemini 2.0 Flash 與 ADK (Agent Development Kit) 構建的智能對話助手，整合學習精華，實現安全、可追溯、具備文檔檢索能力的對話系統。
+基於 **Google Gemini 2.0 Flash** 與 **Google ADK (Agent Development Kit)** 構建的智能對話助手，整合學習精華，實現安全、可追溯、具備文檔檢索能力的對話系統。
+
+## 🏗️ 架構說明
+
+### ⚠️ 重要：使用 Google ADK
+
+本專案**完全基於 Google ADK 架構**開發，而非直接使用 `google-genai` SDK。
+
+- ✅ 使用 `google.adk.agents.Agent` 定義 Agent
+- ✅ 使用 `google.adk.runners.Runner` 執行 Agent
+- ✅ 使用 `google.adk.sessions.SessionService` 管理狀態
+- ❌ **不使用** `genai.Client()` 直接調用 LLM
+
+**為什麼使用 ADK？**
+
+- 標準化的 Agent 架構
+- 內建會話管理和狀態持久化
+- 易於添加工具、工作流程、回調
+- 支援生產級部署
+- 完整的評估和監控支援
+
+📚 **參考文件**：
+- [架構修正說明](./ARCHITECTURE_FIX.md)
+- [ADK 快速參考](./ADK_QUICK_REFERENCE.md)
+- [開發步驟](./planning/phase-1/steps.md)
 
 ## 🎯 專案目標
 
 打造一個**生產級對話 AI 系統**，具備：
 
-- 🧠 多輪對話記憶與上下文管理
+- 🧠 多輪對話記憶與上下文管理（基於 ADK SessionService）
 - 💭 思考模式（深度推理）與標準模式切換
-- 🛡️ 多層安全防護（PII 檢測、內容審核）
-- 📚 文檔檢索與引用來源追蹤 (RAG)
-- ⚡ 串流回應 (SSE)
+- 🛡️ 多層安全防護（PII 檢測、內容審核、AgentCallbacks）
+- 📚 文檔檢索與引用來源追蹤 (RAG with Gemini Files)
+- ⚡ 串流回應（基於 ADK Runner）
 - 💾 對話持久化與 Session 管理
-- 📊 完整的測試與評估體系
+- 📊 完整的測試與評估體系（AgentEvaluator）
 
 ---
 

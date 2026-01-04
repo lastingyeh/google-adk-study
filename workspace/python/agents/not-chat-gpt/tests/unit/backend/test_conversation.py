@@ -1,34 +1,72 @@
-from google import genai
-from dotenv import load_dotenv
-import os
+"""測試多輪對話記憶功能（使用 Google ADK）"""
+import pytest
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+from google.genai import types
 from backend.agents.conversation_agent import create_conversation_agent
 
-def test_multi_turn():
-    # 載入環境變數
-    load_dotenv()
-    api_key = os.getenv('GOOGLE_API_KEY')
-    model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
-    
-    if not api_key:
-        print("❌ 錯誤: GOOGLE_API_KEY 未設定")
-        return
-    
-    client = genai.Client(api_key=api_key)
-    config = create_conversation_agent()
-    
-    # 第一輪對話
-    print("\n=== 第一輪對話 ===")
-    response1 = client.models.generate_content(
-        model=model_name,
-        contents="我叫 Alice",
-        config=config
-    )
-    print(f"Round 1: {response1.text}")
-    
-    # 注意：generate_content 不保留對話歷史
-    # 如需多輪對話記憶，需要手動管理對話歷史或使用 Chat API
-    print("\n⚠️  注意：基礎 generate_content API 不支援自動對話記憶")
-    print("✅ 基本對話測試通過")
 
-if __name__ == "__main__":
-    test_multi_turn()
+@pytest.mark.asyncio
+async def test_multi_turn_conversation():
+    """測試 Agent 是否能記住對話上下文"""
+    # 設置 ADK 元件
+    agent = create_conversation_agent()
+    session_service = InMemorySessionService()
+    runner = Runner(
+        agent=agent,
+        app_name="test_app",
+        session_service=session_service
+    )
+    
+    # 建立會話
+    session = await session_service.create_session(
+        app_name="test_app",
+        user_id="test_user"
+    )
+    
+    # 第一輪對話：告訴 Agent 名字
+    print("\n=== 第一輪對話 ===")
+    msg1 = types.Content(
+        role="user",
+        parts=[types.Part(text="我叫 Alice")]
+    )
+    
+    response1_parts = []
+    async for event in runner.run_async(
+        user_id="test_user",
+        session_id=session.id,
+        new_message=msg1
+    ):
+        if event.content and event.content.parts:
+            for part in event.content.parts:
+                if part.text:
+                    response1_parts.append(part.text)
+    
+    response1 = "".join(response1_parts)
+    print(f"Round 1 Response: {response1}")
+    
+    # 第二輪對話：測試 Agent 是否記得
+    print("\n=== 第二輪對話（測試記憶）===")
+    msg2 = types.Content(
+        role="user",
+        parts=[types.Part(text="我剛才說我叫什麼名字？")]
+    )
+    
+    response2_parts = []
+    async for event in runner.run_async(
+        user_id="test_user",
+        session_id=session.id,
+        new_message=msg2
+    ):
+        if event.content and event.content.parts:
+            for part in event.content.parts:
+                if part.text:
+                    response2_parts.append(part.text)
+    
+    response2 = "".join(response2_parts)
+    print(f"Round 2 Response: {response2}")
+    
+    # 驗證：Agent 應該記得名字
+    assert "Alice" in response2, "Agent 應該記住使用者的名字"
+    print("\n✅ 多輪對話記憶測試通過！")
+    print("✅ ADK SessionService 正確管理對話狀態")

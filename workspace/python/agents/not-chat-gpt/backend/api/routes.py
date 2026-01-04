@@ -1,11 +1,26 @@
+"""NotChatGPT API Routes (使用 Google ADK)
+
+本模組使用 Google ADK 提供 RESTful API 端點：
+- 對話端點：使用 ADK Runner 管理對話
+- 會話管理：使用 ADK SessionService
+- 文檔管理：整合 Gemini Files API
+"""
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from google import genai
 from google.genai import types
 
+# ADK 核心元件
+from google.adk.agents import Agent
+from google.adk.runners import Runner
+from google.adk.sessions import InMemorySessionService
+
 from backend.services.session_service import SessionService
 from backend.services.document_service import DocumentService
+from backend.agents.conversation_agent import create_conversation_agent
+from backend.agents.streaming_agent import get_streaming_manager
 
 import tempfile
 import os
@@ -14,35 +29,62 @@ from dotenv import load_dotenv
 # 載入環境變數
 load_dotenv()
 
-# 初始化 DocumentService
+# 檢查 API Key
 api_key = os.getenv('GOOGLE_API_KEY')
 if not api_key:
     raise ValueError("GOOGLE_API_KEY not found in environment")
 
-genai_client = genai.Client(api_key=api_key)
+# 初始化服務
+genai_client = genai.Client(api_key=api_key)  # 僅用於 DocumentService
 doc_service = DocumentService(genai_client)
+session_service = SessionService()
+
+# 初始化 ADK 元件
+adk_session_service = InMemorySessionService()
+conversation_agent = create_conversation_agent()
+conversation_runner = Runner(
+    agent=conversation_agent,
+    app_name="not_chat_gpt_api",
+    session_service=adk_session_service
+)
+
+# 初始化 FastAPI
 app = FastAPI(title="NotChatGPT API")
 
-session_service = SessionService()
 
 class ChatRequest(BaseModel):
     message: str
     thinking_mode: bool = False
+    session_id: str = None  # 可選的會話 ID
 
 # 基本健康檢查端點
 @app.get("/")
 async def root():
-    return {"message": "NotChatGPT API is running"}
+    return {
+        "message": "NotChatGPT API is running",
+        "architecture": "Google ADK",
+        "version": "1.0.0"
+    }
 
-# 聊天端點
+# 聊天端點 (使用 ADK Runner)
 @app.post("/api/chat/stream")
 async def chat_stream(request: ChatRequest):
-    """SSE 串流端點"""
-    from backend.agents.streaming_agent import stream_response
+    """SSE 串流端點 (使用 ADK Runner)
+    
+    使用 Google ADK StreamingAgentManager 進行串流對話
+    """
+    streaming_manager = get_streaming_manager()
     
     async def event_generator():
         try:
-            async for chunk in stream_response(request.message, request.thinking_mode):
+            # 使用 ADK 的串流 API
+            async for chunk in streaming_manager.stream_response(
+                message=request.message,
+                user_id="api_user",
+                session_id=request.session_id,
+                thinking_mode=request.thinking_mode,
+                enable_safety=True
+            ):
                 yield f"data: {chunk}\n\n"
             yield "data: [DONE]\n\n"
         except Exception as e:
