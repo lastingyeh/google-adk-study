@@ -90,7 +90,7 @@ public class HelloTimeAgent {
 > *   `tools`: 這裡註冊了 `getCurrentTime` 函式作為 Agent 可以使用的工具。這使得 Agent 能夠呼叫您的 Java 程式碼來執行特定任務。
 > *   `@Schema`: 這個註解用來向 LLM 描述函式和其參數的用途，讓模型知道在何時以及如何使用這個工具。
 
-> **⚠️ 注意：Gemini 3 相容性問題**
+> [!IMPORTANT]：Gemini 3 相容性問題**
 >
 > ADK Java v0.3.0 及更低版本與 [Gemini 3 Pro Preview](https://ai.google.dev/gemini-api/docs/models#gemini-3-pro) 不相容，因為函式呼叫的思維簽章 (thought signature) 有所變更。請改用 Gemini 2.5 或更低版本的模型。
 
@@ -110,7 +110,8 @@ public class HelloTimeAgent {
 
 以下是一個完整的 `pom.xml` 設定範例，您可以直接使用：
 
-```xml title="my_agent/pom.xml"
+`my_agent/pom.xml`
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -170,7 +171,8 @@ echo 'set GOOGLE_API_KEY="YOUR_API_KEY"' > env.bat
 
 建立一個 `AgentCliRunner.java` 類別，讓您可以從命令列執行 `HelloTimeAgent` 並與之互動。此程式碼展示了如何建立一個 `RunConfig` 物件來執行 Agent，以及一個 `Session` 物件來與執行中的 Agent 互動。
 
-```java title="my_agent/src/main/java/com/example/agent/AgentCliRunner.java"
+`my_agent/src/main/java/com/example/agent/AgentCliRunner.java`
+```java
 package com.example.agent;
 
 import com.google.adk.agents.RunConfig;
@@ -237,8 +239,8 @@ mvn compile exec:java -Dexec.mainClass="com.example.agent.AgentCliRunner"
 
 使用以下 Maven 指令，透過 ADK Web 介面執行您的 Agent：
 
-```console
-# 記得載入金鑰與設定: source .env 或 env.bat
+```
+記得載入金鑰與設定: source .env 或 env.bat
 mvn compile exec:java \
     -Dexec.mainClass="com.google.adk.web.AdkWebServer" \
     -Dexec.args="--adk.agents.source-dir=target --server.port=8000"
@@ -248,7 +250,7 @@ mvn compile exec:java \
 
 ![adk-web-dev-ui-chat.png](https://google.github.io/adk-docs/assets/adk-web-dev-ui-chat.png)
 
-> **⚠️ 警告：ADK Web 僅供開發使用**
+> [!WARNING]ADK Web 僅供開發使用**
 >
 > ADK Web ***不適用於生產環境部署***。您應該僅在開發和偵錯階段使用 ADK Web。
 

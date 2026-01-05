@@ -1458,12 +1458,38 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 - **詳細說明**：
 
-  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md)
+  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#快速入門-get-started)
 
 - **參考資源**
   - [ADK 官方文件網站](https://google.github.io/adk-docs/)
   - [Google AI Studio](https://aistudio.google.com/app/api-keys)
   - [Gemini API Models](https://ai.google.dev/gemini-api/docs/models)
+
+</details>
+
+#### 🕗 Day 73
+
+<details>
+<summary>
+ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態與長期跨會話知識，並提供快速模式方便開發。
+
+🏷️ `sessions`, `context`, `state`, `memory`, `rewind`, `agent-engine`, `vertex-ai`
+
+</summary>
+
+- **詳細說明**：
+
+  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#會話與記憶-sessions--memory)
+
+- **參考資源**
+  - [ADK 官方文件網站](https://google.github.io/adk-docs/)
+  - [Google AI Studio](https://aistudio.google.com/app/api-keys)
+  - [Gemini API Models](https://ai.google.dev/gemini-api/docs/models)
+  - [GCP Express Mode](https://console.cloud.google.com/expressmode)
+  - [VertexAiSessionService](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations)
+  - [VertexAiMemoryBankService](https://google.github.io/adk-docs/sessions/memory/#vertex-ai-memory-bank)
+  - [Vertex AI Memory Bank](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/memory-bank/overview)
+  - [免費試用 Session 與 Memory](https://google.github.io/adk-docs/sessions/express-mode/)
 
 </details>
 

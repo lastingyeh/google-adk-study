@@ -15,7 +15,7 @@
 pip install google-adk
 ```
 
-> **💡 推薦：建立並啟用 Python 虛擬環境**
+> [!TIP] 推薦：建立並啟用 Python 虛擬環境**
 >
 > 首先，建立一個 Python 虛擬環境：
 >
@@ -119,7 +119,7 @@ ADK 框架提供了一個網頁介面，您可以用它來測試並與您的 Age
 adk web --port 8000
 ```
 
-> **🔔 注意**
+> [!NOTE] 注意**
 >
 > 請在包含您 `my_agent/` 資料夾的**父目錄**下執行此指令。例如，如果您的 Agent 位於 `agents/my_agent/`，請從 `agents/` 目錄執行 `adk web`。
 
@@ -127,7 +127,7 @@ adk web --port 8000
 
 ![adk-web-dev-ui-chat.png](https://google.github.io/adk-docs/assets/adk-web-dev-ui-chat.png)
 
-> **⚠️ 警告：ADK Web 僅供開發使用**
+> [!WARNING] 警告：ADK Web 僅供開發使用**
 >
 > ADK Web **不適用於正式的生產環境部署**。您應該僅將 ADK Web 用於開發和除錯目的。
 
