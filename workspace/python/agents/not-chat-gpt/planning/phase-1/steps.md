@@ -444,222 +444,557 @@ python tests/unit/backend/test_conversation.py
 
 ---
 
-### 步驟 3: 使用 VertexAiMemoryBankService 管理記憶
+### 步驟 3: Session 與 Memory 管理（建構 NotGPTAgent）
 
-> ✅ **ADK 最佳實踐**: 直接使用 ADK 提供的 `VertexAiMemoryBankService`  
-> 這是生產級的記憶管理服務，支援語意搜尋和持久化儲存。
+> ✅ **目標**: 建立具有 Session 管理和長期記憶的 NotGPTAgent  
+> ✅ **ADK 核心概念**:  
+>
+> - **Session**: 管理單次對話的歷史和狀態（短期記憶）- SessionService 負責儲存  
+> - **Memory**: 管理跨會話的長期知識（長期記憶）- MemoryService 負責儲存  
+> - **分開管理**: Session 和 Memory 使用不同的 Service，互不干擾
+>
+> 參考:
+>
+> - [Sessions](https://google.github.io/adk-docs/sessions/session/)
+> - [Memory](https://google.github.io/adk-docs/sessions/memory/)
 
-#### 3.1 理解 ADK Memory Service
+#### 3.1 理解 Session 與 Memory 的差異
 
-ADK 提供多種 Memory Service：
+**Session（會話）**：
 
-| Service | 用途 | 持久化 | 語意搜尋 |
-|---------|------|--------|---------|
-| **InMemorySessionService** | 開發測試 | ❌ | ❌ |
-| **VertexAiMemoryBankService** | 生產環境 | ✅ | ✅ |
+- 追蹤**單次對話**的歷史（`events`）和臨時數據（`state`）
+- 就像你在一次聊天中的短期記憶
+- 由 `SessionService` 管理和儲存
 
-**VertexAiMemoryBankService 特點**:
+**Memory（記憶）**：
 
-- ✅ 語意搜尋記憶（由 LLM 驅動）
-- ✅ 自動持久化儲存
-- ✅ 跨會話的長期記憶
-- ✅ 支援 `user:`, `app:`, `temp:` 前綴管理狀態範疇
-- ✅ 與 Vertex AI Agent Engine 整合
+- 可搜尋的**長期知識庫**，包含過去多次對話的信息
+- 就像可查詢的知識檔案庫
+- 由 `MemoryService` 管理和儲存
+- 必須手動調用 `add_session_to_memory()` 才會儲存
 
-**對照 ADK 十大誡律第 10 條**:
+**關鍵差異**：
 
-- 開發環境：`InMemorySessionService`（快速測試）
-- 生產環境：`VertexAiMemoryBankService`（持久化 + 語意搜尋）
+| 特性 | Session | Memory |
+|------|---------|--------|
+| 儲存對象 | 單次對話 | 跨會話知識 |
+| 自動儲存 | ✅ Runner 自動 | ❌ 需手動調用 |
+| 搜尋能力 | 時間順序 | 語意搜尋 |
+| 生命週期 | 對話期間 | 長期持久 |
 
-**參考**: [ADK Training - State & Memory](../../../workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md)
+**ADK 提供的 Service 實作**：
 
----
+| Service | 類型 | 持久化 | 用途 |
+|---------|------|--------|------|
+| **InMemorySessionService** | Session | ❌ | 開發測試 |
+| **VertexAiSessionService** | Session | ✅ | 生產環境 |
+| **DatabaseSessionService** | Session | ✅ | 自建資料庫 |
+| **InMemoryMemoryService** | Memory | ❌ | 原型驗證 |
+| **VertexAiMemoryBankService** | Memory | ✅ | 生產環境 |
 
-#### 3.2 設定 Vertex AI Memory Bank
+**參考**:
 
-**先決條件**:
-
-1. **設定 .env 檔案**
-
-   在專案根目錄的 `.env` 檔案中新增 Vertex AI 配置：
-
-   ```env
-   # 原有配置
-   GOOGLE_API_KEY=your_api_key_here
-   MODEL_NAME=gemini-2.0-flash-exp
-
-   # 新增 Vertex AI 配置
-   GOOGLE_CLOUD_PROJECT=your-project-id
-   GOOGLE_CLOUD_LOCATION=us-central1
-   GOOGLE_AGENT_ENGINE_ID=your-agent-engine-id  # 可選
-   ```
-
-2. **啟用 API**
-
-   ```bash
-   # 啟用 Vertex AI API
-   gcloud services enable aiplatform.googleapis.com
-   ```
-
-3. **身份驗證**
-
-   ```bash
-   # 本地開發使用 Application Default Credentials
-   gcloud auth application-default login
-   ```
-
-4. **建立 Agent Engine**（可選，用於進階功能）
-   - 在 Vertex AI Console 建立 Agent Engine
-   - 記錄 Agent Engine ID
+- [SessionService Implementations](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations)
+- [Memory Service](https://google.github.io/adk-docs/sessions/memory/)
 
 ---
 
-#### 3.3 建立使用 VertexAiMemoryBankService 的 Agent
+#### 3.2 建立 NotGPTAgent（開發版 - InMemory Services）
 
-**backend/agents/memory_agent.py**:
+建立一個統一的 `NotGPTAgent`，先使用 InMemory Services 驗證邏輯。
+
+**backend/agents/not_gpt_agent.py**:
 
 ```python
 """
-NotChatGPT - 記憶管理 Agent (使用 VertexAiMemoryBankService)
+NotGPTAgent - 具有 Session 和 Memory 管理的智能對話助理
 
-使用 Google ADK 的 VertexAiMemoryBankService 實現長期記憶。
+這是專案的核心 Agent，整合：
+- Session 管理（短期記憶）
+- Memory 管理（長期記憶）
+- 支援開發/生產環境切換
 """
 from google.adk.agents import Agent
 from google.adk.runners import Runner
-from google.adk.memory import VertexAiMemoryBankService
-from google.adk.tools.preload_memory_tool import PreloadMemoryTool
-from google.adk.tools.load_memory_tool import LoadMemoryTool
+from google.adk.sessions import InMemorySessionService, VertexAiSessionService
+from google.adk.memory import InMemoryMemoryService, VertexAiMemoryBankService
+from google.adk.tools import load_memory
 from google.genai import types
 from dotenv import load_dotenv
 import os
+import asyncio
 
 
-def create_memory_agent() -> Agent:
-    """建立具有記憶能力的 Agent
+def create_not_gpt_agent() -> Agent:
+    """建立 NotGPTAgent
     
-    Returns:
-        Agent: 配置好的 ADK Agent，整合記憶工具
+    這是專案的核心 Agent，具備：
+    - 友善的對話風格
+    - 長期記憶能力
+    - 上下文理解
     """
     return Agent(
-        name="not_chat_gpt_memory",
+        name="not_gpt_agent",
         model="gemini-2.0-flash-exp",
         instruction="""
-你是 NotChatGPT，一個具有長期記憶的智慧對話助理。
+            你是 NotGPTAgent，一個智能且友善的對話助理。
 
-能力：
-- 記住過去的對話內容
-- 根據歷史對話提供個性化回應
-- 使用記憶工具查詢相關的過往互動
+            核心能力：
+            - 提供準確且有幫助的資訊
+            - 支援多輪對話與上下文理解
+            - 記住過去的對話（使用 load_memory 工具）
+            - 友善且專業的對話風格
 
-行為：
-- 主動使用記憶來提供更好的服務
-- 引用過去的對話時要明確說明
-- 尊重使用者隱私，不濫用記憶
+            行為準則：
+            - 當問題可能與過去對話相關時，主動使用 load_memory 工具
+            - 引用過去的對話時要明確說明
+            - 尊重使用者隱私
         """,
-        description="具有長期記憶能力的對話助理",
-        tools=[
-            PreloadMemoryTool(),  # 總是在開始時載入相關記憶
-            # 或使用 LoadMemoryTool() 讓 Agent 決定何時載入
-        ]
+        description="NotGPT 智能對話助理",
+        tools=[load_memory]  # 賦予記憶檢索能力
     )
 
 
-def create_memory_service() -> VertexAiMemoryBankService:
-    """建立 VertexAiMemoryBankService
+def create_services(environment='development'):
+    """根據環境建立 Services
+    
+    Args:
+        environment: 'development' 或 'production'
     
     Returns:
-        VertexAiMemoryBankService: 配置好的記憶服務
+        tuple: (session_service, memory_service)
     """
-    project = os.getenv('GOOGLE_CLOUD_PROJECT')
-    location = os.getenv('GOOGLE_CLOUD_LOCATION', 'us-central1')
-    agent_engine_id = os.getenv('GOOGLE_AGENT_ENGINE_ID')  # 可選
+    if environment == 'development':
+        print("🔧 開發環境: 使用 InMemory Services")
+        session_service = InMemorySessionService()
+        memory_service = InMemoryMemoryService()
+        return session_service, memory_service
     
-    if not project:
-        raise ValueError("GOOGLE_CLOUD_PROJECT not set in .env")
-    
-    # 基本配置
-    if agent_engine_id:
-        # 使用 Agent Engine ID
-        return VertexAiMemoryBankService(
+    elif environment == 'production':
+        print("🚀 生產環境: 使用 Vertex AI Services")
+        
+        # Session 使用 VertexAiSessionService
+        project = os.getenv('GOOGLE_CLOUD_PROJECT')
+        location = os.getenv('GOOGLE_CLOUD_LOCATION', 'us-central1')
+        reasoning_engine_id = os.getenv('REASONING_ENGINE_ID')
+        
+        if not all([project, reasoning_engine_id]):
+            raise ValueError(
+                "生產環境需要: GOOGLE_CLOUD_PROJECT, REASONING_ENGINE_ID"
+            )
+        
+        session_service = VertexAiSessionService(
+            project=project,
+            location=location
+        )
+        
+        # Memory 使用 VertexAiMemoryBankService
+        agent_engine_id = os.getenv('AGENT_ENGINE_ID')
+        if not agent_engine_id:
+            raise ValueError("生產環境需要: AGENT_ENGINE_ID")
+        
+        memory_service = VertexAiMemoryBankService(
             project=project,
             location=location,
             agent_engine_id=agent_engine_id
         )
+        
+        return session_service, memory_service
+    
     else:
-        # 基本配置（不使用 Agent Engine）
-        return VertexAiMemoryBankService(
-            project=project,
-            location=location
-        )
+        raise ValueError(f"未知環境: {environment}")
 
 
 # 測試用
 if __name__ == "__main__":
-    import asyncio
-    
-    # 載入 .env 檔案
     load_dotenv()
     
-    # 檢查必要的環境變數
+    # 檢查 API Key
     api_key = os.getenv('GOOGLE_API_KEY')
-    project = os.getenv('GOOGLE_CLOUD_PROJECT')
-    
     if not api_key:
-        print("❌ 錯誤: GOOGLE_API_KEY 未設定在 .env 檔案中")
+        print("❌ 錯誤: GOOGLE_API_KEY 未設定")
         exit(1)
     
-    if not project:
-        print("❌ 錯誤: GOOGLE_CLOUD_PROJECT 未設定在 .env 檔案中")
-        exit(1)
+    # 環境選擇（從環境變數）
+    env = os.getenv('ENVIRONMENT', 'development')
     
-    print("✅ 使用 Google ADK VertexAiMemoryBankService")
+    print("=" * 60)
+    print("NotGPTAgent - Session & Memory 測試")
+    print("=" * 60)
     
-    # 建立 Agent 和 Memory Service
-    agent = create_memory_agent()
-    memory_service = create_memory_service()
-    
-    # 建立 Runner（使用 Memory Service）
-    runner = Runner(
-        agent=agent,
-        app_name="not_chat_gpt_memory",
-        memory_service=memory_service
-    )
-    
-    async def test_memory():
-        """測試記憶功能"""
-        print("\n開始測試記憶功能...")
+    async def test_not_gpt_agent():
+        """測試 NotGPTAgent 的 Session 和 Memory 功能
         
-        # 建立會話
-        session = await runner.session_service.create_session(
-            app_name="not_chat_gpt_memory",
-            user_id="test_user"
+        測試流程：
+        1. 階段一：測試 Session 的短期記憶（同一會話內的多輪對話）
+        2. 階段二：測試 Memory 的長期記憶（跨會話的記憶檢索）
+        """
+        
+        # 建立 Services
+        try:
+            session_service, memory_service = create_services(env)
+        except ValueError as e:
+            print(f"❌ 環境配置錯誤: {e}")
+            return
+        
+        # 建立 Agent 和 Runner
+        agent = create_not_gpt_agent()
+        runner = Runner(
+            agent=agent,
+            app_name="not_gpt_agent",
+            session_service=session_service,  # Session 儲存
+            memory_service=memory_service      # Memory 儲存
         )
         
-        # 第一輪對話：提供個人資訊
-        print("\n=== 第一輪對話：提供資訊 ===")
+        APP_NAME = "not_gpt_agent"
+        USER_ID = "test_user"
+        
+        print("\n" + "=" * 60)
+        print("階段一：測試短期記憶（Session）")
+        print("=" * 60)
+        
+        # === 建立第一個 Session ===
+        session1_id = "session_001"
+        await session_service.create_session(
+            app_name=APP_NAME,
+            user_id=USER_ID,
+            session_id=session1_id
+        )
+        
+        # === 第一輪對話：提供資訊 ===
+        print("\n【第 1 輪對話】")
         msg1 = types.Content(
             role="user",
-            parts=[types.Part(text="我叫 Alice，我喜歡看科幻小說和寫程式")]
+            parts=[types.Part(text="我叫 Alice，我正在學習 Google ADK。")]
         )
         
-        print("💬 User: 我叫 Alice，我喜歡看科幻小說和寫程式\n")
-        print("🤖 Assistant: ", end="")
+        print("💬 User: 我叫 Alice，我正在學習 Google ADK。\n")
+        print("🤖 NotGPT: ", end="", flush=True)
         
         async for event in runner.run_async(
-            user_id="test_user",
-            session_id=session.id,
+            user_id=USER_ID,
+            session_id=session1_id,
             new_message=msg1
         ):
-            if event.content and event.content.parts:
-                for part in event.content.parts:
-                    if part.text:
-                        print(part.text, end="", flush=True)
+            if event.is_final_response() and event.content and event.content.parts:
+                print(event.content.parts[0].text)
         
-        # 將會話儲存到記憶體
-        print("\n\n💾 儲存會話到記憶體...")
+        # === 第二輪對話：測試 Session 內的記憶（短期記憶）===
+        print("\n\n【第 2 輪對話 - 測試 Session 短期記憶】")
+        msg2 = types.Content(
+            role="user",
+            parts=[types.Part(text="我叫什麼名字？")]
+        )
+        
+        print("💬 User: 我叫什麼名字？\n")
+        print("🤖 NotGPT: ", end="", flush=True)
+        
+        async for event in runner.run_async(
+            user_id=USER_ID,
+            session_id=session1_id,  # 同一個 Session
+            new_message=msg2
+        ):
+            if event.is_final_response() and event.content and event.content.parts:
+                print(event.content.parts[0].text)
+        
+        print("\n✅ Session 短期記憶測試成功！Agent 記住了同一會話中的資訊。")
+        
+        # === 第三輪對話：再次確認 Session 記憶 ===
+        print("\n\n【第 3 輪對話 - 再次確認 Session 記憶】")
+        msg3 = types.Content(
+            role="user",
+            parts=[types.Part(text="我在學什麼？")]
+        )
+        
+        print("💬 User: 我在學什麼？\n")
+        print("🤖 NotGPT: ", end="", flush=True)
+        
+        async for event in runner.run_async(
+            user_id=USER_ID,
+            session_id=session1_id,  # 同一個 Session
+            new_message=msg3
+        ):
+            if event.is_final_response() and event.content and event.content.parts:
+                print(event.content.parts[0].text)
+        
+        print("\n✅ Session 多輪對話測試成功！")
+        
+        # ============================================================
+        print("\n" + "=" * 60)
+        print("階段二：測試長期記憶（Memory）")
+        print("=" * 60)
+        
+        # === 將 Session 儲存到 Memory ===
+        print("\n【儲存到長期記憶】")
+        completed_session = await session_service.get_session(
+            app_name=APP_NAME,
+            user_id=USER_ID,
+            session_id=session1_id
+        )
+        
+        print("💾 將 Session 儲存到 Memory Bank...")
+        await memory_service.add_session_to_memory(completed_session)
+        print("✅ 已儲存到長期記憶")
+        
+        # === 建立新的 Session（模擬新對話）===
+        print("\n【開始新對話 - 測試跨會話記憶】")
+        session2_id = "session_002"
+        await session_service.create_session(
+            app_name=APP_NAME,
+            user_id=USER_ID,
+            session_id=session2_id
+        )
+        
+        # === 在新 Session 中測試長期記憶 ===
+        print("\n【第 4 輪對話 - 新會話中測試 Memory 檢索】")
+        msg4 = types.Content(
+            role="user",
+            parts=[types.Part(text="你還記得我的名字和我在學什麼嗎？")]
+        )
+        
+        print("💬 User: 你還記得我的名字和我在學什麼嗎？\n")
+        print("🤖 NotGPT: ", end="", flush=True)
+        
+        async for event in runner.run_async(
+            user_id=USER_ID,
+            session_id=session2_id,  # 新的 Session
+            new_message=msg4
+        ):
+            if event.is_final_response() and event.content and event.content.parts:
+                print(event.content.parts[0].text)
+        
+        print("\n✅ Memory 長期記憶測試成功！Agent 從 Memory 中檢索到過去的資訊。")
+        
+        print("\n" + "=" * 60)
+        print("✅ NotGPTAgent 完整測試通過！")
+        print("=" * 60)
+        print(f"✅ Session 管理（短期記憶）: {type(session_service).__name__}")
+        print(f"✅ Memory 管理（長期記憶）: {type(memory_service).__name__}")
+        print("\n測試總結：")
+        print("  1️⃣  Session 短期記憶：在同一會話中記住上下文 ✓")
+        print("  2️⃣  Memory 長期記憶：跨會話檢索過去的資訊 ✓")
+    
+    try:
+        asyncio.run(test_not_gpt_agent())
+    except Exception as e:
+        print(f"\n❌ 測試失敗: {e}")
+        import traceback
+        traceback.print_exc()
+```
+
+**執行測試**:
+
+```bash
+# 開發環境測試（無需 GCP）
+python -m backend.agents.not_gpt_agent
+
+# 或明確指定
+ENVIRONMENT=development python -m backend.agents.not_gpt_agent
+```
+
+**預期輸出**:
+
+```text
+============================================================
+NotGPTAgent - Session & Memory 測試
+============================================================
+🔧 開發環境: 使用 InMemory Services
+
+--- 第一次對話：捕獲資訊 ---
+💬 User: 我叫 Alice，我正在學習 Google ADK。
+
+🤖 NotGPT: 很高興認識你，Alice！Google ADK 是個很棒的框架...
+
+💾 將 Session 儲存到 Memory Bank...
+✅ 已儲存到長期記憶
+
+--- 第二次對話：測試記憶檢索 ---
+💬 User: 我叫什麼名字？我在學什麼？
+
+🤖 NotGPT: 你叫 Alice，你正在學習 Google ADK！
+
+============================================================
+✅ NotGPTAgent 測試完成！
+✅ Session 管理: InMemorySessionService
+✅ Memory 管理: InMemoryMemoryService
+```
+
+**重點說明**:
+
+1. ✅ **分開儲存**: Session 和 Memory 使用不同的 Service
+2. ✅ **手動儲存**: 必須調用 `add_session_to_memory()` 才會儲存到 Memory
+3. ✅ **統一 Agent**: `NotGPTAgent` 是專案的核心，而非多個範例 Agent
+4. ✅ **環境切換**: 支援開發/生產環境切換
+
+---
+
+#### 3.3 升級到生產環境（Vertex AI Services）
+
+將 NotGPTAgent 升級到生產環境，使用 Vertex AI 的 Session 和 Memory 服務。
+
+**先決條件**:
+
+1. **設定 .env 檔案**:
+
+   ```env
+   # 基本配置
+   GOOGLE_API_KEY=your_api_key_here
+   MODEL_NAME=gemini-2.0-flash-exp
+   
+   # 環境切換
+   ENVIRONMENT=production
+   
+   # Vertex AI 配置（生產環境必須）
+   GOOGLE_CLOUD_PROJECT=your-project-id
+   GOOGLE_CLOUD_LOCATION=us-central1
+   
+   # Session Service（VertexAiSessionService）
+   REASONING_ENGINE_ID=projects/your-project/locations/us-central1/reasoningEngines/your-engine-id
+   
+   # Memory Service（VertexAiMemoryBankService）
+   AGENT_ENGINE_ID=your-agent-engine-id
+   ```
+
+2. **身份驗證與 API 啟用**:
+
+   ```bash
+   # 身份驗證
+   gcloud auth application-default login
+   
+   # 啟用必要的 API
+   gcloud services enable aiplatform.googleapis.com
+   gcloud services enable storage.googleapis.com
+   ```
+
+3. **建立必要資源**:
+
+   **a. Reasoning Engine（用於 Session）**:
+
+   參考: [Deploy to Agent Engine](https://google.github.io/adk-docs/deploy/agent-engine/)
+
+   ```bash
+   # 使用 ADK CLI 部署會自動建立 Reasoning Engine
+   adk deploy --project your-project-id
+   ```
+
+   **b. Agent Engine（用於 Memory）**:
+
+   在 [Vertex AI Console](https://console.cloud.google.com/vertex-ai) 建立 Agent Engine
+
+**測試生產環境**:
+
+```bash
+ENVIRONMENT=production python -m backend.agents.not_gpt_agent
+```
+
+**預期輸出**:
+
+```text
+============================================================
+NotGPTAgent - Session & Memory 測試
+============================================================
+🚀 生產環境: 使用 Vertex AI Services
+
+--- 第一次對話：捕獲資訊 ---
+💬 User: 我叫 Alice，我正在學習 Google ADK。
+
+🤖 NotGPT: 很高興認識你，Alice！...
+
+💾 將 Session 儲存到 Memory Bank...
+✅ 已儲存到長期記憶
+
+--- 第二次對話：測試記憶檢索 ---
+💬 User: 我叫什麼名字？我在學什麼？
+
+🤖 NotGPT: 根據我的記憶，你叫 Alice，你正在學習 Google ADK！
+
+============================================================
+✅ NotGPTAgent 測試完成！
+✅ Session 管理: VertexAiSessionService
+✅ Memory 管理: VertexAiMemoryBankService
+```
+
+**生產 vs 開發對比**:
+
+| 功能 | 開發環境 | 生產環境 |
+|------|---------|---------|
+| Session 儲存 | InMemory（不持久） | Vertex AI（持久） |
+| Memory 儲存 | InMemory（關鍵字搜尋） | Vertex AI（語意搜尋） |
+| 重啟後資料 | ❌ 遺失 | ✅ 保留 |
+| 多實例共享 | ❌ | ✅ |
+| 需要 GCP | ❌ | ✅ |
+
+**參考**:
+
+- [VertexAiSessionService](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations)
+- [VertexAiMemoryBankService](https://google.github.io/adk-docs/sessions/memory/#vertex-ai-memory-bank)
+
+---
+
+#### 3.4 使用回調自動儲存記憶
+
+為了避免每次都要手動調用 `add_session_to_memory()`，可以使用 `after_agent_callback` 自動儲存。
+
+**在 not_gpt_agent.py 中添加自動儲存功能**:
+
+```python
+async def auto_save_memory_callback(callback_context):
+    """Agent 完成後自動儲存 Session 到 Memory"""
+    try:
+        # 取得 memory_service 和 session
+        memory_service = callback_context._invocation_context.memory_service
+        session = callback_context._invocation_context.session
+        
+        # 儲存到記憶體
         await memory_service.add_session_to_memory(session)
-        print("✅ 會話已儲存到 Vertex AI Memory Bank")
-        
+        print("💾 自動儲存: Session 已加入長期記憶")
+    except Exception as e:
+        print(f"⚠️  自動儲存失敗: {e}")
+
+
+def create_not_gpt_agent(auto_save=False) -> Agent:
+    """建立 NotGPTAgent
+    
+    Args:
+        auto_save: 是否自動儲存 Session 到 Memory
+    """
+    return Agent(
+        name="not_gpt_agent",
+        model="gemini-2.0-flash-exp",
+        instruction="""...""",  # 同前
+        description="NotGPT 智能對話助理",
+        tools=[load_memory],
+        # 啟用自動儲存
+        after_agent_callback=auto_save_memory_callback if auto_save else None
+    )
+```
+
+**測試自動儲存**:
+
+```python
+# 在測試代碼中
+agent = create_not_gpt_agent(auto_save=True)  # 啟用自動儲存
+
+runner = Runner(
+    agent=agent,
+    app_name="not_gpt_agent",
+    session_service=session_service,
+    memory_service=memory_service
+)
+
+# 對話後會自動儲存，無需手動調用 add_session_to_memory()
+```
+
+**對照 ADK 十大誡律第 7 條**:
+
+- ✅ **回呼用於控制**: 使用 `after_agent_callback` 實現自動化
+- ✅ 不影響核心業務邏輯
+- ✅ 可選功能（透過 `auto_save` 參數控制）
+
+---
+
+#### 3.5 總結與測試
+
         # 第二輪對話：測試記憶檢索
         print("\n=== 第二輪對話：測試記憶 ===")
         msg2 = types.Content(
@@ -692,486 +1027,20 @@ if __name__ == "__main__":
         print("1. 執行 gcloud auth application-default login")
         print("2. 設定 GOOGLE_CLOUD_PROJECT 環境變數")
         print("3. 啟用 Vertex AI API")
-```
 
----
-
-#### 3.4 使用回調自動儲存記憶
-
-**backend/agents/auto_save_memory_agent.py**:
-
-```python
-"""
-自動儲存記憶的 Agent（使用 AgentCallbacks）
-"""
-from google.adk.agents import Agent
-from google.adk.memory import VertexAiMemoryBankService
-
-
-async def save_to_memory_callback(callback_context):
-    """會話結束後自動儲存到記憶體"""
-    try:
-        await callback_context.memory_service.add_session_to_memory(
-            callback_context.session
-        )
-        print("✅ 會話已自動儲存到記憶體")
-    except Exception as e:
-        print(f"⚠️ 儲存記憶失敗: {e}")
-
-
-def create_auto_save_agent() -> Agent:
-    """建立會自動儲存記憶的 Agent"""
-    return Agent(
-        name="auto_save_agent",
-        model="gemini-2.0-flash-exp",
-        instruction="你是一個會記住對話的助理",
-        after_agent_callback=save_to_memory_callback  # 自動儲存
-    )
-```
-
-**對照 ADK 十大誡律第 7 條**:
-
-- ✅ **回呼用於控制**：使用 `after_agent_callback` 自動儲存記憶
-- ✅ 不影響核心業務邏輯
-
----
-
-#### 3.5 狀態範疇管理（user/app/temp 前綴）
-
-**使用狀態前綴控制資料範疇**:
-
-```python
-from google.adk.agents import Agent
-
-def create_scoped_state_agent() -> Agent:
-    """展示狀態範疇管理的 Agent"""
-    
-    async def manage_state_callback(callback_context):
-        """管理不同範疇的狀態"""
-        state = callback_context.state
-        
-        # user: 前綴 - 使用者特定，跨會話持久化
-        state["user:preferences"] = {
-            "theme": "dark",
-            "language": "zh-TW"
-        }
-        
-        # app: 前綴 - 應用程式全域，跨使用者
-        state["app:version"] = "1.0.0"
-        state["app:features"] = ["chat", "memory", "tools"]
-        
-        # temp: 前綴 - 僅限本次調用，不持久化
-        state["temp:processing_time"] = "123ms"
-        
-        # 無前綴 - 會話層級（取決於 SessionService）
-        state["conversation_count"] = state.get("conversation_count", 0) + 1
-    
-    return Agent(
-        name="scoped_state_agent",
-        model="gemini-2.0-flash-exp",
-        instruction="展示狀態範疇管理",
-        after_agent_callback=manage_state_callback
-    )
-```
-
-**狀態範疇說明**:
-
-| 前綴 | 範疇 | 持久化 | 用途 |
-|------|------|--------|------|
-| 無前綴 | 會話 | 取決於 SessionService | 單次對話的上下文 |
-| `user:` | 使用者 | ✅ | 使用者偏好、歷史 |
-| `app:` | 應用程式 | ✅ | 全域配置、統計 |
-| `temp:` | 暫存 | ❌ | 臨時計算結果 |
-
----
-
-#### 3.6 測試記憶功能
-
-**tests/unit/backend/test_memory_agent.py**:
-
-```python
-"""測試 VertexAiMemoryBankService 記憶功能"""
-import pytest
-from google.adk.runners import Runner
-from google.adk.memory import VertexAiMemoryBankService
-from google.genai import types
-from backend.agents.memory_agent import create_memory_agent, create_memory_service
-import os
-
-
-@pytest.mark.asyncio
-async def test_memory_persistence():
-    """測試記憶持久化功能"""
-    # 檢查必要的環境變數
-    project = os.getenv('GOOGLE_CLOUD_PROJECT')
-    if not project:
-        pytest.skip("GOOGLE_CLOUD_PROJECT 未設定，跳過測試")
-    
-    # 設置
-    agent = create_memory_agent()
-    memory_service = create_memory_service()
-    runner = Runner(
-        agent=agent,
-        app_name="test_memory_app",
-        memory_service=memory_service
-    )
-    
-    # 建立會話
-    session = await runner.session_service.create_session(
-        app_name="test_memory_app",
-        user_id="test_user"
-    )
-    
-    # 第一輪對話：提供資訊
-    msg1 = types.Content(
-        role="user",
-        parts=[types.Part(text="我叫 Bob，我是軟體工程師")]
-    )
-    
-    response1_parts = []
-    async for event in runner.run_async(
-        user_id="test_user",
-        session_id=session.id,
-        new_message=msg1
-    ):
-        if event.content and event.content.parts:
-            for part in event.content.parts:
-                if part.text:
-                    response1_parts.append(part.text)
-    
-    # 儲存到記憶體
-    await memory_service.add_session_to_memory(session)
-    
-    # 搜尋記憶體
-    memories = await memory_service.search_memory(
-        query="使用者的職業是什麼？",
-        user_id="test_user"
-    )
-    
-    # 驗證：應該能找到相關記憶
-    assert len(memories) > 0, "應該能從記憶體中檢索到資訊"
-    print(f"✅ 找到 {len(memories)} 條相關記憶")
-    print("✅ VertexAiMemoryBankService 記憶功能正常")
-
-
-@pytest.mark.asyncio
-async def test_state_scopes():
-    """測試狀態範疇管理（user/app/temp）"""
-    agent = create_memory_agent()
-    memory_service = create_memory_service()
-    runner = Runner(
-        agent=agent,
-        app_name="test_scopes",
-        memory_service=memory_service
-    )
-    
-    session = await runner.session_service.create_session(
-        app_name="test_scopes",
-        user_id="test_user"
-    )
-    
-    # 設定不同範疇的狀態
-    session.state["user:name"] = "Alice"
-    session.state["app:version"] = "1.0.0"
-    session.state["temp:request_id"] = "12345"
-    session.state["conversation_topic"] = "AI 技術"
-    
-    # 驗證狀態
-    assert session.state["user:name"] == "Alice"
-    assert session.state["app:version"] == "1.0.0"
-    assert session.state["temp:request_id"] == "12345"
-    assert session.state["conversation_topic"] == "AI 技術"
-    
-    print("✅ 狀態範疇管理正常")
 ```
 
 **執行測試**:
 
 ```bash
-# 執行測試
-python -m pytest tests/unit/backend/test_memory_agent.py -v
-
-# 或直接執行 memory_agent.py 的測試
 python -m backend.agents.memory_agent
 ```
 
----
-
-#### 3.7 開發 vs 生產環境配置
-
-**backend/config/memory_config.py**:
-
-```python
-"""記憶服務配置"""
-from google.adk.sessions import InMemorySessionService
-from google.adk.memory import VertexAiMemoryBankService
-import os
-
-
-def get_memory_service(environment: str = "development"):
-    """根據環境取得適當的記憶服務
-    
-    Args:
-        environment: 'development' 或 'production'
-    
-    Returns:
-        SessionService 或 MemoryService
-    """
-    if environment == "development":
-        # 開發環境：使用 InMemory（快速、不需要 GCP）
-        print("🔧 使用 InMemorySessionService（開發模式）")
-        return InMemorySessionService()
-    
-    elif environment == "production":
-        # 生產環境：使用 Vertex AI Memory Bank
-        project = os.getenv('GOOGLE_CLOUD_PROJECT')
-        location = os.getenv('GOOGLE_CLOUD_LOCATION', 'us-central1')
-        
-        if not project:
-            raise ValueError(
-                "生產環境需要設定 GOOGLE_CLOUD_PROJECT 環境變數"
-            )
-        
-        print(f"🚀 使用 VertexAiMemoryBankService（生產模式）")
-        print(f"   Project: {project}")
-        print(f"   Location: {location}")
-        
-        return VertexAiMemoryBankService(
-            project=project,
-            location=location
-        )
-    
-    else:
-        raise ValueError(f"未知的環境: {environment}")
-
-
-# 使用範例
-if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
-    
-    # 根據環境變數自動選擇
-    env = os.getenv('ENVIRONMENT', 'development')
-    service = get_memory_service(env)
-    
-    print(f"✅ 記憶服務已配置: {type(service).__name__}")
-```
-
-**更新 .env 新增環境變數**:
-
-```env
-# 環境設定
-ENVIRONMENT=development  # 或 production
-
-# API Keys
-GOOGLE_API_KEY=your_api_key_here
-MODEL_NAME=gemini-2.0-flash-exp
-
-# Vertex AI 配置（生產環境必須）
-GOOGLE_CLOUD_PROJECT=your-project-id
-GOOGLE_CLOUD_LOCATION=us-central1
-GOOGLE_AGENT_ENGINE_ID=your-agent-engine-id  # 可選
-```
-
----
-
-#### 3.8 總結與最佳實踐
-
-**步驟 3 完成的功能**:
-
-1. ✅ 使用 `VertexAiMemoryBankService` 實現長期記憶
-2. ✅ 整合 `PreloadMemoryTool` 和 `LoadMemoryTool`
-3. ✅ 使用 `after_agent_callback` 自動儲存記憶
-4. ✅ 理解狀態範疇（user/app/temp 前綴）
-5. ✅ 開發與生產環境配置分離
-6. ✅ 完整的測試覆蓋
-
-**對照 ADK 十大誡律**:
-
-| 誡律 | 實現 | 說明 |
-|-----|------|------|
-| 2️⃣ 短期用 State，長期用 Memory | ✅ | 使用 VertexAiMemoryBankService |
-| 6️⃣ 工具是能力 | ✅ | PreloadMemoryTool 作為 Agent 能力 |
-| 7️⃣ 回呼用於控制 | ✅ | after_agent_callback 自動儲存 |
-| 10️⃣ 開發≠生產 | ✅ | InMemory vs VertexAI 配置 |
-
 **參考資料**:
 
-- [ADK Training - State & Memory](../../../workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md)
-- [ADK Production Deployment](../../../workspace/notes/google-adk-training-hub/production-deployment.md)
-- [Context Engineering](../../../workspace/notes/google-adk-training-hub/blog/2025-12-08-context-engineering-google-adk-architecture.md)
-
-**下一步**: 步驟 4 - 串流回應實作
-
----
-
-```python
-import pytest
-from google import genai
-from dotenv import load_dotenv
-import os
-from backend.agents.session_agent import create_session_aware_agent
-from backend.services.session_service import SessionService
-
-class TestSessionAgent:
-    @pytest.fixture(autouse=True)
-    def setup(self):
-        """測試前置設定 - 每個測試方法執行前都會重新初始化"""
-        load_dotenv()
-        self.api_key = os.getenv('GOOGLE_API_KEY')
-        self.model_name = os.getenv('MODEL_NAME', 'gemini-2.0-flash-exp')
-        
-        if not self.api_key:
-            pytest.skip("GOOGLE_API_KEY 未設定")
-        
-        self.client = genai.Client(api_key=self.api_key)
-        
-        # 每個測試都創建新的 in-memory 資料庫，確保測試隔離
-        self.session_service = SessionService(database_url="sqlite:///:memory:")
-        
-        yield  # 測試執行
-        
-        # 測試後清理（可選，因為 in-memory DB 會自動銷毀）
-        if hasattr(self, 'session_service'):
-            self.session_service.engine.dispose()
-    
-    def test_create_session_aware_agent(self):
-        """測試建立具有上下文記憶的 Agent"""
-        # 1. 建立測試 session（使用唯一 ID）
-        test_session_id = "test-create-agent-001"
-        self.session_service.create_session(test_session_id, "上下文記憶測試")
-        
-        # 2. 設定上下文
-        state = {
-            "user:context": "使用者偏好繁體中文，喜歡簡潔的回答",
-            "app:settings": {"language": "zh-TW", "mode": "concise"},
-            "temp:data": {"last_topic": "Python"}
-        }
-        self.session_service.save_state(test_session_id, state)
-        
-        # 3. 建立 Agent（注入測試用的 session_service）
-        config, returned_service = create_session_aware_agent(
-            test_session_id, 
-            session_service=self.session_service
-        )
-        
-        # 4. 驗證配置
-        assert config is not None
-        assert "使用者偏好繁體中文" in config.system_instruction
-        assert "Python" in config.system_instruction
-        
-        # 5. 驗證 service 也被正確返回
-        assert returned_service is not None
-    
-    def test_context_affects_response(self):
-        """測試上下文是否影響 Agent 回應"""
-        # 1. 建立有特定上下文的 session（使用唯一 ID）
-        test_session_id = "test-context-response-002"
-        self.session_service.create_session(test_session_id)
-        
-        state = {
-            "user:context": "使用者偏好繁體中文，喜歡簡潔的回答",
-            "app:settings": {"language": "zh-TW", "mode": "concise"}
-        }
-        self.session_service.save_state(test_session_id, state)
-        
-        # 2. 建立 Agent 並測試對話（注入測試用的 session_service）
-        config, _ = create_session_aware_agent(
-            test_session_id, 
-            session_service=self.session_service
-        )
-        
-        response = self.client.models.generate_content(
-            model=self.model_name,
-            contents="請用我偏好的語言和風格回答：什麼是 Python？",
-            config=config
-        )
-        
-        # 3. 驗證回應不為空
-        assert response.text is not None
-        assert len(response.text) > 0
-        print(f"✅ Agent 回應: {response.text[:100]}...")
-    
-    def test_context_persistence(self):
-        """測試上下文持久化"""
-        # 1. 建立並儲存上下文（使用唯一 ID）
-        test_session_id = "test-persistence-003"
-        self.session_service.create_session(test_session_id)
-        
-        original_state = {
-            "user:context": "測試使用者",
-            "temp:data": {"last_topic": "Python"}
-        }
-        self.session_service.save_state(test_session_id, original_state)
-        
-        # 2. 更新上下文
-        updated_state = {
-            "user:context": "測試使用者",
-            "temp:data": {"last_topic": "機器學習"}
-        }
-        self.session_service.save_state(test_session_id, updated_state)
-        
-        # 3. 重新載入並驗證
-        loaded_state = self.session_service.load_state(test_session_id)
-        assert loaded_state["temp:data"]["last_topic"] == "機器學習"
-        print("✅ 上下文持久化測試通過")
-    
-    def test_empty_context_handling(self):
-        """測試空上下文處理"""
-        # 1. 建立沒有上下文的 session（使用唯一 ID）
-        test_session_id = "test-empty-context-004"
-        self.session_service.create_session(test_session_id)
-        
-        # 2. 建立 Agent（應該使用預設值，注入測試用的 session_service）
-        config, _ = create_session_aware_agent(
-            test_session_id, 
-            session_service=self.session_service
-        )
-        
-        # 3. 驗證使用預設值
-        assert "無特定上下文" in config.system_instruction
-        assert "預設設定" in config.system_instruction
-        print("✅ 空上下文處理測試通過")
-
-if __name__ == "__main__":
-    pytest.main([__file__, "-v"])
-```
-
-**執行測試**:
-
-```bash
-# 執行上下文記憶單元測試
-python -m pytest tests/unit/backend/test_session_agent.py -v
-
-# 或使用 PYTHONPATH
-PYTHONPATH=. python -m pytest tests/unit/backend/test_session_agent.py -v
-
-# 執行單一測試方法
-python -m pytest tests/unit/backend/test_session_agent.py::TestSessionAgent::test_create_session_aware_agent -v
-```
-
-**測試隔離說明**:
-
-- 使用 `@pytest.fixture(autouse=True)` 確保每個測試方法執行前都重新初始化
-- 每個測試都創建新的 in-memory SQLite 資料庫，確保完全隔離
-- `yield` 後的清理代碼確保資源正確釋放
-- 每個測試使用唯一的 session ID，避免潛在的 ID 衝突
-
-**預期輸出**:
-
-```text
-tests/unit/backend/test_session_agent.py::TestSessionAgent::test_create_session_aware_agent PASSED
-tests/unit/backend/test_session_agent.py::TestSessionAgent::test_context_affects_response PASSED
-✅ Agent 回應: Python 是一種高階程式語言...
-tests/unit/backend/test_session_agent.py::TestSessionAgent::test_context_persistence PASSED
-✅ 上下文持久化測試通過
-tests/unit/backend/test_session_agent.py::TestSessionAgent::test_empty_context_handling PASSED
-✅ 空上下文處理測試通過
-
-============================ 4 passed in 2.34s ============================
-```
-
-**參考**: Day 17 (personal-tutor) - Session State Management
+- [ADK Sessions](https://google.github.io/adk-docs/sessions/session/)
+- [ADK Memory](https://google.github.io/adk-docs/sessions/memory/)
+- [Callbacks](https://google.github.io/adk-docs/callbacks/)
 
 ---
 

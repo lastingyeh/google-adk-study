@@ -19,7 +19,7 @@ async def test_memory_persistence():
     # 設置
     agent = create_memory_agent()
     memory_service = create_memory_service()
-    session_service = InMemorySessionService()
+    session_service = create_memory_service()
     runner = Runner(
         agent=agent,
         app_name="test_memory_app",

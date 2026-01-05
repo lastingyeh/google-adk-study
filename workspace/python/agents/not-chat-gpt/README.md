@@ -126,17 +126,26 @@ Database: SQLite
 ### 快速開始
 
 ```bash
-# 1. 安裝依賴
+# 1. 創建並啟動虛擬環境
+python3 -m venv venv
+
+# macOS/Linux
+source venv/bin/activate
+
+# Windows
+# venv\Scripts\activate
+
+# 2. 安裝依賴
 pip install -r backend/requirements.txt
 
-# 2. 設定環境變數
+# 3. 設定環境變數
 cp .env.example .env
 # 編輯 .env，設定 GOOGLE_API_KEY
 
-# 3. 啟動 CLI
+# 4. 啟動 CLI
 python -m backend.cli
 
-# 4. 啟動 API 伺服器
+# 5. 啟動 API 伺服器
 python -m backend.main
 ```
 
