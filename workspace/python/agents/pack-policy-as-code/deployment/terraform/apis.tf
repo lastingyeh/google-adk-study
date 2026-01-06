@@ -1,17 +1,5 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
+# 啟用 CI/CD Runner 專案所需的 Google Cloud 服務 API
+# 這些服務定義在 locals.tf 的 cicd_services 列表中
 resource "google_project_service" "cicd_services" {
   count              = length(local.cicd_services)
   project            = var.cicd_runner_project_id
@@ -19,6 +7,10 @@ resource "google_project_service" "cicd_services" {
   disable_on_destroy = false
 }
 
+# 啟用部署目標專案 (Staging 和 Production) 所需的 Google Cloud 服務 API
+# 使用 setproduct 產生 (環境, 服務) 的所有組合
+# local.deploy_project_ids 定義了環境與 Project ID 的對應
+# local.deploy_project_services 定義了需要啟用的服務列表
 resource "google_project_service" "deploy_project_services" {
   for_each = {
     for pair in setproduct(keys(local.deploy_project_ids), local.deploy_project_services) :
@@ -32,7 +24,8 @@ resource "google_project_service" "deploy_project_services" {
   disable_on_destroy = false
 }
 
-# Enable Cloud Resource Manager API for the CICD runner project
+# 為 CI/CD Runner 專案啟用 Cloud Resource Manager API
+# 這對於 Terraform 管理其他資源是必需的
 resource "google_project_service" "cicd_cloud_resource_manager_api" {
   project            = var.cicd_runner_project_id
   service            = "cloudresourcemanager.googleapis.com"

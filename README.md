@@ -1493,4 +1493,25 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 </details>
 
+#### 🕗 Day 74
+
+<details>
+<summary>
+[整合 1/2] 這是一個由生成式 AI 驅動的代理，用於在 Google Cloud 上自動化數據治理。它能將自然語言政策轉換為在 Dataplex 和 BigQuery 上運行的程式碼，並具備記憶、學習與雙模式操作能力，以確保數據合規性。
+
+🏷️ `cloudsql`, `memory`, `session`, `firestore`, `code-policy`, `mcp`, `fastapi`, `uvicorn`, `embedding`, `bigquery`, `cicd`
+
+</summary>
+
+- **詳細說明**：
+
+  - [Pack Policy As Code](./workspace/python/agents/pack-policy-as-code/)
+
+- **參考資源**
+
+  - [adk-samples 存儲庫 (policy as code)](https://github.com/google/adk-samples/tree/3d9fe35ce097760c5dceb7136a2c72802c3c6021/python/agents/policy-as-code)
+  - [agent-starter-pack 官方文件](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+
+</details>
+
 </details>

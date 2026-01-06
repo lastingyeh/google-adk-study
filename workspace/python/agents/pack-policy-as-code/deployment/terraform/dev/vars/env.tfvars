@@ -1,8 +1,8 @@
-# Project name used for resource naming
+# 專案名稱，用於資源命名
 project_name = "pack-policy-as-code"
 
-# Your Dev Google Cloud project id
+# 您的 Dev Google Cloud 專案 ID
 dev_project_id = "your-dev-project-id"
 
-# The Google Cloud region you will use to deploy the infrastructure
+# 您將用於部署基礎設施的 Google Cloud 區域
 region = "us-central1"

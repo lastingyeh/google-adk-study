@@ -1,16 +1,4 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+
 
 locals {
   project_ids = {
@@ -19,12 +7,13 @@ locals {
 }
 
 
-# Get the project number for the dev project
+# 獲取 Dev 專案的詳細資訊 (包括專案編號)
 data "google_project" "dev_project" {
   project_id = var.dev_project_id
 }
 
-# Grant Storage Object Creator role to default compute service account
+# 賦予預設 Compute Engine Service Account 建構權限
+# 允許其執行 Cloud Build 建構任務
 resource "google_project_iam_member" "default_compute_sa_storage_object_creator" {
   project    = var.dev_project_id
   role       = "roles/cloudbuild.builds.builder"
@@ -32,15 +21,16 @@ resource "google_project_iam_member" "default_compute_sa_storage_object_creator"
   depends_on = [resource.google_project_service.services]
 }
 
-# Agent service account
+# 建立 Agent 應用程式 Service Account (Dev 環境)
 resource "google_service_account" "app_sa" {
   account_id   = "${var.project_name}-app"
-  display_name = "${var.project_name} Agent Service Account"
+  display_name = "${var.project_name} Agent 服務帳戶"
   project      = var.dev_project_id
   depends_on   = [resource.google_project_service.services]
 }
 
-# Grant application SA the required permissions to run the application
+# 授予應用程式 Service Account 運行所需的 IAM 權限
+# 使用 setproduct 迭代賦予角色
 resource "google_project_iam_member" "app_sa_roles" {
   for_each = {
     for pair in setproduct(keys(local.project_ids), var.app_sa_roles) :
@@ -55,6 +45,3 @@ resource "google_project_iam_member" "app_sa_roles" {
   member     = "serviceAccount:${google_service_account.app_sa.email}"
   depends_on = [resource.google_project_service.services]
 }
-
-
-

@@ -1,6 +1,9 @@
-# Policy-as-Code 代理
+# Policy As Code Agent
 
 一個由生成式 AI 驅動的代理，旨在自動化 Google Cloud 上的數據治理。它允許使用者使用自然語言查詢來定義、驗證和執行數據政策，並將其轉換為可執行的程式碼，該程式碼可在 **Google Cloud Dataplex** 和 **BigQuery** 中的元數據上運行。
+
+> [!NOTE] 安裝與相關執行說明
+> 請參閱本 [starter_pack_README.md](./starter_pack_README.md#指令總覽)。
 
 ## 🚀 快速開始
 
@@ -86,6 +89,10 @@ adk web --memory_service_uri="agentengine://AGENT_ENGINE_ID"
 
 這將啟動一個本地網頁伺服器（通常位於 `http://localhost:3000` 或 `http://127.0.0.1:5000`）。打開瀏覽器中的 URL 與代理進行聊天！
 
+### 5. CICD 配置
+
+參考 [CICD.md](./CICD.md) 以設置自動化建置和部署流程。
+
 ---
 
 ## 💡 主要功能
@@ -139,4 +146,49 @@ pytest
 要深入了解實現細節，請查看 `docs/` 文件夾：
 - [高層架構](./docs/HIGH_LEVEL_DETAILS.md)
 - [低層實現](./docs/LOW_LEVEL_DETAILS.md)
+- [記憶體整合](./docs/MEMORY_INTEGRATION.md)
 - [記憶體實現](./docs/MEMORY_IMPLEMENTATION.md)
+
+程式碼目錄結構和文件說明，請參閱：
+- [CICD 流程說明](CICD.md)
+- [Terraform 部署說明](./deployment/README.md)
+- [代理開發設計](./policy_as_code_agent/README.md)
+- [對話範例](./policy_as_code_agent/prompts/EXAMPLE.md)
+- [單元測試](./tests/unit/README.md)
+- [整合測試](./tests/integration/README.md)
+- [效能測試](./tests/load_test//README.md)
+
+
+## 📄 其他說明
+
+- [MANIFEST.in](./MANIFEST.in)
+
+  **說明**:
+    - **用途**：MANIFEST.in 是 Python 包在使用 `setuptools` 打包時，用來指定非 Python 原始碼資源（例如 README、範本、靜態檔案、資料檔等）應該被包含在分發套件（source distribution，sdist）中的清單檔。當你執行 `python setup.py sdist` 或使用 `build`/`pip` 建立源碼發行包時，MANIFEST.in 控制哪些檔案會被加入到最終的 `.tar.gz` 或 `.zip` 中。
+    - **具體這行的意義**：`recursive-include policy_as_code_agent/prompts *.md` 表示：遞迴地將 prompts 目錄及其所有子目錄中，所有副檔名為 `.md` 的檔案（Markdown 檔）包含到 source distribution。也就是說，包發行檔會帶上 prompts 目錄下的所有 Markdown 提示檔案，讓使用者或部署端能夠存取這些說明/範本/提示內容。
+    - **為什麼常見**：很多專案會把文字說明、提示模板或範例資料放在 package 目錄下，為了確保這些不是純程式碼但又必要的資源能發佈給使用者，就要在 MANIFEST.in 裡指明包含它們。
+
+    **建議（選用）**:
+    - 若還需要包含其他類型的檔案（例如 `.json`, `.yaml`, `.txt`, 或其他資料目錄），可以新增對應規則，例如：
+    - `recursive-include policy_as_code_agent/prompts *.json`
+    - `include README.md`
+    - `recursive-include policy_as_code_agent/static *.*`
+    - 若專案使用 `package_data`（在 `setup.cfg` 或 `setup.py`）並且搭配 `setuptools_scm` 或 `include_package_data=True`，請確認這些設定與 MANIFEST.in 不衝突。
+    - 可檢查 pyproject.toml / `setup.cfg`（若存在）確保打包設定一致，避免遺漏需要的資源。
+
+## 🔗 參考資源
+
+- [adk-samples 存儲庫 (policy as code)](https://github.com/google/adk-samples/tree/3d9fe35ce097760c5dceb7136a2c72802c3c6021/python/agents/policy-as-code)
+- [agent-starter-pack 官方文件](https://github.com/GoogleCloudPlatform/agent-starter-pack)
+- [Gemini CLI](https://github.com/google-gemini/gemini-cli)
+- [Terraform 官方教學](https://developer.hashicorp.com/terraform/tutorials)
+- [uv 官方文件](https://docs.astral.sh/uv/)
+- [Cloud Trace 介紹](https://cloud.google.com/trace)
+- [`agent-starter-pack setup-cicd` CLI 指令](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html)
+- [Google Cloud Run](https://cloud.google.com/run)
+- [OpenTelemetry 官方網站](https://opentelemetry.io/)
+- [Cloud Logging 介紹](https://cloud.google.com/logging)
+
+## 📝 免責聲明
+
+本文件僅為個人學習與教育目的而創建。其內容主要是參考線上資源，並基於個人在學習 Google ADK 過程中的理解與整理，並非 Google 的官方觀點或文件。所有資訊請以 Google 官方發布為準。

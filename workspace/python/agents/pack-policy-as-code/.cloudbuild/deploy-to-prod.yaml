@@ -1,38 +1,42 @@
-# Copyright 2025 Google LLC
+# 版權所有 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache 授權條款第 2.0 版（「授權」）授權。
+# 除非遵守授權，否則不得使用此檔案。
+# 您可以在以下網址取得授權副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則本軟體以「現狀」方式分發，
+# 不附帶任何明示或暗示的擔保。
+# 詳情請參閱授權條款以瞭解相關權利與限制。
 
 steps:
-   
-  - name: "gcr.io/cloud-builders/gcloud-slim"
-    id: trigger-deployment
-    entrypoint: gcloud
+  # 步驟：使用 gcloud-slim 建構器觸發部署
+  - name: 'gcr.io/cloud-builders/gcloud-slim'
+    id: trigger-deployment # 步驟識別名稱
+    entrypoint: gcloud # 指定入口點為 gcloud CLI
     args:
-      - "run"
-      - "deploy"
-      - "pack-policy-as-code"
-      - "--image"
-      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME"
-      - "--region"
-      - "$_REGION"
-      - "--project"
-      - $_PROD_PROJECT_ID
+      - 'run'
+      - 'deploy'
+      - 'pack-policy-as-code' # 部署的 Cloud Run 服務名稱
+      - '--image'
+      - '$ _REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME' # 指定映像檔路徑
+      - '--region'
+      - '$ _REGION' # 部署區域
+      - '--project'
+      - $_PROD_PROJECT_ID # 目標專案 ID（正式環境）
+
+  # 註解：此段為 Cloud Build 部署至 Cloud Run 的主要步驟，包含服務名稱、映像檔、區域與專案。
 
 substitutions:
-  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID
-  _REGION: us-central1
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID # 需替換為正式專案 ID
+  _REGION: us-central1 # 部署區域預設值
 
-logsBucket: gs://${PROJECT_ID}-pack-policy-as-code-logs/build-logs
+  # 註解：substitutions 用於參數替換，方便在不同環境下重複使用。
+
+logsBucket: gs://${PROJECT_ID}-pack-policy-as-code-logs/build-logs # 指定建置日誌儲存桶
 options:
-  substitutionOption: ALLOW_LOOSE
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  substitutionOption: ALLOW_LOOSE # 允許替換參數不完全符合
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 日誌桶行為設定為區域性、使用者擁有
+
+# 註解：此段設定建置日誌儲存位置與替換選項，方便追蹤與管理建置過程。

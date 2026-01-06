@@ -39,8 +39,8 @@ ADK 文件提供了多種程式語言的快速入門指南，可協助您在幾�
 
 | 標頭                                                         | 描述                                                     | 連結                                          |
 | :----------------------------------------------------------- | :------------------------------------------------------- | :-------------------------------------------- |
-| [會話 (Session) 概觀](./sessions&memory/session/overview.md) | 深入探討 `Session` 如何追蹤個別對話。                    | [連結](./sessions&memory/session/overview.md) |
 | [對話上下文簡介](./sessions&memory/sessions.md)              | 簡介 `Session`、`State` 與 `Memory` 如何管理對話上下文。 | [連結](./sessions&memory/sessions.md)         |
+| [會話 (Session) 概觀](./sessions&memory/session/overview.md) | 深入探討 `Session` 如何追蹤個別對話。                    | [連結](./sessions&memory/session/overview.md) |
 | [會話倒回 (Rewind)](./sessions&memory/session/rewind.md)     | 說明如何將會話還原到之前的狀態。                         | [連結](./sessions&memory/session/rewind.md)   |
 | [State](./sessions&memory/state.md)                          | 解釋 `State` 如何作為 `Session` 的暫存記事本。           | [連結](./sessions&memory/state.md)            |
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |

@@ -4,6 +4,7 @@ from policy_as_code_agent.utils.dataplex import convert_proto_to_dict, entry_to_
 
 
 def test_convert_proto_to_dict_simple():
+    """測試將簡單的 proto 對象轉換為字典。"""
     # Mock a proto-like object (e.g. MapComposite)
     proto = {"key": "value", "nested": {"a": 1}}
     result = convert_proto_to_dict(proto)
@@ -11,6 +12,7 @@ def test_convert_proto_to_dict_simple():
 
 
 def test_convert_proto_to_dict_repeated():
+    """測試將重複的 proto 對象（列表）轉換為字典。"""
     # Mock a RepeatedComposite (list-like)
     proto = [{"a": 1}, {"b": 2}]
     result = convert_proto_to_dict(proto)
@@ -18,6 +20,7 @@ def test_convert_proto_to_dict_repeated():
 
 
 def test_entry_to_dict():
+    """測試將 Dataplex Entry 對象轉換為字典。"""
     # Mock a Dataplex Entry object
     mock_entry = MagicMock()
     mock_entry.name = "projects/p/locations/l/entryGroups/g/entries/e"

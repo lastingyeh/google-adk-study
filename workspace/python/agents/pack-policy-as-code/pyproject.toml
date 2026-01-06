@@ -1,43 +1,59 @@
+# 專案設定
 [project]
 name = "pack-policy-as-code"
-version = "0.0.1"
-description = "[agent-starter-pack] - update the Policy-as-Code Agent is a generative AI-powered tool that automates data governance."
+version = "0.0.1" # 專案版本
+description = "[agent-starter-pack] - 實作 (更新) Policy as Code Agent 範例 (參考資源： adk-samples `policy as code`)"
 authors = [{ name = "Lastingyeh", email = "lastingyeh@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.11"
+
+# 專案依賴套件
 dependencies = [
-    "PyYAML==6.0.3",
-    "google-adk[eval]==1.21.0",
-    "google-cloud-storage==2.19.0",
-    "vertexai==1.43.0",
-    "google-cloud-dataplex==2.14.0",
-    "google-cloud-aiplatform==1.130.0",
-    "google-api-python-client==2.186.0",
-    "google-cloud-firestore==2.21.0",
+    "PyYAML==6.0.3", # PyYAML 套件版本 6.0.3
+    "google-adk[eval]==1.21.0", # Google ADK 套件版本 1.21.0，包含 eval 附加功能
+    "google-cloud-storage==2.19.0", # Google Cloud Storage 套件版本 2.19.0
+    "vertexai==1.43.0", # Vertex AI 套件版本 1.43.0
+    "google-cloud-dataplex==2.14.0", # Google Cloud Dataplex 套件版本 2.14.0
+    "google-cloud-aiplatform==1.130.0", # Google Cloud AI Platform 套件版本 1.130.0
+    "google-api-python-client==2.186.0", # Google API Python 客戶端套件版本 2.186.0
+    "google-cloud-firestore==2.21.0", # Google Cloud Firestore 套件版本 2.21.0
 ]
 
+# 依賴套件分組
 [dependency-groups]
-dev = [
-    "pytest==8.4.2",
-    "pytest-xdist==3.8.0",
-    "pytest-asyncio==1.3.0"
+dev = [ # 開發環境依賴套件
+    "pytest==8.4.2", # Pytest 測試框架版本 8.4.2
+    "pytest-xdist==3.8.0", # Pytest 分散式測試插件版本 3.8.0
+    "pytest-asyncio==1.3.0" # Pytest 非同步測試插件版本 1.3.0
 ]
 
+# setuptools 工具設定
 [tool.setuptools]
-include-package-data = true
+include-package-data = true # 包含套件資料
 
+# setuptools 尋找套件設定
+[tool.setuptools.packages.find]
+where = ["."] # 尋找當前目錄
+include = ["policy_as_code_agent*"] # 包含符合條件的套件
+exclude = ["tests*", "docs*", "deployment*", "notebooks*"] # 排除符合條件的套件
+
+# pytest 設定選項
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-markers = [
-    "asyncio: mark a test as asyncio.",
+testpaths = ["tests"] # 測試路徑
+markers = [ # 測試標記
+    "asyncio: mark a test as asyncio.", # asyncio：標記測試為非同步測試
 ]
+
+# pyink 工具設定
 [tool.pyink]
-line-length = 80
-pyink-indentation = 4
-pyink-use-majority-quotes = true
+line-length = 80 # 每行最大長度為 80 字元
+pyink-indentation = 4 # 使用 4 個空格縮排
+pyink-use-majority-quotes = true # 使用主要的引號風格
 
+# 代理啟動包工具設定
 [tool.agent-starter-pack]
-example_question = "All tables must have a DATA_OWNER label."
+example_question = "所有表格必須有一個 DATA_OWNER 標籤。"
 
+ # 代理啟動包工具的設定
 [tool.agent-starter-pack.settings]
-agent_directory = "policy_as_code_agent"
+agent_directory = "policy_as_code_agent" # 代理所在的目錄

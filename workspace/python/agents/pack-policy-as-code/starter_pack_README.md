@@ -1,114 +1,115 @@
-# pack-policy-as-code
+# Policy As Code Agent
 
-The Policy-as-Code Agent is a generative AI-powered tool that automates data governance.
-Agent generated with [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) version `0.29.3`
+Policy-as-Code Agent 是一款由生成式 AI 驅動的工具，可自動化資料治理。
+本代理程式由 [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) 版本 `0.29.3` 產生。
 
-## Project Structure
 
-This project is organized as follows:
+## 專案結構
+
+本專案結構如下：
 
 ```
 pack-policy-as-code/
-├── policy_as_code_agent/                 # Core application code
-│   ├── agent.py         # Main agent logic
-│   ├── fast_api_app.py  # FastAPI Backend server
-│   └── app_utils/       # App utilities and helpers
-├── .cloudbuild/         # CI/CD pipeline configurations for Google Cloud Build
-├── deployment/          # Infrastructure and deployment scripts
-├── notebooks/           # Jupyter notebooks for prototyping and evaluation
-├── tests/               # Unit, integration, and load tests
-├── Makefile             # Makefile for common commands
-├── GEMINI.md            # AI-assisted development guide
-└── pyproject.toml       # Project dependencies and configuration
+├── policy_as_code_agent/# 核心應用程式程式碼
+│   ├── agent.py         # 主要代理程式邏輯
+│   ├── fast_api_app.py  # FastAPI 後端伺服器
+│   └── app_utils/       # 應用程式工具與輔助程式
+├── .cloudbuild/         # Google Cloud Build CI/CD 管線設定
+├── deployment/          # 基礎設施與部署腳本
+├── notebooks/           # Jupyter 筆記本，用於原型設計與評估
+├── tests/               # 單元、整合與負載測試
+├── Makefile             # 常用指令的 Makefile
+├── GEMINI.md            # AI 協作開發指南
+└── pyproject.toml       # 專案依賴與設定
 ```
 
-> 💡 **Tip:** Use [Gemini CLI](https://github.com/google-gemini/gemini-cli) for AI-assisted development - project context is pre-configured in `GEMINI.md`.
-
-## Requirements
-
-Before you begin, ensure you have:
-- **uv**: Python package manager (used for all dependency management in this project) - [Install](https://docs.astral.sh/uv/getting-started/installation/) ([add packages](https://docs.astral.sh/uv/concepts/dependencies/) with `uv add <package>`)
-- **Google Cloud SDK**: For GCP services - [Install](https://cloud.google.com/sdk/docs/install)
-- **Terraform**: For infrastructure deployment - [Install](https://developer.hashicorp.com/terraform/downloads)
-- **make**: Build automation tool - [Install](https://www.gnu.org/software/make/) (pre-installed on most Unix-based systems)
+> 💡 **提示：** 使用 [Gemini CLI](https://github.com/google-gemini/gemini-cli) 進行 AI 協作開發，專案上下文已預設於 `GEMINI.md`。
 
 
-## Quick Start (Local Testing)
+## 環境需求
 
-Install required packages and launch the local development environment:
+開始前請確認已安裝以下工具：
+- **uv**：Python 套件管理工具（本專案所有依賴均由 uv 管理） - [安裝教學](https://docs.astral.sh/uv/getting-started/installation/)（[新增套件](https://docs.astral.sh/uv/concepts/dependencies/) 使用 `uv add <package>`）
+- **Google Cloud SDK**：GCP 服務工具 - [安裝教學](https://cloud.google.com/sdk/docs/install)
+- **Terraform**：基礎設施部署工具 - [安裝教學](https://developer.hashicorp.com/terraform/downloads)
+- **make**：建置自動化工具 - [安裝教學](https://www.gnu.org/software/make/)（大多數 Unix 系統預設安裝）
+
+## 快速開始（本機測試）
+
+安裝必要套件並啟動本機開發環境：
 
 ```bash
 make install && make playground
 ```
-> **📊 Observability Note:** Agent telemetry (Cloud Trace) is always enabled. Prompt-response logging (GCS, BigQuery, Cloud Logging) is **disabled** locally, **enabled by default** in deployed environments (metadata only - no prompts/responses). See [Monitoring and Observability](#monitoring-and-observability) for details.
-
-## Commands
-
-| Command              | Description                                                                                 |
-| -------------------- | ------------------------------------------------------------------------------------------- |
-| `make install`       | Install all required dependencies using uv                                                  |
-| `make playground`    | Launch local development environment with backend and frontend - leveraging `adk web` command.|
-| `make deploy`        | Deploy agent to Cloud Run (use `IAP=true` to enable Identity-Aware Proxy, `PORT=8080` to specify container port) |
-| `make local-backend` | Launch local development server with hot-reload |
-| `make test`          | Run unit and integration tests                                                              |
-| `make lint`          | Run code quality checks (codespell, ruff, mypy)                                             |
-| `make setup-dev-env` | Set up development environment resources using Terraform                         |
-
-For full command options and usage, refer to the [Makefile](Makefile).
+> **📊 觀測性說明：** Agent telemetry（Cloud Trace）永遠啟用。Prompt-response logging（GCS、BigQuery、Cloud Logging）本機預設停用，部署環境預設啟用（僅記錄 metadata，不含 prompt/response）。詳見 [監控與觀測性](#monitoring-and-observability)。
 
 
-## Usage
+## 指令總覽
 
-This template follows a "bring your own agent" approach - you focus on your business logic, and the template handles everything else (UI, infrastructure, deployment, monitoring).
-1. **Prototype:** Build your Generative AI Agent using the intro notebooks in `notebooks/` for guidance. Use Vertex AI Evaluation to assess performance.
-2. **Integrate:** Import your agent into the app by editing `policy_as_code_agent/agent.py`.
-3. **Test:** Explore your agent functionality using the local playground with `make playground`. The playground automatically reloads your agent on code changes.
-4. **Deploy:** Set up and initiate the CI/CD pipelines, customizing tests as necessary. Refer to the [deployment section](#deployment) for comprehensive instructions. For streamlined infrastructure deployment, simply run `uvx agent-starter-pack setup-cicd`. Check out the [`agent-starter-pack setup-cicd` CLI command](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html). Currently supports GitHub with both Google Cloud Build and GitHub Actions as CI/CD runners.
-5. **Monitor:** Track performance and gather insights using BigQuery telemetry data, Cloud Logging, and Cloud Trace to iterate on your application.
+| 指令                 | 說明                                                                                          |
+| -------------------- | --------------------------------------------------------------------------------------------- |
+| `make install`       | 使用 uv 安裝所有必要依賴                                                                      |
+| `make playground`    | 啟動本機開發環境（後端與前端），利用 `adk web` 指令                                           |
+| `make deploy`        | 部署代理程式至 Cloud Run（可用 `IAP=true` 啟用 Identity-Aware Proxy，`PORT=8080` 指定容器埠） |
+| `make local-backend` | 啟動本機後端伺服器並支援熱重載                                                                |
+| `make test`          | 執行單元測試與整合測試                                                                        |
+| `make lint`          | 執行程式碼品質檢查（codespell, ruff, mypy）                                                   |
+| `make setup-dev-env` | 使用 Terraform 建立開發環境資源                                                               |
 
-The project includes a `GEMINI.md` file that provides context for AI tools like Gemini CLI when asking questions about your template.
+完整指令與用法請參考 [Makefile](Makefile)。
+
+## 使用方式
+
+本範本採「自帶代理程式」設計，你專注於商業邏輯，範本自動處理 UI、基礎設施、部署、監控。
+1. **Prototype：** 於 `notebooks/` 目錄使用入門筆記本開發生成式 AI 代理程式，並利用 Vertex AI Evaluation 評估效能。
+2. **Integrate：** 編輯 `policy_as_code_agent/agent.py` 匯入你的代理程式。
+3. **Test：** 以 `make playground` 測試代理程式功能，支援程式碼變更自動重載。
+4. **Deploy：** 建立並啟動 CI/CD 流程，根據需求自訂測試。詳見 [部署說明](#deployment)。基礎設施快速部署可用 `uvx agent-starter-pack setup-cicd`。參考 [`agent-starter-pack setup-cicd` CLI 指令](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html)。目前支援 GitHub，CI/CD 執行器包含 Google Cloud Build 與 GitHub Actions。
+5. **Monitor：** 利用 BigQuery telemetry、Cloud Logging、Cloud Trace 追蹤效能並優化應用。
+
+專案內含 `GEMINI.md`，可供 Gemini CLI 等 AI 工具查詢範本上下文。
 
 
-## Deployment
+## 部署說明
 
-> **Note:** For a streamlined one-command deployment of the entire CI/CD pipeline and infrastructure using Terraform, you can use the [`agent-starter-pack setup-cicd` CLI command](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html). Currently supports GitHub with both Google Cloud Build and GitHub Actions as CI/CD runners.
+> **注意：** 可用 [`agent-starter-pack setup-cicd` CLI 指令](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html) 一鍵部署完整 CI/CD 流程與基礎設施。現支援 GitHub，CI/CD 執行器包含 Google Cloud Build 與 GitHub Actions。
 
-### Dev Environment
+### 開發環境
 
-You can test deployment towards a Dev Environment using the following command:
+可用以下指令測試部署至開發環境：
 
 ```bash
 gcloud config set project <your-dev-project-id>
 make deploy
 ```
 
+本儲存庫已包含 Terraform 設定檔，可協助建立 Dev Google Cloud 專案。
+詳見 [deployment/README.md](deployment/README.md) 取得詳細說明。
 
-The repository includes a Terraform configuration for the setup of the Dev Google Cloud project.
-See [deployment/README.md](deployment/README.md) for instructions.
 
-### Production Deployment
+### 正式環境部署
 
-The repository includes a Terraform configuration for the setup of a production Google Cloud project. Refer to [deployment/README.md](deployment/README.md) for detailed instructions on how to deploy the infrastructure and application.
+本儲存庫已包含正式環境的 Terraform 設定檔。請參考 [deployment/README.md](deployment/README.md) 取得詳細部署與基礎設施說明。
 
-## Monitoring and Observability
+## 監控與觀測性
 
-The application provides two levels of observability:
+本應用程式提供兩層級的觀測性：
 
-**1. Agent Telemetry Events (Always Enabled)**
-- OpenTelemetry traces and spans exported to **Cloud Trace**
-- Tracks agent execution, latency, and system metrics
+**1. Agent Telemetry Events（永遠啟用）**
+- OpenTelemetry traces 與 spans 匯出至 **Cloud Trace**
+- 追蹤代理程式執行、延遲與系統指標
 
-**2. Prompt-Response Logging (Configurable)**
-- GenAI instrumentation captures LLM interactions (tokens, model, timing)
-- Exported to **Google Cloud Storage** (JSONL), **BigQuery** (external tables), and **Cloud Logging** (dedicated bucket)
+**2. Prompt-Response Logging（可設定）**
+- GenAI 工具記錄 LLM 互動（tokens、model、timing）
+- 匯出至 **Google Cloud Storage**（JSONL）、**BigQuery**（external tables）、**Cloud Logging**（dedicated bucket）
 
-| Environment | Prompt-Response Logging |
-|-------------|-------------------------|
-| **Local Development** (`make playground`) | ❌ Disabled by default |
-| **Deployed Environments** (via Terraform) | ✅ **Enabled by default** (privacy-preserving: metadata only, no prompts/responses) |
+| 環境                                      | Prompt-Response Logging                                           |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| **Local Development** (`make playground`) | ❌ 預設停用                                                        |
+| **Deployed Environments** (via Terraform) | ✅ **預設啟用**（隱私保護：僅記錄 metadata，不含 prompt/response） |
 
-**To enable locally:** Set `LOGS_BUCKET_NAME` and `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=NO_CONTENT`.
+**本機啟用方式：** 設定 `LOGS_BUCKET_NAME` 並將 `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=NO_CONTENT`。
 
-**To disable in deployments:** Edit Terraform config to set `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=false`.
+**部署環境停用方式：** 編輯 Terraform 設定檔，將 `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=false`。
 
-See the [observability guide](https://googlecloudplatform.github.io/agent-starter-pack/guide/observability.html) for detailed instructions, example queries, and visualization options.
+詳見 [觀測性指南](https://googlecloudplatform.github.io/agent-starter-pack/guide/observability.html) 取得詳細教學、查詢範例與視覺化方式。

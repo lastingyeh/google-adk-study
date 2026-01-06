@@ -1,93 +1,93 @@
-# Memory Bank Integration
+# 記憶庫 (Memory Bank) 整合
 
-This document outlines the integration of a long-term memory bank with the Policy-as-Code agent to provide stateful, context-aware policy evaluation.
+本文件說明如何將長期記憶庫整合到 Policy-as-Code 智能代理中，以提供有狀態、具備上下文感知的政策評估。
 
-## Architecture: Firestore + Vector Search
+## 架構：Firestore + Vector Search
 
-The agent's memory is built on **Google Cloud Firestore** using its **Native Vector Search** capabilities.
+智能代理的記憶體建構於 **Google Cloud Firestore**，並利用其**原生 Vector Search**功能。
 
-*   **Storage:** Policy metadata (code, author, creation date, ratings) is stored as documents in a Firestore collection.
-*   **Semantic Search:** The natural language query is converted into a vector embedding using **Vertex AI (`text-embedding-004`)**. This vector is stored in the Firestore document.
-*   **Retrieval:** When a user asks for a policy, the agent performs a cosine similarity search directly within Firestore to find the most relevant existing policies.
+*   **儲存：** 政策中繼資料（程式碼、作者、建立日期、評分）以文件形式儲存在 Firestore 集合中。
+*   **語意搜尋：** 自然語言查詢會透過 **Vertex AI（`text-embedding-004`）** 轉換為向量嵌入(vector embedding)，並儲存在 Firestore 文件中。
+*   **檢索：** 當使用者查詢政策時，智能代理會直接在 Firestore 內執行餘弦相似度搜尋，以找出最相關的現有政策。
 
-## Configuration & Setup
+## 設定與安裝
 
-### 1. Enable Firestore (Native Mode)
-To use the memory bank, you must have a Firestore database created in your Google Cloud project.
+### 1. 啟用 Firestore（原生模式）
+要使用記憶庫，您必須在 Google Cloud 專案中建立 Firestore 資料庫。
 
-1.  Go to the [Firestore Console](https://console.cloud.google.com/firestore).
-2.  Click **Create Database**.
-3.  Select **Native Mode** (required for Vector Search).
-4.  Choose your location (e.g., `us-central1`).
-5.  Create the database (default name is usually `(default)`).
+1.  前往 [Firestore 控制台](https://console.cloud.google.com/firestore)。
+2.  點擊 **建立資料庫**。
+3.  選擇 **原生模式**（Vector Search 必須）。
+4.  選擇您的區域（例如 `us-central1`）。
+5.  建立資料庫（預設名稱通常為 `(default)`）。
 
-### 2. Configure Environment Variables
-The following variables in your `.env` file control the memory bank:
+### 2. 設定環境變數
+您的 `.env` 檔案中的下列變數控制記憶庫：
 
 ```bash
-# Enable/Disable the entire memory subsystem
-ENABLE_MEMORY_BANK=True  # Set to False to run without Firestore
+# 啟用/停用整個記憶體子系統
+ENABLE_MEMORY_BANK=True  # 設為 False 可在無 Firestore 下執行
 
-# Firestore Configuration
-FIRESTORE_DATABASE="(default)" 
+# Firestore 設定
+FIRESTORE_DATABASE="(default)"
 FIRESTORE_COLLECTION_POLICIES="policies"
 FIRESTORE_COLLECTION_EXECUTIONS="policy_executions"
 CORE_POLICIES_DOC_REF="configurations/core_policies"
 
-# Vector Search Model
+# Vector Search 模型
 EMBEDDING_MODEL_NAME="text-embedding-004"
 ```
 
-### 3. Graceful Fallback
-The agent is designed to handle missing infrastructure gracefully.
+### 3. 優雅降級
+智能代理設計能優雅地處理基礎設施缺失的情況。
 
-*   **Auto-Disable:** If `ENABLE_MEMORY_BANK=True` but the agent cannot connect to the Firestore database (e.g., it doesn't exist or permissions are missing), the agent will log a warning and automatically disable memory features for the session. It will **not** crash.
-*   **Instructional Messages:** If you attempt to use a memory-dependent tool (like "find similar policies" or "show execution history") while memory is disabled, the agent will return a helpful message explaining that memory is disabled and pointing to this documentation.
-*   **Core Functionality:** All core policy generation and evaluation features (`generate_policy`, `run_simulation`) continue to work fully without the memory bank.
+*   **自動停用：** 若 `ENABLE_MEMORY_BANK=True` 但智能代理無法連接 Firestore 資料庫（例如不存在或權限不足），將記錄警告並自動停用本次工作階段的記憶體功能，不會當機。
+*   **指示訊息：** 若您在記憶體停用時嘗試使用依賴記憶體的工具（如「尋找相似政策」或「顯示執行歷史」），智能代理會回傳說明記憶體已停用並指向本文件的提示訊息。
+*   **核心功能：** 所有核心政策產生與評估功能（`generate_policy`、`run_simulation`）在無記憶庫時仍可完整運作。
 
-## 📊 Analytics and Reporting
+## 📊 分析與報表
 
-The agent tracks detailed execution logs in Firestore, enabling powerful analytical capabilities:
+智能代理會在 Firestore 中追蹤詳細的執行紀錄，啟用強大的分析能力：
 
-### Features
-1.  **Execution History**: Track success, failure, and violation rates over time.
-2.  **Top Violations**: Aggregated view of which policies are failing most frequently.
-3.  **Resource Search**: Fuzzy search to find all violations associated with a specific resource (table, dataset, etc.).
-4.  **Top Violated Resources**: Identify "hotspot" assets that consistently violate policies.
+### 功能
+1.  **執行歷史：** 追蹤成功、失敗與違規率。
+2.  **最常違規：** 聚合檢視哪些政策最常失敗。
+3.  **資源搜尋：** 模糊搜尋所有與特定資源（資料表、資料集等）相關的違規紀錄。
+4.  **最常違規資源：** 辨識持續違規的「熱點」資產。
 
-### Sample Prompts
-*   **History**: `"What happened yesterday?"`, `"Show me all failed policy runs from last week."`
-*   **Top Violations**: `"Which policies are violated the most?"`, `"What are my top compliance issues?"`
-*   **Resource Search**: `"Did 'finance_table' have any violations?"`, `"Check logs for 'quarterly_earnings'."`
-*   **Top Resources**: `"What are the top 10 most violated resources?"`, `"Which tables are most non-compliant?"`
+### 範例提示
+*   **歷史：** `「昨天發生了什麼事？」`、`「顯示上週所有失敗的政策執行。」`
+*   **最常違規：** `「哪些政策最常被違反？」`、`「我最嚴重的合規問題是什麼？」`
+*   **資源搜尋：** `「'finance_table' 有違規紀錄嗎？」`、`「查詢 'quarterly_earnings' 的日誌。」`
+*   **最常違規資源：** `「違規次數最多的前 10 個資源是哪些？」`、`「哪些資料表最不合規？」`
 
-## Key Benefits
+## 主要效益
 
-Integrating this persistent memory system transforms the agent from a stateless policy checker into a learning, stateful governance assistant.
+整合此持久記憶系統，將智能代理從無狀態的政策檢查器轉變為具備學習能力、有狀態的治理助理。
 
-### 1. Scalability and Concurrency
-Unlike a local file-based memory, Firestore allows multiple agent instances to share the same knowledge base simultaneously. It scales to millions of policies without performance degradation.
+### 1. 可擴展性與並發性
+與本地檔案型記憶不同，Firestore 允許多個智能代理實例同時共用同一知識庫。即使有數百萬條政策也不會影響效能。
 
-### 2. Historical Context and Trend Analysis
-By storing the results of policy runs over time, the agent could answer much more sophisticated questions.
+### 2. 歷史脈絡與趨勢分析
+透過儲存政策執行結果，智能代理能回答更複雜的問題。
 
-*   **Current State:** You can ask, "Does any dataset in 'marketing' have more than one PII column?"
-*   **With Memory:** You could ask, "Have any *new* datasets in 'marketing' become non-compliant with the PII policy in the last 7 days?" or "Show me the compliance trend for our data ownership policies over the last quarter."
+*   **現況：** 您可以詢問：「'marketing' 資料集中是否有超過一個 PII 欄位？」
+*   **有記憶時：** 您可以問：「過去 7 天內 'marketing' 是否有*新*資料集違反 PII 政策？」或「顯示過去一季我們資料擁有權政策的合規趨勢。」
 
-### 3. Learning User Intent and Personalization
-The agent could remember a user's common queries, domains of interest, and corrections, leading to a more efficient workflow.
+### 3. 學習使用者意圖與個人化
+智能代理可記住使用者常見查詢、關注領域與修正，提升工作效率。
 
-*   **Problem:** A data steward for the 'finance' domain has to type out the full policy query specifying the 'finance' domain each time.
-*   **With Memory:** After a few queries, the agent could learn this preference. The user could simply ask, "Run the standard ownership check," and the agent would know to apply it to the 'finance' domain.
+*   **問題：** 'finance' 領域的資料管理員每次都要完整輸入指定 'finance' 的政策查詢。
+*   **有記憶時：** 幾次查詢後，智能代理可學會此偏好。使用者只需說「執行標準擁有權檢查」，代理就會自動套用到 'finance' 領域。
 
-### 4. Intelligent Caching and Performance
-Memory is used as a semantic cache for the LLM-generated Python code, saving time and cost.
+### 4. 智慧快取與效能
+記憶體可作為 LLM 產生 Python 程式碼的語意快取，節省時間與成本。
 
-*   **Problem:** If you run the exact same natural language policy query twice, the agent currently calls the LLM to generate the same Python code twice.
-*   **With Memory:** The agent stores a mapping of the natural language query (vector) to the successfully generated Python function. If a similar query is asked again, it retrieves the code from Firestore instead of making a new LLM call.
+*   **問題：** 若您兩次執行完全相同的自然語言政策查詢，智能代理目前會兩次呼叫 LLM 產生相同的 Python 程式碼。
+*   **有記憶時：** 智能代理會將自然語言查詢(vector)與成功產生的 Python 函式對應起來。若再次收到類似查詢，會直接從 Firestore 取回程式碼，而非再次呼叫 LLM。
 
-### 5. Root Cause Analysis and Remediation
-By remembering the context of past failures, the agent could provide better suggestions for remediation.
+### 5. 根本原因分析與修復建議
+藉由記住過去失敗的脈絡，智能代理能提供更好的修復建議。
 
-*   **Current State:** The agent reports that "Table X is missing an owner."
-*   **With Memory:** The agent might remember that "Table X" was created by the same service account that created 10 other unowned tables. It could then suggest a more systemic fix.
+*   **現況：** 智能代理回報「Table X 缺少擁有者」。
+*   **有記憶時：** 智能代理可能記得「Table X」是由同一服務帳號建立，而該帳號還建立了另外 10 個無主資料表，進而建議更系統性的修正。

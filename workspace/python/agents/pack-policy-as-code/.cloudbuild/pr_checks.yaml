@@ -1,51 +1,54 @@
-# Copyright 2025 Google LLC
+# 版權所有 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache 授權條款第 2.0 版（「授權」）授權。
+# 除非遵守授權，否則不得使用此檔案。
+# 您可以在以下網址取得授權副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則本軟體以「現狀」方式分發，
+# 不附帶任何明示或暗示的擔保。
+# 詳情請參閱授權條款以瞭解相關權利與限制。
 
 steps:
-  # Install uv package manager and sync dependencies
-  - name: "python:3.12-slim"
+  # 安裝 uv 套件管理器並同步依賴
+  # 註解：此步驟確保所有 Python 依賴已安裝且版本鎖定。
+  - name: 'python:3.12-slim'
     id: install-dependencies
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         pip install uv==0.8.13 --user && uv sync --locked
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run unit tests using pytest
-  - name: "python:3.12-slim"
+  # 使用 pytest 執行單元測試
+  # 註解：此步驟會執行 tests/unit 目錄下的所有單元測試，確保程式功能正確。
+  - name: 'python:3.12-slim'
     id: unit-tests
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         uv run pytest tests/unit
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run integration tests
-  - name: "python:3.12-slim"
+  # 執行整合測試
+  # 註解：此步驟會執行 tests/integration 目錄下的所有整合測試，驗證系統整體運作。
+  - name: 'python:3.12-slim'
     id: integration-tests
     entrypoint: /bin/bash
     args:
-      - "-c"
+      - '-c'
       - |
         uv run pytest tests/integration
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
+# 註解：指定建置日誌儲存桶位置，將建置過程產生的日誌存放於 Google Cloud Storage。
 logsBucket: gs://${PROJECT_ID}-pack-policy-as-code-logs/build-logs
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+# 註解：設定日誌儲存桶行為為區域性且由使用者擁有。

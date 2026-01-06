@@ -1,4 +1,4 @@
-"""Integration tests for the conversational flow of the policy-as-code agent."""
+"""Policy-as-code 代理的對話流程整合測試。"""
 
 import pytest
 from google.adk.agents import Agent
@@ -8,16 +8,16 @@ from google.adk.sessions import InMemorySessionService
 from google.genai import types
 from policy_as_code_agent import agent as agent_module
 
-# --- Mock Tools ---
+# --- Mock 工具 ---
 
 
 def mock_find_policy_in_memory(query: str, source: str, **kwargs) -> dict:
-    """Mock finding a policy."""
+    """模擬尋找策略。"""
     return {"status": "not_found", "message": "No policy found (mock)."}
 
 
 def mock_generate_policy_code_from_gcs(query: str, gcs_uri: str) -> dict:
-    """Mock generating policy code."""
+    """模擬生成策略程式碼。"""
     return {
         "status": "success",
         "policy_code": "def check_policy(metadata):\n    return []",
@@ -27,12 +27,12 @@ def mock_generate_policy_code_from_gcs(query: str, gcs_uri: str) -> dict:
 def mock_save_policy_to_memory(
     natural_language_query: str, policy_code: str, source: str, **kwargs
 ) -> dict:
-    """Mock saving policy."""
+    """模擬儲存策略。"""
     return {"status": "success", "policy_id": "mock_id", "version": 1}
 
 
 def mock_run_policy_from_gcs(policy_code: str, gcs_uri: str, **kwargs) -> dict:
-    """Mock running policy."""
+    """模擬執行策略。"""
     return {
         "status": "success",
         "report": {
@@ -43,12 +43,11 @@ def mock_run_policy_from_gcs(policy_code: str, gcs_uri: str, **kwargs) -> dict:
     }
 
 
-# Helper to create a test agent with mocked tools
+# 建立帶有模擬工具的測試代理的輔助函數
 def create_test_agent() -> Agent:
-    # We need to preserve the original tool names so the LLM knows what to call
-    # based on the instructions.
+    # 我們需要保留原始工具名稱，以便 LLM 知道根據說明呼叫什麼。
 
-    # Create a mapping of original tool names to mock functions
+    # 建立原始工具名稱到模擬函數的對映
     mocks = {
         "find_policy_in_memory": mock_find_policy_in_memory,
         "generate_policy_code_from_gcs": mock_generate_policy_code_from_gcs,
@@ -60,11 +59,11 @@ def create_test_agent() -> Agent:
     for tool in agent_module.root_agent.tools:
         tool_name = getattr(tool, "__name__", None)
         if tool_name and tool_name in mocks:
-            # Use the mock, but ensure it has the correct name and docstring
-            # (ADK might use docstrings for tool definitions)
+            # 使用模擬，但確保它具有正確的名稱和 docstring
+            # (ADK 可能使用 docstrings 進行工具定義)
             mock = mocks[tool_name]
             mock.__name__ = tool_name
-            mock.__doc__ = tool.__doc__  # Copy docstring from original
+            mock.__doc__ = tool.__doc__  # 從原始複製 docstring
             new_tools.append(mock)
         else:
             new_tools.append(tool)
@@ -91,8 +90,8 @@ def runner() -> Runner:
 @pytest.mark.asyncio
 async def test_conversational_policy_creation(runner: Runner) -> None:
     """
-    Tests a multi-turn conversation where the user asks to create a policy
-    from GCS, and the agent follows the correct steps (find -> generate -> save -> run).
+    測試多輪對話，使用者要求從 GCS 建立策略，
+    且代理遵循正確的步驟 (尋找 -> 生成 -> 儲存 -> 執行)。
     """
     user_id = "test-user"
     session = await runner.session_service.create_session(
@@ -100,32 +99,32 @@ async def test_conversational_policy_creation(runner: Runner) -> None:
     )
     session_id = session.id
 
-    # Turn 1: User Greeting / Intent
-    # Expect agent to ask for source.
+    # 第一輪：使用者問候 / 意圖
+    # 預期代理詢問來源。
     response_text = await send_message(
         runner, user_id, session_id, "I want to check if table descriptions exist."
     )
-    # We can't strictly assert the exact text, but we can check if it mentions "GCS" or "Dataplex"
-    # or if the tool was NOT called yet (since we haven't given source).
-    # But the model might be eager and assume a source or call 'find' with unknown source.
-    # Let's just print it for debugging if needed, or check flow.
+    # 我們無法嚴格斷言確切的文字，但我們可以檢查它是否提到了 "GCS" 或 "Dataplex"
+    # 或者如果尚未呼叫工具 (因為我們尚未提供來源)。
+    # 但模型可能會急切地假設來源或使用未知來源呼叫 'find'。
+    # 如果需要，讓我們列印它以進行除錯，或檢查流程。
 
-    # Turn 2: User provides source
+    # 第二輪：使用者提供來源
     response_text = await send_message(runner, user_id, session_id, "Use GCS.")
 
-    # The agent SHOULD now try to find the policy. Our mock returns "not_found".
-    # Then it should ask for the GCS URI (since it needs it to generate).
+    # 代理現在應該嘗試尋找策略。我們的模擬返回 "not_found"。
+    # 然後它應該詢問 GCS URI (因為它需要它來生成)。
 
-    # Turn 3: User provides URI
+    # 第三輪：使用者提供 URI
     response_text = await send_message(
         runner, user_id, session_id, "gs://my-bucket/metadata.jsonl"
     )
 
-    # Now the agent SHOULD:
-    # 1. Call generate_policy_code_from_gcs
-    # 2. Call save_policy_to_memory
-    # 3. Call run_policy_from_gcs
-    # 4. Report results.
+    # 現在代理應該：
+    # 1. 呼叫 generate_policy_code_from_gcs
+    # 2. 呼叫 save_policy_to_memory
+    # 3. 呼叫 run_policy_from_gcs
+    # 4. 報告結果。
 
     assert (
         "Mock violation" in response_text or "violations found" in response_text.lower()
@@ -133,7 +132,7 @@ async def test_conversational_policy_creation(runner: Runner) -> None:
 
 
 async def send_message(runner: Runner, user_id: str, session_id: str, text: str) -> str:
-    """Helper to send a message and get the final text response."""
+    """發送訊息並取得最終文字回應的輔助函數。"""
     input_content = types.UserContent(text)
     response_parts = []
 

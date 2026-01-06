@@ -1,48 +1,34 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 variable "project_name" {
   type        = string
-  description = "Project name used as a base for resource naming"
+  description = "專案名稱，用作資源命名的基礎 (Project name used as a base for resource naming)"
   default     = "pack-policy-as-code"
 }
 
 variable "dev_project_id" {
   type        = string
-  description = "**Dev** Google Cloud Project ID for resource deployment."
+  description = "**Dev (開發環境)** Google Cloud Project ID。"
 }
 
 variable "region" {
   type        = string
-  description = "Google Cloud region for resource deployment."
+  description = "資源部署的 Google Cloud 區域 (Region)。"
   default     = "us-central1"
 }
 
 variable "telemetry_logs_filter" {
   type        = string
-  description = "Log Sink filter for capturing telemetry data. Captures logs with the `traceloop.association.properties.log_type` attribute set to `tracing`."
+  description = "用於捕獲遙測資料的 Log Sink 過濾器 (Log Sink filter for capturing telemetry data)。捕獲 `traceloop.association.properties.log_type` 屬性設為 `tracing` 的日誌。"
   default     = "labels.service_name=\"pack-policy-as-code\" labels.type=\"agent_telemetry\""
 }
 
 variable "feedback_logs_filter" {
   type        = string
-  description = "Log Sink filter for capturing feedback data. Captures logs where the `log_type` field is `feedback`."
+  description = "用於捕獲回饋資料的 Log Sink 過濾器 (Log Sink filter for capturing feedback data)。捕獲 `log_type` 為 `feedback` 的日誌。"
   default     = "jsonPayload.log_type=\"feedback\" jsonPayload.service_name=\"pack-policy-as-code\""
 }
 
 variable "app_sa_roles" {
-  description = "List of roles to assign to the application service account"
+  description = "分配給應用程式 Service Account 的 IAM 角色列表 (List of roles to assign to the application service account)"
   type        = list(string)
   default = [
 
@@ -56,4 +42,3 @@ variable "app_sa_roles" {
     "roles/secretmanager.secretAccessor",
   ]
 }
-

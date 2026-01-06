@@ -1,25 +1,11 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Get project information to access the project number
+# 獲取專案資訊以存取專案編號
 data "google_project" "project" {
   for_each = local.deploy_project_ids
 
   project_id = local.deploy_project_ids[each.key]
 }
 
-# Generate a random password for the database user
+# 為資料庫使用者產生隨機密碼
 resource "random_password" "db_password" {
   for_each = local.deploy_project_ids
 
@@ -28,7 +14,8 @@ resource "random_password" "db_password" {
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# Cloud SQL Instance
+# 建立 Cloud SQL 實例 (PostgreSQL)
+# 用於儲存 Session 資料和應用程式狀態
 resource "google_sql_database_instance" "session_db" {
   for_each = local.deploy_project_ids
 
@@ -36,17 +23,17 @@ resource "google_sql_database_instance" "session_db" {
   name             = "${var.project_name}-db-${each.key}"
   database_version = "POSTGRES_15"
   region           = var.region
-  deletion_protection = false # For easier teardown in starter packs
+  deletion_protection = false # 在 Starter Pack 中設為 false 以便於清理，生產環境建議設為 true
 
   settings {
-    tier = "db-custom-1-3840"
+    tier = "db-custom-1-3840" # 1 vCPU, 3.75 GB RAM
 
     backup_configuration {
       enabled = true
       start_time = "03:00"
     }
 
-    # Enable IAM authentication
+    # 啟用 IAM 驗證
     database_flags {
       name  = "cloudsql.iam_authentication"
       value = "on"
@@ -56,26 +43,27 @@ resource "google_sql_database_instance" "session_db" {
   depends_on = [google_project_service.deploy_project_services]
 }
 
-# Cloud SQL Database
+# 建立 Cloud SQL 資料庫
 resource "google_sql_database" "database" {
   for_each = local.deploy_project_ids
 
   project  = local.deploy_project_ids[each.key]
-  name     = "${var.project_name}" # Use project name for DB to avoid conflict with default 'postgres'
+  name     = "${var.project_name}" # 使用專案名稱作為資料庫名稱，避免與預設 'postgres' 衝突
   instance = google_sql_database_instance.session_db[each.key].name
 }
 
-# Cloud SQL User
+# 建立 Cloud SQL 使用者
 resource "google_sql_user" "db_user" {
   for_each = local.deploy_project_ids
 
   project  = local.deploy_project_ids[each.key]
-  name     = "${var.project_name}" # Use project name for user to avoid conflict with default 'postgres'
+  name     = "${var.project_name}" # 使用專案名稱作為使用者名稱
   instance = google_sql_database_instance.session_db[each.key].name
   password = random_password.db_password[each.key].result
 }
 
-# Store the password in Secret Manager
+# 將資料庫密碼儲存在 Secret Manager 中
+# 安全地管理敏感憑證
 resource "google_secret_manager_secret" "db_password" {
   for_each = local.deploy_project_ids
 
@@ -89,6 +77,7 @@ resource "google_secret_manager_secret" "db_password" {
   depends_on = [google_project_service.deploy_project_services]
 }
 
+# 建立 Secret 版本 (儲存實際密碼值)
 resource "google_secret_manager_secret_version" "db_password" {
   for_each = local.deploy_project_ids
 
@@ -96,6 +85,8 @@ resource "google_secret_manager_secret_version" "db_password" {
   secret_data = random_password.db_password[each.key].result
 }
 
+# 部署 Cloud Run 服務 (應用程式本體)
+# 包含容器配置、環境變數、Cloud SQL 連線等設定
 resource "google_cloud_run_v2_service" "app" {
   for_each = local.deploy_project_ids
 
@@ -110,7 +101,8 @@ resource "google_cloud_run_v2_service" "app" {
 
   template {
     containers {
-      # Placeholder, will be replaced by the CI/CD pipeline
+      # 初始部署使用 Hello World 映像檔佔位
+      # 實際應用程式映像檔將由 CI/CD 流水線更新
       image = "us-docker.pkg.dev/cloudrun/container/hello"
       resources {
         limits = {
@@ -119,13 +111,13 @@ resource "google_cloud_run_v2_service" "app" {
         }
         cpu_idle = false
       }
-      # Mount the volume
+      # 掛載 Cloud SQL Volume
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
 
-      # Environment variables
+      # 環境變數設定
       env {
         name  = "INSTANCE_CONNECTION_NAME"
         value = google_sql_database_instance.session_db[each.key].connection_name
@@ -171,7 +163,7 @@ resource "google_cloud_run_v2_service" "app" {
     }
 
     session_affinity = true
-    # Cloud SQL volume
+    # 定義 Cloud SQL Volume
     volumes {
       name = "cloudsql"
       cloud_sql_instance {
@@ -185,15 +177,15 @@ resource "google_cloud_run_v2_service" "app" {
     percent = 100
   }
 
-  # This lifecycle block prevents Terraform from overwriting the container image when it's
-  # updated by Cloud Run deployments outside of Terraform (e.g., via CI/CD pipelines)
+  # Lifecycle 區塊：防止 Terraform 覆蓋由 CI/CD 更新的容器映像檔
+  # 當 Cloud Build 部署新版本時，這裡的 image 設定會被忽略
   lifecycle {
     ignore_changes = [
       template[0].containers[0].image,
     ]
   }
 
-  # Make dependencies conditional to avoid errors.
+  # 設定依賴關係，避免錯誤
   depends_on = [
     google_project_service.deploy_project_services,
     google_sql_user.db_user,

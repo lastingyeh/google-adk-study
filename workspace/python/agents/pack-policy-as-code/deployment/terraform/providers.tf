@@ -1,18 +1,3 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
 terraform {
   required_version = ">= 1.0.0"
   required_providers {
@@ -31,6 +16,8 @@ terraform {
   }
 }
 
+# Google Provider 配置：Staging 環境計費覆寫
+# 用於確保在 Staging 專案的操作計費歸屬於 Staging 專案
 provider "google" {
   alias                 = "staging_billing_override"
   billing_project       = var.staging_project_id
@@ -38,6 +25,8 @@ provider "google" {
   user_project_override = true
 }
 
+# Google Provider 配置：Production 環境計費覆寫
+# 用於確保在 Production 專案的操作計費歸屬於 Production 專案
 provider "google" {
   alias                 = "prod_billing_override"
   billing_project       = var.prod_project_id

@@ -1,18 +1,6 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 locals {
+  # CI/CD Runner 專案需要啟用的 API 列表
+  # 包含 Cloud Build, AI Platform (Vertex AI), BigQuery 等
   cicd_services = [
     "cloudbuild.googleapis.com",
     "discoveryengine.googleapis.com",
@@ -24,6 +12,8 @@ locals {
     "sqladmin.googleapis.com",
   ]
 
+  # 部署目標專案 (Staging 和 Production) 需要啟用的 API 列表
+  # 包含 Cloud Run, Cloud SQL, Secret Manager, Logging 等
   deploy_project_services = [
     "aiplatform.googleapis.com",
     "run.googleapis.com",
@@ -38,11 +28,15 @@ locals {
     "secretmanager.googleapis.com"
   ]
 
+  # 環境名稱與 Project ID 的對應關係
+  # 用於在 for_each 迴圈中迭代部署專案
   deploy_project_ids = {
     prod    = var.prod_project_id
     staging = var.staging_project_id
   }
 
+  # 所有參與的專案 ID 列表
+  # 包含 CI/CD Runner, Production 和 Staging
   all_project_ids = [
     var.cicd_runner_project_id,
     var.prod_project_id,
@@ -50,4 +44,3 @@ locals {
   ]
 
 }
-

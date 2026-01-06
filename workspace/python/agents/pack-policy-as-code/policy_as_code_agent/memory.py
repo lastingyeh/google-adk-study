@@ -21,59 +21,59 @@ from .config import (
     PROJECT_ID,
 )
 
-# Initialize Firestore Client
+# 初始化 Firestore 客戶端
 db = None
 
 if ENABLE_MEMORY_BANK:
     try:
         db = firestore.Client(project=PROJECT_ID, database=FIRESTORE_DATABASE)
         logging.info(
-            f"Firestore initialized and verified for project: {db.project}, database: {FIRESTORE_DATABASE}"
+            f"Firestore 已為專案 {db.project} 初始化並驗證，資料庫：{FIRESTORE_DATABASE}"
         )
     except Exception as e:
         logging.warning(
-            f"Firestore initialization failed or database not found. Memory bank will be disabled. Error: {e}"
+            f"Firestore 初始化失敗或找不到資料庫。記憶庫將被停用。錯誤：{e}"
         )
         db = None
 else:
-    logging.info("Memory bank is disabled via configuration.")
+    logging.info("記憶庫已透過設定停用。")
 
 COLLECTION_NAME = FIRESTORE_COLLECTION_POLICIES
 
 
 def _get_embedding(text: str) -> List[float]:
-    """Generates a vector embedding for the given text using Vertex AI."""
+    """使用 Vertex AI 為給定文字產生向量嵌入。"""
     try:
         vertexai.init(project=PROJECT_ID, location=LOCATION)
         model = TextEmbeddingModel.from_pretrained(EMBEDDING_MODEL_NAME)
         embeddings = model.get_embeddings([text])
         return embeddings[0].values
     except Exception as e:
-        logging.error(f"Error generating embedding: {e}")
+        logging.error(f"產生嵌入時發生錯誤：{e}")
         return []
 
 
 def _policy_to_dict(doc) -> dict:
-    """Helper to convert a Firestore document to a dictionary."""
+    """將 Firestore 文件轉換為字典的輔助函式。"""
     data = doc.to_dict()
-    # Convert Firestore timestamps to ISO strings for JSON serialization
+    # 將 Firestore 時間戳記轉換為 ISO 字串以便 JSON 序列化
     if "created_at" in data and isinstance(data["created_at"], datetime.datetime):
         data["created_at"] = data["created_at"].isoformat()
     if "last_used" in data and isinstance(data["last_used"], datetime.datetime):
         data["last_used"] = data["last_used"].isoformat()
-    # Remove the embedding vector from the output to reduce noise
+    # 從輸出中移除嵌入向量以減少雜訊
     if "embedding" in data:
         del data["embedding"]
     return data
 
 
 def get_active_core_policies() -> dict:
-    """Retrieves the configured core policies from Firestore. Returns default status if not set."""
+    """從 Firestore 檢索設定的核心策略。如果未設定，則返回預設狀態。"""
     if not db:
         return {
             "status": "success",
             "source": "default",
-            "message": "Memory bank disabled. Using default core policies.",
+            "message": "記憶庫已停用。使用預設核心策略。",
             "policies": [],
         }
 
@@ -89,17 +89,17 @@ def get_active_core_policies() -> dict:
             return {
                 "status": "success",
                 "source": "default",
-                "message": "No core policies saved in memory. Using defaults.",
-                "policies": [],  # Agent logic will fill this with defaults if needed
+                "message": "記憶庫中未儲存核心策略。使用預設值。",
+                "policies": [],  # 代理程式邏輯將在需要時使用預設值填充
             }
     except Exception as e:
-        return {"status": "error", "message": f"Error fetching core policies: {e}"}
+        return {"status": "error", "message": f"擷取核心策略時發生錯誤：{e}"}
 
 
 def save_core_policies(policies: List[str]) -> dict:
-    """Saves or overwrites the list of core policies in Firestore."""
+    """在 Firestore 中儲存或覆寫核心策略列表。"""
     if not db:
-        return {"status": "error", "message": "Memory bank is disabled."}
+        return {"status": "error", "message": "記憶庫已停用。"}
 
     try:
         db.document(CORE_POLICIES_DOC_REF).set(
@@ -107,22 +107,22 @@ def save_core_policies(policies: List[str]) -> dict:
         )
         return {
             "status": "success",
-            "message": "Core policies saved successfully.",
+            "message": "核心策略儲存成功。",
             "policies": policies,
         }
     except Exception as e:
-        return {"status": "error", "message": f"Failed to save core policies: {e}"}
+        return {"status": "error", "message": f"儲存核心策略失敗：{e}"}
 
 
 def add_core_policy(policy: str) -> dict:
-    """Adds a single policy to the core policies list."""
+    """將單一策略新增至核心策略列表。"""
     if not db:
-        return {"status": "error", "message": "Memory bank is disabled."}
+        return {"status": "error", "message": "記憶庫已停用。"}
 
     try:
         doc_ref = db.document(CORE_POLICIES_DOC_REF)
 
-        # Use array_union to add unique value
+        # 使用 array_union 新增唯一值
         doc_ref.set(
             {
                 "policies": firestore.ArrayUnion([policy]),
@@ -131,28 +131,28 @@ def add_core_policy(policy: str) -> dict:
             merge=True,
         )
 
-        # Fetch updated list to return
+        # 擷取更新後的列表以返回
         updated_doc = doc_ref.get()
         policies = updated_doc.to_dict().get("policies", [])
 
         return {
             "status": "success",
-            "message": f"Added policy: '{policy}'",
+            "message": f"已新增策略：'{policy}'",
             "policies": policies,
         }
     except Exception as e:
-        return {"status": "error", "message": f"Failed to add core policy: {e}"}
+        return {"status": "error", "message": f"新增核心策略失敗：{e}"}
 
 
 def remove_core_policy(policy: str) -> dict:
-    """Removes a single policy from the core policies list."""
+    """從核心策略列表中移除單一策略。"""
     if not db:
-        return {"status": "error", "message": "Memory bank is disabled."}
+        return {"status": "error", "message": "記憶庫已停用。"}
 
     try:
         doc_ref = db.document(CORE_POLICIES_DOC_REF)
 
-        # Use array_remove
+        # 使用 array_remove
         doc_ref.set(
             {
                 "policies": firestore.ArrayRemove([policy]),
@@ -166,93 +166,90 @@ def remove_core_policy(policy: str) -> dict:
 
         return {
             "status": "success",
-            "message": f"Removed policy: '{policy}'",
+            "message": f"已移除策略：'{policy}'",
             "policies": policies,
         }
     except Exception as e:
-        return {"status": "error", "message": f"Failed to remove core policy: {e}"}
+        return {"status": "error", "message": f"移除核心策略失敗：{e}"}
 
 
 def find_policy_in_memory(
     query: str,
     source: str,
-    version: str = "latest",
     author: Optional[str] = None,
     start_date: Optional[str] = None,
     end_date: Optional[str] = None,
 ) -> dict:
     """
-    Finds a similar policy in Firestore using Vector Search.
+    使用向量搜尋在 Firestore 中尋找相似的策略。
 
     Args:
-        query: The natural language query for the policy.
-        source: The source of the policy ('gcs' or 'dataplex').
-        threshold: The similarity threshold (unused directly in find_nearest, but useful for post-filter).
-        version: The version of the policy to retrieve ('latest' or a specific version number).
-        author: An optional author to filter by.
-        start_date: An optional start date in ISO format.
-        end_date: An optional end date in ISO format.
+        query: 策略的自然語言查詢。
+        source: 策略的來源（'gcs' 或 'dataplex'）。
+        author: 可選的作者篩選條件。
+        start_date: 可選的 ISO 格式開始日期。
+        end_date: 可選的 ISO 格式結束日期。
     """
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     query_embedding = _get_embedding(query)
     if not query_embedding:
-        return {"status": "error", "message": "Failed to generate embedding for query."}
+        return {"status": "error", "message": "無法為查詢產生嵌入。"}
 
-    # Base collection reference
+    # 基本集合參考
     policies_ref = db.collection(COLLECTION_NAME)
 
-    # Note: Firestore Vector Search currently requires a vector index.
-    # Pre-filtering (where clause) requires a composite index with the vector field.
-    # For simplicity/robustness, we'll do the vector search first, then filter in memory
-    # if the result set is small, OR we rely on the composite index if the user sets it up.
+    # 注意：Firestore 向量搜尋目前需要向量索引。
+    # 預篩選（where 子句）需要與向量欄位的複合索引。
+    # 為求簡單/穩健，如果結果集很小，我們將先進行向量搜尋，然後在記憶體中篩選，
+    # 或者如果使用者設定了複合索引，我們就依賴它。
 
-    # Let's try to strictly filter by 'source' as it's a primary partition.
-    # Requires: Composite Index (source ASC, embedding VECTOR)
+    # 讓我們嘗試嚴格按 'source' 篩選，因為它是一個主要分區。
+    # 需要：複合索引 (source ASC, embedding VECTOR)
 
     try:
-        # Vector Search Query
+        # 向量搜尋查詢
         vector_query = policies_ref.find_nearest(
             vector_field="embedding",
             query_vector=Vector(query_embedding),
             distance_measure=DistanceMeasure.COSINE,
-            limit=10,  # Fetch top 10 matches
-            distance_result_field="similarity_distance",  # returns distance (lower is better for Cosine in Firestore? No, Cosine distance is 1 - similarity)
-            # Firestore Cosine Distance: range [0, 2]. 0 is identical.
+            limit=10,  # 擷取前 10 個相符項目
+            distance_result_field="similarity_distance",  # 返回距離（在 Firestore 中，對於 COSINE 來說，值越低越好？不，餘弦距離是 1 - 相似度）
+            # Firestore 餘弦距離：範圍 [0, 2]。0 表示完全相同。
         )
 
-        # Execute query
+        # 執行查詢
         results = list(vector_query.stream())
 
     except FailedPrecondition as e:
         if "index" in str(e).lower():
             return {
                 "status": "error",
-                "message": f"Firestore Vector Index missing. Please create the index using the link in the logs. Error: {e}",
+                "message": f"缺少 Firestore 向量索引。請使用日誌中的連結建立索引。錯誤：{e}",
             }
-        return {"status": "error", "message": f"Vector search failed: {e}"}
+        return {"status": "error", "message": f"向量搜尋失敗：{e}"}
     except Exception as e:
-        return {"status": "error", "message": f"An unexpected error occurred: {e}"}
+        return {"status": "error", "message": f"發生未預期的錯誤：{e}"}
 
     if not results:
-        return {"status": "not_found", "message": "No policies found."}
+        return {"status": "not_found", "message": "找不到任何策略。"}
 
     matches = []
     for doc in results:
         data = _policy_to_dict(doc)
         distance = doc.get("similarity_distance")
-        # Convert distance to similarity score (approximate for user display)
-        # Cosine distance = 1 - Cosine Similarity. So Similarity = 1 - Distance
+        # 將距離轉換為相似度分數（約略值，供使用者顯示）
+        # 餘弦距離 = 1 - 餘弦相似度。所以 相似度 = 1 - 距離
         similarity = 1.0 - distance if distance is not None else 0.0
         data["similarity"] = similarity
         matches.append(data)
 
-    # Apply Filters in Python (Post-filtering)
-    # This is safer than complex composite indexes for a prototype
+    # 在 Python 中套用篩選器（後篩選）
+    # 對於原型來說，這比複雜的複合索引更安全
     filtered_matches = [m for m in matches if m.get("source") == source]
 
     if author:
@@ -262,28 +259,28 @@ def find_policy_in_memory(
         try:
             start = datetime.datetime.fromisoformat(start_date)
             end = datetime.datetime.fromisoformat(end_date)
-            # Convert string back to datetime for comparison if needed, or compare strings if ISO
-            # data['created_at'] is now a string from _policy_to_dict
+            # 如果需要，將字串轉換回日期時間進行比較，或者如果 data['created_at'] 是 ISO 字串，則直接比較字串
+            # data['created_at'] 現在是來自 _policy_to_dict 的字串
             filtered_matches = [
                 m
                 for m in filtered_matches
                 if start <= datetime.datetime.fromisoformat(m["created_at"]) <= end
             ]
         except Exception:
-            pass  # Ignore date errors in filter
+            pass  # 忽略篩選中的日期錯誤
 
     if not filtered_matches:
         return {
             "status": "not_found",
-            "message": "No policies found matching criteria after vector search.",
+            "message": "向量搜尋後找不到符合條件的策略。",
         }
 
-    # Sort by similarity (descending)
+    # 按相似度排序（降序）
     filtered_matches.sort(key=lambda x: x["similarity"], reverse=True)
 
     best_match = filtered_matches[0]
 
-    # Update last_used
+    # 更新 last_used
     try:
         doc_ref = (
             db.collection(COLLECTION_NAME)
@@ -295,7 +292,7 @@ def find_policy_in_memory(
         if doc_ref:
             doc_ref[0].reference.update({"last_used": datetime.datetime.now()})
     except Exception:
-        pass  # Non-critical update
+        pass  # 非關鍵更新
 
     return {
         "status": "found",
@@ -312,12 +309,12 @@ def save_policy_to_memory(
     policy_id: Optional[str] = None,
 ) -> dict:
     """
-    Saves a new policy or a new version of an existing policy to Firestore.
+    將新策略或現有策略的新版本儲存到 Firestore。
     """
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     now = datetime.datetime.now()
@@ -326,13 +323,13 @@ def save_policy_to_memory(
     if not embedding_list:
         return {
             "status": "error",
-            "message": "Could not generate embedding for policy.",
+            "message": "無法為策略產生嵌入。",
         }
 
     new_version = 1
 
     if policy_id:
-        # Check for existing versions
+        # 檢查現有版本
         existing_versions = list(
             db.collection(COLLECTION_NAME).where("policy_id", "==", policy_id).stream()
         )
@@ -341,7 +338,7 @@ def save_policy_to_memory(
             if versions:
                 new_version = max(versions) + 1
         else:
-            # Provided ID but not found? Treat as new or error? Let's treat as new with that ID.
+            # 提供了 ID 但找不到？視為新的還是錯誤？讓我們將其視為具有該 ID 的新項目。
             pass
     else:
         policy_id = str(uuid.uuid4())
@@ -361,24 +358,24 @@ def save_policy_to_memory(
     }
 
     try:
-        # Use a new document for each version
+        # 為每個版本使用一個新文件
         db.collection(COLLECTION_NAME).add(doc_data)
         return {
             "status": "success",
-            "message": f"Policy saved as version {new_version} with ID {policy_id}.",
+            "message": f"策略已儲存為版本 {new_version}，ID 為 {policy_id}。",
             "policy_id": policy_id,
             "version": new_version,
         }
     except Exception as e:
-        return {"status": "error", "message": f"Failed to save policy: {e}"}
+        return {"status": "error", "message": f"儲存策略失敗：{e}"}
 
 
 def list_policy_versions(policy_id: str) -> dict:
-    """Lists all available versions for a given policy ID from Firestore."""
+    """從 Firestore 列出給定策略 ID 的所有可用版本。"""
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     try:
@@ -392,21 +389,21 @@ def list_policy_versions(policy_id: str) -> dict:
         if not versions:
             return {
                 "status": "not_found",
-                "message": f"No policy found with ID '{policy_id}'.",
+                "message": f"找不到 ID 為 '{policy_id}' 的策略。",
             }
 
         versions.sort(key=lambda p: p["version"], reverse=True)
         return {"status": "success", "versions": versions}
     except Exception as e:
-        return {"status": "error", "message": f"Error listing versions: {e}"}
+        return {"status": "error", "message": f"列出版本時發生錯誤：{e}"}
 
 
 def get_policy_by_id(policy_id: str, version: int) -> dict:
-    """Retrieves a specific version of a policy by its ID from Firestore."""
+    """從 Firestore 依 ID 檢索特定版本的策略。"""
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     try:
@@ -421,33 +418,33 @@ def get_policy_by_id(policy_id: str, version: int) -> dict:
         if not docs:
             return {
                 "status": "not_found",
-                "message": f"Policy with ID '{policy_id}' and version '{version}' not found.",
+                "message": f"找不到 ID 為 '{policy_id}' 且版本為 '{version}' 的策略。",
             }
 
         policy = _policy_to_dict(docs[0])
 
-        # Update last_used
+        # 更新 last_used
         docs[0].reference.update({"last_used": datetime.datetime.now()})
 
         return {"status": "success", "policy": policy}
 
     except Exception as e:
-        return {"status": "error", "message": f"Error retrieving policy: {e}"}
+        return {"status": "error", "message": f"檢索策略時發生錯誤：{e}"}
 
 
 def prune_memory(days_to_keep: int = 30) -> dict:
-    """Removes policies that have not been used in the last `days_to_keep` days."""
+    """移除在過去 `days_to_keep` 天內未使用的策略。"""
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     cutoff_date = datetime.datetime.now() - datetime.timedelta(days=days_to_keep)
 
     try:
-        # Query for policies accessed before the cutoff
-        # Note: Requires an index on 'last_used'
+        # 查詢在截止日期之前存取的策略
+        # 注意：需要在 'last_used' 上建立索引
         docs = (
             db.collection(COLLECTION_NAME).where("last_used", "<", cutoff_date).stream()
         )
@@ -458,7 +455,7 @@ def prune_memory(days_to_keep: int = 30) -> dict:
         for doc in docs:
             batch.delete(doc.reference)
             deleted_count += 1
-            if deleted_count % 400 == 0:  # Commit batches of 400
+            if deleted_count % 400 == 0:  # 每 400 個提交一次批次
                 batch.commit()
                 batch = db.batch()
 
@@ -467,23 +464,23 @@ def prune_memory(days_to_keep: int = 30) -> dict:
 
         return {
             "status": "success",
-            "message": f"Pruned {deleted_count} old policies.",
+            "message": f"已刪除 {deleted_count} 個舊策略。",
         }
     except Exception as e:
-        return {"status": "error", "message": f"Error pruning memory: {e}"}
+        return {"status": "error", "message": f"刪除記憶體時發生錯誤：{e}"}
 
 
 def rate_policy(
     policy_id: str, version: int, rating: int, feedback: Optional[str] = None
 ) -> dict:
-    """Rates a policy and adds feedback in Firestore."""
+    """在 Firestore 中對策略進行評分並新增回饋。"""
     if not 1 <= rating <= 5:
-        return {"status": "error", "message": "Rating must be between 1 and 5."}
+        return {"status": "error", "message": "評分必須介於 1 到 5 之間。"}
 
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
     try:
@@ -498,22 +495,22 @@ def rate_policy(
         if not docs:
             return {
                 "status": "not_found",
-                "message": f"Policy with ID '{policy_id}' and version '{version}' not found.",
+                "message": f"找不到 ID 為 '{policy_id}' 且版本為 '{version}' 的策略。",
             }
 
         doc_ref = docs[0].reference
 
-        # Atomically update arrays
+        # 以原子方式更新陣列
         updates = {"ratings": firestore.ArrayUnion([rating])}
         if feedback:
             updates["feedback"] = firestore.ArrayUnion([feedback])
 
         doc_ref.update(updates)
 
-        return {"status": "success", "message": "Thank you for your feedback!"}
+        return {"status": "success", "message": "感謝您的回饋！"}
 
     except Exception as e:
-        return {"status": "error", "message": f"Error submitting rating: {e}"}
+        return {"status": "error", "message": f"提交評分時發生錯誤：{e}"}
 
 
 def log_policy_execution(
@@ -525,26 +522,26 @@ def log_policy_execution(
     summary: str = "",
 ) -> dict:
     """
-    Logs the execution of a policy to Firestore and updates aggregate stats.
+    將策略的執行記錄到 Firestore 並更新匯總統計資料。
 
     Args:
-        violations: A list of violation objects. If provided, 'violation_count' and 'violated_resources' will be extracted.
+        violations: 違規物件的列表。如果提供，將從中提取 'violation_count' 和 'violated_resources'。
     """
     if not db:
         return {
             "status": "success",
-            "message": "Memory bank disabled. Execution not logged.",
+            "message": "記憶庫已停用。未記錄執行。",
         }
 
     now = datetime.datetime.now()
 
     violation_count = len(violations) if violations else 0
 
-    # Extract unique violated resources
+    # 提取唯一的違規資源
     violated_resources = set()
     if violations:
         for v in violations:
-            # Extract resource identifier from common fields, with fallback
+            # 從通用欄位中提取資源識別碼，並提供備用方案
             res_name = (
                 v.get("resource_name")
                 or v.get("table_name")
@@ -554,7 +551,7 @@ def log_policy_execution(
             if res_name:
                 violated_resources.add(str(res_name))
 
-    # 1. Create Execution Log
+    # 1. 建立執行日誌
     execution_data = {
         "policy_id": policy_id,
         "version": version,
@@ -563,15 +560,15 @@ def log_policy_execution(
         "violation_count": violation_count,
         "source": source,
         "summary": summary,
-        "violated_resources": list(violated_resources),  # Store as array for querying
+        "violated_resources": list(violated_resources),  # 儲存為陣列以便查詢
     }
 
     try:
-        # Add to 'policy_executions' collection
+        # 新增至 'policy_executions' 集合
         db.collection(FIRESTORE_COLLECTION_EXECUTIONS).add(execution_data)
 
-        # 2. Update Aggregate Stats on Policy Document
-        # Find the specific policy version document to update
+        # 2. 更新策略文件上的匯總統計資料
+        # 尋找要更新的特定策略版本文件
         docs = list(
             db.collection(COLLECTION_NAME)
             .where("policy_id", "==", policy_id)
@@ -594,11 +591,11 @@ def log_policy_execution(
 
             doc_ref.update(updates)
 
-        return {"status": "success", "message": "Execution logged."}
+        return {"status": "success", "message": "已記錄執行。"}
 
     except Exception as e:
-        logging.error(f"Failed to log execution: {e}")
-        return {"status": "error", "message": f"Failed to log execution: {e}"}
+        logging.error(f"記錄執行失敗：{e}")
+        return {"status": "error", "message": f"記錄執行失敗：{e}"}
 
 
 def analyze_execution_history(
@@ -607,20 +604,20 @@ def analyze_execution_history(
     resource_name: Optional[str] = None,
 ) -> dict:
     """
-    Performs advanced analysis on policy execution history.
+    對策略執行歷史記錄執行進階分析。
 
     Args:
-        query_type: Type of analysis: 'summary', 'top_violations', 'resource_search', 'top_violated_resources'.
-        days: Number of past days to analyze.
-        resource_name: (For 'resource_search') The name of the resource to check.
+        query_type: 分析類型：'summary'、'top_violations'、'resource_search'、'top_violated_resources'。
+        days: 要分析的過去天數。
+        resource_name: (用於 'resource_search') 要檢查的資源名稱。
     """
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
-    # Ensure cutoff_date is timezone-aware (UTC) to match Firestore timestamps
+    # 確保 cutoff_date 是時區感知的 (UTC)，以符合 Firestore 時間戳記
     cutoff_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         days=days
     )
@@ -630,17 +627,17 @@ def analyze_execution_history(
             if not resource_name:
                 return {
                     "status": "error",
-                    "message": "resource_name is required for resource_search.",
+                    "message": "resource_search 需要 resource_name。",
                 }
 
-            # Search strategy: Fetch recent logs and perform case-insensitive substring matching in Python.
-            # Firestore 'array-contains' requires exact matches, which doesn't support partial names
-            # (e.g. 'quarterly_earnings' wouldn't find 'project.dataset.quarterly_earnings').
+            # 搜尋策略：擷取最近的日誌並在 Python 中執行不區分大小寫的子字串比對。
+            # Firestore 'array-contains' 需要完全相符，不支援部分名稱
+            # (例如 'quarterly_earnings' 找不到 'project.dataset.quarterly_earnings')。
 
             query = db.collection(FIRESTORE_COLLECTION_EXECUTIONS).where(
                 "timestamp", ">=", cutoff_date
             )
-            # Order by timestamp descending for efficiency
+            # 為了效率，按時間戳記降序排序
             query = query.order_by("timestamp", direction=firestore.Query.DESCENDING)
 
             results = query.stream()
@@ -652,12 +649,12 @@ def analyze_execution_history(
                 data = doc.to_dict()
                 violated_resources = data.get("violated_resources", [])
 
-                # Skip records with no violations recorded
+                # 略過沒有記錄違規的記錄
                 if not violated_resources:
                     continue
 
-                # Check if any violated resource string contains the search term
-                # We use a generator expression for efficiency
+                # 檢查是否有任何違規資源字串包含搜尋詞
+                # 為了效率，我們使用產生器運算式
                 if any(
                     resource_name_lower in str(r).lower() for r in violated_resources
                 ):
@@ -669,7 +666,7 @@ def analyze_execution_history(
 
             matches.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
 
-            # Enrich matches with policy query
+            # 使用策略查詢豐富相符項目
             policy_cache = {}
 
             for m in matches:
@@ -680,7 +677,7 @@ def analyze_execution_history(
 
                 cache_key = (pid, ver)
                 if cache_key not in policy_cache:
-                    # Fetch policy to get the natural language query
+                    # 擷取策略以取得自然語言查詢
                     try:
                         docs = list(
                             db.collection(COLLECTION_NAME)
@@ -702,12 +699,12 @@ def analyze_execution_history(
             return {"status": "success", "data": matches}
 
         elif query_type == "top_violations":
-            # Aggregate total violations by policy from the *policies* collection (pre-aggregated)
-            # or aggregate from execution logs?
-            # Pre-aggregated on 'policies' doc is faster.
+            # 從 *policies* 集合（預先匯總）按策略匯總總違規數
+            # 或從執行日誌匯總？
+            # 在 'policies' 文件上預先匯總是更快的。
 
-            # We scan policies that have been used/updated recently? Or all?
-            # Let's scan all policies, sort by total_violations_detected desc.
+            # 我們掃描最近使用/更新的策略？還是全部？
+            # 讓我們掃描所有策略，按 total_violations_detected 降序排序。
             query = (
                 db.collection(COLLECTION_NAME)
                 .order_by(
@@ -733,7 +730,7 @@ def analyze_execution_history(
             return {"status": "success", "data": top_policies}
 
         elif query_type == "top_violated_resources":
-            # Scan executions for last X days to count resource violations
+            # 掃描過去 X 天的執行以計算資源違規次數
             query = db.collection(FIRESTORE_COLLECTION_EXECUTIONS).where(
                 "timestamp", ">=", cutoff_date
             )
@@ -743,19 +740,19 @@ def analyze_execution_history(
 
             for doc in results:
                 data = doc.to_dict()
-                # List of resources that violated the policy in this execution
+                # 在此執行中違反策略的資源列表
                 violated_resources = data.get("violated_resources", [])
 
                 for res in violated_resources:
                     res_str = str(res)
                     resource_counts[res_str] = resource_counts.get(res_str, 0) + 1
 
-            # Sort by count descending
+            # 按計數降序排序
             sorted_resources = sorted(
                 resource_counts.items(), key=lambda item: item[1], reverse=True
             )
 
-            # Format top 10
+            # 格式化前 10 名
             top_resources = [
                 {"resource_name": r[0], "total_violations": r[1]}
                 for r in sorted_resources[:10]
@@ -763,9 +760,9 @@ def analyze_execution_history(
 
             return {"status": "success", "data": top_resources}
 
-        else:  # "summary" or default
-            # Returns a daily count of executions and violations
-            # Scan executions for last X days
+        else:  # "summary" 或預設
+            # 返回每日執行次數和違規次數的計數
+            # 掃描過去 X 天的執行
             query = db.collection(FIRESTORE_COLLECTION_EXECUTIONS).where(
                 "timestamp", ">=", cutoff_date
             )
@@ -791,41 +788,41 @@ def analyze_execution_history(
             return {"status": "success", "data": daily_stats}
 
     except Exception as e:
-        return {"status": "error", "message": f"Analysis failed: {e}"}
+        return {"status": "error", "message": f"分析失敗：{e}"}
 
 
 def get_execution_history(
     days: int = 7, status: Optional[str] = None, policy_id: Optional[str] = None
 ) -> dict:
     """
-    Retrieves policy execution history from Firestore.
+    從 Firestore 檢索策略執行歷史記錄。
 
     Args:
-        days: Number of past days to retrieve (default 7).
-        status: Filter by status ('success', 'failure', 'violations_found').
-        policy_id: Filter by a specific policy ID.
+        days: 要檢索的過去天數（預設 7）。
+        status: 按狀態篩選（'success'、'failure'、'violations_found'）。
+        policy_id: 按特定策略 ID 篩選。
     """
     if not db:
         return {
             "status": "error",
-            "message": "Memory bank is disabled. To enable long-term procedural memory, set ENABLE_MEMORY_BANK=True in .env and configure Firestore. See docs/MEMORY_INTEGRATION.md for details.",
+            "message": "記憶庫已停用。若要啟用長期程序記憶，請在 .env 中設定 ENABLE_MEMORY_BANK=True 並設定 Firestore。詳情請參閱 docs/MEMORY_INTEGRATION.md。",
         }
 
-    # Ensure cutoff_date is timezone-aware (UTC) to match Firestore timestamps
+    # 確保 cutoff_date 是時區感知的 (UTC)，以符合 Firestore 時間戳記
     cutoff_date = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(
         days=days
     )
 
     try:
-        # Query only by timestamp to utilize the default single-field index.
-        # Composite filters (e.g., timestamp + status) require custom indexes in Firestore.
-        # To maintain "out-of-the-box" usability without manual console setup,
-        # we retrieve the recent history and filter in-memory.
+        # 僅按時間戳記查詢以利用預設的單一欄位索引。
+        # 複合篩選器（例如，時間戳記 + 狀態）需要在 Firestore 中自訂索引。
+        # 為了維持「開箱即用」的可用性而無需手動設定主控台，
+        # 我們檢索最近的歷史記錄並在記憶體中進行篩選。
         query = db.collection(FIRESTORE_COLLECTION_EXECUTIONS).where(
             "timestamp", ">=", cutoff_date
         )
 
-        # Order by timestamp descending
+        # 按時間戳記降序排序
         query = query.order_by("timestamp", direction=firestore.Query.DESCENDING)
 
         results = query.stream()
@@ -834,14 +831,14 @@ def get_execution_history(
         for doc in results:
             data = doc.to_dict()
 
-            # In-memory filtering
+            # 記憶體中篩選
             if status and data.get("status") != status:
                 continue
 
             if policy_id and data.get("policy_id") != policy_id:
                 continue
 
-            # Serialize timestamp
+            # 序列化時間戳記
             if "timestamp" in data:
                 data["timestamp"] = data["timestamp"].isoformat()
             history.append(data)
@@ -850,10 +847,10 @@ def get_execution_history(
             return {
                 "status": "success",
                 "history": [],
-                "message": "No execution history found for this criteria.",
+                "message": "找不到此條件的執行歷史記錄。",
             }
 
         return {"status": "success", "history": history}
 
     except Exception as e:
-        return {"status": "error", "message": f"Error retrieving history: {e}"}
+        return {"status": "error", "message": f"檢索歷史記錄時發生錯誤：{e}"}

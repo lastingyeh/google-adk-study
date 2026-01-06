@@ -6,15 +6,22 @@ from google.cloud import storage
 
 
 def load_metadata(gcs_uri: str):
-    """Loads metadata from a GCS URI."""
+    """
+    從 GCS URI 載入 metadata。
+    """
+    # 檢查是否有提供 GCS URI
     if not gcs_uri:
-        return {"error": "GCS URI is required."}
+        return {"error": "必須提供 GCS URI。"}
     try:
+        # 建立 GCS 客戶端
         storage_client = storage.Client()
+        # 解析 bucket 與 blob 名稱
         bucket_name, blob_name = gcs_uri.replace("gs://", "").split("/", 1)
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(blob_name)
+        # 下載檔案內容
         content = blob.download_as_string()
+        # 將每一行轉換為 JSON 物件
         metadata = [
             json.loads(line)
             for line in content.decode("utf-8").splitlines()
@@ -22,33 +29,37 @@ def load_metadata(gcs_uri: str):
         ]
         return metadata
     except exceptions.NotFound:
-        return {"error": f"The file at GCS URI {gcs_uri} was not found."}
+        return {"error": f"在 GCS URI {gcs_uri} 找不到檔案。"}
     except Exception as e:
-        return {"error": f"An unexpected error occurred: {e}"}
+        return {"error": f"發生未預期的錯誤: {e}"}
 
 
 def get_content_from_gcs_for_schema(gcs_uri: str) -> dict:
     """
-    Gets the content of a file from GCS for schema generation.
-    If the URI is a directory, it uses the first file found in it.
+    從 GCS 取得檔案內容以產生 schema。
+    如果 URI 是目錄，則使用該目錄下找到的第一個檔案。
 
-    Args:
-        gcs_uri (str): The GCS URI of the file or directory.
+    參數:
+        gcs_uri (str): 檔案或目錄的 GCS URI。
 
-    Returns:
-        dict: A dictionary with 'status' and either 'content' or 'error_message'.
+    回傳:
+        dict: 包含 'status' 以及 'content' 或 'error_message' 的字典。
     """
     schema_gcs_uri = gcs_uri
     try:
+        # 建立 GCS 客戶端
         storage_client = storage.Client()
+        # 解析 bucket 與路徑
         gcs_path = gcs_uri.replace("gs://", "")
         path_parts = gcs_path.split("/", 1)
         bucket_name = path_parts[0]
         blob_prefix = path_parts[1] if len(path_parts) > 1 else ""
         bucket = storage_client.bucket(bucket_name)
+        # 判斷是否為目錄
         is_directory = blob_prefix.endswith("/") or blob_prefix == ""
 
         if is_directory:
+            # 列出目錄下的檔案
             blobs = list(
                 storage_client.list_blobs(bucket, prefix=blob_prefix, max_results=10)
             )
@@ -61,20 +72,19 @@ def get_content_from_gcs_for_schema(gcs_uri: str) -> dict:
             if not files_in_dir:
                 return {
                     "status": "error",
-                    "error_message": f"No files found in GCS directory {gcs_uri} to generate schema.",
+                    "error_message": f"在 GCS 目錄 {gcs_uri} 找不到任何檔案以產生 schema。",
                 }
             schema_gcs_uri = files_in_dir[0]
-            logging.info(
-                f"Directory detected. Using first file for schema: {schema_gcs_uri}"
-            )
+            logging.info(f"偵測到目錄。將使用第一個檔案產生 schema: {schema_gcs_uri}")
 
     except Exception as e:
         return {
             "status": "error",
-            "error_message": f"Error accessing GCS URI {gcs_uri}: {e}",
+            "error_message": f"存取 GCS URI {gcs_uri} 時發生錯誤: {e}",
         }
 
     try:
+        # 下載檔案內容
         bucket_name, blob_name = schema_gcs_uri.replace("gs://", "").split("/", 1)
         bucket = storage_client.bucket(bucket_name)
         blob = bucket.blob(blob_name)
@@ -83,5 +93,5 @@ def get_content_from_gcs_for_schema(gcs_uri: str) -> dict:
     except Exception as e:
         return {
             "status": "error",
-            "error_message": f"Error downloading file {schema_gcs_uri} for schema generation: {e}",
+            "error_message": f"下載檔案 {schema_gcs_uri} 以產生 schema 時發生錯誤: {e}",
         }

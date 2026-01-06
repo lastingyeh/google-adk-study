@@ -1,30 +1,17 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
-# Get project information to access the project number
+# 獲取專案資訊以存取專案編號
 data "google_project" "project" {
   project_id = var.dev_project_id
 }
 
-# Generate a random password for the database user
+# 為資料庫使用者產生隨機密碼
 resource "random_password" "db_password" {
   length           = 16
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# Cloud SQL Instance
+# 建立 Cloud SQL 實例 (Dev 環境)
 resource "google_sql_database_instance" "session_db" {
   project          = var.dev_project_id
   name             = "${var.project_name}-db-dev"
@@ -36,10 +23,10 @@ resource "google_sql_database_instance" "session_db" {
     tier = "db-custom-1-3840"
 
     backup_configuration {
-      enabled = false # No backups for dev
+      enabled = false # 開發環境不啟用自動備份
     }
-    
-    # Enable IAM authentication
+
+    # 啟用 IAM 驗證
     database_flags {
       name  = "cloudsql.iam_authentication"
       value = "on"
@@ -49,22 +36,22 @@ resource "google_sql_database_instance" "session_db" {
   depends_on = [resource.google_project_service.services]
 }
 
-# Cloud SQL Database
+# 建立 Cloud SQL 資料庫
 resource "google_sql_database" "database" {
   project  = var.dev_project_id
-  name     = "${var.project_name}" # Use project name for DB to avoid conflict with default 'postgres'
+  name     = "${var.project_name}" # 使用專案名稱作為資料庫名稱
   instance = google_sql_database_instance.session_db.name
 }
 
-# Cloud SQL User
+# 建立 Cloud SQL 使用者
 resource "google_sql_user" "db_user" {
   project  = var.dev_project_id
-  name     = "${var.project_name}" # Use project name for user to avoid conflict with default 'postgres'
+  name     = "${var.project_name}" # 使用專案名稱作為使用者名稱
   instance = google_sql_database_instance.session_db.name
   password = google_secret_manager_secret_version.db_password.secret_data
 }
 
-# Store the password in Secret Manager
+# 將資料庫密碼儲存在 Secret Manager 中
 resource "google_secret_manager_secret" "db_password" {
   project   = var.dev_project_id
   secret_id = "${var.project_name}-db-password"
@@ -76,12 +63,14 @@ resource "google_secret_manager_secret" "db_password" {
   depends_on = [resource.google_project_service.services]
 }
 
+# 建立 Secret 版本 (儲存實際密碼值)
 resource "google_secret_manager_secret_version" "db_password" {
   secret      = google_secret_manager_secret.db_password.id
   secret_data = random_password.db_password.result
 }
 
 
+# 部署 Cloud Run 服務 (Dev 環境)
 resource "google_cloud_run_v2_service" "app" {
   name                = var.project_name
   location            = var.region
@@ -101,13 +90,13 @@ resource "google_cloud_run_v2_service" "app" {
           memory = "8Gi"
         }
       }
-      # Mount the volume
+      # 掛載 Cloud SQL Volume
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
 
-      # Environment variables
+      # 環境變數設定
       env {
         name  = "INSTANCE_CONNECTION_NAME"
         value = google_sql_database_instance.session_db.connection_name
@@ -167,15 +156,14 @@ resource "google_cloud_run_v2_service" "app" {
     percent = 100
   }
 
-  # This lifecycle block prevents Terraform from overwriting the container image when it's
-  # updated by Cloud Run deployments outside of Terraform (e.g., via CI/CD pipelines)
+  # Lifecycle 區塊：防止 Terraform 覆蓋由外部更新的容器映像檔
   lifecycle {
     ignore_changes = [
       template[0].containers[0].image,
     ]
   }
 
-  # Make dependencies conditional to avoid errors.
+  # 設定依賴關係
   depends_on = [
     resource.google_project_service.services,
     google_sql_user.db_user,

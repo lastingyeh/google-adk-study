@@ -18,6 +18,7 @@ def mock_db():
 
 @patch("policy_as_code_agent.memory.TextEmbeddingModel")
 def test_find_policy_in_memory_success(MockEmbeddingModel):
+    """測試在記憶體中成功找到策略。"""
     mock_model = MockEmbeddingModel.from_pretrained.return_value
     mock_model.get_embeddings.return_value = [MagicMock(values=[0.1, 0.2, 0.3])]
 
@@ -44,6 +45,7 @@ def test_find_policy_in_memory_success(MockEmbeddingModel):
 
 @patch("policy_as_code_agent.memory.TextEmbeddingModel")
 def test_save_policy_to_memory(MockEmbeddingModel):
+    """測試將策略成功儲存到記憶體。"""
     mock_model = MockEmbeddingModel.from_pretrained.return_value
     mock_model.get_embeddings.return_value = [MagicMock(values=[0.1, 0.2, 0.3])]
 
@@ -54,6 +56,7 @@ def test_save_policy_to_memory(MockEmbeddingModel):
 
 
 def test_list_policy_versions():
+    """測試列出策略版本。"""
     mock_doc1 = MagicMock()
     mock_doc1.to_dict.return_value = {"policy_id": "123", "version": 1}
     mock_doc2 = MagicMock()
@@ -72,6 +75,7 @@ def test_list_policy_versions():
 
 
 def test_log_policy_execution():
+    """測試記錄策略執行結果。"""
     # Setup Mocks
     mock_collection = memory.db.collection.return_value
     mock_stream = (
@@ -116,6 +120,7 @@ def test_log_policy_execution():
 
 
 def test_get_execution_history():
+    """測試獲取策略執行歷史記錄。"""
     # Setup Mocks
     mock_collection = memory.db.collection.return_value
 

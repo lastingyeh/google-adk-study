@@ -1,24 +1,11 @@
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# Data source to get project numbers
+# 用於獲取 Project Number 的 Data source
 data "google_project" "projects" {
   for_each   = local.deploy_project_ids
   project_id = each.value
 }
 
-# 1. Assign roles for the CICD project
+# 1. 為 CI/CD Runner 專案指派角色
+# 賦予 CI/CD Service Account 在 CI/CD 專案中的權限 (如 Cloud Build, Storage, Logging 等)
 resource "google_project_iam_member" "cicd_project_roles" {
   for_each = toset(var.cicd_roles)
 
@@ -29,7 +16,9 @@ resource "google_project_iam_member" "cicd_project_roles" {
 
 }
 
-# 2. Assign roles for the other two projects (prod and staging)
+# 2. 為其他兩個專案 (Staging 和 Production) 指派角色
+# 賦予 CI/CD Service Account 在目標部署專案中的權限 (如部署 Cloud Run, 寫入 Storage 等)
+# 使用 setproduct 產生 (專案, 角色) 的所有組合
 resource "google_project_iam_member" "other_projects_roles" {
   for_each = {
     for pair in setproduct(keys(local.deploy_project_ids), var.cicd_sa_deployment_required_roles) :
@@ -44,7 +33,8 @@ resource "google_project_iam_member" "other_projects_roles" {
   member     = "serviceAccount:${resource.google_service_account.cicd_runner_sa.email}"
   depends_on = [resource.google_project_service.cicd_services, resource.google_project_service.deploy_project_services]
 }
-# 3. Grant application SA the required permissions to run the application
+# 3. 授予應用程式 Service Account 運行所需的權限
+# 賦予 Agent 應用程式在各環境中運行所需的 IAM 角色 (如讀取 Secrets, 寫入 Log, 連接 DB 等)
 resource "google_project_iam_member" "app_sa_roles" {
   for_each = {
     for pair in setproduct(keys(local.deploy_project_ids), var.app_sa_roles) :
@@ -61,7 +51,8 @@ resource "google_project_iam_member" "app_sa_roles" {
 }
 
 
-# 4. Allow Cloud Run service SA to pull containers stored in the CICD project
+# 4. 允許 Cloud Run 服務 Service Account 從 CI/CD 專案拉取容器映像檔
+# 跨專案權限：部署專案 (Staging/Prod) 的 Cloud Run 需要讀取 CI/CD 專案中的 Artifact Registry
 resource "google_project_iam_member" "cicd_run_invoker_artifact_registry_reader" {
   for_each = local.deploy_project_ids
   project  = var.cicd_runner_project_id
@@ -75,14 +66,16 @@ resource "google_project_iam_member" "cicd_run_invoker_artifact_registry_reader"
 
 
 
-# Special assignment: Allow the CICD SA to create tokens
+# 特殊指派：允許 CI/CD SA 建立 Token
+# 這是為了讓 Cloud Build 能以 Service Account 身份執行某些需要 Token 的操作
 resource "google_service_account_iam_member" "cicd_run_invoker_token_creator" {
   service_account_id = google_service_account.cicd_runner_sa.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "serviceAccount:${resource.google_service_account.cicd_runner_sa.email}"
   depends_on         = [resource.google_project_service.cicd_services, resource.google_project_service.deploy_project_services]
 }
-# Special assignment: Allow the CICD SA to impersonate himself for trigger creation
+# 特殊指派：允許 CI/CD SA 模擬自身以建立觸發器
+# 這是 Cloud Build 觸發器配置所需的權限
 resource "google_service_account_iam_member" "cicd_run_invoker_account_user" {
   service_account_id = google_service_account.cicd_runner_sa.name
   role               = "roles/iam.serviceAccountUser"

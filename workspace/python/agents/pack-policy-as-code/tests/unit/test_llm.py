@@ -7,6 +7,7 @@ from policy_as_code_agent.utils.llm import (
 
 
 def test_generate_sample_values_picks_representative():
+    """測試從清單中選擇最具代表性（欄位最多）的項目作為樣本。"""
     # Create a list where the second item is "larger" (more fields) than the first
     sparse_entry = {"name": "sparse", "id": 1}
     rich_entry = {
@@ -26,11 +27,13 @@ def test_generate_sample_values_picks_representative():
 
 
 def test_generate_sample_values_empty():
+    """測試當輸入為空清單時，生成空的 JSON 字串。"""
     sample_str = generate_sample_values_str([])
     assert sample_str == "{}"
 
 
 def test_generate_sample_values_traversal():
+    """測試生成樣本值時的遞迴遍歷功能。"""
     data = [
         {
             "a": 1,
@@ -49,6 +52,7 @@ def test_generate_sample_values_traversal():
 
 
 def test_get_json_schema_simple():
+    """測試從簡單內容中提取 JSON schema。"""
     content = '[{"name": "Alice", "age": 30}]'
     schema = get_json_schema_from_content(content)
     expected = {"name": "str", "age": "int"}
@@ -56,6 +60,7 @@ def test_get_json_schema_simple():
 
 
 def test_get_json_schema_nested():
+    """測試從巢狀內容中提取 JSON schema。"""
     content = '[{"user": {"id": 1, "details": {"active": true}}}]'
     schema = get_json_schema_from_content(content)
     expected = {"user": {"id": "int", "details": {"active": "bool"}}}
@@ -63,6 +68,7 @@ def test_get_json_schema_nested():
 
 
 def test_get_json_schema_list():
+    """測試從包含清單的內容中提取 JSON schema。"""
     content = '[{"tags": ["a", "b"]}]'
     schema = get_json_schema_from_content(content)
     # The util merges list schemas, usually taking the first item's type
@@ -71,6 +77,7 @@ def test_get_json_schema_list():
 
 
 def test_get_json_schema_jsonl():
+    """測試從 JSONL 格式內容中提取 JSON schema。"""
     content = '{"a": 1}\n{"b": 2}'
     schema = get_json_schema_from_content(content)
     # It merges keys from both lines

@@ -3,6 +3,7 @@ from policy_as_code_agent.simulation import validate_code_safety
 
 
 def test_safe_code():
+    """測試安全且允許的程式碼。"""
     code = """
 def check_policy(metadata):
     return []
@@ -22,6 +23,7 @@ def check_policy(metadata):
     ],
 )
 def test_unsafe_imports(code):
+    """測試不安全的導入語句是否被阻止。"""
     errors = validate_code_safety(code)
     assert len(errors) > 0, f"Expected error for: {code}"
     assert "Security Violation" in errors[0]
@@ -37,6 +39,7 @@ def test_unsafe_imports(code):
     ],
 )
 def test_unsafe_builtins(code):
+    """測試不安全的內建函數是否被阻止。"""
     errors = validate_code_safety(code)
     assert len(errors) > 0, f"Expected error for: {code}"
     assert "Security Violation" in errors[0]

@@ -31,17 +31,17 @@ logger = logging.getLogger(__name__)
 
 
 class ChatStreamUser(HttpUser):
-    """Simulates a user interacting with the chat stream API."""
+    """模擬使用者與聊天串流 API 互動。"""
 
-    wait_time = between(1, 3)  # Wait 1-3 seconds between tasks
+    wait_time = between(1, 3)  # 在任務之間等待 1-3 秒
 
     @task
     def chat_stream(self) -> None:
-        """Simulates a chat stream interaction."""
+        """模擬聊天串流互動。"""
         headers = {"Content-Type": "application/json"}
         if os.environ.get("_ID_TOKEN"):
             headers["Authorization"] = f"Bearer {os.environ['_ID_TOKEN']}"
-        # Create session first
+        # 首先建立工作階段
         user_id = f"user_{uuid.uuid4()}"
         session_data = {"state": {"preferred_language": "English", "visit_count": 1}}
 
@@ -53,10 +53,10 @@ class ChatStreamUser(HttpUser):
             timeout=10,
         )
 
-        # Get session_id from response
+        # 從回應中取得 session_id
         session_id = session_response.json()["id"]
 
-        # Send chat message
+        # 發送聊天訊息
         data = {
             "app_name": "policy_as_code_agent",
             "user_id": user_id,
@@ -96,11 +96,11 @@ class ChatStreamUser(HttpUser):
                                 context={},
                             )
 
-                        # Check for error responses in the JSON payload
+                        # 檢查 JSON payload 中的錯誤回應
                         try:
                             event_data = json.loads(line_str)
                             if isinstance(event_data, dict) and "code" in event_data:
-                                # Flag any non-2xx codes as errors
+                                # 將任何非 2xx 代碼標記為錯誤
                                 if event_data["code"] >= 400:
                                     has_error = True
                                     error_msg = event_data.get(
@@ -113,18 +113,18 @@ class ChatStreamUser(HttpUser):
                                         error_msg,
                                     )
                         except json.JSONDecodeError:
-                            # If it's not valid JSON, continue processing
+                            # 如果不是有效的 JSON，繼續處理
                             pass
 
                 end_time = time.time()
                 total_time = end_time - start_time
 
-                # Only fire success event if no errors were found
+                # 只有在沒有發現錯誤時才觸發成功事件
                 if not has_error:
                     self.environment.events.request.fire(
                         request_type="POST",
                         name=f"{ENDPOINT} end",
-                        response_time=total_time * 1000,  # Convert to milliseconds
+                        response_time=total_time * 1000,  # 轉換為毫秒
                         response_length=len(events),
                         response=response,
                         context={},

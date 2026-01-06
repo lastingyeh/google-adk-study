@@ -1,4 +1,4 @@
-"""Integration tests for the compliance scorecard flow."""
+"""合規記分卡流程的整合測試。"""
 
 import pytest
 from google.adk.agents import Agent
@@ -67,13 +67,13 @@ def runner() -> Runner:
 
 @pytest.mark.asyncio
 async def test_scorecard_generation(runner: Runner) -> None:
-    """Test the conversational flow for generating a compliance scorecard."""
+    """測試生成合規記分卡的對話流程。"""
     user_id = "test-user"
     session = await runner.session_service.create_session(
         app_name=runner.app_name, user_id=user_id
     )
 
-    # User asks for scorecard
+    # 使用者要求記分卡
     input_text = "Generate a compliance scorecard for GCS path gs://bucket/file.jsonl"
     input_content = types.UserContent(input_text)
 
@@ -86,6 +86,6 @@ async def test_scorecard_generation(runner: Runner) -> None:
                 if part.text:
                     response_text += part.text
 
-    # Verify response contains scorecard info
+    # 驗證回應包含記分卡資訊
     assert "100.0%" in response_text
     assert "Policy A" in response_text
