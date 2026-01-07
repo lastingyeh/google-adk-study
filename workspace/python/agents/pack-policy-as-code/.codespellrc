@@ -1,0 +1,4 @@
+[codespell]
+# ROUGE 是一個專有名詞 - Recall-Oriented Understudy for Gisting Evaluation
+# 這是文本評估中的標準指標名稱
+ignore-words-list = ROUGE

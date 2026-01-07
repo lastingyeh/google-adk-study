@@ -123,7 +123,7 @@ def run_simulation(policy_code: str, metadata: list) -> list:
         if "check_policy" in safe_globals:
             # 執行產生的 check_policy 函式，回傳違規清單
             check_policy_func = safe_globals["check_policy"]
-            violations = check_policy_func(metadata)
+            violations = check_policy_func(metadata)  # type: ignore[operator]
         else:
             violations.append(
                 {

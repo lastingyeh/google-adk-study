@@ -3575,9 +3575,44 @@
         },
         {
           day: 74,
-          title: 'AI 驅動的 Google Cloud 數據治理 (Policy as code) 自動化代理',
+          title: '[整合 1/3] AI 驅動的 Google Cloud 數據治理 (Policy as code) 自動化代理',
           description:
-            '[整合 1/2] 這是一個由生成式 AI 驅動的代理，用於在 Google Cloud 上自動化數據治理。它能將自然語言政策轉換為在 Dataplex 和 BigQuery 上運行的程式碼，並具備記憶、學習與雙模式操作能力，以確保數據合規性。',
+            '[整合 1/3] 這是一個由生成式 AI 驅動的代理，用於在 Google Cloud 上自動化數據治理。它能將自然語言政策轉換為在 Dataplex 和 BigQuery 上運行的程式碼，並具備記憶、學習與雙模式操作能力，以確保數據合規性。',
+          docs: [
+            {
+              text: 'Pack Policy As Code',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/pack-policy-as-code/',
+            },
+          ],
+          refs: [
+            {
+              text: 'adk-samples 存儲庫 (policy as code)',
+              url: 'https://github.com/google/adk-samples/tree/3d9fe35ce097760c5dceb7136a2c72802c3c6021/python/agents/policy-as-code',
+            },
+            {
+              text: 'agent-starter-pack 官方文件',
+              url: 'https://github.com/GoogleCloudPlatform/agent-starter-pack',
+            },
+          ],
+          labels: [
+            `cloudsql`,
+            `memory`,
+            `session`,
+            `firestore`,
+            `code-policy`,
+            `mcp`,
+            `fastapi`,
+            `uvicorn`,
+            `embedding`,
+            `bigquery`,
+            `cicd`,
+          ],
+          completed: false,
+        }, {
+          day: 75,
+          title: '[整合 2/3] AI 驅動的 Google Cloud 數據治理 (Policy as code) 自動化代理',
+          description:
+            '[整合 2/3] 這是一個由生成式 AI 驅動的代理，用於在 Google Cloud 上自動化數據治理。它能將自然語言政策轉換為在 Dataplex 和 BigQuery 上運行的程式碼，並具備記憶、學習與雙模式操作能力，以確保數據合規性。',
           docs: [
             {
               text: 'Pack Policy As Code',
@@ -3612,7 +3647,7 @@
       ];
 
       // 設定與狀態
-      const ITEMS_PER_PAGE = 15;
+      const ITEMS_PER_PAGE = 20;
       let currentPage = 1;
       let filteredData = [...learningData];
       let totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);

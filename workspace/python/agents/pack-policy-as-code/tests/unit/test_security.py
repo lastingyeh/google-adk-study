@@ -26,7 +26,7 @@ def test_unsafe_imports(code):
     """測試不安全的導入語句是否被阻止。"""
     errors = validate_code_safety(code)
     assert len(errors) > 0, f"Expected error for: {code}"
-    assert "Security Violation" in errors[0]
+    assert "安全性違規" in errors[0]
 
 
 @pytest.mark.parametrize(
@@ -42,4 +42,4 @@ def test_unsafe_builtins(code):
     """測試不安全的內建函數是否被阻止。"""
     errors = validate_code_safety(code)
     assert len(errors) > 0, f"Expected error for: {code}"
-    assert "Security Violation" in errors[0]
+    assert "安全性違規" in errors[0]

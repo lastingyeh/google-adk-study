@@ -2,6 +2,7 @@
 import json  # 用於處理 JSON 資料
 import os  # 用於檔案與路徑操作
 import re  # 用於正則表達式處理
+from typing import Any  # 用於類型提示
 
 # 匯入 Vertex AI SDK
 import vertexai
@@ -39,7 +40,7 @@ def generate_sample_values_str(metadata_sample: list) -> str:
         # 如果 max 發生錯誤，則退回使用第一個項目
         most_representative_entry = metadata_sample[0]
 
-    sample_values = {}
+    sample_values: dict[str, Any] = {}
     # 使用 traverse 將物件展平成 key-value 結構
     traverse(most_representative_entry, sample_values)
 

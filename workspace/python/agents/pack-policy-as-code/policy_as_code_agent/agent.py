@@ -14,7 +14,7 @@ from google.adk.agents.callback_context import CallbackContext  # 匯入回呼�
 from google.adk.tools.preload_memory_tool import (
     PreloadMemoryTool,
 )  # 從 ADK 匯入記憶體預載入工具
-from google.cloud import dataplex_v1, storage  # Google Cloud 客戶端函式庫
+from google.cloud import dataplex_v1, storage  # type: ignore  # Google Cloud 客戶端函式庫
 from vertexai.generative_models import (
     GenerativeModel,
 )  # 從 Vertex AI SDK 匯入生成式模型
@@ -397,9 +397,9 @@ def suggest_remediation(violations: List[Dict[str, Any]]) -> dict:
     return {"status": "success", "remediation_suggestions": remediation_suggestions}
 
 
-def get_supported_examples() -> dict:
+def get_supported_examples() -> list[str]:
     """返回範例策略查詢的列表"""
-    return DEFAULT_CORE_POLICIES
+    return DEFAULT_CORE_POLICIES  # type: ignore[return-value]
 
 
 def generate_policy_code_from_dataplex(policy_query: str, dataplex_query: str) -> dict:
@@ -628,7 +628,7 @@ def generate_compliance_scorecard(source_type: str, source_target: str) -> dict:
                     }
                 )
                 continue
-            policy_code = res.get("policy_code")
+            policy_code = res.get("policy_code")  # type: ignore[assignment]
 
             run_res = run_policy_from_gcs(policy_code, source_target)
 
@@ -644,7 +644,7 @@ def generate_compliance_scorecard(source_type: str, source_target: str) -> dict:
                     }
                 )
                 continue
-            policy_code = res.get("policy_code")
+            policy_code = res.get("policy_code")  # type: ignore[assignment]
 
             run_res = run_policy_on_dataplex(policy_code, source_target)
 
@@ -882,7 +882,7 @@ root_agent = Agent(
     model=GEMINI_MODEL_FLASH,
     description="用於針對 GCS 或即時 Dataplex 搜尋的元數據模擬資料策略的代理。",
     instruction=agent_instruction,
-    tools=agent_tools,
+    tools=agent_tools,  # type: ignore[arg-type]
     after_agent_callback=auto_save_session_to_memory_callback,
 )
 

@@ -64,16 +64,16 @@ def create_test_agent() -> Agent:
             mock = mocks[tool_name]
             mock.__name__ = tool_name
             mock.__doc__ = tool.__doc__  # 從原始複製 docstring
-            new_tools.append(mock)
+            new_tools.append(mock)  # type: ignore[arg-type]
         else:
-            new_tools.append(tool)
+            new_tools.append(tool)  # type: ignore[arg-type]
 
     return Agent(
         name="test_policy_agent",
         model="gemini-2.5-flash",
         description=agent_module.root_agent.description,
         instruction=agent_module.root_agent.instruction,
-        tools=new_tools,
+        tools=new_tools,  # type: ignore[arg-type]
     )
 
 
@@ -140,7 +140,7 @@ async def send_message(runner: Runner, user_id: str, session_id: str, text: str)
         user_id=user_id, session_id=session_id, new_message=input_content
     ):
         if event.content:
-            for part in event.content.parts:
+            for part in event.content.parts:  # type: ignore[union-attr]
                 if part.text:
                     response_parts.append(part.text)
 

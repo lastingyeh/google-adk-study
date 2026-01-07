@@ -11,7 +11,7 @@ from policy_as_code_agent import agent as agent_module
 
 # Mock tools
 def mock_get_active_core_policies() -> dict:
-    return {"status": "success", "policies": ["Policy A", "Policy B"]}
+    return {"status": "success", "policies": ["政策 A", "政策 B"]}
 
 
 def mock_generate_compliance_scorecard(source_type: str, source_target: str) -> dict:
@@ -22,8 +22,8 @@ def mock_generate_compliance_scorecard(source_type: str, source_target: str) -> 
             "policies_passed": 2,
             "total_policies": 2,
             "details": [
-                {"policy": "Policy A", "status": "Passed"},
-                {"policy": "Policy B", "status": "Passed"},
+                {"policy": "政策 A", "status": "Passed"},
+                {"policy": "政策 B", "status": "Passed"},
             ],
         },
     }
@@ -42,16 +42,16 @@ def create_scorecard_agent() -> Agent:
             mock = mocks[tool_name]
             mock.__name__ = tool_name
             mock.__doc__ = tool.__doc__
-            new_tools.append(mock)
+            new_tools.append(mock)  # type: ignore[arg-type]
         else:
-            new_tools.append(tool)
+            new_tools.append(tool)  # type: ignore[arg-type]
 
     return Agent(
         name="test_scorecard_agent",
         model="gemini-2.5-flash",
         description=agent_module.root_agent.description,
         instruction=agent_module.root_agent.instruction,
-        tools=new_tools,
+        tools=new_tools,  # type: ignore[arg-type]
     )
 
 
@@ -82,10 +82,10 @@ async def test_scorecard_generation(runner: Runner) -> None:
         user_id=user_id, session_id=session.id, new_message=input_content
     ):
         if event.content:
-            for part in event.content.parts:
+            for part in event.content.parts:  # type: ignore[union-attr]
                 if part.text:
                     response_text += part.text
 
     # 驗證回應包含記分卡資訊
     assert "100.0%" in response_text
-    assert "Policy A" in response_text
+    assert "政策 A" in response_text

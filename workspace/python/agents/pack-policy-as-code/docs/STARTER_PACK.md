@@ -3,7 +3,6 @@
 Policy-as-Code Agent 是一款由生成式 AI 驅動的工具，可自動化資料治理。
 本代理程式由 [`googleCloudPlatform/agent-starter-pack`](https://github.com/GoogleCloudPlatform/agent-starter-pack) 版本 `0.29.3` 產生。
 
-
 ## 專案結構
 
 本專案結構如下：
@@ -25,10 +24,10 @@ pack-policy-as-code/
 
 > 💡 **提示：** 使用 [Gemini CLI](https://github.com/google-gemini/gemini-cli) 進行 AI 協作開發，專案上下文已預設於 `GEMINI.md`。
 
-
 ## 環境需求
 
 開始前請確認已安裝以下工具：
+
 - **uv**：Python 套件管理工具（本專案所有依賴均由 uv 管理） - [安裝教學](https://docs.astral.sh/uv/getting-started/installation/)（[新增套件](https://docs.astral.sh/uv/concepts/dependencies/) 使用 `uv add <package>`）
 - **Google Cloud SDK**：GCP 服務工具 - [安裝教學](https://cloud.google.com/sdk/docs/install)
 - **Terraform**：基礎設施部署工具 - [安裝教學](https://developer.hashicorp.com/terraform/downloads)
@@ -41,26 +40,69 @@ pack-policy-as-code/
 ```bash
 make install && make playground
 ```
-> **📊 觀測性說明：** Agent telemetry（Cloud Trace）永遠啟用。Prompt-response logging（GCS、BigQuery、Cloud Logging）本機預設停用，部署環境預設啟用（僅記錄 metadata，不含 prompt/response）。詳見 [監控與觀測性](#monitoring-and-observability)。
 
+> **📊 觀測性說明：** Agent telemetry（Cloud Trace）永遠啟用。Prompt-response logging（GCS、BigQuery、Cloud Logging）本機預設停用，部署環境預設啟用（僅記錄 metadata，不含 prompt/response）。詳見 [監控與觀測性](#monitoring-and-observability)。
 
 ## 指令總覽
 
-| 指令                 | 說明                                                                                          |
-| -------------------- | --------------------------------------------------------------------------------------------- |
-| `make install`       | 使用 uv 安裝所有必要依賴                                                                      |
-| `make playground`    | 啟動本機開發環境（後端與前端），利用 `adk web` 指令                                           |
-| `make deploy`        | 部署代理程式至 Cloud Run（可用 `IAP=true` 啟用 Identity-Aware Proxy，`PORT=8080` 指定容器埠） |
-| `make local-backend` | 啟動本機後端伺服器並支援熱重載                                                                |
-| `make test`          | 執行單元測試與整合測試                                                                        |
-| `make lint`          | 執行程式碼品質檢查（codespell, ruff, mypy）                                                   |
-| `make setup-dev-env` | 使用 Terraform 建立開發環境資源                                                               |
+### 基本開發指令
 
-完整指令與用法請參考 [Makefile](Makefile)。
+| 指令                    | 說明                                                  |
+| ----------------------- | ----------------------------------------------------- |
+| `make install`          | 使用 uv 套件管理器安裝相依性                          |
+| `make playground`       | 啟動本地代理 Playground，支援代理熱重載               |
+| `make local-backend`    | 啟動本地後端伺服器並支援熱重載                        |
+| `make debug-backend`    | 以 debug 模式啟動本地後端伺服器（debugger 監聽 5678） |
+| `make debug-playground` | 以 debug 模式啟動 Playground（debugger 監聽 5678）    |
+
+### 測試與程式碼品質
+
+| 指令        | 說明                                        |
+| ----------- | ------------------------------------------- |
+| `make test` | 執行單元測試與整合測試                      |
+| `make lint` | 執行程式碼品質檢查（codespell, ruff, mypy） |
+
+### 部署指令
+
+| 指令          | 說明                                                                                          |
+| ------------- | --------------------------------------------------------------------------------------------- |
+| `make deploy` | 部署代理程式至 Cloud Run（可用 `IAP=true` 啟用 Identity-Aware Proxy，`PORT=8080` 指定容器埠） |
+
+### Docker 映像管理
+
+| 指令                  | 說明                                          |
+| --------------------- | --------------------------------------------- |
+| `make docker-build`   | 建置 Docker 映像（可用 `TAG=` 指定自訂標籤）  |
+| `make docker-push`    | 推送 Docker 映像至 Artifact Registry          |
+| `make docker-run`     | 本地測試 Docker 容器（可用 `PORT=` 指定埠號） |
+| `make docker-clean`   | 停止並清理 Docker 容器與映像                  |
+| `make docker-publish` | 建置並推送 Docker 映像（組合指令）            |
+
+### Artifact Registry 管理
+
+| 指令                        | 說明                                     |
+| --------------------------- | ---------------------------------------- |
+| `make create-artifact-repo` | 建立 Artifact Registry 儲存庫            |
+| `make list-artifact-images` | 列出 Artifact Registry 中的映像          |
+| `make docker-auth`          | 設定 Docker 認證以存取 Artifact Registry |
+
+### Terraform 基礎設施管理
+
+| 指令                       | 說明                                                    |
+| -------------------------- | ------------------------------------------------------- |
+| `make setup-dev-env`       | 使用 Terraform 設定開發環境資源                         |
+| `make destroy-dev-env`     | 使用 Terraform 銷毀開發環境資源（需確認）               |
+| `make setup-prod-env`      | 使用 Terraform 設定正式環境資源（CI/CD、Staging、Prod） |
+| `make destroy-prod-env`    | 使用 Terraform 銷毀正式環境資源（需確認專案 ID）        |
+| `make terraform-plan-dev`  | 檢視開發環境的 Terraform 執行計劃                       |
+| `make terraform-plan-prod` | 檢視正式環境的 Terraform 執行計劃                       |
+
+完整指令與用法請參考 [Makefile](Makefile) 與 [DOCKER.md](DOCKER.md)。
 
 ## 使用方式
 
 本範本採「自帶代理程式」設計，你專注於商業邏輯，範本自動處理 UI、基礎設施、部署、監控。
+
 1. **Prototype：** 於 `notebooks/` 目錄使用入門筆記本開發生成式 AI 代理程式，並利用 Vertex AI Evaluation 評估效能。
 2. **Integrate：** 編輯 `policy_as_code_agent/agent.py` 匯入你的代理程式。
 3. **Test：** 以 `make playground` 測試代理程式功能，支援程式碼變更自動重載。
@@ -68,7 +110,6 @@ make install && make playground
 5. **Monitor：** 利用 BigQuery telemetry、Cloud Logging、Cloud Trace 追蹤效能並優化應用。
 
 專案內含 `GEMINI.md`，可供 Gemini CLI 等 AI 工具查詢範本上下文。
-
 
 ## 部署說明
 
@@ -86,7 +127,6 @@ make deploy
 本儲存庫已包含 Terraform 設定檔，可協助建立 Dev Google Cloud 專案。
 詳見 [deployment/README.md](deployment/README.md) 取得詳細說明。
 
-
 ### 正式環境部署
 
 本儲存庫已包含正式環境的 Terraform 設定檔。請參考 [deployment/README.md](deployment/README.md) 取得詳細部署與基礎設施說明。
@@ -96,15 +136,17 @@ make deploy
 本應用程式提供兩層級的觀測性：
 
 **1. Agent Telemetry Events（永遠啟用）**
+
 - OpenTelemetry traces 與 spans 匯出至 **Cloud Trace**
 - 追蹤代理程式執行、延遲與系統指標
 
 **2. Prompt-Response Logging（可設定）**
+
 - GenAI 工具記錄 LLM 互動（tokens、model、timing）
 - 匯出至 **Google Cloud Storage**（JSONL）、**BigQuery**（external tables）、**Cloud Logging**（dedicated bucket）
 
-| 環境                                      | Prompt-Response Logging                                           |
-| ----------------------------------------- | ----------------------------------------------------------------- |
+| 環境                                      | Prompt-Response Logging                                            |
+| ----------------------------------------- | ------------------------------------------------------------------ |
 | **Local Development** (`make playground`) | ❌ 預設停用                                                        |
 | **Deployed Environments** (via Terraform) | ✅ **預設啟用**（隱私保護：僅記錄 metadata，不含 prompt/response） |
 

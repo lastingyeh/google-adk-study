@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 
 import vertexai
 from google.api_core.exceptions import FailedPrecondition
-from google.cloud import firestore
+from google.cloud import firestore  # type: ignore
 from google.cloud.firestore_v1.base_vector_query import DistanceMeasure
 from google.cloud.firestore_v1.vector import Vector
 from vertexai.language_models import TextEmbeddingModel
@@ -736,7 +736,7 @@ def analyze_execution_history(
             )
             results = query.stream()
 
-            resource_counts = {}
+            resource_counts: dict[str, int] = {}
 
             for doc in results:
                 data = doc.to_dict()
