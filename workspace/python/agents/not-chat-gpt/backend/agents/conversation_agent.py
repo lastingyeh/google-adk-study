@@ -12,6 +12,8 @@
 from __future__ import annotations
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
+from google.adk.tools.tool_context import ToolContext
+
 
 # 定義代理：按照框架規則，變數必須命名為 'root_agent' 才會被自動載入。
 # 參數說明：

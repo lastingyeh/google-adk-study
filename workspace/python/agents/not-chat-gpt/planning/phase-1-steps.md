@@ -52,6 +52,65 @@
 - [ ] 在 `ConversationAgent` 中定義一個 `ToolContext`，用來儲存和傳遞對話歷史 (`history`)。
 - [ ] 修改 Agent 的 `Root` method，使其能夠從 `ToolContext` 中讀取先前的對話，並在回應後將新的對話內容更新回去。
 - [ ] **(修改)** 使用 `adk api_server` 內建的 `POST /apps/{appName}/users/{userId}/sessions/{sessionId}` 端點來建立和管理會話，並在呼叫 `/run` 時傳入 `sessionId`。
+- [ ] 測試多輪對話
+
+```bash
+  # Create a new session
+  curl --location 'http://localhost:8000/apps/conversation_agent/users/u_123/sessions/s_123' \
+  --header 'Content-Type: application/json' \
+  --data '{"key1": "value1", "key2": 42}'
+
+  # 第一輪
+  curl --location 'http://localhost:8000/run' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "appName": "conversation_agent",
+      "userId": "u_123",
+      "sessionId": "s_123",
+      "newMessage": {
+          "role": "user",
+          "parts": [
+              {
+                  "text": "Hi, 我是 Chris, 是一名資深工程師, 喜歡跑步."
+              }
+          ]
+      }
+  }'
+
+  # 第二輪
+  curl --location 'http://localhost:8000/run' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "appName": "conversation_agent",
+      "userId": "u_123",
+      "sessionId": "s_123",
+      "newMessage": {
+          "role": "user",
+          "parts": [
+              {
+                  "text": "我是誰?"
+              }
+          ]
+      }
+  }'
+
+  # 第三輪
+  curl --location 'http://localhost:8000/run' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "appName": "conversation_agent",
+      "userId": "u_123",
+      "sessionId": "s_123",
+      "newMessage": {
+          "role": "user",
+          "parts": [
+              {
+                  "text": "我的興趣是什麼？"
+              }
+          ]
+      }
+  }'
+```
 
 #### 1.4 思考模式切換 (參考 Day 20: strategic-solver)
 
