@@ -7,13 +7,6 @@
 - Agent：包裝模型、名稱、描述與指令的物件，啟動後可在 Web UI 中被選取進行互動。
 
 此檔案主要定義一個名為 `root_agent` 的代理，為 ADK 啟動時的入口。依框架需求，若要在 Web 介面中自動列出該代理，必須使用名稱 `root_agent` 做為變數。
-
-v2 更新：
-- 參考 personal-tutor 範例，導入狀態管理機制。
-- 設計三種狀態層級，以模仿 GPT 的記憶與上下文能力：
-  1. `user:` 前綴：永久儲存使用者偏好。
-  2. Session 狀態：記錄當前對話歷史。
-  3. `temp:` 前綴：單次呼叫的暫存分析資料。
 """
 
 from __future__ import annotations
@@ -41,38 +34,22 @@ def remember_user_info(
     return {"status": "success", "message": f"已記住 {key} 為 {value}"}
 
 
-def get_user_info(key: str, tool_context: ToolContext) -> Dict[str, Any]:
-    """讀取先前儲存的使用者長期資訊。"""
-    value = tool_context.state.get(f"user:{key}")
-    if value:
-        return {"status": "found", "key": key, "value": value}
-    return {"status": "not_found", "key": key}
-
-
-def add_message_to_history(
-    role: str, content: str, tool_context: ToolContext
-) -> Dict[str, Any]:
-    """將一則訊息加入當前對話歷史（Session 狀態）。
-
-    說明：
-    - 不使用前綴，代表此狀態僅存於當前工作階段。
-    - `role` 應為 'user' 或 'assistant'。
-    """
-    history = tool_context.state.get("conversation_history", [])
-    history.append({"role": role, "content": content})
-    tool_context.state["conversation_history"] = history
-    return {"status": "success", "history_length": len(history)}
-
-
-def analyze_intent(intent: str, tool_context: ToolContext) -> Dict[str, Any]:
-    """分析使用者最新訊息的意圖，並暫存結果。
-
-    說明：
-    - 使用 `temp:` 前綴，代表此狀態為單次呼叫的暫存資料，呼叫結束後即丟棄。
-    - 用於在生成回應前，進行中間步驟的思考或標記。
-    """
-    tool_context.state["temp:last_message_intent"] = intent
-    return {"status": "success", "analyzed_intent": intent}
+def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
+    """載入使用者的完整上下文資訊，在對話開始時使用。"""
+    user_data = {}
+    
+    # 載入所有以 user: 開頭的狀態
+    for key, value in tool_context.state.to_dict().items():
+        if key.startswith("user:"):
+            clean_key = key.replace("user:", "")
+            user_data[clean_key] = value
+    
+    return {
+        "status": "success",
+        "user_context": user_data,
+        "total_items": len(user_data),
+        "message": "已載入完整使用者上下文" if user_data else "尚無使用者資訊"
+    }
 
 
 # ============================================================================
@@ -102,13 +79,11 @@ root_agent = Agent(
         你是一個溫暖且樂於助人的助理，具備模仿 GPT 的記憶能力。
 
         核心能力:
-        1.  **對話歷史**: 使用 `add_message_to_history` 工具記錄每一輪對話 (使用者與你自己的回應)，以維持上下文的連貫性。
-        2.  **使用者記憶**: 如果使用者提到個人資訊 (例如名字)，使用 `remember_user_info` 工具將其永久記住。在後續對話中，可使用 `get_user_info` 來回憶這些資訊，並稱呼使用者。
-        3.  **意圖分析**: 在回應前，可選擇性使用 `analyze_intent` 工具對使用者的問題進行分類或標記，此為暫存資訊。
+        1.  **使用者記憶**: 如果使用者提到個人資訊 (例如名字)，使用 `remember_user_info` 工具將其永久記住。在後續對話中，可使用 `get_user_info` 來回憶這些資訊，並稱呼使用者。
 
         互動流程:
         - 熱情地問候使用者。
-        - 在每次互動中，先將使用者的話加入歷史紀錄，然後再生成你的回應，並將你的回應也加入歷史紀錄。
+        - 如果偵測到使用者提問個人資訊，使用 `get_user_info` 工具來回憶。
         - 如果偵測到可記憶的資訊，就呼叫工具儲存起來。
         - 保持對話性和友善！
         """
@@ -116,10 +91,7 @@ root_agent = Agent(
     tools=[
         remember_user_info,
         get_user_info,
-        add_message_to_history,
-        analyze_intent,
-    ],
-    output_key="last_response",  # 最後回應會存放在 state['last_response']
+    ]
 )
 
 # 擴充建議：

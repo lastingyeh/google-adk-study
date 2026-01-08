@@ -1,119 +1,81 @@
 # Phase 1 Summary
 
-## 1.3 Session State Management (參考 Day 17: personal-tutor)
+## 1.3 Session State Management
 
-### 實踐概述
+**目標達成**: 實作具備狀態管理能力的對話 Agent，能夠記住使用者資訊並維持跨會話的持久化狀態。
 
-成功在 `ConversationAgent` 中實作了三層狀態管理機制，模仿 GPT 的記憶與上下文能力。此實作參考了 personal-tutor 範例的狀態管理設計，並透過 ADK 的 `ToolContext` 實現了持久化的會話狀態。
+### 核心實作內容
 
-### 核心架構
+#### 1. ToolContext 狀態管理架構
 
-#### 三層狀態設計
+- **實作位置**: `backend/agents/conversation_agent.py`
+- **核心概念**: 使用 `ToolContext` 作為狀態容器，透過 `tool_context.state` 管理會話數據
+- **狀態分類**:
+  - `user:` 前綴: 跨會話永久保存的使用者資訊 (姓名、偏好等)
+  - 一般狀態: 會話級別的暫時資訊
 
-1. **永久使用者狀態** (`user:` 前綴)
-   - 跨會話永久保存的使用者個人資訊
-   - 例如：姓名、偏好設定
-   - 使用 `remember_user_info()` 和 `get_user_info()` 工具管理
+#### 2. 狀態管理工具函式
 
-2. **會話狀態** (無前綴)
-   - 當前對話的歷史紀錄
-   - 維持多輪對話的上下文連貫性
-   - 透過 `add_message_to_history()` 工具管理
-
-3. **暫存狀態** (`temp:` 前綴)
-   - 單次呼叫的暫時分析資料
-   - 用於意圖分析、中間步驟思考
-   - 使用 `analyze_intent()` 工具管理
-
-#### 狀態管理工具實作
+**`remember_user_info` 工具**:
 
 ```python
-# 永久使用者資訊管理
-def remember_user_info(key: str, value: str, tool_context: ToolContext)
-def get_user_info(key: str, tool_context: ToolContext)
-
-# 會話歷史管理
-def add_message_to_history(role: str, content: str, tool_context: ToolContext)
-
-# 暫存意圖分析
-def analyze_intent(intent: str, tool_context: ToolContext)
+def remember_user_info(key: str, value: str, tool_context: ToolContext) -> Dict[str, Any]:
+    tool_context.state[f"user:{key}"] = value
+    return {"status": "success", "message": f"已記住 {key} 為 {value}"}
 ```
 
-### 技術實作細節
+- 功能: 儲存使用者個人資訊
+- 設計: 使用 `user:` 前綴確保跨會話持久化
 
-#### ToolContext 整合
+**`get_user_info` 工具**:
 
-- 使用 ADK 提供的 `ToolContext` 作為狀態容器
-- 透過 `tool_context.state` 字典存取各層狀態
-- 狀態前綴機制區分不同生命週期的資料
-
-#### 會話生命週期管理
-
-- 利用 `adk api_server` 內建的會話管理端點
-- `POST /apps/{appName}/users/{userId}/sessions/{sessionId}` 建立會話
-- `/run` 端點執行時自動載入對應會話狀態
-
-#### 多輪對話流程
-
-1. 使用者訊息透過 `/run` 端點傳入
-2. Agent 將訊息加入對話歷史
-3. 如偵測到個人資訊，自動儲存至永久狀態
-4. 生成回應並同樣加入歷史紀錄
-5. 狀態自動持久化至會話中
-
-### 測試驗證
-
-#### 會話建立測試
-
-```bash
-curl --location 'http://localhost:8000/apps/conversation_agent/users/u_123/sessions/s_123' \
---header 'Content-Type: application/json' \
---data '{"key1": "value1", "key2": 42}'
+```python
+def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
+    user_data = {}
+    for key, value in tool_context.state.to_dict().items():
+        if key.startswith("user:"):
+            clean_key = key.replace("user:", "")
+            user_data[clean_key] = value
+    return {"user_context": user_data, "total_items": len(user_data)}
 ```
 
-#### 多輪對話測試
+- 功能: 載入完整使用者上下文
+- 設計: 過濾並整理所有 `user:` 開頭的狀態資料
 
-**第一輪 - 資訊收集**:
+#### 3. Agent 整合配置
 
-```bash
-curl --location 'http://localhost:8000/run' \
---data '{
-    "appName": "conversation_agent",
-    "userId": "u_123",
-    "sessionId": "s_123",
-    "newMessage": {
-        "role": "user",
-        "parts": [{"text": "Hi, 我是 Chris, 是一名資深工程師, 喜歡跑步."}]
-    }
-}'
-```
+- **工具註冊**: 將狀態管理工具註冊到 `root_agent`
+- **指令整合**: 系統指令中明確定義記憶與回憶的使用時機
+- **自動化流程**: Agent 能自動偵測個人資訊並呼叫對應工具
 
-**第二輪 - 記憶驗證**:
+#### 4. ADK API Server 整合
 
-```bash
-curl --location 'http://localhost:8000/run' \
---data '{
-    "appName": "conversation_agent",
-    "userId": "u_123",
-    "sessionId": "s_123",
-    "newMessage": {
-        "role": "user",
-        "parts": [{"text": "我是誰?"}]
-    }
-}'
-```
+- **會話建立**: 使用內建的 `POST /apps/{appName}/users/{userId}/sessions/{sessionId}` 端點
+- **狀態持久化**: 透過 `sessionId` 自動管理狀態生命週期
+- **跨請求記憶**: 使用者資訊在多輪對話中自動保持
 
-### 關鍵成果
+#### 5. 測試驗證
 
-1. **狀態持久化**: 成功實現跨請求的狀態保持
-2. **記憶能力**: Agent 能記住並引用先前的使用者資訊
-3. **上下文連貫**: 多輪對話保持話題連續性
-4. **架構彈性**: 三層設計支援不同生命週期需求
-5. **ADK 整合**: 完全利用 ADK 內建功能，無需自建會話管理
+**多輪對話測試流程**:
 
-### 後續優化方向
+1. 建立會話: `POST /apps/conversation_agent/users/u_123/sessions/s_123`
+2. 第一輪對話: 使用者自我介紹 ("Hi, 我是 Chris...")
+3. 第二輪對話: 測試記憶功能 ("我是誰?")
+4. 驗證: Agent 能正確回憶並使用先前儲存的使用者資訊
 
-1. **狀態壓縮**: 當對話歷史過長時的自動摘要機制
-2. **智能遺忘**: 根據時間或重要性自動清理過時資訊
-3. **狀態同步**: 多設備間的狀態同步機制
-4. **性能優化**: 大量狀態資料的高效存取策略
+### 技術特色
+
+- **零配置記憶**: 無需額外資料庫，使用 ADK 內建狀態管理
+- **自動持久化**: `user:` 前綴資料自動跨會話保存
+- **工具化設計**: 記憶功能透過工具實現，可獨立測試與擴展
+- **對話自然性**: Agent 能在適當時機自動記憶與回憶，保持對話流暢度
+
+### 完成狀態
+
+- ✅ ToolContext 整合
+- ✅ 狀態管理工具實作
+- ✅ ADK API Server 會話管理
+- ✅ 多輪對話測試驗證
+- ✅ 跨會話記憶功能
+
+**下一步**: 準備進入 1.4 思考模式切換的實作階段。
