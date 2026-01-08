@@ -31,7 +31,12 @@
 
 # 2. 建立並啟用 Python 虛擬環境
 python3 -m venv .venv
+# 或 Windows 使用
+py -3.12 -m venv .venv
+# macOS/Linux
 source .venv/bin/activate
+# Windows
+.venv\Scripts\activate
 
 # 3. 安裝後端依賴
 pip install -r backend/requirements.txt
