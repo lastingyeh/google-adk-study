@@ -1,5 +1,6 @@
 # Vertex AI 快速模式：使用 Vertex AI 會話 (Sessions) 與記憶 (Memory)
-> 更新日期：2026 年 1 月 5 日
+
+🔔 `更新日期：2026 年 1 月 5 日`
 
 如果您有興趣使用 `VertexAiSessionService` 或 `VertexAiMemoryBankService` 但沒有 Google Cloud 專案，您可以註冊 Vertex AI 快速模式 (Express Mode) 以免費獲取存取權限並試用這些服務！您可以使用合格的 **_gmail_** 帳號在[此處](https://console.cloud.google.com/expressmode)註冊。有關 Vertex AI 快速模式的更多細節，請參閱[概覽頁面](https://cloud.google.com/vertex-ai/generative-ai/docs/start/express-mode/overview)。
 註冊後，獲取 [API 金鑰](https://cloud.google.com/vertex-ai/generative-ai/docs/start/express-mode/overview#api-keys)，即可開始在您的本地 ADK 代理 (Agent) 中使用 Vertex AI 會話與記憶服務！

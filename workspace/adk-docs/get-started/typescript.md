@@ -1,6 +1,6 @@
 # ADK TypeScript 快速入門
 
-> 更新日期：2026 年 1 月 4 日
+🔔 `更新日期：2026 年 1 月 4 日`
 
 本指南將說明如何開始使用 Agent Development Kit (ADK) for TypeScript。在開始之前，請確認您已安裝以下項目：
 

@@ -1,6 +1,6 @@
 # ADK for Python 快速入門
 
-> 更新日期：2026 年 1 月 4 日
+🔔 `更新日期：2026 年 1 月 4 日`
 
 本指南將引導您快速上手使用 Agent Development Kit (ADK) for Python。在開始之前，請確保您已安裝以下環境：
 

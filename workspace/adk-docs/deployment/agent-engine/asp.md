@@ -1,5 +1,7 @@
 # 使用 Agent Starter Pack 部署至 Agent Engine
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 此部署程序描述了如何使用 [Agent Starter Pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) (ASP) 和 ADK 命令列介面 (CLI) 工具執行部署。使用 ASP 部署到 Agent Engine 執行階段是一條加速路徑，您應該僅將其用於 _*開發和測試*_。ASP 工具配置的 Google Cloud 資源並非執行 ADK 代理程式工作流所嚴格必需的，在生產部署中使用之前，您應該徹底審查該配置。
 
 本部署指南使用 ASP 工具將專案範本套用到現有專案、添加部署成品，並為您的代理程式專案做好部署準備。這些說明展示了如何使用 ASP 為部署 ADK 專案所需的服務配置 Google Cloud 專案，如下所示：

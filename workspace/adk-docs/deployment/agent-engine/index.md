@@ -1,5 +1,7 @@
 # 部署到 Vertex AI Agent Engine
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 Google Cloud Vertex AI
 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview)
 是一套模組化服務，可幫助開發人員在生產環境中擴展和治理 Agent。Agent Engine 執行階段使您能夠在生產環境中使用端到端託管基礎設施部署 Agent，以便您可以專注於創建智慧且具影響力的 Agent。當您將 ADK Agent 部署到 Agent Engine 時，您的程式碼會在 *Agent Engine 執行階段 (runtime)* 環境中運行，這是 Agent Engine 產品提供的更大規模 Agent 服務集的一部分。

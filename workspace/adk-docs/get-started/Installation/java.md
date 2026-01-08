@@ -1,5 +1,6 @@
 # Java 安裝指南
-> 更新日期：2026 年 1 月 4 日
+
+🔔 `更新日期：2026 年 1 月 4 日`
 
 您可以使用 maven 或 gradle 來新增 `google-adk` 和 `google-adk-dev` 套件。
 

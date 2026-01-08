@@ -1,5 +1,7 @@
 # 在 Agent Engine 中測試已部署的代理
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 這些說明解釋了如何測試部署到 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview) 執行環境的 ADK 代理。在使用這些說明之前，您需要先使用[可用方法](./index.md)之一，完成將代理部署到 Agent Engine 執行環境的操作。本指南將向您展示如何透過 Google Cloud 控制台查看、互動和測試您部署的代理，並使用 REST API 呼叫或適用於 Python 的 Vertex AI SDK 與代理進行互動。
 
 ## 測試模式整合說明

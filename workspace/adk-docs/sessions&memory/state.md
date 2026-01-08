@@ -1,5 +1,6 @@
 # State：Session 的暫存記事本 (Scratchpad)
-> 更新日期：2026 年 1 月 5 日
+
+🔔 `更新日期：2026 年 1 月 5 日`
 
 在每個 `Session`（我們的對話執行緒）中，**`state`** 屬性扮演著 Agent 在該次互動中的專用記事本角色。雖然 `session.events` 保存了完整的歷史記錄，但 `session.state` 才是 Agent 用於存取與更新對話期間所需**動態細節**的地方。
 

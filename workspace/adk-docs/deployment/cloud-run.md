@@ -1,5 +1,7 @@
 # 部署到 Cloud Run
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 [Cloud Run](https://cloud.google.com/run)
 是一個全託管平台，讓您可以直接在 Google 的可擴展基礎架構上運行您的程式碼。
 

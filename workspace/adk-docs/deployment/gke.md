@@ -1,5 +1,7 @@
 # 部署到 Google Kubernetes Engine (GKE)
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 [GKE](https://cloud.google.com/gke) 是 Google Cloud 託管的 Kubernetes 服務。它允許您使用 Kubernetes 部署和管理容器化應用程式。
 
 要部署您的代理，您需要在 GKE 上運行 Kubernetes 叢集。您可以使用 Google Cloud Console 或 `gcloud` 命令列工具建立叢集。

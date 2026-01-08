@@ -1,5 +1,7 @@
 # 部署至 Vertex AI Agent Engine
 
+🔔 `更新日期：2026 年 1 月 8 日`
+
 本部署程序說明如何將 ADK 代理程式代碼標準部署至 Google Cloud
 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview)。
 如果您已有現有的 Google Cloud 專案，且希望仔細管理將 ADK 代理程式部署到 Agent Engine 執行階段環境，則應遵循此部署路徑。這些說明使用 Cloud Console、gcloud 命令列介面和 ADK 命令列介面 (ADK CLI)。此路徑推薦給已熟悉配置 Google Cloud 專案的使用者，以及準備進行生產環境部署的使用者。

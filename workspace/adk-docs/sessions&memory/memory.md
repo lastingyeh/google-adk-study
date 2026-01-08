@@ -1,5 +1,6 @@
 # 記憶 (Memory)：利用 `MemoryService` 實現長期知識
-> 更新日期：2026 年 1 月 5 日
+
+🔔 `更新日期：2026 年 1 月 5 日`
 
 我們已經了解了 `Session` 如何針對*單次、進行中的對話*追蹤歷史記錄 (`events`) 和臨時數據 (`state`)。但如果代理 (Agent) 需要回想*過去*對話中的資訊該怎麼辦？這就是**長期知識 (Long-Term Knowledge)** 和 **`MemoryService`** 概念發揮作用的地方。
 
