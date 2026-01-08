@@ -59,6 +59,21 @@ debug-playground:
 # 遠端部署代理
 # 用法：make deploy [IAP=true] [PORT=8080] - 設定 IAP=true 啟用 Identity-Aware Proxy，PORT 指定容器埠
 deploy:
+	# 部署 pack-policy-as-code 至 Google Cloud Run 的指令。
+	# 步驟說明如下：
+	# 1. 取得目前 gcloud 設定的專案 ID。
+	# 2. 使用 gcloud beta run deploy 指令部署服務：
+	#    - --source .：以目前目錄作為原始碼來源。
+	#    - --memory "4Gi"：分配 4Gi 記憶體。
+	#    - --project：指定專案 ID。
+	#    - --region "us-central1"：部署至 us-central1 區域。
+	#    - --no-allow-unauthenticated：不允許未驗證的存取。
+	#    - --no-cpu-throttling：停用 CPU 限速。
+	#    - --labels "created-by=adk"：加上標籤。
+	#    - --update-build-env-vars 設定建置時環境變數 AGENT_VERSION，從 pyproject.toml 讀取版本號，若失敗則預設為 0.0.0。
+	#    - --update-env-vars 設定執行時環境變數 COMMIT_SHA，為目前 git commit 的 SHA。
+	#    - $(if $(IAP),--iap)：如有設定 IAP 變數則加上 --iap。
+	#    - $(if $(PORT),--port=$(PORT))：如有設定 PORT 變數則加上 --port。
 	PROJECT_ID=$$(gcloud config get-value project) && \
 	gcloud beta run deploy pack-policy-as-code \
 		--source . \

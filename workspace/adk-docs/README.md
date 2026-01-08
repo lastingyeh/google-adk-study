@@ -46,6 +46,10 @@ ADK 文件提供了多種程式語言的快速入門指南，可協助您在幾�
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |
 | [Vertex AI 快速模式](./sessions&memory/express-mode.md)      | 說明如何使用 Vertex AI 會話與記憶的快速模式。            | [連結](./sessions&memory/express-mode.md)     |
 
+### 部署 (Deployment)
+
+
+
 ### 參考資源
 
 - [Google ADK Docs](https://google.github.io/adk-docs/)

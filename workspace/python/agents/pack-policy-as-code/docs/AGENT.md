@@ -301,7 +301,7 @@ graph TD
 
 ## 核心技術說明
 
-### [`memory.py`](memory.py) 程式碼分析
+### [`memory.py`](../policy_as_code_agent/memory.py) 程式碼分析
 
 #### 使用的主要服務
 
@@ -346,7 +346,7 @@ graph TD
 6. **時區處理**: 使用 UTC 時區感知的 datetime 物件以符合 Firestore 時間戳記
 
 ---
-### [`telemetry.py`](app_utils/telemetry.py) 程式碼分析
+### [`telemetry.py`](../policy_as_code_agent/app_utils/telemetry.py) 程式碼分析
 
 #### 🎯 核心概念：環境變數的魔力
 
