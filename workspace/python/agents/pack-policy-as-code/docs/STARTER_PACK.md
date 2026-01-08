@@ -41,7 +41,7 @@ pack-policy-as-code/
 make install && make playground
 ```
 
-> **📊 觀測性說明：** Agent telemetry（Cloud Trace）永遠啟用。Prompt-response logging（GCS、BigQuery、Cloud Logging）本機預設停用，部署環境預設啟用（僅記錄 metadata，不含 prompt/response）。詳見 [監控與觀測性](#monitoring-and-observability)。
+> **📊 觀測性說明：** Agent telemetry（Cloud Trace）永遠啟用。Prompt-response logging（GCS、BigQuery、Cloud Logging）本機預設停用，部署環境預設啟用（僅記錄 metadata，不含 prompt/response）。詳見 [監控與觀測性](#監控與觀測性)。
 
 ## 指令總覽
 
@@ -97,7 +97,7 @@ make install && make playground
 | `make terraform-plan-dev`  | 檢視開發環境的 Terraform 執行計劃                       |
 | `make terraform-plan-prod` | 檢視正式環境的 Terraform 執行計劃                       |
 
-完整指令與用法請參考 [Makefile](Makefile) 與 [DOCKER.md](DOCKER.md)。
+完整指令與用法請參考 [Makefile](../Makefile) 與 [DOCKER.md](DOCKER.md)。
 
 ## 使用方式
 
@@ -106,7 +106,7 @@ make install && make playground
 1. **Prototype：** 於 `notebooks/` 目錄使用入門筆記本開發生成式 AI 代理程式，並利用 Vertex AI Evaluation 評估效能。
 2. **Integrate：** 編輯 `policy_as_code_agent/agent.py` 匯入你的代理程式。
 3. **Test：** 以 `make playground` 測試代理程式功能，支援程式碼變更自動重載。
-4. **Deploy：** 建立並啟動 CI/CD 流程，根據需求自訂測試。詳見 [部署說明](#deployment)。基礎設施快速部署可用 `uvx agent-starter-pack setup-cicd`。參考 [`agent-starter-pack setup-cicd` CLI 指令](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html)。目前支援 GitHub，CI/CD 執行器包含 Google Cloud Build 與 GitHub Actions。
+4. **Deploy：** 建立並啟動 CI/CD 流程，根據需求自訂測試。詳見 [部署說明](#部署說明)。基礎設施快速部署可用 `uvx agent-starter-pack setup-cicd`。參考 [`agent-starter-pack setup-cicd` CLI 指令](https://googlecloudplatform.github.io/agent-starter-pack/cli/setup_cicd.html)。目前支援 GitHub，CI/CD 執行器包含 Google Cloud Build 與 GitHub Actions。
 5. **Monitor：** 利用 BigQuery telemetry、Cloud Logging、Cloud Trace 追蹤效能並優化應用。
 
 專案內含 `GEMINI.md`，可供 Gemini CLI 等 AI 工具查詢範本上下文。
@@ -125,11 +125,11 @@ make deploy
 ```
 
 本儲存庫已包含 Terraform 設定檔，可協助建立 Dev Google Cloud 專案。
-詳見 [deployment/README.md](deployment/README.md) 取得詳細說明。
+詳見 [deployment/README.md](./DEPLOY.md) 取得詳細說明。
 
 ### 正式環境部署
 
-本儲存庫已包含正式環境的 Terraform 設定檔。請參考 [deployment/README.md](deployment/README.md) 取得詳細部署與基礎設施說明。
+本儲存庫已包含正式環境的 Terraform 設定檔。請參考 [deployment/README.md](./DEPLOY.md) 取得詳細部署與基礎設施說明。
 
 ## 監控與觀測性
 
@@ -155,3 +155,7 @@ make deploy
 **部署環境停用方式：** 編輯 Terraform 設定檔，將 `OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT=false`。
 
 詳見 [觀測性指南](https://googlecloudplatform.github.io/agent-starter-pack/guide/observability.html) 取得詳細教學、查詢範例與視覺化方式。
+
+## 進階資源
+
+- [[ADK Docs] Deployment Guide: ASP (Agent Starter Pack)](../../../../adk-docs/deployment/agent-engine/asp.md)

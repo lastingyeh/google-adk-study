@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://a2a-protocol.org/latest/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/01/04`
+**更新日期 (Data Updated)**: `2026/01/08`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 

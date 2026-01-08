@@ -32,9 +32,6 @@
      - 根據 ADK 框架的慣例，它會在 `agents_dir` 下的代理程式目錄中建立一個 `.adk` 資料夾，並在其中生成 `session.db` 檔案用來儲存會話資訊。
      -
   3. **參考程式碼**：
-
       - [[adk-python] `local-storage.py`](https://github.com/google/adk-python/blob/main/src/google/adk/cli/utils/local_storage.py)
-
       - [[adk-python] `service_factory.py`](https://github.com/google/adk-python/blob/main/src/google/adk/cli/utils/service_factory.py)
-
       - [[adk-python] `cli.py`](https://github.com/google/adk-python/blob/main/src/google/adk/cli/cli.py)

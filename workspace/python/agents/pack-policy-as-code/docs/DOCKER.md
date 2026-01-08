@@ -659,8 +659,8 @@ make deploy PORT=8080
 
 ## 參考資源
 
-- [Dockerfile 參考文件](./Dockerfile)
-- [Makefile 指令總覽](./Makefile)
+- [Dockerfile 參考文件](../Dockerfile)
+- [Makefile 指令總覽](../Makefile)
 - [CI/CD 流程說明](./CICD.md)
 - [專案 README](./README.md)
 - [Google Cloud Artifact Registry 文件](https://cloud.google.com/artifact-registry/docs)
