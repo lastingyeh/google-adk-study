@@ -2206,3 +2206,99 @@ agents:
       - otel
       - callbacks
       - pydantic
+  - name: Policy as Code Agent
+    description: |
+      一個高效的代理，用於檢查中繼資料中的政策違規情況。
+      它擁有一個版本控制的記憶體來儲存和擷取政策，使其更快、更一致。
+      主要工作流程包含：
+      1. 根據使用者選擇的 GCS 路徑或 Dataplex 查詢來決定政策來源。
+      2. 在記憶體中尋找現有政策，若無則生成新政策並儲存。
+      3. 執行政策並報告違規情況。
+      4. 提供修復建議、合規計分卡、歷史分析等進階功能。
+      5. 整合 MCP 工具以增強與 Dataplex 資源的互動。
+    code_ref: workspace/python/agents/pack-policy-as-code/
+    type: App
+    models:
+      - gemini-2.5-flash
+    tools:
+      - name: find_policy_in_memory
+        type: FunctionTool
+        description: 在記憶體中尋找相似的政策。
+      - name: save_policy_to_memory
+        type: FunctionTool
+        description: 將新政策或更新後的政策儲存到記憶體中。
+      - name: list_policy_versions
+        type: FunctionTool
+        description: 列出特定政策的所有版本。
+      - name: get_policy_by_id
+        type: FunctionTool
+        description: 根據 ID 和版本號擷取特定政策。
+      - name: prune_memory
+        type: FunctionTool
+        description: 從記憶體中移除舊的或未使用的政策。
+      - name: rate_policy
+        type: FunctionTool
+        description: 讓使用者對政策的有效性進行評分。
+      - name: generate_policy_code_from_gcs
+        type: FunctionTool
+        description: 從 GCS 檔案的結構描述生成政策程式碼。
+      - name: run_policy_from_gcs
+        type: FunctionTool
+        description: 針對 GCS 中的元數據檔案執行政策。
+      - name: generate_policy_code_from_dataplex
+        type: FunctionTool
+        description: 從 Dataplex 查詢結果生成政策程式碼。
+      - name: run_policy_on_dataplex
+        type: FunctionTool
+        description: 針對 Dataplex 搜尋結果執行政策。
+      - name: get_supported_examples
+        type: FunctionTool
+        description: 返回範例政策查詢的列表。
+      - name: suggest_remediation
+        type: FunctionTool
+        description: 為發現的策略違規建議修復措施。
+      - name: get_execution_history
+        type: FunctionTool
+        description: 查詢過去的政策執行歷史。
+      - name: analyze_execution_history
+        type: FunctionTool
+        description: 對執行歷史進行深入分析。
+      - name: generate_compliance_scorecard
+        type: FunctionTool
+        description: 針對資料集執行一組核心政策並計算合規性分數。
+      - name: export_report
+        type: FunctionTool
+        description: 將違規報告匯出為 CSV 或 HTML 格式。
+      - name: get_active_core_policies
+        type: FunctionTool
+        description: 獲取目前設定的核心政策。
+      - name: save_core_policies
+        type: FunctionTool
+        description: 將當前的核心政策設定儲存為永久設定。
+      - name: add_core_policy
+        type: FunctionTool
+        description: 將新政策新增至核心政策集。
+      - name: remove_core_policy
+        type: FunctionTool
+        description: 從核心政策集中移除政策。
+      - name: PreloadMemoryTool
+        type: PreloadMemoryTool
+        description: 預加載記憶體工具。
+      - name: Dataplex MCP Toolset
+        type: MCPToolset
+        description: 提供與 Dataplex MCP 伺服器互動的工具集。
+    after_agent_callback:
+      - name: auto_save_session_to_memory_callback
+        type: AfterAgentCallback
+        description: 在代理執行後自動將會話儲存到記憶體中。
+    server-port: 8000
+    tags:
+      - policy-as-code
+      - gcs
+      - dataplex
+      - compliance
+      - mcp
+      - memory
+      - fastapi
+      - cloud-run
+      - callbacks

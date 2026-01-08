@@ -386,13 +386,13 @@ ADK 提供了一個 CLI 命令來簡化 GKE 部署。這避免了手動建置映
 
 4. **所需的 IAM 權限：** 執行命令的使用者或 Compute Engine 預設服務帳戶至少需要以下角色：
 
-   * **Kubernetes Engine Developer** (`roles/container.developer`)：用於與 GKE 叢集互動。
+     * **Kubernetes Engine Developer** (`roles/container.developer`)：用於與 GKE 叢集互動。
 
-   * **Storage Object Viewer** (`roles/storage.objectViewer`)：允許 Cloud Build 從 gcloud builds submit 上傳到的 Cloud Storage 儲存桶下載原始碼。
+   - **Storage Object Viewer** (`roles/storage.objectViewer`)：允許 Cloud Build 從 gcloud builds submit 上傳到的 Cloud Storage 儲存桶下載原始碼。
 
-   * **Artifact Registry Create on Push Writer** (`roles/artifactregistry.createOnPushWriter`)：允許 Cloud Build 將建置的容器映像推送到 Artifact Registry。此角色還允許在第一次推送時如果需要，在 Artifact Registry 中即時建立特殊的 gcr.io 存放庫。
+   -  **Artifact Registry Create on Push Writer** (`roles/artifactregistry.createOnPushWriter`)：允許 Cloud Build 將建置的容器映像推送到 Artifact Registry。此角色還允許在第一次推送時如果需要，在 Artifact Registry 中即時建立特殊的 gcr.io 存放庫。
 
-   * **Logs Writer**  (`roles/logging.logWriter`)：允許 Cloud Build 將建置記錄寫入 Cloud Logging。
+   - **Logs Writer**  (`roles/logging.logWriter`)：允許 Cloud Build 將建置記錄寫入 Cloud Logging。
 
 ### `deploy gke` 命令
 
