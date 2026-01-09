@@ -95,16 +95,19 @@
   }'
 ```
 
-#### 1.4 思考模式切換 (參考 Day 20: strategic-solver)
+#### 1.4 思考模式切換 (參考 Day 12: Planners and Thinking)
 
-- [ ] 建立 `backend/config/mode_config.py`，定義不同的 `ThinkingConfig`。
-- [ ] 在 `ConversationAgent` 中引入 `adk.BuiltInPlanner`。
-- [ ] **(修改)** 修改 `Root` method，使其可以根據傳入 `ToolContext` 或會話狀態中的 `mode` 參數，動態切換 Agent 的 `ThinkingConfig`。
+- [ ] **(架構修改)** 不在單一 Agent 內部動態切換，而是根據 API 請求參數選擇不同的 Agent 實例。
+- [ ] 在 `backend/agents/` 中，除了現有的 `conversation_agent.py`，再建立一個 `strategic_agent.py`。
+- [ ] `conversation_agent`: 保持為標準的對話 Agent，不使用 Planner。
+- [ ] `strategic_agent`: 引入 `adk.planners.PlanReActPlanner`，使其具備結構化思考與規劃能力。
+- [ ] **(API 層)** 修改 API 伺服器的請求分派邏輯 (或在 `adk api_server` 的上層包裝一個簡單的路由腳本)，使其能根據 `/run` 請求中的參數 (例如 `mode: "strategic"`) 來決定將請求轉發給 `conversation_agent` 還是 `strategic_agent`。這樣無需修改 `adk` 核心，也無需新增 API 端點。
 
 #### 1.6 簡易 CLI 測試
 
 - [ ] 建立一個 `scripts/cli_tester.py` 腳本。
 - [ ] **(修改)** 該腳本透過 `requests` 函式庫呼叫由 `adk api_server` 提供的 `/run` API，並在終端機中進行多輪對話測試。
+- [ ] **(新增)** 為 `cli_tester.py` 新增一個命令列參數 (例如 `--mode strategic`)，用以在 API 請求中傳遞 `mode` 參數，從而測試不同思考模式下的 Agent 回應。
 
 ---
 
