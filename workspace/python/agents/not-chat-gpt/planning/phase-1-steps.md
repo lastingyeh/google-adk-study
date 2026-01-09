@@ -98,10 +98,10 @@
 #### 1.4 思考模式切換 (參考 Day 12: Planners and Thinking)
 
 - [ ] **(架構修改)** 不在單一 Agent 內部動態切換，而是根據 API 請求參數選擇不同的 Agent 實例。
-- [ ] 在 `backend/agents/` 中，除了現有的 `conversation_agent.py`，再建立一個 `strategic_agent.py`。
-- [ ] `conversation_agent`: 保持為標準的對話 Agent，不使用 Planner。
-- [ ] `strategic_agent`: 引入 `adk.planners.PlanReActPlanner`，使其具備結構化思考與規劃能力。
-- [ ] **(API 層)** 修改 API 伺服器的請求分派邏輯 (或在 `adk api_server` 的上層包裝一個簡單的路由腳本)，使其能根據 `/run` 請求中的參數 (例如 `mode: "strategic"`) 來決定將請求轉發給 `conversation_agent` 還是 `strategic_agent`。這樣無需修改 `adk` 核心，也無需新增 API 端點。
+- [x] 在 `backend/agents/` 中，除了現有的 `conversation_agent.py`，再建立一個 `strategic_planner_agent.py`。
+- [x] `conversation_agent`: 保持為標準的對話 Agent，不使用 Planner。
+- [x] `strategic_planner_agent`: 引入 `adk.planners.BuiltInPlanner`，使其具備結構化思考與規劃能力。
+- [ ] **(API 層)** 修改 API 伺服器的請求分派邏輯 (或在 `adk api_server` 的上層包裝一個簡單的路由腳本)，使其能根據 `/run` 請求中的參數 (例如 `mode: "strategic"`) 來決定將請求轉發給 `conversation_agent` 還是 `strategic_planner_agent`。這樣無需修改 `adk` 核心，也無需新增 API 端點。
 
 #### 1.6 簡易 CLI 測試
 
