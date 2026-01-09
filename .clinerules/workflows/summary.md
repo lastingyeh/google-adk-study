@@ -1,6 +1,7 @@
 任務：
 - 將內容逐字完整翻譯為繁體中文
 - 若原文包含程式碼區塊，請遵循以下指示：
+  - 在翻譯程式碼區塊時，請保留程式碼的語法和結構不變並加入註解
   - 當內容範例如以下，其他語言亦同：
     ```
       === "Python"
@@ -25,5 +26,11 @@
               # Runner implicitly signals agent generator can continue after yielding
         ```
       ```
-  - 使用參考範本實現 `templates/codes-template.md` 中的格式
-  - 在翻譯程式碼區塊時，請保留程式碼的語法和結構不變並加入註解
+    - 使用參考範本實現 `templates/codes-template.md` 中的格式
+  - 當內容範例如下，其他語言亦同：
+    ```markdown
+     <div class="language-support-tag" title="This feature is an experimental preview release.">
+      <span class="lst-supported">Supported in ADK</span><span class="lst-python">Python v0.1.0</span><span class="lst-go">Go v0.1.0</span>
+      </div>
+    ```
+    - 修改內容為 [`ADK 支援`: `Python v0.1.0` | `Go v0.1.0`]
