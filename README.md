@@ -23,7 +23,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./docs/google-adk-docs-community_summary.md)
 - **參考資源**
   - [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
@@ -44,7 +44,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](.github/agents/repo-guiding-learning.chatmode.agent.md)
 - **參考資源**
   - [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
@@ -62,7 +62,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [環境初始化流程](./workspace/python/agents/software-bug-assistant/docs/INSTALLATION_GUIDE.md)
   - [Software Bug Assistant](./workspace/python/agents/software-bug-assistant/)
 - **參考資源**
@@ -80,7 +80,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/python/agents/youtube-shorts-assistant/README.md)
   - [Youtube Shorts Assistant](./workspace/python/agents/youtube-shorts-assistant/)
 - **參考資源**
@@ -99,7 +99,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/python/agents/finance-assistant/README.md)
   - [Finance Assistant](./workspace/python/agents/finance-assistant/)
@@ -120,7 +120,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/03-openapi_tools.md)
   - [Chuck Norris Agent](./workspace/python/agents/chuck-norris-agent/)
@@ -141,7 +141,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/11-built_in_tools_grounding.md)
   - [Grounding Agent](./workspace/python/agents/grounding-agent/)
 - **參考資源**
@@ -159,7 +159,7 @@
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/16-mcp_integration.md)
   - [MCP Agent](./workspace/python/agents/mcp-agent/)
 - **參考資源**
@@ -177,7 +177,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/workflows-orchestration.md)
 - **參考資源**
   - [Workflows & Orchestration](https://raphaelmansuy.github.io/adk_training/docs/workflows-orchestration)
@@ -194,7 +194,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/04-sequential_workflows.md)
   - [Blog Creation Pipeline](./workspace/python/agents/blog-pipeline/)
 - **參考資源**
@@ -212,7 +212,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/05-parallel_processing.md)
   - [Travel Planner](./workspace/python/agents/travel-planner/)
 - **參考資源**
@@ -230,7 +230,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/06-multi_agent_systems.md)
   - [Content Publisher](./workspace/python/agents/content-publisher/)
   - [Content Publisher Agent Architecture](./workspace/python/agents/content-publisher/agent_architecture.md)
@@ -249,7 +249,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/07-loop_agents.md)
   - [Essay Refiner](./workspace/python/agents/essay-refiner/)
 - **參考資源**
@@ -267,7 +267,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/overview.md)
 - **參考資源**
   - [LLM Integration](https://raphaelmansuy.github.io/adk_training/docs/llm-integration)
@@ -287,7 +287,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/learning-paths.md)
 - **參考資源**
   - [Learning Paths](https://raphaelmansuy.github.io/adk_training/docs/learning-paths)
@@ -305,7 +305,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/reference-guide.md)
   - [00-setup_authentication](./workspace/notes/google-adk-training-hub/adk_training/00-setup_authentication.md)
   - [01-hello_world_agent](./workspace/notes/google-adk-training-hub/adk_training/01-hello_world_agent.md)
@@ -327,7 +327,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/08-state_memory.md)
   - [personal tutor](./workspace/python/agents/personal-tutor/)
 - **參考資源**
@@ -345,7 +345,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/09-callbacks_guardrails.md)
   - [content moderator](./workspace/python/agents/content-moderator/)
 - **參考資源**
@@ -363,7 +363,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/10-evaluation_testing.md)
   - [Support Agent](./workspace/python/agents/support-agent/)
 - **參考資源**
@@ -381,7 +381,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/12-planners_thinking.md)
   - [Strategic Solver](./workspace/python/agents/strategic-solver/)
 - **參考資源**
@@ -399,7 +399,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/13-code_execution.md)
   - [Code Calculator](./workspace/python/agents/code-calculator/)
 - **參考資源**
@@ -420,7 +420,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Building AI Agents Visually with Google ADK Visual Agent Builder 完整內容整理](./workspace/articles/google-adk-visual-agent-builder/building-ai-agents-visually-with-google-adk-visual-agent-builder.md)
   - [ADK Course #8 - NEW Visual Agent Builder | Agent Development Kit (ADK) 影片重點整理](<./workspace/articles/google-adk-visual-agent-builder/theailanguage-No-Code%20Visual%20Agent%20Builder%20(v6).md>)
   - [Code execution with MCP](<./workspace/articles/mcp/1-STOP%20Using%20MCP%20Like%20This,%20Use%20MCP%202.0%20Instead%20(Save%2098%25%20More%20Tokens).md>)
@@ -443,7 +443,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文字串流文件](./workspace/notes/google-adk-training-hub/adk_training/14-streaming_sse.md)
   - [音訊串流文件](./workspace/notes/google-adk-training-hub/adk_training/15-live_api_audio.md)
   - [streaming agent](./workspace/python/agents/streaming-agent/)
@@ -464,7 +464,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/17-agent_to_agent.md)
   - [A2A Orchestrator](./workspace/python/agents/a2a-orchestrator/)
 - **參考資源**
@@ -482,7 +482,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/18-events_observability.md)
   - [Observability Agent](./workspace/python/agents/observability-agent/)
 - **參考資源**
@@ -500,7 +500,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/19-artifacts_files.md)
   - [Artifact Agent](./workspace/python/agents/artifact-agent/)
 - **參考資源**
@@ -518,7 +518,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/20-yaml_configuration.md)
   - [Customer Support](./workspace/python/agents/customer-support/)
 - **參考資源**
@@ -536,7 +536,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/21-multimodal_image.md)
   - [Vision Catalog Agent](./workspace/python/agents/vision-catalog-agent/)
 - **參考資源**
@@ -554,7 +554,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/articles/ops-a2a-cosmos/README.md)
 - **參考資源**
   - [A2A, MCP, Kafka and Flink: The New Stack for AI Agents](https://thenewstack.io/a2a-mcp-kafka-and-flink-the-new-stack-for-ai-agents/)
@@ -574,7 +574,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/22-model_selection.md)
   - [Model Selector](./workspace/python/agents/model-selector/)
 - **參考資源**
@@ -599,7 +599,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/23-production_deployment.md)
   - [Production Agent](./workspace/python/agents/production-agent/)
 - **參考資源**
@@ -617,7 +617,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/24-advanced_observability.md)
   - [Observability Plugins Agent](./workspace/python/agents/observability-plugins-agent/)
 - **參考資源**
@@ -635,7 +635,7 @@ Google ADK 工作流程編排核心-三大模式：順序流程處理依賴任�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/25-best_practices.md)
   - [Best Practices Agent](./workspace/python/agents/best-practices-agent/)
 - **參考資源**
@@ -653,7 +653,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/26-google_agentspace.md)
   - [Enterprise Agent](./workspace/python/agents/enterprise-agent/)
 - **參考資源**
@@ -671,7 +671,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/27-third_party_tools.md)
   - [Third Party Agent](./workspace/python/agents/third-party-agent/)
 - **參考資源**
@@ -689,7 +689,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/28-using_other_llms.md)
   - [Multi LLM Agent](./workspace/python/agents/multi-llm-agent/)
 - **參考資源**
@@ -707,7 +707,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/36-gepa_optimization_advanced.md)
   - [GEPA Optimization Agent](./workspace/python/agents/gepa-optimization-agent/)
 - **參考資源**
@@ -725,7 +725,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/29-ui_integration_intro.md)
   - [UI Integration](./workspace/python/agents/ui-integration/)
 - **參考資源**
@@ -743,7 +743,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/30-nextjs_adk_integration.md)
   - [Customer Support Agent](./workspace/python/agents/customer-support-agent/)
 - **參考資源**
@@ -761,7 +761,7 @@ Gemini Enterprise (原 AgentSpace) 為 Google 企業級代理平台，整合 ADK
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/31-react_vite_adk_integration.md)
   - [Data Analysis Dashboard](./workspace/python/agents/data-analysis-dashboard/)
 - **參考資源**
@@ -779,7 +779,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/32-streamlit_adk_integration.md)
   - [Data Analysis Agent](./workspace/python/agents/data-analysis-agent/)
 - **參考資源**
@@ -797,7 +797,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/33-slack_adk_integration.md)
   - [Support Bot](./workspace/python/agents/support-bot/)
 - **參考資源**
@@ -815,7 +815,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/34-pubsub_adk_integration.md)
   - [Pubsub Agent](./workspace/python/agents/pubsub-agent/)
 - **參考資源**
@@ -833,7 +833,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/35-commerce_agent_e2e.md)
   - [Commerce Agent E2E](./workspace/python/agents/commerce-agent-e2e/)
 - **參考資源**
@@ -851,7 +851,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/adk_training/37-file_search_policy_navigator.md)
   - [Policy Navigator](./workspace/python/agents/policy-navigator/)
 - **參考資源**
@@ -869,7 +869,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [MCP A2A Master](./workspace/python/agents/mcp-a2a-master/)
 - **參考資源**
   - [a2a_samples-version_7_mcp_a2a_master-mcp_a2a_master](https://github.com/theailanguage/a2a_samples/tree/main/version_7_mcp_a2a_master/mcp_a2a_master)
@@ -887,7 +887,7 @@ Streamlit 結合 ADK，用純 Python 打造數據分析 AI。整合 Gemini 2.0 �
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-11-18-opentelemetry-adk-jaeger.md)
   - [Math Agent Otel](./workspace/python/agents/math-agent-otel/)
 - **參考資源**
@@ -907,7 +907,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-21-gemini-enterprise.md)
 - **參考資源**
   - [Gemini Enterprise: Why Your AI Agents Need Enterprise-Grade Capabilities](https://github.com/raphaelmansuy/adk_training/blob/main/docs/blog/2025-10-21-gemini-enterprise.md)
@@ -924,7 +924,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-01-fast-track-agent-starter-pack.md)
   - [Pack ADK A2A Agent](./workspace/python/agents/pack-adk-a2a-agent/)
 - **參考資源**
@@ -945,7 +945,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-08-context-engineering-google-adk-architecture.md)
 - **參考資源**
   - [Context Engineering: Inside Google's Architecture for Production AI Agents](https://raphaelmansuy.github.io/adk_training/blog/2025/12/08/context-engineering-google-adk-architecture)
@@ -962,7 +962,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [文件連結](./workspace/articles/ebpf/README.md)
 - **參考資源**
   - [EBPF 文章參考文獻 References](./workspace/articles/ebpf/README.md#-參考文獻-references)
@@ -979,7 +979,7 @@ Gemini Enterprise 取代 Agentspace，提供企業級合規、安全與資料主
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-14-multi-agent-pattern.md)
 
@@ -998,7 +998,7 @@ Google 全新的 Interactions API 是一個統一的閘道，可同時存取 Gem
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-12-12-interactions-api-deep-research.md)
 
@@ -1017,7 +1017,7 @@ Google 全新的 Interactions API 是一個統一的閘道，可同時存取 Gem
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Interactions API Basic](./workspace/python/agents/interactions-api-basic/)
 
@@ -1037,7 +1037,7 @@ AI 代理部署與優化指南：部署 AI 代理比想像簡單，平台已處�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結：deploy ai agents](./workspace/notes/google-adk-training-hub/blog/2025-10-17-deploy-ai-agents.md)
   - [文件連結：context compaction](./workspace/notes/google-adk-training-hub/blog/2025-10-19-til-context-compaction.md)
@@ -1059,7 +1059,7 @@ ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-20-til-pause-resume.md)
   - [Pause Resume Agent](./workspace/python/agents/pause-resume-agent/)
@@ -1079,7 +1079,7 @@ ADK 1.16 暫停與恢復調用功能：Agent 可在關鍵點建立狀態檢查�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-21-til-tool-use-quality.md)
   - [Tool Use Evaluator](./workspace/python/agents/tool-use-evaluator/)
@@ -1099,7 +1099,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [文件連結](./workspace/notes/google-adk-training-hub/blog/2025-10-23-til-custom-session-services.md)
   - [Custom Session Agent](./workspace/python/agents/custom-session-agent/)
@@ -1119,7 +1119,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Google ADK Site Map](./docs/sitemaps/adk-sitemap.md)
   - [A2A Protocol Site Map](./docs/sitemaps/a2a-sitemap.md)
@@ -1142,7 +1142,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Deep Research Agent](./workspace/python/agents/deep-research-agent/)
   - [ADK Interactions Integration](./workspace/python/agents/adk-interactions-integration/)
@@ -1180,7 +1180,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1208,7 +1208,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1240,7 +1240,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1272,7 +1272,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1306,7 +1306,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1338,7 +1338,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
@@ -1356,7 +1356,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [RAG KM Agent](./workspace/python/agents/rag-km-agents/)
 
@@ -1376,7 +1376,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Live Interact Agent](./workspace/python/agents/live-interact-agent/)
 
@@ -1396,7 +1396,7 @@ Part 1/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Brand Search Optimization](./workspace/python/agents/brand-search-optimization/)
 
@@ -1416,7 +1416,7 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Brand Search Optimization](./workspace/python/agents/brand-search-optimization/)
 
@@ -1436,7 +1436,7 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Pack Customer Service](./workspace/python/agents/pack-customer-service/)
 
@@ -1456,7 +1456,7 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#快速入門-get-started)
 
@@ -1477,7 +1477,7 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#會話與記憶-sessions--memory)
 
@@ -1503,7 +1503,7 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Pack Policy As Code](./workspace/python/agents/pack-policy-as-code/)
 
@@ -1524,7 +1524,7 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Pack Policy As Code](./workspace/python/agents/pack-policy-as-code/)
 
@@ -1545,7 +1545,7 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 </summary>
 
-- **詳細說明**：
+- **詳細說明**
 
   - [Pack Policy As Code](./workspace/python/agents/pack-policy-as-code/)
   - [ADK docs Deployment 文件整合](./workspace/adk-docs/README.md#部署-deployment)
@@ -1555,6 +1555,27 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
   - [adk-samples 存儲庫 (policy as code)](https://github.com/google/adk-samples/tree/3d9fe35ce097760c5dceb7136a2c72802c3c6021/python/agents/policy-as-code)
   - [agent-starter-pack 官方文件](https://github.com/GoogleCloudPlatform/agent-starter-pack)
   - [[adk-docs] Deployment](https://google.github.io/adk-docs/deploy/)
+
+</details>
+
+
+#### 🕗 Day 77
+
+<details>
+<summary>
+ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可以使用 API 伺服器進行本地測試，並透過 RunConfig 客製化執行行為，如串流與呼叫限制。它還支援從中斷點恢復工作流程，確保執行的穩健性。
+
+🏷️ `runtime`, `event-loop`, `api-server`, `fastapi`, `run-config`, `resume`, `workflow`, `async`, `streaming`
+
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Agent Runtime](./workspace/adk-docs/README.md#代理執行-agent-runtime)
+
+- **參考資源**
+
+  - [ADK 官方文件網站](https://google.github.io/adk-docs/runtime/)
 
 </details>
 
