@@ -70,6 +70,12 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 - **工具化設計**: 記憶功能透過工具實現，可獨立測試與擴展
 - **對話自然性**: Agent 能在適當時機自動記憶與回憶，保持對話流暢度
 
+### 勘誤與最佳實踐
+
+- **ADK 會話管理**: `adk api_server` 啟動後會自動建立並管理 `session.db`，處理會話狀態的持久化，開發者無需手動設定。
+- **長期記憶儲存策略**: 雖然 ADK 提供了跨會話的狀態保存能力，但不建議使用 `after_agent_response` 這類 callback 自動儲存所有資訊。這樣會導致記憶量劇烈上升。
+- **最佳實踐**: 較好的做法是將記憶儲存的權力交給 LLM。透過工具 (Tool)，讓模型根據對話上下文自行判斷是否有儲存長期記憶的必要，或由使用者明確發出指令要求儲存。
+
 ### 完成狀態
 
 - ✅ ToolContext 整合
@@ -78,4 +84,12 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 - ✅ 多輪對話測試驗證
 - ✅ 跨會話記憶功能
 
-**下一步**: 準備進入 1.4 思考模式切換的實作階段。
+## 1.4 思考模式切換
+
+### Agent Session 隔離與限制
+
+根據 ADK 的預設行為，每個 Agent 的會話管理是獨立且隔離的。
+
+- **獨立 Session 資料庫**: 每個 Agent 會在其專屬的資料夾中建立一個 `session.db` 檔案來管理會話。
+- **Session 表格與 `appName`**: 在 `session.db` 的 `session` 表格中，會有一欄 `appName` 用來記錄該會話屬於哪個 Agent。
+- **無法共享 Session**: 由於這種設計，ADK 的預設機制不支援讓多個不同的 Agent 共享同一個 Session 狀態。若要實現跨 Agent 的狀態共享，需要額外設計外部的共享狀態儲存機制。
