@@ -53,7 +53,7 @@ agents:
     # 選填：工具列表
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool, PreloadMemoryTool
         description: <TOOL_DESCRIPTION>
 
         # 選填：特定工具類型的額外設定
@@ -86,6 +86,9 @@ agents:
     #   top_p: <VALUE>
     #   top_k: <VALUE>
     #   max_iterations: <VALUE> # 用於 LoopAgent
+    #   safety_settings: # 安全設定
+    #     - category: <CATEGORY> # 例如：HARM_CATEGORY_DANGEROUS_CONTENT
+    #       threshold: <THRESHOLD> # 例如：OFF
 
     # 選填：回呼函式（生命週期鉤子）
     # before_agent_callback:
@@ -112,6 +115,24 @@ agents:
     #   - name: <CALLBACK_NAME>
     #     type: AfterAgentCallback
     #     description: <DESCRIPTION>
+
+    # 選填：上下文快取設定 (例如在 Cache Analysis Assistant 中使用)
+    # context_cache_config:
+    #   min_tokens: <NUMBER> # 例如：4096
+    #   ttl_seconds: <NUMBER> # 例如：600
+    #   cache_intervals: <NUMBER>
+
+    # 選填：事件壓縮設定 (例如在 Hello World App 中使用)
+    # events_compaction_config:
+    #   compaction_interval: <NUMBER>
+    #   overlap_size: <NUMBER>
+
+    # 選填：靜態指令設定 (例如在 Bingo Digital Pet 中使用)
+    # static_instruction: true
+    # instruction:
+    #   name: <INSTRUCTION_NAME>
+    #   description: <DESCRIPTION>
+    #   type: <TYPE> # 例如：Function
 
     server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none" 或 null
     tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow, mcp, interactions-api
