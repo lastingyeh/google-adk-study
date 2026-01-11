@@ -97,11 +97,15 @@
 
 #### 1.4 思考模式切換 (參考 Day 12: Planners and Thinking)
 
-- [ ] **(架構修改)** 不在單一 Agent 內部動態切換，而是根據 API 請求參數選擇不同的 Agent 實例。
-- [x] 在 `backend/agents/` 中，除了現有的 `conversation_agent.py`，再建立一個 `strategic_planner_agent.py`。
+- [ ] **(架構修改)** 採用 Orchestrator 模式，建立一個主 Agent 來根據使用者輸入分派任務。
+- [x] 在 `backend/agents/` 中，建立 `conversation_agent.py` (用於一般對話) 和 `strategic_planner_agent.py` (用於複雜規劃)。
 - [x] `conversation_agent`: 保持為標準的對話 Agent，不使用 Planner。
 - [x] `strategic_planner_agent`: 引入 `adk.planners.BuiltInPlanner`，使其具備結構化思考與規劃能力。
-- [ ] **(API 層)** 修改 API 伺服器的請求分派邏輯 (或在 `adk api_server` 的上層包裝一個簡單的路由腳本)，使其能根據 `/run` 請求中的參數 (例如 `mode: "strategic"`) 來決定將請求轉發給 `conversation_agent` 還是 `strategic_planner_agent`。這樣無需修改 `adk` 核心，也無需新增 API 端點。
+- [ ] **(Orchestrator 實作)** 建立一個新的 `orchestrator_agent.py` 作為 API 的主要入口點。
+- [ ] 在 `orchestrator_agent` 中實作邏輯，分析使用者輸入：
+  - 如果輸入包含特定指令 (例如 `#think`)，則將任務委派 (delegate) 給 `strategic_planner_agent`。
+  - 否則，將任務委派給 `conversation_agent`。
+- [ ] **(API 層)** `adk api_server` 只需暴露 `orchestrator_agent`。客戶端將始終與 `orchestrator_agent` 互動，由它在內部完成任務分派。
 
 #### 1.6 簡易 CLI 測試
 
