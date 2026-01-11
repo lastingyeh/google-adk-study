@@ -1583,7 +1583,6 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 <details>
 <summary>
-
 介紹 ADK 上下文管理，涵蓋多種上下文類型，並透過內容快取減少成本及事件壓縮優化長對話，顯著提升代理效能與回應速度。
 
 🏷️ `context`, `compaction`, `caching`, `token`, `events-compacting-config`
