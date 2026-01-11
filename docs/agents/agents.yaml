@@ -2388,3 +2388,52 @@ agents:
       - session-state
       - interactive
       - dynamic-instruction
+  - name: Hello World App
+    description: |
+      此說明描述一個負責擲骰子、使用工具檢查質數，並遵循特定步驟回應的代理人角色。
+    code_ref: workspace/python/agents/hello-world-app
+    type: App
+    models:
+      - gemini-2.0-flash
+    tools:
+      - name: roll_die
+        type: FunctionTool
+        description: |
+          擲骰子並回傳結果。此工具接受骰子面數作為參數，並將每次擲骰結果儲存至會話狀態中的 'rolls' 列表。
+          使用者可以透過此工具擲不同面數的骰子（例如：6 面、8 面、20 面骰子）。
+      - name: check_prime
+        type: FunctionTool
+        description: |
+          檢查給定的數字列表是否為質數。此工具接受一個整數列表，並回傳哪些數字是質數。
+          使用非同步處理來提高效能。
+      - name: load_artifacts
+        type: LoadArtifactsTool
+        description: |
+          載入之前儲存的 artifacts 檔案。此工具由 ADK 提供，可以載入會話中儲存的檔案。
+    plugins:
+      - name: CountInvocationPlugin
+        type: BasePlugin
+        description: |
+          自定義插件，用於統計代理人與工具的調用次數。
+          追蹤三種計數：agent_count（代理人運行次數）、tool_count（工具調用次數）、llm_request_count（LLM 請求次數）。
+          在每次調用前輸出計數資訊，方便追蹤與除錯。
+      - name: SaveFilesAsArtifactsPlugin
+        type: SaveFilesAsArtifactsPlugin
+        description: |
+          自動將生成的檔案儲存為 artifacts。此插件由 ADK 提供，可以自動處理檔案儲存。
+    events_compaction_config:
+      compaction_interval: 2
+      overlap_size: 1
+    generate_content_config:
+      safety_settings:
+        - category: HARM_CATEGORY_DANGEROUS_CONTENT
+          threshold: OFF
+    tags:
+      - hello-world
+      - demo
+      - event-compaction
+      - plugins
+      - session-state
+      - artifacts
+      - parallel-tools
+      - safety-settings
