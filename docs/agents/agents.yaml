@@ -2305,7 +2305,7 @@ agents:
   - name: Cache Analysis Assistant
     description: |
       本代理人設計用於測試 ADK 的 context caching（上下文快取）功能，並以超過 2048 tokens 的大型提示來滿足隱式與顯式快取需求。
-# 並以超過 2048 tokens 的大型提示來滿足隱式與顯式快取需求。
+    # 並以超過 2048 tokens 的大型提示來滿足隱式與顯式快取需求。
     code_ref: workspace/python/agents/cache-analysis
     type: App
     models:
@@ -2359,3 +2359,32 @@ agents:
       - context-caching
       - benchmarking
       - optimization
+  - name: Bingo Digital Pet
+    description: |
+      此代理程式展示了如何使用靜態指令 (Static Instruction) 進行上下文快取 (Context Caching)，
+      並透過一個根據存儲在會話狀態 (Session State) 中的餵食時間而展現不同情緒的數位寵物來呈現。
+    code_ref: workspace/python/agents/static-instruction
+    type: Agent
+    models:
+      - gemini-2.5-flash
+    tools:
+      - name: eat
+        type: FunctionTool
+        description: |
+          餵食數位寵物 Bingo。在以下情況下使用此工具：
+          - 使用者明確提到餵食寵物（例如：「餵 Bingo」、「給食物」、「這是零食」）
+          - Bingo 非常飢餓或餓扁了，並直接要求食物
+
+          此工具會在會話狀態中設置餵食時間戳記，用於追蹤 Bingo 的飢餓程度和情緒變化。
+    static_instruction: true
+    instruction:
+      name: provide_dynamic_instruction
+      description: 為數位寵物 Bingo 提供基於飢餓度的動態指令。
+      type: Function
+    tags:
+      - digital-pet
+      - static-instruction
+      - context-caching
+      - session-state
+      - interactive
+      - dynamic-instruction
