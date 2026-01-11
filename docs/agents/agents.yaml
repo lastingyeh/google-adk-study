@@ -2302,3 +2302,60 @@ agents:
       - fastapi
       - cloud-run
       - callbacks
+  - name: Cache Analysis Assistant
+    description: |
+      本代理人設計用於測試 ADK 的 context caching（上下文快取）功能，並以超過 2048 tokens 的大型提示來滿足隱式與顯式快取需求。
+# 並以超過 2048 tokens 的大型提示來滿足隱式與顯式快取需求。
+    code_ref: workspace/python/agents/cache-analysis
+    type: App
+    models:
+      - gemini-2.0-flash-001
+    tools:
+      - name: analyze_data_patterns
+        type: FunctionTool
+        description: |
+          分析資料模式並提供見解。此工具可進行全面性的資料分析，包括統計分析、趨勢識別、異常偵測、相關性分析與預測建模。
+          支援多種資料格式（CSV、JSON、XML 及純文字資料結構）。
+      - name: research_literature
+        type: FunctionTool
+        description: |
+          針對指定主題進行學術與專業文獻研究。此工具可跨多個學術資料庫、專業期刊、會議論文與產業報告進行全面性文獻研究。
+          能分析研究趨勢、找出關鍵作者與機構、萃取方法論並整合多來源發現。支援系統性回顧、統合分析、書目計量分析、引用網絡分析。
+      - name: generate_test_scenarios
+        type: FunctionTool
+        description: |
+          產生系統驗證用的全面性測試情境。此工具可為各類系統（軟體、AI 模型、分散式系統、硬體元件）產生詳細測試情境、測試案例與驗證流程。
+          支援多種測試方法（單元、整合、效能、安全、使用者驗收等）。可產生正向/負向案例、邊界條件、壓力測試與失敗情境。
+      - name: optimize_system_performance
+        type: FunctionTool
+        description: |
+          分析系統效能並提供詳細的最佳化建議。執行全面性的系統效能分析，包括瓶頸識別、資源利用評估、擴展性規劃，
+          並根據系統類型與限制提供具體的最佳化策略。
+      - name: analyze_security_vulnerabilities
+        type: FunctionTool
+        description: |
+          執行全面性的安全弱點分析與風險評估。此工具進行詳細的安全分析，包括弱點識別、威脅建模、合規性缺口分析，
+          並根據風險等級與業務影響提供優先修正策略。
+      - name: design_scalability_architecture
+        type: FunctionTool
+        description: |
+          設計因應預期成長的全面性擴展性架構。此工具分析現有系統架構，設計可因應用戶、資料、流量與複雜度成長的擴展性解決方案，
+          同時維持效能、可靠性與成本效益。
+      - name: benchmark_performance
+        type: FunctionTool
+        description: |
+          執行全面性的效能基準測試與分析。此工具針對多個維度進行詳細效能基準測試，包括回應時間、吞吐量、資源利用、擴展性極限，
+          以及各種負載條件下的系統穩定性。支援合成與真實工作負載測試，並可調整參數與監控。
+    context_cache_config:
+      min_tokens: 4096
+      ttl_seconds: 600
+      cache_intervals: 3
+    tags:
+      - research
+      - analysis
+      - performance
+      - security
+      - testing
+      - context-caching
+      - benchmarking
+      - optimization
