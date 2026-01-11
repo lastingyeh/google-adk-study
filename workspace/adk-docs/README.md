@@ -13,10 +13,16 @@
 
 您可以在各支援語言的程式碼儲存庫中找到發行說明。有關 ADK 發行版本的詳細資訊，請參閱以下位置：
 
-- [ADK Python 發行說明](https://github.com/google/adk-python/releases) (v1.21.0)
-- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.1)
+- [ADK Python 發行說明](https://github.com/google/adk-python/releases) (v1.22.0)
+- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.2)
 - [ADK Go 發行說明](https://github.com/google/adk-go/releases) (v0.3.0)
 - [ADK Java 發行說明](https://github.com/google/adk-java/releases) (v0.5.0)
+
+### 關於 ADK 文件
+
+Google ADK 文件提供了全面的資源，涵蓋從基礎概念到進階功能的各個方面。無論您是想了解如何建立代理程式、管理會話與記憶，還是部署到生產環境，這些文件都能為您提供所需的指引和範例。
+
+- [關於 ADK](./get-started/about.md)
 
 ### 快速入門 (Get started)
 
@@ -28,6 +34,14 @@ ADK 文件提供了多種程式語言的快速入門指南，可協助您在幾�
 | **Go**         | 在幾分鐘內建立您的第一個 Go ADK 代理程式。         | [開始使用 Go](./get-started/go.md)                 | [安裝說明](./get-started/Installation/go.md)         |
 | **Java**       | 在幾分鐘內建立您的第一個 Java ADK 代理程式。       | [開始使用 Java](./get-started/java.md)             | [安裝說明](./get-started/Installation/java.md)       |
 | **TypeScript** | 在幾分鐘內建立您的第一個 TypeScript ADK 代理程式。 | [開始使用 TypeScript](./get-started/typescript.md) | [安裝說明](./get-started/Installation/typescript.md) |
+
+### 上下文 (Context)
+
+| 標頭                                           | 描述                                                                                                      | 連結                            |
+| :--------------------------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------------------------ |
+| [上下文 (Context) 總覽](./context/index.md)    | 說明 ADK 中 `context` 的概念、用途，以及不同類型的 Context（如 `InvocationContext` 等）。                | [連結](./context/index.md)      |
+| [使用 Gemini 進行快取](./context/caching.md)   | 介紹 Context Caching：用 `ContextCacheConfig` 快取大型指令/資料以降低 token 與延遲。                     | [連結](./context/caching.md)    |
+| [壓縮 Agent 上下文](./context/compaction.md)   | 說明 Context Compaction：以滑動視窗摘要較舊事件，透過 `EventsCompactionConfig` 控制壓縮頻率與重疊大小。 | [連結](./context/compaction.md) |
 
 ### 會話與記憶 (Sessions & Memory)
 

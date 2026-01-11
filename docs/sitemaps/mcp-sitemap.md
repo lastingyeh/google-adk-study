@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://modelcontextprotocol.io/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/01/08`
+**更新日期 (Data Updated)**: `2026/01/10`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 

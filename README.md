@@ -1579,4 +1579,32 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 </details>
 
+#### 🕗 Day 78
+
+<details>
+<summary>
+
+介紹 ADK 上下文管理，涵蓋多種上下文類型，並透過內容快取減少成本及事件壓縮優化長對話，顯著提升代理效能與回應速度。
+
+🏷️ `context`, `compaction`, `caching`, `token`, `events-compacting-config`
+
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Context](./workspace/adk-docs/context/index.md)
+  - [[整理 adk-python 官方範例]: caching 使用的 Agent 範例-[cache-analysis]](./workspace/python/agents/cache-analysis/)
+  - [[整理 adk-python 官方範例]: caching 使用的 Agent 範例-[static-instruction]](./workspace/python/agents/static-instruction/)
+  - [[整理 adk-python 官方範例]: compaction 使用的 Agent 範例-[hello-world-app]](./workspace/python/agents/hello-world-app/)
+
+- **參考資源**
+
+  - [ADK 官方文件網站 Context](https://google.github.io/adk-docs/context/)
+  - [adk-python 官方範例位置](https://github.com/google/adk-python)
+  - [[adk-python] cache_analysis 範例](https://github.com/google/adk-python/tree/main/contributing/samples/cache_analysis)
+  - [[adk-python] static_instruction 範例](https://github.com/google/adk-python/tree/main/contributing/samples/static_instruction)
+  - [[adk-python] hello_world_app](https://github.com/google/adk-python/tree/main/contributing/samples/hello_world_app)
+
+</details>
+
 </details>
