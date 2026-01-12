@@ -10,11 +10,10 @@
 """
 
 from __future__ import annotations
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from google.adk.tools.tool_context import ToolContext
-from google.adk.tools import google_search
 from google.adk.planners import BuiltInPlanner
 from google.genai import types
 
@@ -137,7 +136,7 @@ def validate_answer_completeness(
 #
 # 若要調整模型，可將 model 參數修改為其他可用標籤；需確保相依平台已支援。
 
-root_agent = Agent(
+strategic_planner_agent = Agent(
     name="StrategicPlannerAgent",  # 代理名稱，可於 UI 下拉選單看到
     model="gemini-3-flash-preview",  # 使用支持工具調用的模型
     description="具備戰略規劃能力的智慧助理，能根據使用者背景制定個人化的執行計畫。",  # 簡述用途

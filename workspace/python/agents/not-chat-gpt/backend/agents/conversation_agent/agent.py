@@ -10,7 +10,7 @@
 """
 
 from __future__ import annotations
-from typing import Dict, Any, List
+from typing import Dict, Any
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from google.adk.tools.tool_context import ToolContext
@@ -70,7 +70,7 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 #
 # 若要調整模型，可將 model 參數修改為其他可用標籤；需確保相依平台已支援。
 
-root_agent = Agent(
+conversation_agent = Agent(
     name="ConversationAgent",  # 代理名稱，可於 UI 下拉選單看到
     model="gemini-2.0-flash",  # 使用的模型：高速度、適合互動式對話
     description="一個具備狀態管理能力的友善 AI 助理，能記住使用者資訊與對話歷史。",  # 簡述用途

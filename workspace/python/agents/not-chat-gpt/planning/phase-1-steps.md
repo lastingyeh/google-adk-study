@@ -97,15 +97,15 @@
 
 #### 1.4 思考模式切換 (參考 Day 12: Planners and Thinking)
 
-- [ ] **(架構修改)** 採用 Orchestrator 模式，建立一個主 Agent 來根據使用者輸入分派任務。
+- [x] **(架構修改)** 採用 Orchestrator 模式，建立一個主 Agent 來根據使用者輸入分派任務。
 - [x] 在 `backend/agents/` 中，建立 `conversation_agent.py` (用於一般對話) 和 `strategic_planner_agent.py` (用於複雜規劃)。
 - [x] `conversation_agent`: 保持為標準的對話 Agent，不使用 Planner。
 - [x] `strategic_planner_agent`: 引入 `adk.planners.BuiltInPlanner`，使其具備結構化思考與規劃能力。
-- [ ] **(Orchestrator 實作)** 建立一個新的 `orchestrator_agent.py` 作為 API 的主要入口點。
-- [ ] 在 `orchestrator_agent` 中實作邏輯，分析使用者輸入：
+- [x] **(Orchestrator 實作)** 建立一個新的 `agent.py` 作為 API 的主要入口點，實作 `OrchestratorAgent`。
+- [x] 在 `orchestrator_agent` 中實作邏輯，分析使用者輸入：
   - 如果輸入包含特定指令 (例如 `#think`)，則將任務委派 (delegate) 給 `strategic_planner_agent`。
   - 否則，將任務委派給 `conversation_agent`。
-- [ ] **(API 層)** `adk api_server` 只需暴露 `orchestrator_agent`。客戶端將始終與 `orchestrator_agent` 互動，由它在內部完成任務分派。
+- [x] **(API 層)** `adk api_server` 只需暴露 `orchestrator_agent`。客戶端將始終與 `orchestrator_agent` 互動，由它在內部完成任務分派。
 
 #### 1.6 簡易 CLI 測試
 
@@ -115,9 +115,9 @@
 
 ---
 
-### Week 2: 串流與持久化
+## Week 2: 串流與持久化
 
-#### 2.1 SSE 串流回應 (參考 Day 23: streaming-agent)
+### 2.1 SSE 串流回應 (參考 Day 23: streaming-agent)
 
 - [ ] **(修改)** 修改 `ConversationAgent` 的 `Root` method，使其成為一個 `generator` (使用 `yield`) 來串流式地回傳 LLM 的回應區塊。
 - [ ] **(修改)** `adk api_server` 會自動偵測到 `generator` 並以串流方式回應。更新 `scripts/cli_tester.py` 以處理串流回應。
