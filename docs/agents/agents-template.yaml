@@ -3,7 +3,7 @@ agents:
   - name: <AGENT_NAME>
     description: |
       <DESCRIPTION>
-      (可以使用多行描述)
+      (可以使用多行描述，支援 YAML 多行格式)
     code_ref: <SAMPLE_CODE_REFERENCE> # 例如：workspace/python/agents/my-agent
     type: <AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent, LoopAgent, RemoteA2aAgent, LlmAgent, genai.Client, MCPToolset, App, ADKAgent
 
@@ -13,7 +13,7 @@ agents:
     # 選填：MCP 傳輸方式 (用於 MCPToolset 類型的代理或工具)
     # transports: stdio # 或 streamable
 
-    # 選填：模型列表
+    # 選填：模型列表 (多數 agent 使用此格式)
     models: [<MODEL_NAME>] # 例如：[gemini-2.5-flash], [gemini-2.0-flash-exp], [gemini-3-pro-preview], [gemini-2.5-flash-image]
     # 或者使用物件格式設定重試選項 (例如在 RAG Knowledge Management Agent 中使用)
     # models:
@@ -21,11 +21,14 @@ agents:
     #     retry_options:
     #       attempts: <NUMBER>
 
-    # 選填：模型 (替代 models，例如在 Multi-LLM Agent 中使用)
+    # 選填：模型單數形式 (替代 models，例如在 Multi-LLM Agent 中使用)
     # model:
     #   - <MODEL_NAME>
 
-    # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent 中）
+    # 選填：空模型列表 (用於某些編排型 agent，如 Travel Planner)
+    # models: []
+
+    # 選填：流水線步驟的輸出鍵（例如在 SequentialAgent, LoopAgent, Personal Tutor 中）
     # output_key: <OUTPUT_KEY_NAME>
 
     # 選填：結構化輸出 Schema (例如在 Pub/Sub Agent 中)
@@ -34,11 +37,15 @@ agents:
     # 選填：調用模式 (例如在 Policy Navigator 中)
     # invoke: prompting
 
-    # 選填：暫停與恢復設定 (例如在 Pause Resume Agent 中)
+    # 選填：暫停與恢復設定 (用於支援中斷與恢復的 agent)
+    # 方式 1：列表格式 (例如在 Pause Resume Agent 中)
     # resumability_config:
     #   - is_resumable
+    # 方式 2：物件格式 (例如在 Human Tool Confirmation Agent 中)
+    # resumability_config:
+    #   is_resumable: true
 
-    # 選填：初始化參數 (例如在 Deep Research Agent 中使用)
+    # 選填：初始化參數 (例如在 Deep Research Agent, Interactions API Basic Agent 中使用)
     # init:
     #   api_key: <API_KEY_VALUE>
 
@@ -67,59 +74,63 @@ agents:
         #   type: <EXECUTOR_TYPE>
         #   description: <DESCRIPTION>
 
-    # 選填：外掛程式 (例如在 Observability Plugins Agent 中)
-    # plugins:
-    #   - name: <PLUGIN_NAME>
-    #     type: BasePlugin
-    #     description: <PLUGIN_DESCRIPTION>
+        # 選填：人工確認設定 (Human-in-the-Loop, 例如在 Human Tool Confirmation Agent 中)
+        # 當工具執行需要人工批准時使用，常見於敏感操作（如報銷、資料刪除等）
+        # require_confirmation:
+        #   name: <CONFIRMATION_FUNCTION_NAME> # 例如：confirmation_threshold
+        #   type: Function
+        #   description: <CONFIRMATION_DESCRIPTION> # 例如：當報銷金額超過此閾值時，需員工確認後方可執行
 
-    # 選填：程式碼執行設定
-    # code_executor:
-    #   name: builtin-code-executor
-    #   type: BuiltInCodeExecutor
-    #   description: <DESCRIPTION> # 執行器描述
-
-    # 選填：生成內容設定
-    # generate_content_config:
-    #   temperature: <VALUE> # 例如：0.5
-    #   max_output_tokens: <VALUE> # 例如：2048
-    #   top_p: <VALUE>
-    #   top_k: <VALUE>
-    #   max_iterations: <VALUE> # 用於 LoopAgent
-    #   safety_settings: # 安全設定
+    #   temperature: <VALUE> # 例如：0.5 - 控制輸出隨機性 (0.0-1.0)
+    #   max_output_tokens: <VALUE> # 例如：2048 - 最大輸出 token 數
+    #   top_p: <VALUE> # 例如：0.95 - 核採樣參數
+    #   top_k: <VALUE> # 例如：40 - Top-K 採樣參數
+    #   max_iterations: <VALUE> # 用於 LoopAgent - 最大迭代次數
+    #   safety_settings: # 安全設定 (例如在 Hello World App 中)
     #     - category: <CATEGORY> # 例如：HARM_CATEGORY_DANGEROUS_CONTENT
-    #       threshold: <THRESHOLD> # 例如：OFF
-
-    # 選填：回呼函式（生命週期鉤子）
-    # before_agent_callback:
+    #       threshold: <THRESHOLD> # 例如：OFF, BLOCK_NONE, BLOCK_ONLY_HIGH
     #   - name: <CALLBACK_NAME>
     #     type: BeforeAgentCallback
     #     description: <DESCRIPTION>
+    # 或簡化格式（僅名稱，例如在 pack-customer-service 中）
+    # before_agent_callback:
+    #   - name: <CALLBACK_NAME>
+
     # before_model_callback:
     #   - name: <CALLBACK_NAME>
     #     type: BeforeModelCallback
     #     description: <DESCRIPTION>
+
     # before_tool_callback:
     #   - name: <CALLBACK_NAME>
     #     type: BeforeToolCallback
     #     description: <DESCRIPTION>
+
     # after_tool_callback:
     #   - name: <CALLBACK_NAME>
     #     type: AfterToolCallback
     #     description: <DESCRIPTION>
+
     # after_model_callback:
     #   - name: <CALLBACK_NAME>
     #     type: AfterModelCallback
-    #     description: <DESCRIPTION>
-    # after_agent_callback:
-    #   - name: <CALLBACK_NAME>
-    #     type: AfterAgentCallback
-    #     description: <DESCRIPTION>
-
-    # 選填：上下文快取設定 (例如在 Cache Analysis Assistant 中使用)
+    # 用於快取大型提示詞以提升效能和降低成本
     # context_cache_config:
-    #   min_tokens: <NUMBER> # 例如：4096
-    #   ttl_seconds: <NUMBER> # 例如：600
+    #   min_tokens: <NUMBER> # 例如：4096 - 最小快取 token 數
+    #   ttl_seconds: <NUMBER> # 例如：600 - 快取存活時間（秒）
+    #   cache_intervals: <NUMBER> # 例如：3 - 快取間隔
+
+    # 選填：事件壓縮設定 (例如在 Hello World App 中使用)
+    # 用於壓縮對話歷史以減少 token 使用
+    # events_compaction_config:
+    #   compaction_interval: <NUMBER> # 例如：2 - 每 N 個事件壓縮一次
+    #   overlap_size: <NUMBER> # 例如：1 - 保留重疊事件數
+
+    # 選填：靜態指令設定 (例如在 Bingo Digital Pet 中使用)
+    # 啟用靜態指令快取以提升多輪對話效能
+    # static_instruction: true
+    # instruction:
+    #   name: <INSTRUCTION_NAME> # 例如：provide_dynamic_instruction例如：600
     #   cache_intervals: <NUMBER>
 
     # 選填：事件壓縮設定 (例如在 Hello World App 中使用)
@@ -131,22 +142,19 @@ agents:
     # static_instruction: true
     # instruction:
     #   name: <INSTRUCTION_NAME>
-    #   description: <DESCRIPTION>
-    #   type: <TYPE> # 例如：Function
-
-    server-port: <PORT_NUMBER> # 例如：8000, 8001 或 "none" 或 null
+    #   description: <DESCRIPTION>, "none" 或 null (不啟動伺服器)
     tags: [<TAG_1>, <TAG_2>] # 例如：a2a, orchestrator, fastapi, tool_context, sequential-workflow, mcp, interactions-api
 
-    # 選填：子代理 (Sub-agents)
+    # 選填：子代理 (Sub-agents) - 用於多代理編排架構
     sub_agents:
       - name: <SUB_AGENT_NAME>
         description: <SUB_AGENT_DESCRIPTION>
-        type: <SUB_AGENT_TYPE>
+        type: <SUB_AGENT_TYPE> # 例如：Agent, SequentialAgent, ParallelAgent
 
         # 選填：協定 (例如 a2a)
         # protocol: a2a
 
-        # 選填
+        # 選填：模型設定
         models: [<SUB_AGENT_MODEL>]
 
         # 選填：流水線步驟的輸出鍵
@@ -158,7 +166,7 @@ agents:
         # 選填：調用模式
         # invoke: prompting
 
-        # 選填
+        # 選填：工具配置
         tools:
           - name: <SUB_AGENT_TOOL_NAME>
             type: <SUB_AGENT_TOOL_TYPE>
@@ -171,8 +179,18 @@ agents:
         #   temperature: <VALUE>
         #   max_output_tokens: <VALUE>
 
-        server-port: <SUB_AGENT_PORT> # 例如：8001 或 "none"
-        tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]
+        # 選填：伺服器端口（僅用於某些子代理類型）
+        # server-port: <SUB_AGENT_PORT> # 例如：8001 或 "none"
 
-        # 選填
-        # sub_agents: [] # 可遞迴巢狀
+        # 選填：標籤
+        # tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]
+
+        # 選填：巢狀子代理（支援遞迴結構）
+        # sub_agents: []
+
+      # 注意：某些 agent 的 sub_agents 僅包含 name 和 description (例如在 A2a Orchestrator 中)
+      # - name: <SIMPLE_SUB_AGENT_NAME>
+      #   description: <SIMPLE_SUB_AGENT_DESCRIPTION>, <SUB_AGENT_TAG_2>]
+
+      # 選填
+      # sub_agents: [] # 可遞迴巢狀

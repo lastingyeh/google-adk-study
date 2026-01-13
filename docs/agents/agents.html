@@ -3587,7 +3587,8 @@
             {
               name: 'before_tool',
               type: 'BeforeToolCallback',
-              description: '在工具執行前，進行參數標準化、安全驗證和業務規則捷徑處理。',
+              description:
+                '在工具執行前，進行參數標準化、安全驗證和業務規則捷徑處理。',
             },
           ],
           after_tool_callback: [
@@ -3606,6 +3607,43 @@
             'otel',
             'callbacks',
             'pydantic',
+          ],
+        },
+        {
+          name: 'Human Tool Confirmation Agent',
+          description: '協助員工進行報銷及請假申請的代理助理。',
+          code_ref: 'workspace/python/agents/human-tool-confirmation',
+          type: 'App',
+          models: ['gemini-2.5-flash'],
+          tools: [
+            {
+              name: 'reimburse',
+              type: 'FunctionTool',
+              description: '根據金額為員工報銷使用工具。',
+              require_confirmation: {
+                name: 'confirmation_threshold',
+                type: 'Function',
+                description: '當報銷金額超過此閾值時,需員工確認後方可執行。',
+              },
+            },
+            {
+              name: 'request_time_off',
+              type: 'FunctionTool',
+              description: '員工請假申請工具。',
+            },
+          ],
+          resumability_config: {
+            is_resumable: true,
+          },
+          generate_content_config: {
+            temperature: 0.1,
+          },
+          tags: [
+            'human-confirmation',
+            'tool-confirmation',
+            'resumability',
+            'approval-workflow',
+            'employee-services',
           ],
         },
       ];
