@@ -11,7 +11,7 @@
 ADK 提供幾種建立功能工具的方式，每種都適合不同的複雜度和控制層級：
 
 *  [功能工具](#功能工具-function-tool)
-*  [長時間執行功能工具](#長時間執行功能工具)
+*  [長時間執行功能工具](#長時間執行功能工具-long-running-function-tools)
 *  [代理即工具](#代理即工具-agent-as-a-tool)
 
 ## 功能工具 (Function Tool)
@@ -20,7 +20,7 @@ ADK 提供幾種建立功能工具的方式，每種都適合不同的複雜度�
 
 ### 運作方式
 
-ADK 框架會自動檢查您的 Python 函式的簽章——包含其名稱、docstring、參數、型別提示和預設值——以產生結構描述 (schema)。LLM 使用此結構描述來了解工具的用途、何時使用它以及它需要什麼引數。
+ADK 框架會自動檢查您的 Python 函式的簽章——包含其名稱`docstring`參數、型別提示和預設值——以產生結構描述 (schema)。LLM 使用此結構描述來了解工具的用途、何時使用它以及它需要什麼引數。
 
 ### 定義函式簽章
 
@@ -115,7 +115,7 @@ def search_flights(destination: str, departure_date: str, flexible_days: int = 0
 
 如果 struct 欄位在 `json` 標籤中有 `omitempty` 或 `omitzero` 選項，則該參數被視為**選擇性**。
 
-"範例：選擇性參數"
+範例：選擇性參數
 ```go
 // GetWeatherParams 定義 getWeather 工具的引數。
 type GetWeatherParams struct {
@@ -262,9 +262,8 @@ async def call_agent_async(query):
             final_response = event.content.parts[0].text
             print("Agent Response: ", final_response)
 
-
-# Note: In Colab, you can directly use 'await' at the top level.
-# If running this code as a standalone Python script, you'll need to use asyncio.run() or manage the event loop.
+# 注意：在 Colab 中，您可以直接在頂層使用 `await`。
+# 如果將此程式碼作為獨立的 Python 腳本執行，您需要使用 asyncio.run() 或自行管理事件迴圈。
 await call_agent_async("stock price of GOOG")
 ```
 
@@ -281,69 +280,71 @@ await call_agent_async("stock price of GOOG")
 ```typescript
 import {Content, Part, createUserContent} from '@google/genai';
 import {
-  stringifyContent,
-  FunctionTool,
-  InMemoryRunner,
-  LlmAgent,
+    stringifyContent,
+    FunctionTool,
+    InMemoryRunner,
+    LlmAgent,
 } from '@google/adk';
 import {z} from 'zod';
 
 // 定義取得股價的函式
 async function getStockPrice({ticker}: {ticker: string}): Promise<Record<string, unknown>> {
-  console.log(`正在取得 ${ticker} 的股價`);
-  // 在真實場景中，您會從 API 獲取股價
-  const price = (Math.random() * 1000).toFixed(2);
-  return {price: `$${price}`};
+    console.log(`正在取得 ${ticker} 的股價`);
+    // 在真實場景中，您會從 API 獲取股價
+    const price = (Math.random() * 1000).toFixed(2);
+    return {price: `$${price}`};
 }
 
 async function main() {
-  // 使用 Zod 定義工具參數的結構描述 (schema)
-  const getStockPriceSchema = z.object({
-    ticker: z.string().describe('要查詢的股票代號。'),
-  });
+    // 使用 Zod 定義工具參數的結構描述 (schema)
+    const getStockPriceSchema = z.object({
+        ticker: z.string().describe('要查詢的股票代號。'),
+    });
 
-  // 從函式和結構描述建立 FunctionTool
-  const stockPriceTool = new FunctionTool({
-    name: 'getStockPrice',
-    description: '取得股票的當前價格。',
-    parameters: getStockPriceSchema,
-    execute: getStockPrice,
-  });
+    // 從函式與結構描述建立 FunctionTool
+    const stockPriceTool = new FunctionTool({
+        name: 'getStockPrice',
+        description: '取得股票的當前價格。',
+        parameters: getStockPriceSchema,
+        execute: getStockPrice, // 這裡傳入實際取得股價的函式
+    });
 
-  // 定義將使用該工具的代理
-  const stockAgent = new LlmAgent({
-    name: 'stock_agent',
-    model: 'gemini-2.5-flash',
-    instruction: '您可以取得公司的股價。',
-    tools: [stockPriceTool],
-  });
+    // 定義將使用該工具的代理
+    const stockAgent = new LlmAgent({
+        name: 'stock_agent',
+        model: 'gemini-2.5-flash',
+        instruction: '您可以取得公司的股價。',
+        tools: [stockPriceTool], // 將剛剛建立的工具加入代理
+    });
 
-  // Create a runner for the agent
-  const runner = new InMemoryRunner({agent: stockAgent});
+    // 建立代理的 runner
+    const runner = new InMemoryRunner({agent: stockAgent});
 
-  // Create a new session
-  const session = await runner.sessionService.createSession({
-    appName: runner.appName,
-    userId: 'test-user',
-  });
+    // 建立新的 session
+    const session = await runner.sessionService.createSession({
+        appName: runner.appName,
+        userId: 'test-user',
+    });
 
-  const userContent: Content = createUserContent('What is the stock price of GOOG?');
+    // 建立使用者輸入內容
+    const userContent: Content = createUserContent('GOOG 的股價是多少？');
 
-  // Run the agent and get the response
-  const response = [];
-  for await (const event of runner.runAsync({
-    userId: session.userId,
-    sessionId: session.id,
-    newMessage: userContent,
-  })) {
-    response.push(event);
-  }
+    // 執行代理並取得回應
+    const response = [];
+    for await (const event of runner.runAsync({
+        userId: session.userId,
+        sessionId: session.id,
+        newMessage: userContent,
+    })) {
+        response.push(event); // 收集所有事件
+    }
 
-  // Print the final response from the agent
-  const finalResponse = response[response.length - 1];
-  if (finalResponse?.content?.parts?.length) {
-    console.log(stringifyContent(finalResponse));
-  }
+    // 輸出代理的最終回應
+    const finalResponse = response[response.length - 1];
+    if (finalResponse?.content?.parts?.length) {
+        // 將回應內容轉為字串並印出
+        console.log(stringifyContent(finalResponse));
+    }
 }
 
 main();
@@ -457,27 +458,25 @@ func createStockAgent(ctx context.Context) (agent.Agent, error) {
     })
 }
 
-// userID and appName are constants used to identify the user and application
-// throughout the session. These values are important for logging, tracking,
-// and managing state across different agent interactions.
+// userID 和 appName 是用來識別使用者與應用程式的常數，
+// 在整個 session 期間用於日誌、追蹤與狀態管理。
 const (
     userID  = "example_user_id"
     appName = "example_app"
 )
 
-// callAgent orchestrates the execution of the agent for a given prompt.
-// It sets up the necessary services, creates a session, and uses a runner
-// to manage the agent's lifecycle. It streams the agent's responses and
-// prints them to the console, handling any potential errors during the run.
+// callAgent 負責協調代理的執行流程，
+// 包含服務初始化、建立 session、使用 runner 管理代理生命週期，
+// 並串流代理回應到主控台，同時處理執行過程中的錯誤。
 func callAgent(ctx context.Context, a agent.Agent, prompt string) {
     sessionService := session.InMemoryService()
-    // Create a new session for the agent interactions.
+    // 建立新的 session 以進行代理互動
     session, err := sessionService.Create(ctx, &session.CreateRequest{
         AppName: appName,
         UserID:  userID,
     })
     if err != nil {
-        log.Fatalf("Failed to create the session service: %v", err)
+        log.Fatalf("建立 session 服務失敗: %v", err)
     }
     config := runner.Config{
         AppName:        appName,
@@ -485,11 +484,11 @@ func callAgent(ctx context.Context, a agent.Agent, prompt string) {
         SessionService: sessionService,
     }
 
-    // Create the runner to manage the agent execution.
+    // 建立 runner 以管理代理執行
     r, err := runner.New(config)
 
     if err != nil {
-        log.Fatalf("Failed to create the runner: %v", err)
+        log.Fatalf("建立 runner 失敗: %v", err)
     }
 
     sessionID := session.Session.ID()
@@ -501,6 +500,7 @@ func callAgent(ctx context.Context, a agent.Agent, prompt string) {
         Role: string(genai.RoleUser),
     }
 
+    // 執行代理並串流回應
     for event, err := range r.Run(ctx, userID, sessionID, userMsg, agent.RunConfig{
         StreamingMode: agent.StreamingModeNone,
     }) {
@@ -514,13 +514,11 @@ func callAgent(ctx context.Context, a agent.Agent, prompt string) {
     }
 }
 
-// RunAgentSimulation serves as the entry point for this example.
-// It creates the stock agent and then simulates a series of user interactions
-// by sending different prompts to the agent. This function showcases how the
-// agent responds to various queries, including both successful and unsuccessful
-// attempts to retrieve stock prices.
+// RunAgentSimulation 作為範例進入點，
+// 建立 stock agent 並模擬多組使用者互動，
+// 展示代理對不同查詢（包含成功與失敗查詢）的回應。
 func RunAgentSimulation() {
-    // Create the stock agent
+    // 建立 stock agent
     agent, err := createStockAgent(context.Background())
     if err != nil {
         panic(err)
@@ -529,12 +527,12 @@ func RunAgentSimulation() {
     fmt.Println("Agent created:", agent.Name())
 
     prompts := []string{
-        "stock price of GOOG",
-        "What's the price of MSFT?",
-        "Can you find the stock price for an unknown company XYZ?",
+        "查詢 GOOG 的股價",
+        "查詢 MSFT 的股價?",
+        "查詢不存在的公司 XYZ 的股價?",
     }
 
-    // Simulate running the agent with different prompts
+    // 依序模擬不同 prompt 的代理互動
     for _, prompt := range prompts {
         fmt.Printf("\nPrompt: %s\nResponse: ", prompt)
         callAgent(context.Background(), agent, prompt)
@@ -542,7 +540,7 @@ func RunAgentSimulation() {
     }
 }
 
-// createSummarizerAgent creates an agent whose sole purpose is to summarize text.
+// createSummarizerAgent 建立一個專門用於摘要文字的代理。
 func createSummarizerAgent(ctx context.Context) (agent.Agent, error) {
     model, err := gemini.NewModel(ctx, "gemini-2.5-flash", &genai.ClientConfig{})
     if err != nil {
@@ -551,12 +549,12 @@ func createSummarizerAgent(ctx context.Context) (agent.Agent, error) {
     return llmagent.New(llmagent.Config{
         Name:        "SummarizerAgent",
         Model:       model,
-        Instruction: "You are an expert at summarizing text. Take the user's input and provide a concise summary.",
-        Description: "An agent that summarizes text.",
+        Instruction: "你是一位專家摘要者。請接收使用者輸入並提供簡潔摘要。",
+        Description: "摘要文字的代理。",
     })
 }
 
-// createMainAgent creates the primary agent that will use the summarizer agent as a tool.
+// createMainAgent 建立主要代理，並將 summarizer agent 作為工具注入。
 func createMainAgent(ctx context.Context, tools ...tool.Tool) (agent.Agent, error) {
     model, err := gemini.NewModel(ctx, "gemini-2.5-flash", &genai.ClientConfig{})
     if err != nil {
@@ -565,57 +563,53 @@ func createMainAgent(ctx context.Context, tools ...tool.Tool) (agent.Agent, erro
     return llmagent.New(llmagent.Config{
         Name:  "MainAgent",
         Model: model,
-        Instruction: "You are a helpful assistant. If you are asked to summarize a long text, use the 'summarize' tool. " +
-            "After getting the summary, present it to the user by saying 'Here is a summary of the text:'.",
-        Description: "The main agent that can delegate tasks.",
+        Instruction: "你是一位樂於助人的助手。如果被要求摘要長文字，請使用 'summarize' 工具。取得摘要後，請以「這是文字的摘要：」呈現給使用者。",
+        Description: "可委派任務的主要代理。",
         Tools:       tools,
     })
 }
 
+// RunAgentAsToolSimulation 展示代理即工具 (Agent-as-a-Tool) 模式，
+// 先建立摘要代理，再將其包裝為工具注入主代理，最後模擬摘要長文字的互動流程。
 func RunAgentAsToolSimulation() {
     ctx := context.Background()
 
-    // 1. Create the Tool Agent (Summarizer)
+    // 1. 建立工具代理（摘要者）
     summarizerAgent, err := createSummarizerAgent(ctx)
     if err != nil {
-        log.Fatalf("Failed to create summarizer agent: %v", err)
+        log.Fatalf("建立摘要代理失敗: %v", err)
     }
 
-    // 2. Wrap the Tool Agent in an AgentTool
+    // 2. 將工具代理包裝為 AgentTool
     summarizeTool := agenttool.New(summarizerAgent, &agenttool.Config{
         SkipSummarization: true,
     })
 
-    // 3. Create the Main Agent and provide it with the AgentTool
+    // 3. 建立主代理並注入 AgentTool
     mainAgent, err := createMainAgent(ctx, summarizeTool)
     if err != nil {
-        log.Fatalf("Failed to create main agent: %v", err)
+        log.Fatalf("建立主代理失敗: %v", err)
     }
 
-    // 4. Run the main agent
+    // 4. 執行主代理，模擬摘要長文字
     prompt := `
-        Please summarize this text for me:
-        Quantum computing represents a fundamentally different approach to computation,
-        leveraging the bizarre principles of quantum mechanics to process information. Unlike classical computers
-        that rely on bits representing either 0 or 1, quantum computers use qubits which can exist in a state of superposition - effectively
-        being 0, 1, or a combination of both simultaneously. Furthermore, qubits can become entangled,
-        meaning their fates are intertwined regardless of distance, allowing for complex correlations. This parallelism and
-        interconnectedness grant quantum computers the potential to solve specific types of incredibly complex problems - such
-        as drug discovery, materials science, complex system optimization, and breaking certain types of cryptography - far
-        faster than even the most powerful classical supercomputers could ever achieve, although the technology is still largely in its developmental stages.
+        請為我摘要這段文字：
+        量子計算代表了一種根本不同的計算方法，利用量子力學的奇異原理來處理資訊。
+        與依賴代表 0 或 1 的位元的古典電腦不同，量子電腦使用量子位元 (qubits)，它們可以處於疊加狀態——有效地同時是 0、1 或兩者的組合。
+        此外，量子位元可以糾纏在一起，這意味著無論距離多遠，它們的命運都是相互交織的，從而允許複雜的相關性。這種平行性和互連性賦予量子電腦解決特定類型的極其複雜問題的潛力——例如藥物發現、材料科學、複雜系統優化和破解某些類型的密碼學——其速度甚至比最強大的古典超級電腦所能達到的還要快得多，儘管該技術仍主要處於發展階段。
     `
     fmt.Printf("\nPrompt: %s\nResponse: ", prompt)
     callAgent(context.Background(), mainAgent, prompt)
     fmt.Println("\n---")
 }
 
-
 func main() {
-    fmt.Println("Attempting to run the agent simulation...")
+    fmt.Println("嘗試執行代理模擬...")
     RunAgentSimulation()
-    fmt.Println("\nAttempting to run the agent-as-a-tool simulation...")
+    fmt.Println("\n嘗試執行代理即工具 (Agent-as-a-Tool) 模擬...")
     RunAgentAsToolSimulation()
 }
+
 ```
 
 此工具的回傳值將是一個 `getStockPriceResults` 實例。
@@ -643,77 +637,76 @@ import java.util.Map;
 
 public class StockPriceAgent {
 
-  private static final String APP_NAME = "stock_agent";
-  private static final String USER_ID = "user1234";
+    private static final String APP_NAME = "stock_agent";
+    private static final String USER_ID = "user1234";
 
-  // 各種股票功能的模擬數據
-  // 注意：這是一個模擬實作。在真實的 Java 應用程式中，
-  // 您會使用金融數據 API 或程式庫。
-  private static final Map<String, Double> mockStockPrices = new HashMap<>();
+    // 各種股票功能的模擬數據
+    // 注意：這是一個模擬實作。在真實的 Java 應用程式中，
+    // 您會使用金融數據 API 或程式庫。
+    private static final Map<String, Double> mockStockPrices = new HashMap<>();
 
-  static {
-    mockStockPrices.put("GOOG", 1.0);
-    mockStockPrices.put("AAPL", 1.0);
-    mockStockPrices.put("MSFT", 1.0);
-  }
-
-  @Schema(description = "檢索給定代號的當前股價。")
-  public static Map<String, Object> getStockPrice(
-      @Schema(description = "股票代號 (例如 \"AAPL\", \"GOOG\")",
-        name = "symbol")
-      String symbol) {
-
-    try {
-      if (mockStockPrices.containsKey(symbol.toUpperCase())) {
-        double currentPrice = mockStockPrices.get(symbol.toUpperCase());
-        System.out.println("工具: 找到 " + symbol + " 的價格: " + currentPrice);
-        return Map.of("symbol", symbol, "price", currentPrice);
-      } else {
-        return Map.of("symbol", symbol, "error", "No data found for symbol");
-      }
-    } catch (Exception e) {
-      return Map.of("symbol", symbol, "error", e.getMessage());
+    static {
+            mockStockPrices.put("GOOG", 1.0);
+            mockStockPrices.put("AAPL", 1.0);
+            mockStockPrices.put("MSFT", 1.0);
     }
-  }
 
-  public static void callAgent(String prompt) {
-    // 從 Java 方法建立 FunctionTool
-    FunctionTool getStockPriceTool = FunctionTool.create(StockPriceAgent.class, "getStockPrice");
+    @Schema(description = "檢索給定代號的當前股價。")
+    public static Map<String, Object> getStockPrice(
+        @Schema(description = "股票代號 (例如 \"AAPL\", \"GOOG\")",
+        name = "symbol")
+        String symbol) {
 
-    LlmAgent stockPriceAgent =
-        LlmAgent.builder()
-            .model("gemini-2.0-flash")
-            .name("stock_agent")
-            .instruction(
-                "你是一個檢索股價的代理。如果提供了股票代號，請獲取當前價格。如果只提供了公司名稱，請先執行 Google 搜尋以找到正確的股票代號，然後再獲取股價。如果提供的股票代號無效或無法檢索數據，請通知使用者找不到股價。")
-            .description(
-                "此代理專門檢索即時股價。給定股票代號 (例如 AAPL, GOOG, MSFT) 或股票名稱，使用工具和可靠的數據來源提供最新的價格。")
-            .tools(getStockPriceTool) // Add the Java FunctionTool
-            .build();
+        try {
+            if (mockStockPrices.containsKey(symbol.toUpperCase())) {
+                double currentPrice = mockStockPrices.get(symbol.toUpperCase());
+                System.out.println("工具: 找到 " + symbol + " 的價格: " + currentPrice);
+                return Map.of("symbol", symbol, "price", currentPrice);
+            } else {
+                return Map.of("symbol", symbol, "error", "No data found for symbol");
+            }
+        } catch (Exception e) {
+            return Map.of("symbol", symbol, "error", e.getMessage());
+        }
+    }
 
-    // Create an InMemoryRunner
-    InMemoryRunner runner = new InMemoryRunner(stockPriceAgent, APP_NAME);
-    // InMemoryRunner automatically creates a session service. Create a session using the service
-    Session session = runner.sessionService().createSession(APP_NAME, USER_ID).blockingGet();
-    Content userMessage = Content.fromParts(Part.fromText(prompt));
+    public static void callAgent(String prompt) {
+        // 從 Java 方法建立 FunctionTool
+        FunctionTool getStockPriceTool = FunctionTool.create(StockPriceAgent.class, "getStockPrice");
 
-    // Run the agent
-    Flowable<Event> eventStream = runner.runAsync(USER_ID, session.id(), userMessage);
+        LlmAgent stockPriceAgent =
+            LlmAgent.builder()
+                .model("gemini-2.0-flash")
+                .name("stock_agent")
+                .instruction(
+                    "你是一個檢索股價的代理。如果提供了股票代號，請獲取當前價格。如果只提供了公司名稱，請先執行 Google 搜尋以找到正確的股票代號，然後再獲取股價。如果提供的股票代號無效或無法檢索數據，請通知使用者找不到股價。")
+                .description(
+                    "此代理專門檢索即時股價。給定股票代號 (例如 AAPL, GOOG, MSFT) 或股票名稱，使用工具和可靠的數據來源提供最新的價格。")
+                .tools(getStockPriceTool) // Add the Java FunctionTool
+                // 建立 InMemoryRunner
+                InMemoryRunner runner = new InMemoryRunner(stockPriceAgent, APP_NAME);
+                // InMemoryRunner 會自動建立 session service。使用該 service 建立 session
+                Session session = runner.sessionService().createSession(APP_NAME, USER_ID).blockingGet();
+                Content userMessage = Content.fromParts(Part.fromText(prompt));
 
-    // Stream event response
-    eventStream.blockingForEach(
-        event -> {
-          if (event.finalResponse()) {
-            System.out.println(event.stringifyContent());
-          }
-        });
-  }
+                // 執行代理
+                Flowable<Event> eventStream = runner.runAsync(USER_ID, session.id(), userMessage);
 
-  public static void main(String[] args) {
-    callAgent("stock price of GOOG");
-    callAgent("What's the price of MSFT?");
-    callAgent("Can you find the stock price for an unknown company XYZ?");
-  }
+                // 串流事件回應
+                eventStream.blockingForEach(
+                    event -> {
+                        if (event.finalResponse()) {
+                            // 印出代理的最終回應內容
+                            System.out.println(event.stringifyContent());
+                        }
+                    });
+    }
+
+    public static void main(String[] args) {
+        callAgent("stock price of GOOG");
+        callAgent("What's the price of MSFT?");
+        callAgent("Can you find the stock price for an unknown company XYZ?");
+    }
 }
 ```
 
@@ -734,7 +727,7 @@ For input `GOOG`: {"symbol": "GOOG", "price": "1.0"}
 * **有意義的名稱：** 函式的名稱和參數名稱顯著影響 LLM 如何解讀和利用工具。選擇能清楚反映函式目的及其輸入意義的名稱。避免使用像 `do_stuff()` 或 `beAgent()` 這樣的通用名稱。
 * **為平行執行而建構：** 當執行多個工具時，透過建構非同步操作來改善函式呼叫效能。有關啟用工具平行執行的資訊，請參閱 [透過平行執行提升工具效能](performance.md)。
 
-## 長時間執行功能工具
+## 長時間執行功能工具 (Long Running Function Tools)
 
 此工具旨在幫助您啟動和管理在代理工作流程操作之外處理的任務，這些任務需要大量的處理時間，且不會阻礙代理的執行。此工具是 `FunctionTool` 的子類別。
 
@@ -760,6 +753,7 @@ For input `GOOG`: {"symbol": "GOOG", "price": "1.0"}
 
 4. **框架處理：** ADK 框架管理執行。它將代理客戶端發送的中間或最終 `FunctionResponse` 發送給 LLM，以產生使用者友善的訊息。
 
+#### 下面的序列圖說明了此流程：
 ```mermaid
 sequenceDiagram
     participant LLM
@@ -813,29 +807,29 @@ long_running_tool = LongRunningFunctionTool(func=ask_for_approval)
 ```typescript
 // 1. 定義長時間執行函式
 function askForApproval(args: {purpose: string; amount: number}) {
-  /**
-   * 請求報帳批准。
-   */
-  // 建立批准票據
-  // 發送通知給批准者，並附上票據連結
-  return {
-    "status": "pending",
-    "approver": "Sean Zhou",
-    "purpose": args.purpose,
-    "amount": args.amount,
-    "ticket-id": "approval-ticket-1",
-  };
+    /**
+     * 請求報帳批准。
+     */
+    // 建立批准票據
+    // 發送通知給批准者，並附上票據連結
+    return {
+        "status": "pending",
+        "approver": "Sean Zhou",
+        "purpose": args.purpose,
+        "amount": args.amount,
+        "ticket-id": "approval-ticket-1",
+    };
 }
 
 // 2. 使用長時間執行函式實例化 LongRunningFunctionTool 類別
 const longRunningTool = new LongRunningFunctionTool({
-  name: "ask_for_approval",
-  description: "請求報帳批准。",
-  parameters: z.object({
-    purpose: z.string().describe("報帳的目的。"),
-    amount: z.number().describe("報帳金額。"),
-  }),
-  execute: askForApproval,
+    name: "ask_for_approval",
+    description: "請求報帳批准。",
+    parameters: z.object({
+        purpose: z.string().describe("報帳的目的。"),
+        amount: z.number().describe("報帳金額。"),
+    }),
+    execute: askForApproval,
 });
 ```
 
@@ -916,33 +910,33 @@ public class ExampleLongRunningFunction {
 
   // 定義您的長時間執行函式。
   // 請求報帳批准。
-  public static Map<String, Object> askForApproval(String purpose, double amount) {
-    // 模擬建立票據並發送通知
-    System.out.println(
-        "Simulating ticket creation for purpose: " + purpose + ", amount: " + amount);
+    public static Map<String, Object> askForApproval(String purpose, double amount) {
+        // 模擬建立票據並發送通知
+        System.out.println(
+            "Simulating ticket creation for purpose: " + purpose + ", amount: " + amount);
 
-    // 發送通知給批准者，並附上票據連結
-    Map<String, Object> result = new HashMap<>();
-    result.put("status", "pending");
-    result.put("approver", "Sean Zhou");
-    result.put("purpose", purpose);
-    result.put("amount", amount);
-    result.put("ticket-id", "approval-ticket-1");
-    return result;
-  }
+        // 發送通知給批准者，並附上票據連結
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", "pending");
+        result.put("approver", "Sean Zhou");
+        result.put("purpose", purpose);
+        result.put("amount", amount);
+        result.put("ticket-id", "approval-ticket-1");
+        return result;
+    }
 
-  public static void main(String[] args) throws NoSuchMethodException {
-    // 將方法傳遞給 LongRunningFunctionTool.create
-    LongRunningFunctionTool approveTool =
-        LongRunningFunctionTool.create(ExampleLongRunningFunction.class, "askForApproval");
+    public static void main(String[] args) throws NoSuchMethodException {
+        // 將方法傳遞給 LongRunningFunctionTool.create
+        LongRunningFunctionTool approveTool =
+            LongRunningFunctionTool.create(ExampleLongRunningFunction.class, "askForApproval");
 
-    // 將工具包含在代理中
-    LlmAgent approverAgent =
-        LlmAgent.builder()
-            // ...
-            .tools(approveTool)
-            .build();
-  }
+        // 將工具包含在代理中
+        LlmAgent approverAgent =
+            LlmAgent.builder()
+                // ...
+                .tools(approveTool)
+                .build();
+    }
 }
 ```
 
@@ -1067,205 +1061,189 @@ async def call_agent_async(query):
 > TypeScript
 
 ```typescript
-
-import {
-  LlmAgent,
-  Runner,
-  FunctionTool,
-  LongRunningFunctionTool,
-  InMemorySessionService,
-  Event,
-  stringifyContent,
-} from "@google/adk";
-import {z} from "zod";
-import {Content, FunctionCall, FunctionResponse, createUserContent} from "@google/genai";
-
-// 1. Define the long-running function
+// 1. 定義長時間執行函式
 function askForApproval(args: {purpose: string; amount: number}) {
-  /**
-   * Ask for approval for the reimbursement.
-   */
-  // create a ticket for the approval
-  // Send a notification to the approver with the link of the ticket
-  return {
-    "status": "pending",
-    "approver": "Sean Zhou",
-    "purpose": args.purpose,
-    "amount": args.amount,
-    "ticket-id": "approval-ticket-1",
-  };
+    /**
+     * 請求報帳批准。
+     */
+    // 建立批准票據
+    // 發送通知給批准者，並附上票據連結
+    return {
+        "status": "pending",
+        "approver": "Sean Zhou",
+        "purpose": args.purpose,
+        "amount": args.amount,
+        "ticket-id": "approval-ticket-1",
+    };
 }
 
-// 2. Instantiate the LongRunningFunctionTool class with the long-running function
+// 2. 使用長時間執行函式實例化 LongRunningFunctionTool 類別
 const longRunningTool = new LongRunningFunctionTool({
-  name: "ask_for_approval",
-  description: "Ask for approval for the reimbursement.",
-  parameters: z.object({
-    purpose: z.string().describe("The purpose of the reimbursement."),
-    amount: z.number().describe("The amount to reimburse."),
-  }),
-  execute: askForApproval,
+    name: "ask_for_approval",
+    description: "請求報帳批准。",
+    parameters: z.object({
+        purpose: z.string().describe("報帳的目的。"),
+        amount: z.number().describe("報帳金額。"),
+    }),
+    execute: askForApproval,
 });
 
+// 定義償還金額的函式
 function reimburse(args: {purpose: string; amount: number}) {
-  /**
-   * Reimburse the amount of money to the employee.
-   */
-  // send the reimbursement request to payment vendor
-  return {status: "ok"};
+    /**
+     * 償還金額給員工。
+     */
+    // 發送報帳請求給付款供應商
+    return {status: "ok"};
 }
 
+// 使用 FunctionTool 包裝償還函式
 const reimburseTool = new FunctionTool({
-  name: "reimburse",
-  description: "Reimburse the amount of money to the employee.",
-  parameters: z.object({
-    purpose: z.string().describe("The purpose of the reimbursement."),
-    amount: z.number().describe("The amount to reimburse."),
-  }),
-  execute: reimburse,
+    name: "reimburse",
+    description: "償還金額給員工。",
+    parameters: z.object({
+        purpose: z.string().describe("報帳的目的。"),
+        amount: z.number().describe("報帳金額。"),
+    }),
+    execute: reimburse,
 });
 
-// 3. Use the tool in an Agent
+// 3. 在代理中使用工具
 const reimbursementAgent = new LlmAgent({
-  model: "gemini-2.5-flash",
-  name: "reimbursement_agent",
-  instruction: `
-      You are an agent whose job is to handle the reimbursement process for
-      the employees. If the amount is less than $100, you will automatically
-      approve the reimbursement.
+    model: "gemini-2.5-flash",
+    name: "reimbursement_agent",
+    instruction: `
+            你是一個負責處理員工報帳流程的代理。如果金額小於 100 美元，你將自動批准報帳。
 
-      If the amount is greater than $100, you will
-      ask for approval from the manager. If the manager approves, you will
-      call reimburse() to reimburse the amount to the employee. If the manager
-      rejects, you will inform the employee of the rejection.
-    `,
-  tools: [reimburseTool, longRunningTool],
+            如果金額大於 100 美元，你將請求經理批准。如果經理批准，你將呼叫 reimburse() 將金額償還給員工。如果經理拒絕，你將通知員工拒絕事宜。
+        `,
+    tools: [reimburseTool, longRunningTool],
 });
 
 const APP_NAME = "human_in_the_loop";
 const USER_ID = "1234";
 const SESSION_ID = "session1234";
 
-// Session and Runner
+// Session 與 Runner 設定
 async function setupSessionAndRunner() {
-  const sessionService = new InMemorySessionService();
-  const session = await sessionService.createSession({
-    appName: APP_NAME,
-    userId: USER_ID,
-    sessionId: SESSION_ID,
-  });
-  const runner = new Runner({
-    agent: reimbursementAgent,
-    appName: APP_NAME,
-    sessionService: sessionService,
-  });
-  return {session, runner};
+    const sessionService = new InMemorySessionService();
+    const session = await sessionService.createSession({
+        appName: APP_NAME,
+        userId: USER_ID,
+        sessionId: SESSION_ID,
+    });
+    const runner = new Runner({
+        agent: reimbursementAgent,
+        appName: APP_NAME,
+        sessionService: sessionService,
+    });
+    return {session, runner};
 }
 
 function getLongRunningFunctionCall(event: Event): FunctionCall | undefined {
   // 從事件中獲取長時間執行函式呼叫
-  if (
-    !event.longRunningToolIds ||
-    !event.content ||
-    !event.content.parts?.length
-  ) {
-    return;
-  }
-  for (const part of event.content.parts) {
     if (
-      part &&
-      part.functionCall &&
-      event.longRunningToolIds &&
-      part.functionCall.id &&
-      event.longRunningToolIds.includes(part.functionCall.id)
+        !event.longRunningToolIds ||
+        !event.content ||
+        !event.content.parts?.length
     ) {
-      return part.functionCall;
+        return;
     }
-  }
+    for (const part of event.content.parts) {
+        if (
+            part &&
+            part.functionCall &&
+            event.longRunningToolIds &&
+            part.functionCall.id &&
+            event.longRunningToolIds.includes(part.functionCall.id)
+        ) {
+            return part.functionCall;
+        }
+    }
 }
 
 function getFunctionResponse(
   event: Event,
   functionCallId: string
 ): FunctionResponse | undefined {
-  // 獲取指定 ID 的函式呼叫的函式回應。
-  if (!event.content || !event.content.parts?.length) {
-    return;
-  }
-  for (const part of event.content.parts) {
-    if (
-      part &&
-      part.functionResponse &&
-      part.functionResponse.id === functionCallId
-    ) {
-      return part.functionResponse;
+    // 獲取指定 ID 的函式呼叫的函式回應。
+    if (!event.content || !event.content.parts?.length) {
+        return;
     }
-  }
+    for (const part of event.content.parts) {
+        if (
+            part &&
+            part.functionResponse &&
+            part.functionResponse.id === functionCallId
+        ) {
+            return part.functionResponse;
+        }
+    }
 }
 
 // Agent Interaction
 async function callAgentAsync(query: string) {
-  let longRunningFunctionCall: FunctionCall | undefined;
-  let longRunningFunctionResponse: FunctionResponse | undefined;
-  let ticketId: string | undefined;
-  const content: Content = createUserContent(query);
-  const {session, runner} = await setupSessionAndRunner();
+    let longRunningFunctionCall: FunctionCall | undefined;
+    let longRunningFunctionResponse: FunctionResponse | undefined;
+    let ticketId: string | undefined;
+    const content: Content = createUserContent(query);
+    const {session, runner} = await setupSessionAndRunner();
 
-  console.log("\n執行代理中...");
-  const events = runner.runAsync({
-    sessionId: session.id,
-    userId: USER_ID,
-    newMessage: content,
-  });
+    console.log("\n執行代理中...");
+    const events = runner.runAsync({
+        sessionId: session.id,
+        userId: USER_ID,
+        newMessage: content,
+    });
 
-  for await (const event of events) {
-    // 使用輔助函式檢查特定的請求事件
-    if (!longRunningFunctionCall) {
-      longRunningFunctionCall = getLongRunningFunctionCall(event);
-    } else {
-      const _potentialResponse = getFunctionResponse(
-        event,
-        longRunningFunctionCall.id!
-      );
-      if (_potentialResponse) {
-        // 只有在獲得非 None 回應時才更新
-        longRunningFunctionResponse = _potentialResponse;
-        ticketId = (
-          longRunningFunctionResponse.response as {[key: string]: any}
-        )[`ticket-id`];
-      }
+    for await (const event of events) {
+        // 使用輔助函式檢查特定的請求事件
+        if (!longRunningFunctionCall) {
+            longRunningFunctionCall = getLongRunningFunctionCall(event);
+        } else {
+        const _potentialResponse = getFunctionResponse(
+            event,
+            longRunningFunctionCall.id!
+        );
+        if (_potentialResponse) {
+            // 只有在獲得非 None 回應時才更新
+            longRunningFunctionResponse = _potentialResponse;
+            ticketId = (
+                longRunningFunctionResponse.response as {[key: string]: any}
+            )[`ticket-id`];
+        }
+        }
+        const text = stringifyContent(event);
+        if (text) {
+            console.log(`[${event.author}]: ${text}`);
+        }
     }
-    const text = stringifyContent(event);
-    if (text) {
-      console.log(`[${event.author}]: ${text}`);
-    }
-  }
 
-  if (longRunningFunctionResponse) {
-    // 透過 ticket_id 查詢對應票據的狀態
-    // 送回中間 / 最終回應
-    const updatedResponse = JSON.parse(
-      JSON.stringify(longRunningFunctionResponse)
-    );
-    updatedResponse.response = {status: "approved"};
-    for await (const event of runner.runAsync({
-      sessionId: session.id,
-      userId: USER_ID,
-      newMessage: createUserContent(JSON.stringify({functionResponse: updatedResponse})),
-    })) {
-      const text = stringifyContent(event);
-      if (text) {
-        console.log(`[${event.author}]: ${text}`);
-      }
+    if (longRunningFunctionResponse) {
+        // 透過 ticket_id 查詢對應票據的狀態
+        // 送回中間 / 最終回應
+        const updatedResponse = JSON.parse(
+            JSON.stringify(longRunningFunctionResponse)
+        );
+        updatedResponse.response = {status: "approved"};
+        for await (const event of runner.runAsync({
+            sessionId: session.id,
+            userId: USER_ID,
+            newMessage: createUserContent(JSON.stringify({functionResponse: updatedResponse})),
+        })) {
+        const text = stringifyContent(event);
+            if (text) {
+                console.log(`[${event.author}]: ${text}`);
+            }
+        }
     }
-  }
 }
 
 async function main() {
-  // 不需要批准的報帳
-  await callAgentAsync("Please reimburse 50$ for meals");
-  // 需要批准的報帳
-  await callAgentAsync("Please reimburse 200$ for meals");
+    // 不需要批准的報帳
+    await callAgentAsync("Please reimburse 50$ for meals");
+    // 需要批准的報帳
+    await callAgentAsync("Please reimburse 200$ for meals");
 }
 
 main();
@@ -1355,16 +1333,17 @@ func main() {
     fmt.Println("長時間執行函式成功完成。")
 }
 
-// printEventSummary provides a readable log of agent and LLM interactions.
+// printEventSummary 以可讀性高的方式列印代理與 LLM 互動摘要。
+// 這有助於除錯與理解每個回合的事件流程。
 func printEventSummary(event *session.Event, turnLabel string) {
     for _, part := range event.Content.Parts {
-        // Check for a text part.
+        // 檢查是否為文字內容，若是則印出。
         if part.Text != "" {
-            fmt.Printf("[%s][%s_TEXT]: %s\n", turnLabel, event.Author, part.Text)
+            fmt.Printf("[%s][%s_文字]: %s\n", turnLabel, event.Author, part.Text)
         }
-        // Check for a function call part.
+        // 檢查是否為函式呼叫內容，若是則印出詳細資訊。
         if fc := part.FunctionCall; fc != nil {
-            fmt.Printf("[%s][%s_CALL]: %s(%v) ID: %s\n", turnLabel, event.Author, fc.Name, fc.Args, fc.ID)
+            fmt.Printf("[%s][%s_函式呼叫]: %s(%v) ID: %s\n", turnLabel, event.Author, fc.Name, fc.Args, fc.ID)
         }
     }
 }
@@ -1392,151 +1371,175 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
+/**
+ * 長時間執行功能工具範例 (LongRunningFunctionTool) - Java
+ *
+ * 本範例展示如何在 Java ADK 中實作長時間執行的工具 (如建立支援票據)，
+ * 並模擬多回合的代理互動流程。
+ */
 public class LongRunningFunctionExample {
 
-  private static String USER_ID = "user123";
+    // 使用者 ID
+    private static String USER_ID = "user123";
 
-  @Schema(
-      name = "create_ticket_long_running",
-      description = """
-          Creates a new support ticket with a specified urgency level.
-          Examples of urgency are 'high', 'medium', or 'low'.
-          The ticket creation is a long-running process, and its ID will be provided when ready.
-      """)
-  public static void createTicketAsync(
-      @Schema(
-              name = "urgency",
-              description =
-                  "The urgency level for the new ticket, such as 'high', 'medium', or 'low'.")
-          String urgency,
-      @Schema(name = "toolContext") // Ensures ADK injection
-          ToolContext toolContext) {
-    System.out.printf(
-        "TOOL_EXEC: 'create_ticket_long_running' called with urgency: %s (Call ID: %s)%n",
-        urgency, toolContext.functionCallId().orElse("N/A"));
-  }
-
-  public static void main(String[] args) {
-    LlmAgent agent =
-        LlmAgent.builder()
-            .name("ticket_agent")
-            .description("Agent for creating tickets via a long-running task.")
-            .model("gemini-2.0-flash")
-            .tools(
-                ImmutableList.of(
-                    LongRunningFunctionTool.create(
-                        LongRunningFunctionExample.class, "createTicketAsync")))
-            .build();
-
-    Runner runner = new InMemoryRunner(agent);
-    Session session =
-        runner.sessionService().createSession(agent.name(), USER_ID, null, null).blockingGet();
-
-    // --- Turn 1: User requests ticket ---
-    System.out.println("\n--- Turn 1: User Request ---");
-    Content initialUserMessage =
-        Content.fromParts(Part.fromText("Create a high urgency ticket for me."));
-
-    AtomicReference<String> funcCallIdRef = new AtomicReference<>();
-    runner
-        .runAsync(USER_ID, session.id(), initialUserMessage)
-        .blockingForEach(
-            event -> {
-              printEventSummary(event, "T1");
-              if (funcCallIdRef.get() == null) { // Capture the first relevant function call ID
-                event.content().flatMap(Content::parts).orElse(ImmutableList.of()).stream()
-                    .map(Part::functionCall)
-                    .flatMap(Optional::stream)
-                    .filter(fc -> "create_ticket_long_running".equals(fc.name().orElse("")))
-                    .findFirst()
-                    .flatMap(FunctionCall::id)
-                    .ifPresent(funcCallIdRef::set);
-              }
-            });
-
-    if (funcCallIdRef.get() == null) {
-      System.out.println("ERROR: Tool 'create_ticket_long_running' not called in Turn 1.");
-      return;
+    /**
+     * 長時間執行的票據建立工具。
+     *
+     * @param urgency     票據的緊急程度 (如 'high', 'medium', 'low')
+     * @param toolContext ADK 注入的工具上下文 (用於取得 functionCallId 等)
+     */
+    @Schema(
+            name = "create_ticket_long_running",
+            description = """
+                    建立具有指定緊急程度的新支援票據。
+                    緊急程度範例：'high'、'medium' 或 'low'。
+                    票據建立為長時間執行程序，建立完成後會提供票據 ID。
+            """)
+    public static void createTicketAsync(
+            @Schema(
+                            name = "urgency",
+                            description =
+                                    "新票據的緊急程度，例如 'high'、'medium' 或 'low'。")
+                    String urgency,
+            @Schema(name = "toolContext") // 確保 ADK 能注入 ToolContext
+                    ToolContext toolContext) {
+        System.out.printf(
+                "TOOL_EXEC: 'create_ticket_long_running' 被呼叫，緊急程度: %s (呼叫 ID: %s)%n",
+                urgency, toolContext.functionCallId().orElse("N/A"));
     }
-    System.out.println("ACTION: Captured FunctionCall ID: " + funcCallIdRef.get());
 
-    // --- Turn 2: App provides initial ticket_id (simulating async tool completion) ---
-    System.out.println("\n--- Turn 2: App provides ticket_id ---");
-    String ticketId = "TICKET-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-    FunctionResponse ticketCreatedFuncResponse =
-        FunctionResponse.builder()
-            .name("create_ticket_long_running")
-            .id(funcCallIdRef.get())
-            .response(ImmutableMap.of("ticket_id", ticketId))
-            .build();
-    Content appResponseWithTicketId =
-        Content.builder()
-            .parts(
-                ImmutableList.of(
-                    Part.builder().functionResponse(ticketCreatedFuncResponse).build()))
-            .role("user")
-            .build();
+    public static void main(String[] args) {
+        // 建立代理，並註冊長時間執行工具
+        LlmAgent agent =
+                LlmAgent.builder()
+                        .name("ticket_agent")
+                        .description("透過長時間任務建立票據的代理。")
+                        .model("gemini-2.0-flash")
+                        .tools(
+                                ImmutableList.of(
+                                        LongRunningFunctionTool.create(
+                                                LongRunningFunctionExample.class, "createTicketAsync")))
+                        .build();
 
-    runner
-        .runAsync(USER_ID, session.id(), appResponseWithTicketId)
-        .blockingForEach(event -> printEventSummary(event, "T2"));
-    System.out.println("ACTION: Sent ticket_id " + ticketId + " to agent.");
+        // 建立 Runner 與 Session
+        Runner runner = new InMemoryRunner(agent);
+        Session session =
+                runner.sessionService().createSession(agent.name(), USER_ID, null, null).blockingGet();
 
-    // --- Turn 3: App provides ticket status update ---
-    System.out.println("\n--- Turn 3: App provides ticket status ---");
-    FunctionResponse ticketStatusFuncResponse =
-        FunctionResponse.builder()
-            .name("create_ticket_long_running")
-            .id(funcCallIdRef.get())
-            .response(ImmutableMap.of("status", "approved", "ticket_id", ticketId))
-            .build();
-    Content appResponseWithStatus =
-        Content.builder()
-            .parts(
-                ImmutableList.of(Part.builder().functionResponse(ticketStatusFuncResponse).build()))
-            .role("user")
-            .build();
+        // --- 回合 1: 使用者請求建立票據 ---
+        System.out.println("\n--- 回合 1: 使用者請求 ---");
+        Content initialUserMessage =
+                Content.fromParts(Part.fromText("請幫我建立一張高優先權的支援票據。"));
 
-    runner
-        .runAsync(USER_ID, session.id(), appResponseWithStatus)
-        .blockingForEach(event -> printEventSummary(event, "T3_FINAL"));
-    System.out.println("Long running function completed successfully.");
-  }
+        AtomicReference<String> funcCallIdRef = new AtomicReference<>();
+        runner
+                .runAsync(USER_ID, session.id(), initialUserMessage)
+                .blockingForEach(
+                        event -> {
+                            printEventSummary(event, "T1");
+                            // 捕獲第一次相關的 function call ID
+                            if (funcCallIdRef.get() == null) {
+                                event.content().flatMap(Content::parts).orElse(ImmutableList.of()).stream()
+                                        .map(Part::functionCall)
+                                        .flatMap(Optional::stream)
+                                        .filter(fc -> "create_ticket_long_running".equals(fc.name().orElse("")))
+                                        .findFirst()
+                                        .flatMap(FunctionCall::id)
+                                        .ifPresent(funcCallIdRef::set);
+                            }
+                        });
 
-  private static void printEventSummary(Event event, String turnLabel) {
-    event
-        .content()
-        .ifPresent(
-            content -> {
-              String text =
-                  content.parts().orElse(ImmutableList.of()).stream()
-                      .map(part -> part.text().orElse(""))
-                      .filter(s -> !s.isEmpty())
-                      .collect(Collectors.joining(" "));
-              if (!text.isEmpty()) {
-                System.out.printf("[%s][%s_TEXT]: %s%n", turnLabel, event.author(), text);
-              }
-              content.parts().orElse(ImmutableList.of()).stream()
-                  .map(Part::functionCall)
-                  .flatMap(Optional::stream)
-                  .findFirst() // Assuming one function call per relevant event for simplicity
-                  .ifPresent(
-                      fc ->
-                          System.out.printf(
-                              "[%s][%s_CALL]: %s(%s) ID: %s%n",
-                              turnLabel,
-                              event.author(),
-                              fc.name().orElse("N/A"),
-                              fc.args().orElse(ImmutableMap.of()),
-                              fc.id().orElse("N/A")));
-            });
-  }
+        if (funcCallIdRef.get() == null) {
+            System.out.println("錯誤：回合 1 未呼叫 'create_ticket_long_running' 工具。");
+            return;
+        }
+        System.out.println("動作：已捕獲 FunctionCall ID: " + funcCallIdRef.get());
+
+        // --- 回合 2: 應用程式提供 ticket_id (模擬工具完成) ---
+        System.out.println("\n--- 回合 2: 應用程式提供 ticket_id ---");
+        String ticketId = "TICKET-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        FunctionResponse ticketCreatedFuncResponse =
+                FunctionResponse.builder()
+                        .name("create_ticket_long_running")
+                        .id(funcCallIdRef.get())
+                        .response(ImmutableMap.of("ticket_id", ticketId))
+                        .build();
+        Content appResponseWithTicketId =
+                Content.builder()
+                        .parts(
+                                ImmutableList.of(
+                                        Part.builder().functionResponse(ticketCreatedFuncResponse).build()))
+                        .role("user")
+                        .build();
+
+        runner
+                .runAsync(USER_ID, session.id(), appResponseWithTicketId)
+                .blockingForEach(event -> printEventSummary(event, "T2"));
+        System.out.println("動作：已將 ticket_id " + ticketId + " 傳送給代理。");
+
+        // --- 回合 3: 應用程式提供票據狀態更新 ---
+        System.out.println("\n--- 回合 3: 應用程式提供票據狀態 ---");
+        FunctionResponse ticketStatusFuncResponse =
+                FunctionResponse.builder()
+                        .name("create_ticket_long_running")
+                        .id(funcCallIdRef.get())
+                        .response(ImmutableMap.of("status", "approved", "ticket_id", ticketId))
+                        .build();
+        Content appResponseWithStatus =
+                Content.builder()
+                        .parts(
+                                ImmutableList.of(Part.builder().functionResponse(ticketStatusFuncResponse).build()))
+                        .role("user")
+                        .build();
+
+        runner
+                .runAsync(USER_ID, session.id(), appResponseWithStatus)
+                .blockingForEach(event -> printEventSummary(event, "T3_FINAL"));
+        System.out.println("長時間執行工具已成功完成。");
+    }
+
+    /**
+     * 列印事件摘要，包含文字內容與函式呼叫資訊。
+     *
+     * @param event     事件物件
+     * @param turnLabel 回合標籤 (如 "T1", "T2")
+     */
+    private static void printEventSummary(Event event, String turnLabel) {
+        event
+                .content()
+                .ifPresent(
+                        content -> {
+                            // 印出文字內容
+                            String text =
+                                    content.parts().orElse(ImmutableList.of()).stream()
+                                            .map(part -> part.text().orElse(""))
+                                            .filter(s -> !s.isEmpty())
+                                            .collect(Collectors.joining(" "));
+                            if (!text.isEmpty()) {
+                                System.out.printf("[%s][%s_文字]: %s%n", turnLabel, event.author(), text);
+                            }
+                            // 印出函式呼叫資訊
+                            content.parts().orElse(ImmutableList.of()).stream()
+                                    .map(Part::functionCall)
+                                    .flatMap(Optional::stream)
+                                    .findFirst()
+                                    .ifPresent(
+                                            fc ->
+                                                    System.out.printf(
+                                                            "[%s][%s_函式呼叫]: %s(%s) ID: %s%n",
+                                                            turnLabel,
+                                                            event.author(),
+                                                            fc.name().orElse("N/A"),
+                                                            fc.args().orElse(ImmutableMap.of()),
+                                                            fc.id().orElse("N/A")));
+                        });
+    }
 }
 ```
 
 </details>
 
-Python 完整範例：檔案處理模擬"
+Python 完整範例：檔案處理模擬
 
 ```python
 import asyncio
@@ -1566,7 +1569,6 @@ def reimburse(purpose: str, amount: float) -> str:
 # 2. 使用 LongRunningFunctionTool 包裝函式
 long_running_tool = LongRunningFunctionTool(func=ask_for_approval)
 
-
 # 3. 在代理中使用工具
 file_processor_agent = Agent(
     # 使用與 function calling 相容的模型
@@ -1592,70 +1594,79 @@ async def setup_session_and_runner():
     runner = Runner(agent=file_processor_agent, app_name=APP_NAME, session_service=session_service)
     return session, runner
 
+    # 代理互動範例
+    async def call_agent_async(query):
+        # 取得事件中的長時間執行函式呼叫
+        def get_long_running_function_call(event: Event) -> types.FunctionCall:
+            # 如果事件中沒有長時間執行工具 ID 或內容，則回傳 None
+            if not event.long_running_tool_ids or not event.content or not event.content.parts:
+                return
+            # 檢查每個 part 是否有 function_call 且其 id 屬於 long_running_tool_ids
+            for part in event.content.parts:
+                if (
+                    part
+                    and part.function_call
+                    and event.long_running_tool_ids
+                    and part.function_call.id in event.long_running_tool_ids
+                ):
+                    return part.function_call
 
-# Agent Interaction
-async def call_agent_async(query):
+        # 取得指定 function_call_id 的函式回應
+        def get_function_response(event: Event, function_call_id: str) -> types.FunctionResponse:
+            # 如果事件內容不存在則回傳 None
+            if not event.content or not event.content.parts:
+                return
+            # 檢查每個 part 是否有 function_response 且其 id 符合
+            for part in event.content.parts:
+                if (
+                    part
+                    and part.function_response
+                    and part.function_response.id == function_call_id
+                ):
+                    return part.function_response
 
-    def get_long_running_function_call(event: Event) -> types.FunctionCall:
-        # Get the long running function call from the event
-        if not event.long_running_tool_ids or not event.content or not event.content.parts:
-            return
-        for part in event.content.parts:
-            if (
-                part
-                and part.function_call
-                and event.long_running_tool_ids
-                and part.function_call.id in event.long_running_tool_ids
-            ):
-                return part.function_call
+        # 建立使用者輸入內容
+        content = types.Content(role='user', parts=[types.Part(text=query)])
+        # 初始化 session 與 runner
+        session, runner = await setup_session_and_runner()
 
-    def get_function_response(event: Event, function_call_id: str) -> types.FunctionResponse:
-        # Get the function response for the function call with specified id.
-        if not event.content or not event.content.parts:
-            return
-        for part in event.content.parts:
-            if (
-                part
-                and part.function_response
-                and part.function_response.id == function_call_id
-            ):
-                return part.function_response
+        print("\n執行代理中...")
+        # 啟動代理非同步事件流
+        events_async = runner.run_async(
+            session_id=session.id, user_id=USER_ID, new_message=content
+        )
 
-    content = types.Content(role='user', parts=[types.Part(text=query)])
-    session, runner = await setup_session_and_runner()
-
-    print("\n執行代理中...")
-    events_async = runner.run_async(
-        session_id=session.id, user_id=USER_ID, new_message=content
-    )
-
-
-    long_running_function_call, long_running_function_response, ticket_id = None, None, None
-    async for event in events_async:
-        # 使用輔助函式檢查特定的請求事件
-        if not long_running_function_call:
-            long_running_function_call = get_long_running_function_call(event)
-        else:
-            _potential_response = get_function_response(event, long_running_function_call.id)
-            if _potential_response: # 只有在獲得非 None 回應時才更新
-                long_running_function_response = _potential_response
-                ticket_id = long_running_function_response.response['ticket-id']
-        if event.content and event.content.parts:
-            if text := ''.join(part.text or '' for part in event.content.parts):
-                print(f'[{event.author}]: {text}')
-
-
-    if long_running_function_response:
-        # 透過 ticket_id 查詢對應票據的狀態
-        # 送回中間 / 最終回應
-        updated_response = long_running_function_response.model_copy(deep=True)
-        updated_response.response = {'status': 'approved'}
-        async for event in runner.run_async(
-          session_id=session.id, user_id=USER_ID, new_message=types.Content(parts=[types.Part(function_response = updated_response)], role='user')
-        ):
+        # 初始化變數
+        long_running_function_call, long_running_function_response, ticket_id = None, None, None
+        # 監控事件流
+        async for event in events_async:
+            # 第一次遇到長時間執行工具呼叫時，取得 function_call
+            if not long_running_function_call:
+                long_running_function_call = get_long_running_function_call(event)
+            else:
+                # 取得對應 function_call 的回應
+                _potential_response = get_function_response(event, long_running_function_call.id)
+                if _potential_response:  # 只有在獲得非 None 回應時才更新
+                    long_running_function_response = _potential_response
+                    ticket_id = long_running_function_response.response['ticket-id']
+            # 印出事件中的文字內容
             if event.content and event.content.parts:
                 if text := ''.join(part.text or '' for part in event.content.parts):
                     print(f'[{event.author}]: {text}')
+
+        # 如果已取得長時間執行工具的回應，模擬批准流程
+        if long_running_function_response:
+            # 透過 ticket_id 查詢對應票據的狀態
+            # 送回中間 / 最終回應（這裡直接模擬批准）
+            updated_response = long_running_function_response.model_copy(deep=True)
+            updated_response.response = {'status': 'approved'}
+            # 再次執行代理，傳遞批准狀態
+            async for event in runner.run_async(
+              session_id=session.id, user_id=USER_ID, new_message=types.Content(parts=[types.Part(function_response = updated_response)], role='user')
+            ):
+                if event.content and event.content.parts:
+                    if text := ''.join(part.text or '' for part in event.content.parts):
+                        print(f'[{event.author}]: {text}')
 
 
 # 注意：在 Colab 中，您可以直接在頂層使用 'await'。
@@ -1738,20 +1749,6 @@ AgentTool.create(agent)
 > Python
 
 ```python
-# Copyright 2025 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 from google.adk.agents import Agent
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
@@ -1807,30 +1804,14 @@ long_text = """量子計算代表了一種根本不同的計算方法，利用�
 這種平行性和互連性賦予量子電腦解決特定類型的極其複雜問題的潛力——例如藥物發現、材料科學、複雜系統優化和破解某些類型的密碼學——
 其速度甚至比最強大的古典超級電腦所能達到的還要快得多，儘管該技術仍主要處於發展階段。"""
 
-
-# Note: In Colab, you can directly use 'await' at the top level.
-# If running this code as a standalone Python script, you'll need to use asyncio.run() or manage the event loop.
+# 注意：在 Colab 中，您可以直接在頂層使用 `await`。
+# 如果將此程式碼作為獨立的 Python 腳本執行，您需要使用 `asyncio.run()` 或自行管理事件迴圈。
 await call_agent_async(long_text)
 ```
 
 > TypeScript
 
 ```typescript
-/**
- * Copyright 2025 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 import {
   AgentTool,
   InMemoryRunner,
@@ -1869,28 +1850,31 @@ async function main() {
 與依賴代表 0 或 1 的位元的古典電腦不同，量子電腦使用量子位元 (qubits)，它們可以處於疊加狀態——有效地同時是 0、1 或兩者的組合。
 此外，量子位元可以糾纏在一起，這意味著無論距離多遠，它們的命運都是相互交織的，從而允許複雜的相關性。這種平行性和互連性賦予量子電腦解決特定類型的極其複雜問題的潛力——例如藥物發現、材料科學、複雜系統優化和破解某些類型的密碼學——其速度甚至比最強大的古典超級電腦所能達到的還要快得多，儘管該技術仍主要處於發展階段。`;
 
-  // Create the session before running the agent
+  // 在執行代理前先建立 session
   await runner.sessionService.createSession({
     appName,
     userId: 'user1',
     sessionId: 'session1',
   });
 
-  // Run the agent with the long text to summarize
+  // 使用長文字執行代理，進行摘要
   const events = runner.runAsync({
     userId: 'user1',
     sessionId: 'session1',
     newMessage: createUserContent(longText),
   });
 
-  // Print the final response from the agent
-  console.log('Agent Response:');
+  // 印出代理的最終回應
+  console.log('代理回應：');
   for await (const event of events) {
+    // 檢查事件內容是否有 parts
     if (event.content?.parts?.length) {
-      const responsePart = event.content.parts.find((p: Part) => p.functionResponse);
-      if (responsePart && responsePart.functionResponse) {
-        console.log(responsePart.functionResponse.response);
-      }
+        // 尋找是否有 functionResponse（即工具的回應）
+        const responsePart = event.content.parts.find((p: Part) => p.functionResponse);
+        if (responsePart && responsePart.functionResponse) {
+            // 印出 functionResponse 的回應內容
+            console.log(responsePart.functionResponse.response);
+        }
     }
   }
 }

@@ -1606,4 +1606,27 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 </details>
 
+#### 🕗 Day 79
+
+<details>
+<summary>
+[整合 1/2] Google ADK 自定義工具文件涵蓋函數工具、MCP工具、OpenAPI工具與身份驗證機制。詳細說明工具定義、並行執行、人機確認流程，包含Python、TypeScript、Go、Java多語言實作範例，支援代理程式透過結構化函數呼叫擴展能力與外部系統互動。
+
+🏷️ `function-tools`, `mcp`, `confirmation`, `custom-tools`, `human-in-loop`, `async-parallel`, `performance`, `openapi`, `authentication`
+
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Custom Tools](./workspace/adk-docs/custom-tools/index.md)
+  - [[整理 adk-python 官方範例]: confirmation 使用的 Agent 範例-[human-tool-confirmation]](./workspace/python/agents/human-tool-confirmation/)
+
+- **參考資源**
+
+  - [ADK 官方文件網站 Context](https://google.github.io/adk-docs/tools-custom/)
+  - [adk-python 官方範例位置](https://github.com/google/adk-python)
+  - [[adk-python] human_tool_confirmation 範例](https://github.com/google/adk-python/tree/main/contributing/samples/human_tool_confirmation)
+
+</details>
+
 </details>
