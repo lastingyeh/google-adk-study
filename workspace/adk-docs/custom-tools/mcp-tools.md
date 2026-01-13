@@ -17,6 +17,61 @@ MCP 遵循客戶端-伺服器架構，定義了 **數據** (resources)、**互�
 1. **在 ADK 中使用現有的 MCP 伺服器：** ADK 代理作為 MCP 客戶端，利用外部 MCP 伺服器提供的工具。
 2. **透過 MCP 伺服器公開 ADK 工具：** 建立一個封裝了 ADK 工具的 MCP 伺服器，使任何 MCP 客戶端都能存取這些工具。
 
+### MCP 整合流程時序圖
+
+#### 模式 1：ADK 作為 MCP 客戶端
+
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant ADK as ADK Agent
+    participant McpToolset as McpToolset
+    participant MCP as MCP Server
+
+    User->>ADK: 發送查詢
+    ADK->>McpToolset: 初始化工具集
+    McpToolset->>MCP: 建立連線 (Stdio/SSE)
+    MCP-->>McpToolset: 連線成功
+    McpToolset->>MCP: list_tools()
+    MCP-->>McpToolset: 回傳工具列表
+    McpToolset->>McpToolset: 轉換為 ADK BaseTool
+    McpToolset-->>ADK: 提供工具
+    ADK->>ADK: 決定使用工具
+    ADK->>McpToolset: 呼叫工具
+    McpToolset->>MCP: call_tool(name, args)
+    MCP->>MCP: 執行工具
+    MCP-->>McpToolset: 回傳結果
+    McpToolset-->>ADK: 回傳結果
+    ADK-->>User: 回應
+    User->>ADK: 結束對話
+    ADK->>McpToolset: 關閉連線
+    McpToolset->>MCP: 終止連線
+```
+
+#### 模式 2：透過 MCP 伺服器公開 ADK 工具
+
+```mermaid
+sequenceDiagram
+    participant Client as MCP Client
+    participant Server as MCP Server (Custom)
+    participant ADKTool as ADK Tool
+
+    Client->>Server: 建立連線
+    Server-->>Client: 連線確認
+    Client->>Server: list_tools()
+    Server->>ADKTool: 取得工具定義
+    ADKTool-->>Server: Tool Schema
+    Server->>Server: adk_to_mcp_tool_type()
+    Server-->>Client: MCP Tool List
+    Client->>Server: call_tool(name, args)
+    Server->>ADKTool: run_async(args)
+    ADKTool->>ADKTool: 執行邏輯
+    ADKTool-->>Server: 回傳結果
+    Server->>Server: 格式化為 MCP Content
+    Server-->>Client: TextContent(result)
+    Client->>Server: 關閉連線
+```
+
 ## 先決條件
 
 在開始之前，請確保您已完成以下設定：
@@ -47,6 +102,17 @@ which npx
 5.  **過濾（選用） (Filtering (Optional))：** 您可以在建立 `McpToolset` 時使用 `tool_filter` 參數，從 MCP 伺服器中選擇特定的工具子集，而不是將所有工具都公開給您的代理。
 
 以下範例展示了如何在 `adk web` 開發環境中使用 `McpToolset`。對於需要對 MCP 連線生命週期進行更細粒度控制，或者不使用 `adk web` 的場景，請參閱本頁稍後的「在 `adk web` 之外的自定義代理中使用 MCP 工具」章節。
+
+#### McpToolset 核心功能對照表
+
+| 功能 | 說明 | 參數/方法 |
+|------|------|----------|
+| **連線管理** | 建立與維護 MCP 伺服器連線 | `StdioConnectionParams` / `SseConnectionParams` |
+| **工具發現** | 自動查詢可用工具 | 內部呼叫 `list_tools` MCP 方法 |
+| **架構轉換** | MCP 工具轉為 ADK BaseTool | `adk_to_mcp_tool_type()` |
+| **工具過濾** | 選擇性公開特定工具 | `tool_filter=['tool1', 'tool2']` |
+| **代理調用** | 轉發工具執行請求 | 內部呼叫 `call_tool` MCP 方法 |
+| **生命週期管理** | 自動清理連線資源 | `await toolset.close()` |
 
 ### 範例 1：檔案系統 MCP 伺服器
 
@@ -876,6 +942,46 @@ if __name__ == '__main__':
 ```
 
 
+## 📋 重點整理
+
+### MCP 與 ADK 整合的關鍵概念
+
+| 概念 | 說明 |
+|------|------|
+| **MCP 協定** | 標準化 LLM 與外部系統通訊的開放協定 |
+| **McpToolset** | ADK 中將 MCP 工具橋接為原生工具的類別 |
+| **連線模式** | Stdio (本地程序) 或 SSE/HTTP (遠端服務) |
+| **工具轉換** | 自動將 MCP 架構轉換為 ADK BaseTool |
+| **具狀態連線** | MCP 維持持久連線，需注意部署影響 |
+
+### 使用時機快速參考
+
+```mermaid
+flowchart TD
+    A[需要整合 MCP?] --> B{使用情境}
+    B -->|使用現有 MCP 服務| C[模式 1: ADK 作為客戶端]
+    B -->|公開 ADK 工具| D[模式 2: 建立 MCP 伺服器]
+
+    C --> E{部署環境}
+    E -->|本地開發| F[使用 adk web + Stdio]
+    E -->|生產環境| G[使用 SSE/HTTP 連線]
+
+    D --> H[實作自定義 MCP Server]
+    H --> I[使用 mcp 程式庫]
+    I --> J[實作 list_tools & call_tool]
+```
+
+### 兩種整合模式比較
+
+| 特性 | 模式 1: ADK 作為 MCP 客戶端 | 模式 2: 公開 ADK 工具 |
+|------|-------------------------|--------------------|
+| **使用情境** | 需要使用外部 MCP 服務提供的功能 | 讓其他 MCP 客戶端使用 ADK 工具 |
+| **主要類別** | `McpToolset` | 自定義 MCP Server (使用 `mcp` 程式庫) |
+| **工具流向** | MCP Server → ADK Agent | ADK Tool → MCP Client |
+| **適用範例** | 檔案系統、Google Maps 服務 | 封裝 `load_web_page` 等 ADK 工具 |
+| **部署考量** | 需管理連線生命週期 | 需獨立部署 MCP 伺服器 |
+| **開發難度** | 簡單 (直接使用 `McpToolset`) | 中等 (需實作伺服器邏輯) |
+
 ## 關鍵注意事項
 
 在使用 MCP 和 ADK 時，請記住以下幾點：
@@ -969,6 +1075,14 @@ uv run adk deploy cloud_run \
 ```
 
 ### 部署模式
+
+#### 部署模式比較表
+
+| 模式 | 優點 | 缺點 | 最佳使用情境 |
+|------|------|------|------------|
+| **Stdio (自足式)** | • 設置簡單<br>• 程序隔離<br>• 在容器中運作良好 | • 程序開銷大<br>• 不適合大規模 | • 開發環境<br>• 單租戶部署<br>• 簡單 MCP 伺服器 |
+| **Streamable HTTP (遠端)** | • 基於網絡<br>• 具擴展性<br>• 可處理多客戶端 | • 需要網絡基礎設施<br>• 驗證複雜 | • 生產部署<br>• 多租戶系統<br>• 外部 MCP 服務 |
+| **Sidecar (GKE)** | • 共享命名空間<br>• 低延遲<br>• 資源隔離 | • 需要 Kubernetes<br>• 配置複雜 | • 微服務架構<br>• 需要資源隔離<br>• GKE 部署 |
 
 #### 模式 1：自足式 Stdio MCP 伺服器
 
@@ -1169,6 +1283,35 @@ spec:
 - **優點：** 基於網絡、具擴展性、可以處理多個客戶端
 - **缺點：** 需要網絡基礎設施、驗證複雜
 - **最佳用途：** 生產部署、多租戶系統、外部 MCP 服務
+
+#### 連線類型選擇決策流程
+
+```mermaid
+flowchart TD
+    A[選擇 MCP 連線類型] --> B{部署環境}
+    B -->|開發/本地| C{MCP 伺服器類型}
+    B -->|生產環境| D{擴展需求}
+
+    C -->|npm 套件| E[Stdio - npx]
+    C -->|Python 模組| F[Stdio - python]
+    C -->|獨立服務| G[考慮 SSE/HTTP]
+
+    D -->|單一實例| H{MCP 伺服器位置}
+    D -->|多實例/高可用| I[必須使用 SSE/HTTP]
+
+    H -->|容器內| J[Stdio or Sidecar]
+    H -->|外部服務| K[SSE/HTTP]
+
+    E --> L[StdioConnectionParams]
+    F --> L
+    G --> M[SseConnectionParams]
+    I --> M
+    J --> L
+    K --> M
+
+    L --> N[connection_params=StdioConnectionParams...]
+    M --> O[connection_params=SseConnectionParams...]
+```
 
 ### 生產部署檢查清單
 
