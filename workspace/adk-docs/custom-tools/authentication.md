@@ -5,28 +5,80 @@
 
 許多工具需要存取受保護的資源（如 Google 日曆中的使用者資料、Salesforce 記錄等）並需要進行身份驗證。ADK 提供了一套系統來安全地處理各種身份驗證方法。
 
-涉及的核心組件包括：
+## 📋 重點整理
 
-1. **`AuthScheme`**：定義 API 期望如何接收身份驗證憑證（例如，作為標頭中的 API 金鑰或 OAuth 2.0 Bearer 權杖）。ADK 支援與 OpenAPI 3.0 相同的身份驗證方案類型。要瞭解更多關於每種憑證類型的資訊，請參閱 [OpenAPI 文件：身份驗證](https://swagger.io/docs/specification/v3_0/authentication/)。ADK 使用特定的類別，如 `APIKey`、`HTTPBearer`、`OAuth2`、`OpenIdConnectWithConfig`。
-2. **`AuthCredential`**：保存*啟動*身份驗證程序所需的*初始*資訊（例如，應用程式的 OAuth 用戶端 ID/金鑰、API 金鑰值）。它包含一個 `auth_type`（如 `API_KEY`、`OAUTH2`、`SERVICE_ACCOUNT`），用於指定憑證類型。
+| 項目 | 說明 |
+|------|------|
+| **主要目的** | 安全處理工具存取受保護資源時的身份驗證 |
+| **支援協定** | API Key、HTTP Bearer、OAuth 2.0、OpenID Connect、Service Account |
+| **核心組件** | `AuthScheme`（定義如何接收憑證）、`AuthCredential`（初始憑證資訊） |
+| **自動化功能** | 自動交換初始憑證為可用 access token |
+| **互動流程** | 支援 OAuth consent 等需要使用者互動的流程 |
+| **安全建議** | 使用加密儲存敏感憑證、生產環境採用專用秘密管理服務 |
+
+## 核心組件說明
+
+### 1. AuthScheme
+定義 API 期望如何接收身份驗證憑證（例如，作為標頭中的 API 金鑰或 OAuth 2.0 Bearer 權杖）。ADK 支援與 OpenAPI 3.0 相同的身份驗證方案類型。
+
+**支援的類別：**
+- `APIKey` - API 金鑰驗證
+- `HTTPBearer` - HTTP Bearer Token
+- `OAuth2` - OAuth 2.0 協定
+- `OpenIdConnectWithConfig` - OpenID Connect
+
+> 📚 詳細說明請參閱 [OpenAPI 文件：身份驗證](https://swagger.io/docs/specification/v3_0/authentication/)
+
+### 2. AuthCredential
+保存*啟動*身份驗證程序所需的*初始*資訊（例如，應用程式的 OAuth 用戶端 ID/金鑰、API 金鑰值）。
+
+**支援的類型：**
+- `API_KEY` - API 金鑰
+- `OAUTH2` - OAuth 2.0
+- `OPEN_ID_CONNECT` - OpenID Connect
+- `SERVICE_ACCOUNT` - 服務帳戶
+- `HTTP` - HTTP 驗證
+
+### 身份驗證流程概覽
+
+```mermaid
+sequenceDiagram
+    participant Client as 代理用戶端
+    participant ADK as ADK 框架
+    participant Tool as 工具
+    participant Provider as 身份提供者
+
+    Client->>ADK: 1. 執行代理程式查詢
+    ADK->>Tool: 2. 調用需要身份驗證的工具
+    Tool->>ADK: 3. 請求身份驗證憑證
+    ADK->>Client: 4. 發出 adk_request_credential 事件
+    Client->>Provider: 5. 重導向使用者至授權 URL
+    Provider->>Client: 6. 回傳授權碼（透過回呼 URL）
+    Client->>ADK: 7. 提交 FunctionResponse 含授權碼
+    ADK->>Provider: 8. 交換授權碼為 access token
+    Provider->>ADK: 9. 回傳 access token
+    ADK->>Tool: 10. 重試工具呼叫（帶 token）
+    Tool->>ADK: 11. 回傳工具執行結果
+    ADK->>Client: 12. 回傳最終結果
+```
 
 一般流程涉及在設定工具時提供這些詳細資訊。接著，ADK 會嘗試在工具發起 API 呼叫之前，自動將初始憑證交換為可用的憑證（如 access token）。對於需要使用者互動的流程（如 OAuth consent），則會觸發涉及代理用戶端（Agent Client）應用程式的特定互動程序。
 
 ## 支援的初始憑證類型
 
-* **API\_KEY：** 用於簡單的金鑰/值身份驗證。通常不需要交換。
-* **HTTP：** 可以表示基本驗證（不建議/不支援進行交換）或已取得的 Bearer 權杖。如果是 Bearer 權杖，則不需要交換。
-* **OAUTH2：** 用於標準的 OAuth 2.0 流程。需要設定（用戶端 ID、金鑰、範圍），且通常會觸發使用者同意的互動流程。
-* **OPEN\_ID\_CONNECT：** 用於基於 OpenID Connect 的身份驗證。與 OAuth2 類似，通常需要設定和使用者互動。
-* **SERVICE\_ACCOUNT：** 用於 Google Cloud 服務帳戶憑證（JSON 金鑰或應用程式預設憑證）。通常會交換為 Bearer 權杖。
+| 憑證類型 | 說明 | 是否需要交換 | 使用場景 |
+|---------|------|------------|---------|
+| **API_KEY** | 簡單的金鑰/值身份驗證 | ❌ 否 | 公開 API、簡單驗證需求 |
+| **HTTP** | 基本驗證或 Bearer 權杖 | ❌ 否（若為 Bearer）<br>⚠️ 不支援（若為基本驗證） | 已取得的權杖場景 |
+| **OAUTH2** | 標準 OAuth 2.0 流程 | ✅ 是 | 需要用戶端 ID、金鑰、範圍<br>觸發使用者同意流程 |
+| **OPEN_ID_CONNECT** | OpenID Connect 身份驗證 | ✅ 是 | 類似 OAuth2<br>需要設定和使用者互動 |
+| **SERVICE_ACCOUNT** | Google Cloud 服務帳戶 | ✅ 是 | JSON 金鑰或應用程式預設憑證<br>交換為 Bearer 權杖 |
 
-## 在工具上設定身份驗證
-
-您在定義工具時設定身份驗證：
-
-* **RestApiTool / OpenAPIToolset**：在初始化期間傳遞 `auth_scheme` 和 `auth_credential`。
-
-* **GoogleApiToolSet 工具**：ADK 內建了第一方工具，如 Google 日曆、BigQuery 等。請使用工具集特定的方法。
+| 工具類型 | 設定方式 | 參數 |
+|---------|---------|------|
+| **RestApiTool / OpenAPIToolset** | 初始化期間傳遞參數 | `auth_scheme`、`auth_credential` |
+| **GoogleApiToolSet** | 使用工具集特定方法 | 例如：`configure_auth(client_id, client_secret)` |
+| **APIHubToolset / ApplicationIntegrationToolset** | 初始化期間傳遞參數 | `auth_scheme`、`auth_credential` |
 
 * **APIHubToolset / ApplicationIntegrationToolset**：如果在 API Hub 管理的 API 或由 Application Integration 提供的 API 需要身份驗證，請在初始化期間傳遞 `auth_scheme` 和 `auth_credential`。
 
@@ -200,15 +252,45 @@ calendar_tool_set.configure_auth(
 
 ### 2. 處理互動式 OAuth/OIDC 流程（用戶端）
 
-如果工具需要使用者登入/同意（通常是 OAuth 2.0 或 OIDC），ADK 框架會暫停執行並發信號給您的 **代理用戶端 (Agent Client)** 應用程式。有兩種情況：
+如果工具需要使用者登入/同意（通常是 OAuth 2.0 或 OIDC），ADK 框架會暫停執行並發信號給您的 **代理用戶端 (Agent Client)** 應用程式。
 
-* **代理用戶端**應用程式在同一個程序中直接執行代理程式（透過 `runner.run_async`）。例如：UI 後端、CLI 應用程式或 Spark 作業等。
-* **代理用戶端**應用程式透過 `/run` 或 `/run_sse` 端點與 ADK 的 fastapi 伺服器互動。而 ADK 的 fastapi 伺服器可以設定在與**代理用戶端**應用程式相同的伺服器或不同的伺服器上。
+#### 兩種執行情境比較
 
-第二種情況是第一種情況的特例，因為 `/run` 或 `/run_sse` 端點也會調用 `runner.run_async`。唯一的區別在於：
+| 執行方式 | 情境 1：直接執行 | 情境 2：透過 API 端點 |
+|---------|----------------|-------------------|
+| **執行方法** | 程序內調用 `runner.run_async` | 透過 `/run` 或 `/run_sse` 端點 |
+| **應用場景** | UI 後端、CLI 應用程式、Spark 作業 | 分離式前後端架構 |
+| **事件格式** | 記憶體中的物件 | HTTP 回應中的序列化 JSON |
+| **伺服器部署** | 同一程序 | 可同伺服器或不同伺服器 |
 
-* 是調用 python 函式來執行代理程式（第一種情況），還是調用服務端點來執行代理程式（第二種情況）。
-* 結果事件是記憶體中的物件（第一種情況），還是 http 回應中的序列化 JSON 字串（第二種情況）。
+> 💡 **注意**：情境 2 是情境 1 的特例，因為 `/run` 或 `/run_sse` 端點內部也會調用 `runner.run_async`。主要差異在於調用方式和事件傳遞格式。
+
+#### 用戶端處理流程
+
+```mermaid
+sequenceDiagram
+    participant User as 使用者
+    participant Client as 用戶端應用
+    participant ADK as ADK Runner
+    participant OAuth as OAuth Provider
+
+    Client->>ADK: 步驟 1: 執行代理程式
+    ADK-->>Client: 偵測到 adk_request_credential 事件
+    Client->>Client: 提取 auth_config 和 function_call_id
+
+    Client->>User: 步驟 2: 顯示授權 URL<br>(auth_uri + redirect_uri)
+    User->>OAuth: 步驟 3: 瀏覽器開啟 URL 並授權
+    OAuth-->>User: 重導向至 redirect_uri<br>(帶授權碼)
+
+    User->>Client: 步驟 4: 貼上完整回呼 URL
+    Client->>Client: 更新 AuthConfig<br>(auth_response_uri, redirect_uri)
+    Client->>ADK: 提交 FunctionResponse
+
+    ADK->>OAuth: 步驟 5: 交換授權碼
+    OAuth-->>ADK: 回傳 access token
+    ADK->>ADK: 重試工具呼叫
+    ADK-->>Client: 回傳最終結果
+```
 
 以下章節重點介紹第一種情況，您應該能夠非常直觀地將其對應到第二種情況。如有必要，我們也會描述處理第二種情況時的一些差異。
 
@@ -366,14 +448,60 @@ if auth_request_function_call_id and auth_config:
         user_id='user',
         new_message=auth_content, # 將 FunctionResponse 傳回
     )
+```
+工具函式身份驗證流程
 
-    # --- 處理最終代理程式輸出 ---
+```mermaid
+flowchart TD
+    Start([工具函式執行]) --> Step1{步驟 1: 檢查<br/>快取憑證}
+
+    Step1 -->|有效憑證| Step6[步驟 6: 發起 API 呼叫]
+    Step1 -->|無效/無憑證| Step2{步驟 2: 檢查<br/>身份驗證回應}
+
+    Step2 -->|有回應| Step4[步驟 4: 交換權杖]
+    Step2 -->|無回應| Step3[步驟 3: 發起<br/>身份驗證請求]
+
+    Step3 --> Return1[回傳 pending 狀態]
+    Return1 --> UserAuth[使用者授權流程]
+    UserAuth --> Retry[ADK 重試工具]
+    Retry --> Step2
+
+    Step4 --> Step5[步驟 5: 快取憑證]
+
+    Step5 --> Step6
+
+    Step6 --> Success{API 成功?}
+    Success -->|是| Step7[步驟 7: 回傳結果]
+    Success -->|401/403| Clear[清除快取憑證]
+    Clear --> Step3
+
+    Step7 --> End([完成])
+
+    style Step1 fill:#e1f5ff
+    style Step2 fill:#e1f5ff
+    style Step3 fill:#fff4e1
+    style Step4 fill:#e8f5e9
+    style Step5 fill:#e8f5e9
+    style Step6 fill:#f3e5f5
+    style Step7 fill:#e8f5e9
+```
+#### 實作步驟總覽
+
+| 步驟 | 動作 | 說明 |
+|-----|------|------|
+| **步驟 1** | 檢查快取憑證 | 從 `tool_context.state` 檢查是否有有效的快取憑證 |
+| **步驟 2** | 檢查身份驗證回應 | 調用 `tool_context.get_auth_response()` 檢查用戶端回應 |
+| **步驟 3** | 發起身份驗證請求 | 調用 `tool_context.request_credential()` 啟動 OAuth 流程 |
+| **步驟 4** | 交換權杖 | ADK 自動將授權碼交換為 access token |
+| **步驟 5** | 快取憑證 | 將獲得的憑證儲存至 `tool_context.state` |
+| **步驟 6** | 發起 API 呼叫 | 使用有效憑證調用受保護的 API |
+| **步驟 7** | 回傳結果 | 處理並回傳 API 結果給 LLM |
+
+### # --- 處理最終代理程式輸出 ---
     print("\n--- 身份驗證後的代理程式回應 ---")
     async for event in events_async_after_auth:
         # 正常處理事件，預期此時工具呼叫將成功
         print(event) # 列印完整事件以供檢查
-
-```
 
 > [!NOTE] 注意：使用恢復（Resume）功能進行授權回應
     如果您的 ADK 代理程式工作流設定了 [恢復 (Resume)](../agent-runtime/resume.md) 功能，您還必須在身份驗證回應中包含調用 ID (`invocation_id`) 參數。您提供的調用 ID 必須與產生身份驗證請求的調用相同，否則系統會以該身份驗證回應啟動一個新的調用。如果您的代理程式使用恢復功能，請考慮在身份驗證請求中包含調用 ID 作為參數，以便將其包含在身份驗證回應中。有關使用恢復功能的更多詳細資訊，請參閱 [恢復停止的代理程式](../agent-runtime/resume.md)。
@@ -1019,3 +1147,52 @@ components:
         - message
 ```
 </details>
+
+---
+### 工具函式身份驗證流程
+
+```mermaid
+flowchart TD
+    Start([工具函式執行]) --> Step1{步驟 1: 檢查<br/>快取憑證}
+
+    Step1 -->|有效憑證| Step6[步驟 6: 發起 API 呼叫]
+    Step1 -->|無效/無憑證| Step2{步驟 2: 檢查<br/>身份驗證回應}
+
+    Step2 -->|有回應| Step4[步驟 4: 交換權杖]
+    Step2 -->|無回應| Step3[步驟 3: 發起<br/>身份驗證請求]
+
+    Step3 --> Return1[回傳 pending 狀態]
+    Return1 --> UserAuth[使用者授權流程]
+    UserAuth --> Retry[ADK 重試工具]
+    Retry --> Step2
+
+    Step4 --> Step5[步驟 5: 快取憑證]
+
+    Step5 --> Step6
+
+    Step6 --> Success{API 成功?}
+    Success -->|是| Step7[步驟 7: 回傳結果]
+    Success -->|401/403| Clear[清除快取憑證]
+    Clear --> Step3
+
+    Step7 --> End([完成])
+
+    style Step1 fill:#e1f5ff
+    style Step2 fill:#e1f5ff
+    style Step3 fill:#fff4e1
+    style Step4 fill:#e8f5e9
+    style Step5 fill:#e8f5e9
+    style Step6 fill:#f3e5f5
+    style Step7 fill:#e8f5e9
+```
+#### 實作步驟總覽
+
+| 步驟 | 動作 | 說明 |
+|-----|------|------|
+| **步驟 1** | 檢查快取憑證 | 從 `tool_context.state` 檢查是否有有效的快取憑證 |
+| **步驟 2** | 檢查身份驗證回應 | 調用 `tool_context.get_auth_response()` 檢查用戶端回應 |
+| **步驟 3** | 發起身份驗證請求 | 調用 `tool_context.request_credential()` 啟動 OAuth 流程 |
+| **步驟 4** | 交換權杖 | ADK 自動將授權碼交換為 access token |
+| **步驟 5** | 快取憑證 | 將獲得的憑證儲存至 `tool_context.state` |
+| **步驟 6** | 發起 API 呼叫 | 使用有效憑證調用受保護的 API |
+| **步驟 7** | 回傳結果 | 處理並回傳 API 結果給 LLM |
