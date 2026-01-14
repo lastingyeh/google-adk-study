@@ -22,7 +22,15 @@
 #### 1. 協調員/派遣員模式 (Coordinator/Dispatcher Pattern)
 
 ```mermaid
-graph TB
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef primary fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef expert fill:#E5E5EA,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef decision fill:#FF9500,stroke:#FF9500,color:#FFFFFF,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+
+    %% Diagram
     Start([用戶請求]) --> Coordinator[協調員代理<br/>HelpDeskCoordinator]
     Coordinator -->|分析請求類型| Decision{判斷路由}
     Decision -->|付款問題| Billing[Billing 代理<br/>處理賬單查詢]
@@ -32,16 +40,25 @@ graph TB
     Response1 --> End([完成])
     Response2 --> End
 
-    style Coordinator fill:#4A90E2,color:#fff
-    style Billing fill:#50C878,color:#fff
-    style Support fill:#50C878,color:#fff
-    style Decision fill:#F5A623,color:#fff
+    %% Apply Styles
+    class Start,End,Response1,Response2 startEnd;
+    class Coordinator primary;
+    class Billing,Support expert;
+    class Decision decision;
 ```
 
 #### 2. 順序管線模式 (Sequential Pipeline Pattern)
 
 ```mermaid
-graph LR
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef step fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef state fill:#E5E5EA,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef group fill:#FAFAFA,stroke:#E5E5EA,color:#6E6E73,rx:8,ry:8;
+
+    %% Diagram
     Start([開始]) --> Step1[Step1: ValidateInput<br/>驗證輸入數據]
     Step1 -->|state validation_status| Step2[Step2: ProcessData<br/>處理數據]
     Step2 -->|state result| Step3[Step3: ReportResult<br/>報告結果]
@@ -58,76 +75,103 @@ graph LR
     Step2 -.寫入.-> S2
     Step3 -.讀取.-> S2
 
-    style Step1 fill:#4A90E2,color:#fff
-    style Step2 fill:#4A90E2,color:#fff
-    style Step3 fill:#4A90E2,color:#fff
-    style State fill:#E8E8E8,color:#333
+    %% Apply Styles
+    class Start,End startEnd;
+    class Step1,Step2,Step3 step;
+    class S1,S2 state;
+    class State group;
 ```
 
 #### 3. 並行展開/收集模式 (Parallel Fan-Out/Gather Pattern)
 
 ```mermaid
-graph TB
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef primary fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef task fill:#E5E5EA,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef group fill:#FAFAFA,stroke:#E5E5EA,color:#6E6E73,rx:8,ry:8;
+
+    %% Diagram
     Start([開始]) --> Parallel{並行執行}
 
-    Parallel -->|並行| API1[API1Fetcher<br/>獲取 API1 數據]
-    Parallel -->|並行| API2[API2Fetcher<br/>獲取 API2 數據]
+    subgraph ParallelAgent["ParallelAgent"]
+        direction LR
+        API1[API1Fetcher<br/>獲取 API1 數據]
+        API2[API2Fetcher<br/>獲取 API2 數據]
+    end
+
+    Parallel --> API1
+    Parallel --> API2
 
     API1 -->|state api1_data| Gather[Synthesizer<br/>合成結果]
     API2 -->|state api2_data| Gather
 
     Gather --> End([最終結果])
 
-    subgraph ParallelAgent["ParallelAgent: ConcurrentFetch"]
-        API1
-        API2
-    end
-
-    style API1 fill:#50C878,color:#fff
-    style API2 fill:#50C878,color:#fff
-    style Gather fill:#4A90E2,color:#fff
-    style ParallelAgent fill:#FFF4E6,stroke:#F5A623
+    %% Apply Styles
+    class Start,End startEnd;
+    class Parallel,Gather primary;
+    class API1,API2 task;
+    class ParallelAgent group;
 ```
 
 #### 4. 層次化任務分解 (Hierarchical Task Decomposition)
 
 ```mermaid
-graph TD
+flowchart LR
+    %% Style Definitions
+    classDef l1 fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef l2 fill:#5AC8FA,stroke:#5AC8FA,color:#FFFFFF,rx:8,ry:8;
+    classDef l3 fill:#E5E5EA,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef group fill:#FAFAFA,stroke:#E5E5EA,color:#6E6E73,rx:8,ry:8;
+
+    %% Diagram
     User([用戶請求]) --> L1[ReportWriter<br/>高級代理]
 
-    L1 -->|調用工具| L2[ResearchAssistant<br/>中級代理]
+    subgraph Layer1["第一層:高級策略"]
+        L1
+    end
+    subgraph Layer2["第二層:研究執行"]
+        L2[ResearchAssistant<br/>中級代理]
+    end
+    subgraph Layer3["第三層:基礎工具"]
+        L3A[WebSearch<br/>網絡搜索]
+        L3B[Summarizer<br/>文本總結]
+    end
 
-    L2 -->|調用工具| L3A[WebSearch<br/>網絡搜索]
-    L2 -->|調用工具| L3B[Summarizer<br/>文本總結]
-
+    L1 -->|調用工具| L2
+    L2 -->|調用工具| L3A
+    L2 -->|調用工具| L3B
     L3A -->|返回結果| L2
     L3B -->|返回結果| L2
     L2 -->|返回結果| L1
     L1 --> Output([生成報告])
 
-    subgraph Layer1["第一層：高級策略"]
-        L1
-    end
-
-    subgraph Layer2["第二層：研究執行"]
-        L2
-    end
-
-    subgraph Layer3["第三層：基礎工具"]
-        L3A
-        L3B
-    end
-
-    style L1 fill:#E74C3C,color:#fff
-    style L2 fill:#3498DB,color:#fff
-    style L3A fill:#2ECC71,color:#fff
-    style L3B fill:#2ECC71,color:#fff
+    %% Apply Styles
+    class User,Output startEnd;
+    class L1 l1;
+    class L2 l2;
+    class L3A,L3B l3;
+    class Layer1,Layer2,Layer3 group;
 ```
 
 #### 5. 審查/批評模式 (Review/Critique Pattern)
 
 ```mermaid
-graph LR
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef primary fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef critique fill:#FF9500,stroke:#FF9500,color:#FFFFFF,rx:8,ry:8;
+    classDef decision fill:#FFD60A,stroke:#FFD60A,color:#1D1D1F,rx:8,ry:8;
+    classDef success fill:#34C759,stroke:#34C759,color:#FFFFFF,rx:8,ry:8;
+    classDef fail fill:#FF3B30,stroke:#FF3B30,color:#FFFFFF,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+
+    %% Diagram
     Start([開始]) --> Gen[DraftWriter<br/>生成草稿]
     Gen -->|state draft_text| Rev[FactChecker<br/>事實檢查]
     Rev -->|state review_status| Decision{審查結果}
@@ -136,119 +180,142 @@ graph LR
     Accept --> End([完成])
     Reject --> End
 
-    style Gen fill:#3498DB,color:#fff
-    style Rev fill:#E67E22,color:#fff
-    style Decision fill:#F5A623,color:#333
-    style Accept fill:#2ECC71,color:#fff
-    style Reject fill:#E74C3C,color:#fff
+    %% Apply Styles
+    class Start,End startEnd;
+    class Gen primary;
+    class Rev critique;
+    class Decision decision;
+    class Accept success;
+    class Reject fail;
 ```
 
 #### 6. 迭代改進模式 (Iterative Refinement Pattern)
 
 ```mermaid
-graph TD
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef loop fill:#AF52DE,stroke:#AF52DE,color:#FFFFFF,rx:8,ry:8;
+    classDef primary fill:#007AFF,stroke:#007AFF,color:#FFFFFF,rx:8,ry:8;
+    classDef critique fill:#FF9500,stroke:#FF9500,color:#FFFFFF,rx:8,ry:8;
+    classDef decision fill:#FFD60A,stroke:#FFD60A,color:#1D1D1F,rx:8,ry:8;
+    classDef success fill:#34C759,stroke:#34C759,color:#FFFFFF,rx:8,ry:8;
+    classDef startEnd fill:#FFFFFF,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+
+    %% Diagram
     Start([開始]) --> Init[初始化<br/>state requirements]
     Init --> Loop{LoopAgent<br/>max_iterations=5}
-
     Loop --> Refine[CodeRefiner<br/>生成/改進代碼]
     Refine -->|state current_code| Check[QualityChecker<br/>品質檢查]
     Check -->|state quality_status| Stop[StopChecker<br/>檢查是否停止]
-
     Stop --> Decision{是否停止?}
     Decision -->|quality=pass<br/>escalate=true| End([完成])
     Decision -->|quality=fail<br/>繼續迭代| Loop
     Decision -->|達到最大迭代| End
 
-    style Loop fill:#9B59B6,color:#fff
-    style Refine fill:#3498DB,color:#fff
-    style Check fill:#E67E22,color:#fff
-    style Stop fill:#1ABC9C,color:#fff
-    style Decision fill:#F5A623,color:#333
+    %% Apply Styles
+    class Start,Init startEnd;
+    class End success;
+    class Loop loop;
+    class Refine primary;
+    class Check,Stop critique;
+    class Decision decision;
 ```
 
 #### 7. 人機協同模式 (Human-in-the-Loop Pattern)
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant User as 用戶
-    participant App as 應用程序
-    participant Prep as PrepareApproval<br/>準備請求
-    participant Req as RequestApproval<br/>請求批准
-    participant Tool as ApprovalTool<br/>人工批准工具
-    participant Human as 人工審核者
-    participant Proc as ProcessDecision<br/>處理決定
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef agent fill:#E5F1FF,stroke:#B3D7FF,color:#1D1D1F,rx:8,ry:8;
+    classDef human fill:#FFE5EC,stroke:#FFB3C7,color:#1D1D1F,rx:8,ry:8;
+    classDef tool fill:#FFF8E1,stroke:#FFECB3,color:#1D1D1F,rx:8,ry:8;
+    classDef state fill:#F3E5F5,stroke:#CE93D8,color:#1D1D1F,rx:8,ry:8;
+    classDef decision fill:#FFFDE7,stroke:#FFF59D,color:#1D1D1F,rx:8,ry:8;
+    classDef start fill:#E8F5E9,stroke:#C8E6C9,color:#1D1D1F,rx:8,ry:8;
+    classDef exit fill:#FFEBEE,stroke:#FFCDD2,color:#1D1D1F,rx:8,ry:8;
 
-    User->>App: 發起請求
-    App->>Prep: 執行
-    Prep->>Prep: 準備批准詳情<br/>(amount, reason)
-    Prep-->>App: state[approval_amount]<br/>state[approval_reason]
+    %% Diagram
+    Start([開始]) --> PrepareAgent[PrepareApproval Agent]
+    PrepareAgent -->|準備批准請求| StateStore1[(Session State<br/>approval_amount<br/>approval_reason)]
+    StateStore1 --> RequestAgent[RequestHumanApproval Agent]
+    RequestAgent -->|調用外部批准工具| ExternalTool{External Approval Tool}
+    ExternalTool -->|1. 發送詳情到<br/>人工審核系統| HumanReview[人工審核系統<br/>UI / 工單系統]
+    HumanReview -->|2. 輪詢或等待<br/>人工響應| Decision{人工決定}
+    Decision -->|Approved| ApprovedResult[返回: approved]
+    Decision -->|Rejected| RejectedResult[返回: rejected]
+    ApprovedResult --> StateStore2[(Session State<br/>human_decision)]
+    RejectedResult --> StateStore2
+    StateStore2 --> ProcessAgent[ProcessDecision Agent]
+    ProcessAgent -->|檢查 human_decision| CheckDecision{decision 狀態}
+    CheckDecision -->|approved| Continue[繼續處理]
+    CheckDecision -->|rejected| Notify[告知用戶被拒絕]
+    Continue --> End([結束])
+    Notify --> End
 
-    App->>Req: 執行
-    Req->>Tool: 調用工具<br/>(amount, reason)
-    Tool->>Human: 發送批准請求
-    Human-->>Tool: 批准/拒絕
-    Tool-->>Req: 返回決定
-    Req-->>App: state[human_decision]
-
-    App->>Proc: 執行
-    Proc->>Proc: 檢查 human_decision
-    alt 批准
-        Proc-->>User: 繼續執行
-    else 拒絕
-        Proc-->>User: 通知拒絕
-    end
+    %% Apply Styles
+    class Start start;
+    class End,Continue,Notify exit;
+    class PrepareAgent,RequestAgent,ProcessAgent agent;
+    class ExternalTool tool;
+    class HumanReview human;
+    class Decision,CheckDecision decision;
+    class StateStore1,StateStore2,ApprovedResult,RejectedResult state;
 ```
 
-#### 8. 人機協同模式（策略引擎版本）
+#### 8. 人機協同模式(策略引擎版本)
 
 ```mermaid
-sequenceDiagram
-    autonumber
-    participant User as 用戶
-    participant App as 主程式
-    participant Runner as InMemoryRunner
-    participant Agent as LlmAgent
-    participant Security as SecurityPlugin
-    participant Policy as PolicyEngine
-    participant Tool as 工具 (getWeather)
-    participant LLM as Gemini Model
+flowchart LR
+    %% Style Definitions
+    classDef default fill:#F5F5F7,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef user fill:#E5F1FF,stroke:#B3D7FF,color:#1D1D1F,rx:8,ry:8;
+    classDef system fill:#E5E5EA,stroke:#D2D2D7,color:#1D1D1F,rx:8,ry:8;
+    classDef security fill:#FFF8E1,stroke:#FFECB3,color:#1D1D1F,rx:8,ry:8;
+    classDef decision fill:#FFFDE7,stroke:#FFF59D,color:#1D1D1F,rx:8,ry:8;
+    classDef loop fill:#F3E5F5,stroke:#CE93D8,color:#1D1D1F,rx:8,ry:8;
+    classDef start fill:#E8F5E9,stroke:#C8E6C9,color:#1D1D1F,rx:8,ry:8;
+    classDef exit fill:#FFEBEE,stroke:#FFCDD2,color:#1D1D1F,rx:8,ry:8;
+    classDef success fill:#34C759,stroke:#34C759,color:#FFFFFF,rx:8,ry:8;
 
-    Note over User,LLM: 1. 初始化階段
-    App->>Runner: 建立 Runner<br/>(含 SecurityPlugin)
-    App->>Runner: 建立 Session
+    %% Diagram
+    Start([開始]) --> UserQuery[使用者查詢<br/>What is the weather in NY?]
+    UserQuery --> RunAsync1[runner.runAsync<br/>初始請求]
+    RunAsync1 --> Agent[LlmAgent<br/>處理訊息]
+    Agent --> LLM[Gemini LLM<br/>決定呼叫工具]
+    LLM --> ToolCall[工具呼叫請求<br/>get_weather, get_current_time]
+    ToolCall --> SecurityPlugin{SecurityPlugin<br/>攔截工具呼叫}
+    SecurityPlugin --> PolicyEngine[CustomPolicyEngine<br/>evaluate 方法]
+    PolicyEngine --> CheckPolicy{檢查策略<br/>結果}
+    CheckPolicy -->|PolicyOutcome.CONFIRM| GenConfirm[生成確認請求<br/>askUserConfirmation]
+    GenConfirm --> CollectRequests[收集確認請求<br/>getAskUserConfirmationFunctionCalls]
+    CollectRequests --> Loop{還有待處理<br/>的確認請求?}
+    Loop -->|是| ShowRequest[顯示確認請求<br/>給使用者]
+    ShowRequest --> UserApprove{使用者<br/>核准?}
+    UserApprove -->|是| SendConfirm[傳送 FunctionResponse<br/>confirmed: true]
+    SendConfirm --> RunAsync2[runner.runAsync<br/>確認回應]
+    RunAsync2 --> SecurityPlugin2[SecurityPlugin<br/>接收核准訊號]
+    SecurityPlugin2 --> ExecuteTool[執行原始工具<br/>get_weather]
+    ExecuteTool --> ToolResult[工具執行結果<br/>status: success]
+    ToolResult --> CheckMore{還有其他<br/>工具呼叫?}
+    CheckMore -->|是| Loop
+    CheckMore -->|否| FinalResponse[LLM 生成最終回應<br/>整合所有工具結果]
+    FinalResponse --> OutputResult[輸出結果<br/>給使用者]
+    OutputResult --> End([結束])
+    UserApprove -->|否| RejectTool[拒絕工具執行]
+    RejectTool --> End
 
-    Note over User,LLM: 2. 初始請求階段
-    User->>App: "What is the weather in NY?"
-    App->>Runner: runAsync(請求)
-    Runner->>Agent: 處理訊息
-    Agent->>LLM: 請求生成
-    LLM-->>Agent: 決定調用 get_weather
-
-    Note over User,LLM: 3. 攔截與策略評估
-    Agent->>Security: 嘗試執行工具
-    Security->>Policy: evaluate(context)
-    Policy-->>Security: PolicyOutcome.CONFIRM
-    Security-->>Runner: 轉化為確認請求
-    Runner-->>App: 產出確認事件
-
-    Note over User,LLM: 4. 人工確認階段
-    App->>User: 顯示確認請求
-    User-->>App: 確認批准
-    App->>Runner: runAsync(批准回應)
-    Runner->>Security: 接收批准
-    Security->>Tool: 執行工具
-    Tool-->>Security: 返回結果
-    Security-->>Agent: 傳回結果
-
-    Note over User,LLM: 5. 完成
-    Agent->>LLM: 提供工具結果
-    LLM-->>Agent: 生成最終答案
-    Agent-->>Runner: 產出答案
-    Runner-->>App: Yield 答案
-    App-->>User: 顯示結果
+    %% Apply Styles
+    class Start start;
+    class exit,RejectTool exit;
+    class UserQuery,UserApprove,ShowRequest user;
+    class SecurityPlugin,PolicyEngine,SecurityPlugin2 security;
+    class CheckPolicy,CheckMore decision;
+    class Loop loop;
+    class ToolResult success;
+    class default system;
 ```
-
 ---
 
 ### 📝 **核心機制說明**
