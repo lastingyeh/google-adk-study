@@ -14,6 +14,7 @@ from typing import Dict, Any
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from google.adk.tools.tool_context import ToolContext
+from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
 
 
 # ============================================================================
@@ -106,7 +107,8 @@ conversation_agent = Agent(
     tools=[
         remember_user_info,
         get_user_info,
-    ]
+    ],
+    before_model_callback=before_model_callback,
 )
 
 # 擴充建議：

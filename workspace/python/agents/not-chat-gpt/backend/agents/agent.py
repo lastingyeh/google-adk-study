@@ -5,9 +5,15 @@ Orchestrator Agent - 主要入口點
 
 from __future__ import annotations
 
+import sys
+import os
+# 添加 backend 目錄到 Python 路徑
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from .conversation_agent.agent import conversation_agent  # 匯入對話代理
 from .strategic_planner_agent.agent import strategic_planner_agent  # 匯入策略規劃代理
+from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
 
 # ============================================================================
 # ORCHESTRATOR AGENT DEFINITION
@@ -75,5 +81,6 @@ root_agent = Agent(
     sub_agents=[  # 子代理列表：協調器可委派任務的專門代理
         conversation_agent,
         strategic_planner_agent,
-    ]
+    ],
+    before_model_callback=before_model_callback,  # 呼叫前的安全防護回調
 )

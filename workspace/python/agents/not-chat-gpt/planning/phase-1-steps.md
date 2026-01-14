@@ -124,13 +124,9 @@
 
 ### 1.5 安全防護層實作 (參考 Day 18: content-moderator)
 
-- [ ] 建立 `backend/guardrails/` 模組
-- [ ] 實作 `SafetyCallbacks` (AgentCallbacks 子類)
-- [ ] 建立內容審核機制 (content_moderator.py)
-- [ ] 實作 PII 偵測 (pii_detector.py)
-- [ ] 建立意圖分類器 (intent_classifier.py)
-- [ ] 整合審計日誌 (audit_logger.py)
-- [ ] 測試安全防護功能
+- [x] 建立 `backend/guardrails/` 模組
+- [x] 實作 PII 偵測
+- [x] 測試基本安全防護功能
 
 ### 1.6 CLI 測試工具
 

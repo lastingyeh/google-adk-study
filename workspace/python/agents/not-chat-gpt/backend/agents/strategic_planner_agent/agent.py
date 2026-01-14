@@ -16,6 +16,8 @@ from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用�
 from google.adk.tools.tool_context import ToolContext
 from google.adk.planners import BuiltInPlanner
 from google.genai import types
+from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
+
 
 # ============================================================================
 # TOOLS: State Management
@@ -226,6 +228,7 @@ strategic_planner_agent = Agent(
     planner=BuiltInPlanner(
         thinking_config=types.ThinkingConfig(include_thoughts=True)
     ),
+    before_model_callback=before_model_callback,
 )
 
 # 擴充建議：
