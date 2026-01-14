@@ -1654,4 +1654,24 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 </details>
 
+#### 🕗 Day 81
+
+<details>
+<summary>
+ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代理 (順序/平行/迴圈) 管理執行流程、自訂代理實現特殊邏輯。支援多代理協作架構，可透過 Agent Config 以 YAML 配置構建無程式碼工作流。
+
+🏷️ `agents`, `workflow`, `sequential`, `loop`, `parallel`, `custom-agent`, `config`, `pattern`, `mutli-agents`
+
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Agents](./workspace/adk-docs/agents/index.md)
+
+- **參考資源**
+
+  - [ADK 官方文件網站 Agents](https://google.github.io/adk-docs/agents/)
+
+</details>
+
 </details>
