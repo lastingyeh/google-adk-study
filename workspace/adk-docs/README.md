@@ -108,7 +108,16 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |
 | [Vertex AI 快速模式](./sessions&memory/express-mode.md)      | 說明如何使用 Vertex AI 會話與記憶的快速模式。            | [連結](./sessions&memory/express-mode.md)     |
 
+### A2A 協議 (A2A Protocol)
 
+| 標頭                                                                             | 描述                                                                                             | 連結                                                                  |
+| :------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| [A2A 總覽](./a2a-protocol/index.md)                                              | 提供 ADK 中 A2A 功能的全面指南，說明如何建構可安全高效溝通的多代理系統。                         | [連結](./a2a-protocol/index.md)                                       |
+| [A2A 簡介](./a2a-protocol/intro.md)                                              | 介紹 Agent2Agent (A2A) 協定的基礎知識，並說明何時該使用遠端 A2A 代理，以及何時該選擇本地子代理。 | [連結](./a2a-protocol/intro.md)                                       |
+| [快速入門：公開代理 (Python)](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing.md) | 指導如何使用 Python ADK 將您的代理公開為 A2A 服務，使其能被其他遠端代理調用。                   | [連結](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing.md) |
+| [快速入門：公開代理 (Go)](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing-go.md) | 指導如何使用 Go ADK 將您的代理公開為 A2A 服務。                                                  | [連結](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing-go.md) |
+| [快速入門：使用代理 (Python)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md) | 說明如何讓您的 Python 代理使用 A2A 協定來調用另一個遠端代理。                                    | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md) |
+| [快速入門：使用代理 (Go)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md) | 說明如何讓您的 Go 代理使用 A2A 協定來調用另一個遠端代理。                                        | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md) |
 
 
 

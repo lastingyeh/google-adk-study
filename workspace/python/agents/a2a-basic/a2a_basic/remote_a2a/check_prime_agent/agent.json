@@ -1,0 +1,25 @@
+{
+  "capabilities": {},
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["application/json"],
+  "description": "專門檢查數字是否為質數的代理。它可以高效地確定單個數字或數字列表的質數屬性。",
+  "name": "check_prime_agent",
+  "skills": [
+    {
+      "id": "prime_checking",
+      "name": "質數檢查",
+      "description": "使用高效的數學演算法檢查列表中的數字是否為質數",
+      "tags": ["數學", "計算", "質數", "數字"]
+    }
+  ],
+  "url": "http://localhost:8001/a2a/check_prime_agent",
+  "version": "1.0.0",
+  "metadata": {
+    "summary": {
+      "core_concept": "定義代理的元數據 (Metadata) 與能力描述。",
+      "key_tech": "JSON 格式的代理描述文件，用於 A2A 發現 (Discovery) 機制。",
+      "conclusion": "明確定義了代理的名稱、描述、技能與存取 URL。",
+      "action_items": "確保 url 欄位與實際部署的服務位址一致。"
+    }
+  }
+}

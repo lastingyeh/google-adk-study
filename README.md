@@ -1674,4 +1674,29 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 </details>
 
+#### 🕗 Day 82
+
+<details>
+<summary>
+[Adk Docs 官方 A2A 協定文件整理]
+此目錄文件解釋了如何在 ADK (Agent Development Kit) 中使用 Agent2Agent (A2A) 協定來建構複雜的多代理系統。內容包含 A2A 的基本介紹、使用時機，並提供 Python 和 Go 語言的快速入門指南，說明如何「公開」自己的代理服務以及如何「取用」遠端的代理服務。
+
+🏷️  `a2a`, `multi-agent`, `example-tool`, `agent-card`, `exposing`, `consuming`, `to_a2a`, `api_server`
+
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-A2A](./workspace/adk-docs/a2a-protocol/index.md)
+  - [A2A Basic](./workspace/python/agents/a2a-basic/)
+
+- **參考資源**
+
+  - [ADK 官方文件網站 A2A](https://google.github.io/adk-docs/a2a/)
+  - [A2A Protocol 官方網站](https://a2a-protocol.org/)
+  - [[Code Wiki] a2a-protocol](https://codewiki.google/github.com/google/adk-python)
+  - [[adk-python] a2a_basic](hhttps://github.com/google/adk-python/tree/main/contributing/samples/a2a_basic)
+
+</details>
+
 </details>
