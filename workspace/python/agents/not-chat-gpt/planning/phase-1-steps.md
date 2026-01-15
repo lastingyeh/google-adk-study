@@ -253,12 +253,12 @@ make dev-web
 
 #### Redis Session 實作
 
-- [ ] **Docker Redis 環境設定**：
+- [x] **Docker Redis 環境設定**：
 
   ```bash
   # docker-compose.yml 新增 Redis 服務
   services:
-    redis:
+    redis-adk-not-chat-gpt:
       image: redis:7-alpine
       ports:
         - "6379:6379"
@@ -270,20 +270,22 @@ make dev-web
     redis_data:
   ```
 
-- [ ] **Redis 依賴安裝**：
+- [x] **Redis 依賴安裝**：
 
   ```bash
   # 使用 uv 安裝 Redis 依賴
   uv add redis
   ```
 
-- [ ] **實作 RedisSessionService**：
-  - 建立 `backend/services/redis_session_service.py`
-  - 實作 ADK `SessionService` 介面
-  - 整合 Redis 連接與錯誤處理
-  - 實作會話 TTL 管理 (預設 1 小時)
+- [x] **實作 RedisSessionService**：
+  - ✅ 建立 `service/redis_session_service.py`
+  - ✅ 實作 ADK `BaseSessionService` 介面
+  - ✅ 整合 Redis 連接與錯誤處理
+  - ✅ 實作會話 TTL 管理 (24小時過期)
+  - ✅ 完整的 CRUD 操作 (create, get, list, delete)
+  - ✅ append_event 方法實作狀態持久化
 
-- [ ] **環境變數配置**：
+- [x] **環境變數配置**：
 
   ```bash
   # .env.example
@@ -291,52 +293,44 @@ make dev-web
   SESSION_TTL=3600  # Redis TTL in seconds
   ```
 
-- [ ] **Agent 整合設定**：
-  - 修改 `backend/agents/agent.py` 使用 RedisSessionService
-  - 替換預設的 InMemorySessionService
-  - 測試會話狀態在 Redis 中的持久化
+- [x] **Agent 整合設定** (參考 custom-session-agent 範例)：
+  - 在 `backend/main.py` 建立 RedisSessionService 工廠函式
+  - 註冊 Redis session service 到 ADK 服務註冊表
+  - 實作服務初始化邏輯，支援 URI 參數傳遞
+  - 設定預設的降級策略 (Redis 無法連接時使用內建服務)
 
-- [ ] **Redis Session 測試與驗證**：
+- [x] **使用命令列參數測試**：
+
+  ```bash
+  # 使用 Redis session service 啟動
+  uv run backend/main.py web backend --session_service_uri=redis://localhost:6379
+  
+  # 驗證 Redis 連接狀態
+  # 在 Web UI 中測試多輪對話，確認會話狀態儲存在 Redis
+  # 重啟伺服器後檢查會話是否保持
+  ```
+
+- [x] **Redis Session 測試與驗證**：
 
   ```bash
   # 啟動 Redis
   docker-compose up redis -d
   
   # 測試會話管理功能
-  make test-redis-session
-  
   # 驗證項目:
   # 1. 會話建立與檢索
   # 2. 狀態數據持久化
-  # 3. TTL 自動過期機制
-  # 4. Redis 重啟後數據恢復
+  # 3. ADK Server 重啟後數據恢復
   ```
 
-- [ ] **Makefile 指令擴展**：
+- [x] **Makefile 指令擴展**：
 
   ```bash
   # 新增 make 指令
   make redis-up       # 啟動 Redis 服務
   make redis-down     # 停止 Redis 服務
-  make test-sessions  # 執行會話管理測試
+  make dev-main       # 透過 main.py 註冊服務後再呼叫 adk cli
   ```
-
-#### 驗證要點
-
-- **效能提升**: 會話讀取延遲 < 10ms (相比 SQLite)
-- **持久化驗證**: Redis 重啟後會話狀態保持
-- **TTL 機制**: 過期會話自動清理
-- **併發支援**: 多個 Agent 實例共享會話狀態
-- **故障處理**: Redis 無法連接時的降級策略
-
-### 2.3 測試框架建立 (參考 Day 19: support-agent)
-
-- [ ] 配置 pytest 測試環境
-- [ ] 建立 `tests/unit/test_agent.py` 單元測試
-- [ ] 建立 `tests/integration/test_api.py` 整合測試
-- [ ] 建立 `tests/evaluation/eval_set.json` 評估數據集
-- [ ] 實作 AgentEvaluator 品質測試
-- [ ] 建立 Guardrails 安全性測試
 
 ---
 

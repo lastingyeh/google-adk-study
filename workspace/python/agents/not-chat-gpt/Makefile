@@ -2,7 +2,7 @@
 # Conversation Agent 開發環境設定 (使用 uv)
 # =============================================================================
 
-.PHONY: help install dev debug test clean sync lock add remove init
+.PHONY: help install dev dev-web dev-main debug test clean sync lock add remove init redis-up redis-down
 
 # 預設目標
 .DEFAULT_GOAL := help
@@ -20,7 +20,10 @@ help:
 	@echo "| make remove PKG - 移除依賴套件                                           |"
 	@echo "| make dev        - 啟動 CLI 對話模式 (adk run)                           |"
 	@echo "| make dev-web    - 啟動 Web 開發伺服器 (adk web)                         |"
+	@echo "| make dev-main   - 使用 Redis Session 啟動 Web 模式                      |"
 	@echo "| make debug      - 啟動偵錯模式（支援 VS Code 附加偵錯）                  |"
+	@echo "| make redis-up   - 啟動 Redis 服務                                        |"
+	@echo "| make redis-down - 停止 Redis 服務                                        |"
 	@echo "| make test       - 執行測試                                               |"
 	@echo "| make clean      - 清理暫存檔案                                           |"
 	@echo "==============================================================================="
@@ -81,10 +84,19 @@ dev:
 # 啟動 Web 開發伺服器
 dev-web:
 	@echo "🚀 啟動 ADK Web 開發伺服器..."
-	@echo "📱 開啟 http://localhost:8000 並選擇 'ConversationAgent'"
+	@echo "📱 開啟 http://localhost:8000 並選擇 'agents'"
 	@echo "🛑 按下 Ctrl+C 停止伺服器"
 	@echo ""
 	uv run adk web backend
+
+# 使用 Redis Session 啟動 Web 開發伺服器
+dev-main:
+	@echo "🚀 啟動 ADK Web 開發伺服器 (使用 Redis Session)..."
+	@echo "📱 開啟 http://localhost:8000 並選擇 'agents'"
+	@echo "💾 會話資料將儲存在 Redis (24小時 TTL)"
+	@echo "🛑 按下 Ctrl+C 停止伺服器"
+	@echo ""
+	uv run python backend/main.py web backend --session_service_uri=redis://localhost:6379/0
 
 # 啟動偵錯模式
 debug:
@@ -110,6 +122,18 @@ install-dev:
 	@echo "🔧 安裝開發依賴..."
 	uv add --dev pytest debugpy
 	@echo "✅ 開發依賴安裝完成"
+
+# 啟動 Redis 服務
+redis-up:
+	@echo "🔴 啟動 Redis 服務..."
+	docker-compose up -d redis-adk-not-chat-gpt
+	@echo "✅ Redis 已啟動在 localhost:6379"
+
+# 停止 Redis 服務
+redis-down:
+	@echo "🛑 停止 Redis 服務..."
+	docker-compose stop redis-adk-not-chat-gpt
+	@echo "✅ Redis 已停止"
 
 # 清理暫存檔案
 clean:
