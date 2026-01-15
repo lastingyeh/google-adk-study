@@ -1695,7 +1695,7 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
   - [ADK 官方文件網站 A2A](https://google.github.io/adk-docs/a2a/)
   - [A2A Protocol 官方網站](https://a2a-protocol.org/)
   - [[Code Wiki] a2a-protocol](https://codewiki.google/github.com/google/adk-python)
-  - [[adk-python] a2a_basic](hhttps://github.com/google/adk-python/tree/main/contributing/samples/a2a_basic)
+  - [[adk-python] a2a_basic](https://github.com/google/adk-python/tree/main/contributing/samples/a2a_basic)
 
 </details>
 
