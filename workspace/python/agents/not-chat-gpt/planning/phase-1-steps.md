@@ -190,12 +190,62 @@ make dev-web
 
 **目標**: 實現串流回應、對話持久化與測試框架。
 
-### 2.1 串流回應實作 (參考 Day 23: streaming-agent)
+### 2.1 串流回應測試 (內建 ADK 串流 API)
 
-- [ ] 修改 Agent methods 支援 generator (yield)
-- [ ] 實作 SSE 串流回應
-- [ ] 更新 CLI 測試工具支援串流處理
-- [ ] 測試串流回應效能與穩定性
+**重要發現**: ADK 內建完整的串流支援生態，包含三種模式！
+
+#### ADK 內建串流端點
+
+- **`/run`**: 標準 HTTP (同步回應)
+- **`/run_sse`**: Server-Sent Events (單向串流)  
+- **`/run_live`**: WebSocket (雙向串流，支援即時互動)
+
+#### 測試串流功能
+
+- [x] **測試 SSE 串流端點**：
+
+  ```bash
+  # 啟動 API 伺服器
+  adk api_server backend/agents
+  
+  # 測試 SSE 串流 (curl)
+  curl -N --location 'http://localhost:8000/run_sse' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "app_name": "agents",
+      "user_id": "u_123", 
+      "session_id": "s_123",
+      "new_message": {
+          "role": "user",
+          "parts": [{"text": "寫一首關於程式設計的長詩，包含10個段落"}]
+      },
+      "streaming": true
+  }'
+  ```
+
+- [x] **測試 Web 界面串流** (推薦)：
+
+  ```bash
+  make dev-web  # 啟動 adk web
+  # 訪問 http://localhost:8000
+  # 輸入長回應請求，觀察即時打字效果
+  ```
+
+- [ ] **WebSocket 串流測試** (進階)：
+
+  ```bash
+  # Web 界面自動支援 WebSocket 雙向通訊
+  # 可測試即時互動和打斷功能
+  ```
+
+#### 驗證要點
+
+- **即時顯示**: 文字逐步出現，無需等待完整回應
+- **流暢性**: 長回應的串流表現
+- **錯誤處理**: 網路中斷時的重連機制
+- **格式正確**: SSE 事件格式符合規範
+
+**CLI 模式說明**: `adk run` 因終端機限制不支援視覺串流效果，但邏輯上仍可配置串流模式。主要測試建議使用 Web 界面。
 
 ### 2.2 對話持久化 (參考 Day 58: custom-session-agent)
 
