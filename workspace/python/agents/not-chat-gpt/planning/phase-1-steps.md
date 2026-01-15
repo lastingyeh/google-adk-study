@@ -247,13 +247,87 @@ make dev-web
 
 **CLI 模式說明**: `adk run` 因終端機限制不支援視覺串流效果，但邏輯上仍可配置串流模式。主要測試建議使用 Web 界面。
 
-### 2.2 對話持久化 (參考 Day 58: custom-session-agent)
+### 2.2 對話持久化升級 (Redis Session 快取層)
 
-- [ ] 設計 SQLite 對話歷史 schema
-- [ ] 實作 `SessionService` 類別
-- [ ] 建立對話管理 API (create/load/list/delete sessions)
-- [ ] 整合 ADK Session State 持久化
-- [ ] 測試對話歷史儲存與載入
+**目標**: 從 ADK 內建 SQLite 升級到 Redis 快取層，提升會話管理效能與可擴展性。
+
+#### Redis Session 實作
+
+- [ ] **Docker Redis 環境設定**：
+
+  ```bash
+  # docker-compose.yml 新增 Redis 服務
+  services:
+    redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      volumes:
+        - redis_data:/data
+      command: redis-server --appendonly yes
+  
+  volumes:
+    redis_data:
+  ```
+
+- [ ] **Redis 依賴安裝**：
+
+  ```bash
+  # 使用 uv 安裝 Redis 依賴
+  uv add redis
+  ```
+
+- [ ] **實作 RedisSessionService**：
+  - 建立 `backend/services/redis_session_service.py`
+  - 實作 ADK `SessionService` 介面
+  - 整合 Redis 連接與錯誤處理
+  - 實作會話 TTL 管理 (預設 1 小時)
+
+- [ ] **環境變數配置**：
+
+  ```bash
+  # .env.example
+  REDIS_URL=redis://localhost:6379/0
+  SESSION_TTL=3600  # Redis TTL in seconds
+  ```
+
+- [ ] **Agent 整合設定**：
+  - 修改 `backend/agents/agent.py` 使用 RedisSessionService
+  - 替換預設的 InMemorySessionService
+  - 測試會話狀態在 Redis 中的持久化
+
+- [ ] **Redis Session 測試與驗證**：
+
+  ```bash
+  # 啟動 Redis
+  docker-compose up redis -d
+  
+  # 測試會話管理功能
+  make test-redis-session
+  
+  # 驗證項目:
+  # 1. 會話建立與檢索
+  # 2. 狀態數據持久化
+  # 3. TTL 自動過期機制
+  # 4. Redis 重啟後數據恢復
+  ```
+
+- [ ] **Makefile 指令擴展**：
+
+  ```bash
+  # 新增 make 指令
+  make redis-up       # 啟動 Redis 服務
+  make redis-down     # 停止 Redis 服務
+  make test-sessions  # 執行會話管理測試
+  ```
+
+#### 驗證要點
+
+- **效能提升**: 會話讀取延遲 < 10ms (相比 SQLite)
+- **持久化驗證**: Redis 重啟後會話狀態保持
+- **TTL 機制**: 過期會話自動清理
+- **併發支援**: 多個 Agent 實例共享會話狀態
+- **故障處理**: Redis 無法連接時的降級策略
 
 ### 2.3 測試框架建立 (參考 Day 19: support-agent)
 
