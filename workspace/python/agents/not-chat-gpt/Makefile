@@ -18,7 +18,8 @@ help:
 	@echo "| make lock       - 更新依賴鎖定檔案                                       |"
 	@echo "| make add PKG    - 新增依賴套件                                           |"
 	@echo "| make remove PKG - 移除依賴套件                                           |"
-	@echo "| make dev        - 啟動開發伺服器                                         |"
+	@echo "| make dev        - 啟動 CLI 對話模式 (adk run)                           |"
+	@echo "| make dev-web    - 啟動 Web 開發伺服器 (adk web)                         |"
 	@echo "| make debug      - 啟動偵錯模式（支援 VS Code 附加偵錯）                  |"
 	@echo "| make test       - 執行測試                                               |"
 	@echo "| make clean      - 清理暫存檔案                                           |"
@@ -68,11 +69,20 @@ remove:
 	uv remove $(PKG)
 	@echo "✅ 套件 $(PKG) 已移除"
 
-# 啟動開發伺服器
+# 啟動 CLI 對話模式
 dev:
-	@echo "🚀 啟動 ADK 開發伺服器..."
+	@echo "🚀 啟動 ADK CLI 對話模式..."
+	@echo "💬 直接在終端機中與 Agent 對話"
+	@echo "📝 測試項目：基本對話、狀態記憶、模式切換 (#think)、安全防護"
+	@echo "🛑 輸入 'exit' 或按 Ctrl+C 退出"
+	@echo ""
+	uv run adk run backend/agents
+
+# 啟動 Web 開發伺服器
+dev-web:
+	@echo "🚀 啟動 ADK Web 開發伺服器..."
 	@echo "📱 開啟 http://localhost:8000 並選擇 'ConversationAgent'"
-	@echo "按下 Ctrl+C 停止伺服器"
+	@echo "🛑 按下 Ctrl+C 停止伺服器"
 	@echo ""
 	uv run adk web backend
 

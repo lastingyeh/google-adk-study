@@ -42,7 +42,8 @@ def before_model_callback(
     # 護欄：檢查封鎖詞彙
     for word in BLOCKED_WORDS:
         # 支援中英文：同時檢查原文和小寫版本
-        if word in last_user_message or word.lower() in last_user_message.lower():
+        if last_user_message and \
+            (word in last_user_message or word.lower() in last_user_message.lower()):
             # 返回錯誤回應（跳過 LLM 呼叫）
             return LlmResponse(
                 content=types.Content(
@@ -55,7 +56,7 @@ def before_model_callback(
 
     # 護欄：檢查 PII（個人識別資訊）
     for pii_type, pattern in PII_PATTERNS.items():
-        if re.search(pattern, last_user_message):
+        if last_user_message and re.search(pattern, last_user_message):
             # 返回 PII 警告回應（跳過 LLM 呼叫）
             return LlmResponse(
                 content=types.Content(

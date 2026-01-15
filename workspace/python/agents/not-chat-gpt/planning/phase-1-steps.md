@@ -122,18 +122,67 @@
 - [x] 實作意圖分析與任務委派邏輯 (#think 指令檢測)
 - [x] 測試模式切換功能
 
+#### 測試案例驗證
+
+**測試用意**: 驗證 Orchestrator 能正確路由到不同的 Sub-Agent，並確保狀態管理與模式切換功能正常運作。
+
+```bash
+# 使用 make dev 或 make dev-web 進行以下測試
+
+# 測試 1: 狀態記憶功能 (ConversationAgent)
+輸入: "Hi, 我是 Chris, 是一名資深工程師, 喜歡跑步."
+預期: 一般對話模式，記住使用者資訊，友善回應
+
+# 測試 2: 記憶回憶功能 (ConversationAgent + 狀態檢索)
+輸入: "我是誰"
+預期: 成功回憶先前儲存的資訊：Chris, 資深工程師, 喜歡跑步
+
+# 測試 3: 模式切換功能 (Strategic Planner Agent)
+輸入: "幫我規劃三個月後的長馬訓練課程 #think"
+預期: 
+- 檢測到 #think 關鍵字
+- 路由到 strategic_planner_agent
+- 顯示結構化思維過程 (<PLANNING>, <REASONING>, <ACTION>)
+- 提供系統性的訓練計畫
+```
+
+**驗證要點**:
+
+1. **路由正確性**: `#think` 觸發策略規劃模式，無 `#think` 使用對話模式
+2. **狀態持續性**: Sub-Agent 間能共享使用者狀態資訊
+3. **回應格式**: Strategic Planner 產生結構化的規劃輸出
+4. **上下文整合**: 規劃內容能結合使用者背景（跑步愛好者）
+
 ### 1.5 安全防護層實作 (參考 Day 18: content-moderator)
 
 - [x] 建立 `backend/guardrails/` 模組
 - [x] 實作 PII 偵測
 - [x] 測試基本安全防護功能
 
-### 1.6 CLI 測試工具
+### 1.6 CLI 測試驗證
 
-- [ ] 建立 `scripts/cli_tester.py` 腳本
-- [ ] 支援 HTTP API 呼叫與多輪對話測試
-- [ ] 加入模式切換測試 (`--mode strategic`)
-- [ ] 測試安全防護觸發情境
+- [x] 使用 `make dev` 指令測試基本對話功能
+- [x] 測試模式切換功能 (輸入包含 `#think` 的訊息)
+- [x] 測試多輪對話與狀態記憶
+- [x] 測試安全防護觸發情境 (輸入敏感資訊)
+
+```bash
+# 啟動 CLI 測試 (推薦)
+make dev
+# 等同於：uv run adk run backend/agents
+# 優勢：無需手動 activate 虛擬環境，uv 自動管理
+
+# 或啟動 Web 介面測試
+make dev-web  
+# 等同於：uv run adk web backend
+# 開啟 http://localhost:8000 進行測試
+
+# 測試項目：
+# 1. 基本對話：「Hello, how are you?」
+# 2. 狀態記憶：「我是 Chris」→「我是誰？」
+# 3. 模式切換：「#think 如何提升程式碼品質？」
+# 4. 安全防護：輸入包含 PII 的內容
+```
 
 ---
 
@@ -249,7 +298,7 @@
 
 **P2 (優化功能)**:
 
-- CLI 測試工具 (1.6)
+- CLI 測試驗證 (1.6) - 使用 make 指令簡化操作
 - 完整測試框架 (2.3)
 - RAG 評估測試 (2.5.4)
 
