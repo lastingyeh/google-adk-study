@@ -2465,3 +2465,46 @@ agents:
       - resumability
       - approval-workflow
       - employee-services
+  - name: A2A Basic
+    description: |
+      一個基礎的 A2A (Agent-to-Agent) 範例，展示了一個根代理 (Root Agent) 如何協調兩個子代理 (Sub-agents) 來完成任務。
+    code_ref: workspace/python/agents/a2a-basic
+    type: Agent
+    models:
+      - gemini-2.0-flash
+    tools:
+      - name: example_tool
+        type: ExampleTool
+        description: 提供對話範例，引導模型理解與 `roll_agent` 和 `prime_agent` 的互動流程。
+    server-port: 8000
+    safety_settings:
+      - category: HARM_CATEGORY_DANGEROUS_CONTENT
+        threshold: OFF
+    tags:
+      - a2a
+      - orchestrator
+      - remote-a2a
+      - sub-agents
+    sub_agents:
+      - name: roll_agent
+        description: 處理擲不同面數骰子的請求。
+        type: Agent
+        tools:
+          - name: roll_die
+            type: FunctionTool
+            description: 擲一個指定面數的骰子並返回結果。
+      - name: prime_agent
+        description: 處理檢查數字是否為質數的請求。
+        type: RemoteA2aAgent
+        protocol: a2a
+        models:
+          - gemini-2.0-flash
+        tools:
+          - name: check_prime
+            type: FunctionTool
+            description: 檢查給定的數字列表是否包含質數。
+        server-port: 8001
+        tags:
+          - a2a-remote
+          - math
+          - prime-checking

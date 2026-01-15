@@ -60,7 +60,7 @@ agents:
     # 選填：工具列表
     tools:
       - name: <TOOL_NAME>
-        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool, PreloadMemoryTool
+        type: <TOOL_TYPE> # 例如：FunctionTool, OpenAPITool, AgentTool, GoogleSearchTool, LoadArtifactsTool, GoogleSearchAgentTool, BaseTool, GoogleMapsGroundingTool, MCPToolset, LangchainTool, ToolboxCoreClientTool, McpTool, MCPTool, DirectoryReadTool, FileReadTool, PreloadMemoryTool, ExampleTool
         description: <TOOL_DESCRIPTION>
 
         # 選填：特定工具類型的額外設定
