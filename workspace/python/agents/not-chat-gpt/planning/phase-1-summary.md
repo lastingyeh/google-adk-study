@@ -104,7 +104,7 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 
 **已識別的 API 變更**:
 
-- **`after_agent_callback` 參數變更**: 
+- **`after_agent_callback` 參數變更**:
   - ❌ **已移除**: `content: types.Content` 參數
   - ✅ **現行版本**: 需參考最新 API 文件確認正確參數結構
 
