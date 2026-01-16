@@ -8,8 +8,8 @@ Inspired by the FileStore implementation in the 'policy-navigator' example.
 import os
 from typing import List, Dict, Any, Optional
 
-import google.generativeai as genai
-from google.generativeai.client import File, FileServiceClient
+import google.genai as genai
+from google.genai.client import File, FileServiceClient
 
 # Configure the Gemini API key from environment variables
 # Make sure to have GOOGLE_API_KEY set in your .env file

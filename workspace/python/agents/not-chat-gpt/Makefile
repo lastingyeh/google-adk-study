@@ -154,3 +154,7 @@ info:
 # 開發模式的別名
 run: dev
 setup: init install-dev
+
+test-integration:
+	@echo "Running integration tests..."
+	uv run pytest tests/integration
