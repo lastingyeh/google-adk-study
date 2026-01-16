@@ -189,3 +189,56 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 ### 關鍵學習
 
 ADK 提供的內建功能比預期更完整，建議優先驗證框架能力再規劃實作。
+
+## 2.2 對話持久化升級 (Redis Session 快取層)
+
+**目標達成**: 成功將會話管理從 ADK 內建的 SQLite 升級至 Redis，提升了系統的效能、可擴展性與狀態管理的靈活性。
+
+### 核心實作內容
+
+#### 1. Redis 環境與服務
+
+- **環境**: 透過 `docker-compose.yml` 建立獨立、可複用的 Redis 服務容器。
+- **服務層**: 在 `service/redis_session_service.py` 中實作了 `BaseSessionService` 介面，封裝了所有與 Redis 的互動邏輯，包含：
+  - 連接管理與錯誤處理。
+  - 會話的 CRUD (Create, Read, Update, Delete) 操作。
+  - 使用 TTL (Time-To-Live) 實現會話的自動過期。
+
+#### 2. ADK 服務註冊與工廠模式
+
+- **挑戰**: ADK 預設只認識內建的 `session.db`。要讓它支援 Redis，必須在 ADK 應用啟動前就「告訴」它 Redis Session 服務的存在。
+- **解決方案**:
+  - 在 `backend/main.py` 中建立一個工廠函式 (Factory Function)。
+  - 此函式負責解析傳入的 `session_service_uri` (如 `redis://...`)，並實例化對應的 `RedisSessionService`。
+  - 使用 `session_services.register()` 將這個工廠函式註冊到 ADK 的服務註冊表中。
+
+#### 3. 啟動流程的關鍵變更
+
+- **重要心得**: 為了讓自定義服務的註冊生效，**不能再直接使用 `adk web backend` 或 `adk run backend` 指令**。
+- **正確的啟動方式**:
+  1. 必須以 `backend/main.py` 作為應用程式的進入點。
+  2. `main.py` 首先執行服務註冊邏輯。
+  3. 然後，`main.py` 再將命令列參數（如 `web`, `backend`, `--session_service_uri=...`）傳遞給 ADK 的 CLI 處理函式。
+- **命令範例**:
+
+  ```bash
+  # 透過 main.py 啟動，確保 Redis 服務被註冊
+  uv run backend/main.py web backend --session_service_uri=redis://localhost:6379
+  ```
+
+  這確保了當 ADK 處理 `--session_service_uri` 參數時，它已經能在註冊表中找到對應的 `redis://` 處理工廠。
+
+### 技術特色與優勢
+
+- **效能提升**: Redis 的記憶體內存取速度遠高於 SQLite 的磁碟 I/O。
+- **可擴展性**: 將 Session 狀態外部化，為未來多節點部署打下基礎。
+- **集中管理**: 所有 Session 數據集中儲存在 Redis，方便監控與管理。
+- **靈活性**: 透過工廠模式和服務註冊，ADK 展現了良好的擴展性，允許開發者無縫接入自定義的後端服務。
+
+### 完成狀態
+
+- ✅ Redis 服務容器化
+- ✅ `RedisSessionService` 實作與測試
+- ✅ 服務註冊與工廠模式整合
+- ✅ 啟動流程改造與驗證
+- ✅ Makefile 指令更新 (`make dev-main`)
