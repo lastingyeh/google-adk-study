@@ -2508,3 +2508,122 @@ agents:
           - a2a-remote
           - math
           - prime-checking
+
+  - name: Pack Deep Search Agent
+    description: |
+      一個先進的迭代式深度研究代理系統，能夠執行多輪研究、自我評估並產生引用完整的研究報告。
+      系統透過互動式規劃、迭代優化循環、來源追蹤與自動引用轉換，實現高品質的研究產出。
+    code_ref: workspace/python/agents/pack-deep-search
+    type: App
+    models:
+      - gemini-3-pro-preview
+    tools:
+      - name: plan_generator
+        type: AgentTool
+        description: 產生或精煉現有的 5 行行動導向研究計劃，僅使用最少搜尋來澄清主題。
+        tools:
+          name: google_search
+          type: GoogleSearchTool
+          description: 對每個 RESEARCH 目標產生 4-5 個具針對性的查詢並執行搜尋。
+    server-port: 8000
+    tags:
+      - deep-research
+      - iterative-refinement
+      - auto-citation
+      - quality-assurance
+      - multi-agent
+    output_key: research_plan
+    sub_agents:
+      - name: research_pipeline
+        description: 執行預先核准的研究計劃，協調段落規劃、研究執行、迭代優化與報告撰寫。
+        type: SequentialAgent
+        models: []
+        sub_agents:
+          - name: section_planner
+            description: 將研究計劃分解為結構化的 Markdown 報告章節大綱（4-6 個不重疊章節）。
+            type: LlmAgent
+            models:
+              - gemini-3-pro-preview
+            output_key: report_sections
+          - name: section_researcher
+            description: |
+              執行關鍵的第一輪網頁研究。分兩階段處理：
+              階段 1 (RESEARCH 任務)：系統性地執行搜尋並合成摘要。
+              階段 2 (DELIVERABLE 任務)：基於收集的資訊產生具體產出物（表格、摘要等）。
+            type: LlmAgent
+            models:
+              - gemini-3-pro-preview
+            planner:
+              type: BuiltInPlanner
+              thinking_config:
+                include_thoughts: true
+            tools:
+              - name: google_search
+                type: GoogleSearchTool
+                description: 對每個 RESEARCH 目標產生 4-5 個具針對性的查詢並執行搜尋。
+            output_key: section_research_findings
+            after_agent_callback:
+              - name: collect_research_sources_callback
+                type: AfterAgentCallback
+                description: |
+                  從 grounding 元資料提取來源資訊，分配短 ID (src-N)，
+                  並收集每個來源支持的文字片段和信心分數。
+          - name: iterative_refinement_loop
+            description: 迭代優化循環，透過評估、檢查和額外搜尋來提升研究品質直到達標。
+            type: LoopAgent
+            max_iterations: 5
+            sub_agents:
+              - name: research_evaluator
+                description: |
+                  批判性地評估研究品質、深度和完整性。
+                  評估覆蓋範圍、邏輯流動、來源可信度、分析深度和清晰度。
+                  若發現差距則評定為 'fail' 並產生 5-7 個後續查詢，否則評定為 'pass'。
+                type: LlmAgent
+                models:
+                  - gemini-3-pro-preview
+                output_schema: Feedback
+                output_key: research_evaluation
+                disallow_transfer_to_parent: true
+                disallow_transfer_to_peers: true
+              - name: escalation_checker
+                description: |
+                  檢查研究評估結果。若評估為 'pass' 則發送升級事件以停止循環，
+                  若為 'fail' 則發送空事件以繼續迭代。此為循環控制的關鍵組件。
+                type: BaseAgent
+              - name: enhanced_search_executor
+                description: |
+                  當評估失敗時執行後續搜尋並整合新發現。
+                  檢視評估回饋，執行 follow_up_queries 中的每個查詢，
+                  並將新發現與現有資訊結合以產生改進的研究結果。
+                type: LlmAgent
+                models:
+                  - gemini-3-pro-preview
+                planner:
+                  type: BuiltInPlanner
+                  thinking_config:
+                    include_thoughts: true
+                tools:
+                  - name: google_search
+                    type: GoogleSearchTool
+                    description: 執行後續查詢以填補研究空白。
+                output_key: section_research_findings
+                after_agent_callback:
+                  - name: collect_research_sources_callback
+                    type: AfterAgentCallback
+                    description: 收集新搜尋產生的來源資訊。
+          - name: report_composer_with_citations
+            description: |
+              將研究數據和 Markdown 大綱轉換為最終的引用報告。
+              使用特殊引用標籤系統 (<cite source="src-ID"/>)，
+              透過 after_agent_callback 將標籤轉換為 Markdown 超連結。
+            type: LlmAgent
+            models:
+              - gemini-3-pro-preview
+            include_contents: none
+            output_key: final_cited_report
+            after_agent_callback:
+              - name: citation_replacement_callback
+                type: AfterAgentCallback
+                description: |
+                  將報告中的引用標籤 (<cite source="src-N"/>) 替換為 Markdown 格式的連結，
+                  並修正標點符號周圍的多餘空格。最終產生帶有完整引用的報告。

@@ -65,7 +65,18 @@ agents:
 
         # 選填：特定工具類型的額外設定
         # models: [<MODEL_NAME>] # 用於 AgentTool
-        # tools: [] # 用於 AgentTool 或 MCPToolset 的巢狀工具
+        # tools: [] # 用於 AgentTool 或 MCPToolset 的巢狀工具（可以是單一工具或工具列表）
+        # 範例 1：單一巢狀工具 (例如在 Pack Deep Search Agent 的 plan_generator 中)
+        # tools:
+        #   name: <NESTED_TOOL_NAME>
+        #   type: <NESTED_TOOL_TYPE>
+        #   description: <NESTED_TOOL_DESCRIPTION>
+        # 範例 2：多個巢狀工具（列表格式）
+        # tools:
+        #   - name: <NESTED_TOOL_NAME_1>
+        #     type: <NESTED_TOOL_TYPE_1>
+        #   - name: <NESTED_TOOL_NAME_2>
+        #     type: <NESTED_TOOL_TYPE_2>
         # tags: []
         # transports: stdio # 或 streamable，用於 MCPToolset
         # refs: <URL> # 用於 MCPToolset
@@ -174,10 +185,32 @@ agents:
             # 選填：巢狀工具設定
             # tools: []
 
+        # 選填：規劃器設定 (例如在 Pack Deep Search Agent 的 section_researcher 中使用)
+        # planner:
+        #   type: <PLANNER_TYPE> # 例如：BuiltInPlanner
+        #   thinking_config:
+        #     include_thoughts: <BOOLEAN> # 例如：true - 是否在輸出中包含思考過程
+
         # 選填：生成內容設定
         # generate_content_config:
         #   temperature: <VALUE>
         #   max_output_tokens: <VALUE>
+
+        # 選填：LoopAgent 專用參數 (例如在 Pack Deep Search Agent 的 iterative_refinement_loop 中使用)
+        # max_iterations: <NUMBER> # 例如：5 - LoopAgent 的最大迭代次數
+
+        # 選填：代理轉移控制 (例如在 Pack Deep Search Agent 的 research_evaluator 中使用)
+        # disallow_transfer_to_parent: <BOOLEAN> # 例如：true - 禁止轉移到父代理
+        # disallow_transfer_to_peers: <BOOLEAN> # 例如：true - 禁止轉移到對等代理
+
+        # 選填：內容包含設定 (例如在 Pack Deep Search Agent 的 report_composer_with_citations 中使用)
+        # include_contents: <VALUE> # 例如：none, all - 控制在上下文中包含哪些內容
+
+        # 選填：代理回調 (例如在 Pack Deep Search Agent 的各子代理中使用)
+        # after_agent_callback:
+        #   - name: <CALLBACK_NAME> # 例如：collect_research_sources_callback
+        #     type: AfterAgentCallback
+        #     description: <CALLBACK_DESCRIPTION>
 
         # 選填：伺服器端口（僅用於某些子代理類型）
         # server-port: <SUB_AGENT_PORT> # 例如：8001 或 "none"
@@ -185,7 +218,7 @@ agents:
         # 選填：標籤
         # tags: [<SUB_AGENT_TAG_1>, <SUB_AGENT_TAG_2>]
 
-        # 選填：巢狀子代理（支援遞迴結構）
+        # 選填：巢狀子代理（支援遞迴結構，例如在 Pack Deep Search Agent 中使用多層巢狀）
         # sub_agents: []
 
       # 注意：某些 agent 的 sub_agents 僅包含 name 和 description (例如在 A2a Orchestrator 中)
