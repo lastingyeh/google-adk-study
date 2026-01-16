@@ -1699,4 +1699,24 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 </details>
 
+#### 🕗 Day 83
+
+<details>
+<summary>
+介紹 Google ADK 深層搜尋代理開發套件，展示如何使用 Gemini 建構具備人機協作的全端研究代理系統，包含多代理協作、函式調用與迭代搜尋循環，支援本地與雲端部署。
+
+🏷️ `deep-search`, `planner`, `vite-react`, `ui`, `human-in-loop`, `sequencial`, `loop`, `custom-agent`, `callback`, `fastapi`, `uvicorn`
+
+</summary>
+
+- **詳細說明**
+
+  - [Pack Deep Search](./workspace/python/agents/pack-deep-search/)
+
+- **參考資源**
+  - [[ADK-Samples] deep-search](https://github.com/google/adk-samples/tree/main/python/agents/deep-search)
+  - [Agent Starter Pack](https://goo.gle/agent-starter-pack)
+
+</details>
+
 </details>
