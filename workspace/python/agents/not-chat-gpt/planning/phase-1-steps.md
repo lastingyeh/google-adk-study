@@ -340,8 +340,8 @@ make dev-web
 
 ### 2.5.1 Gemini File Search 整合 (參考 Day 45: policy-navigator)
 
-- [ ] 安裝 Google AI Python SDK (`pip install google-generativeai`)
-- [ ] 建立 `backend/services/document_service.py`
+- [x] 安裝 Google AI Python SDK (`uv add google-generativeai`)
+- [x] 建立 `backend/services/document_service.py`
 - [ ] 封裝 File API 操作 (upload, list, get, delete)
 - [ ] 在 ConversationAgent 中整合 `file_search` 工具
 - [ ] 測試文檔上傳與索引功能

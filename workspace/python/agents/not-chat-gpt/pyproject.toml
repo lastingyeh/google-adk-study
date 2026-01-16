@@ -9,6 +9,7 @@ dependencies = [
     "debugpy>=1.8.19",
     "flake8>=6.0.0",
     "google-adk>=1.15.1",
+    "google-generativeai>=0.8.6",
     "isort>=5.12.0",
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
