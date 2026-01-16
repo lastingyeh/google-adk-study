@@ -1,0 +1,98 @@
+[project]
+name = "deep-search" # 專案名稱
+version = "0.1.0" # 版本
+description = "" # 描述
+authors = [ # 作者列表
+    { name = "lastingyeh", email = "lastingyeh@gmail.com" },
+]
+dependencies = [ # 主要依賴
+    "google-adk>=1.8.0",
+]
+
+requires-python = ">=3.10,<3.13" # 支援的 Python 版本
+
+[dependency-groups]
+dev = [ # 開發用依賴
+    "pytest~=9.0.1",
+    "pytest-asyncio~=1.3.0",
+    "nest-asyncio>=1.6.0",
+    "agent-starter-pack>=0.14.1",
+]
+
+[project.optional-dependencies]
+jupyter = ["jupyter~=1.1.1"]
+lint = [
+    "ruff>=0.4.6",
+    "mypy~=1.19.0",
+    "codespell~=2.4.1",
+    "types-pyyaml~=6.0.12.20240917",
+    "types-requests~=2.32.4.20250913",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "RUF", # ruff 專屬規則
+]
+ignore = ["E501", "C901"] # 忽略過長行、過於複雜
+
+[tool.ruff.lint.isort]
+known-first-party = ["app", "frontend"]
+
+[tool.mypy]
+disallow_untyped_calls = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+no_implicit_optional = true
+check_untyped_defs = true
+disallow_subclassing_any = true
+warn_incomplete_stub = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+follow_imports = "silent"
+ignore_missing_imports = true
+explicit_package_bases = true
+disable_error_code = ["misc", "no-untyped-call", "no-any-return"]
+
+exclude = [".venv"]
+
+[tool.codespell]
+ignore-words-list = "rouge"
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    "ignore::DeprecationWarning:google\\.adk\\.runners",
+    "ignore::UserWarning:google\\.adk\\.models\\.google_llm",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "frontend"]
+
+# 這個設定檔用於 goo.gle/agent-starter-pack 進行遠端模板化。
+# 定義模板屬性、設定與部署選項。
+[tool.agent-starter-pack]
+base_template = "adk_base"
+description = "一個可用於生產的全端研究代理，利用 Gemini 進行策略、研究與綜合報告，並支援人機協作"
+example_question = "一份關於最新 Google I/O 活動的報告"
+
+[tool.agent-starter-pack.settings]
+deployment_targets = ["agent_engine", "cloud_run"]
+interactive_command = "dev"
