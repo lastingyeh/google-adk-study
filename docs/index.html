@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
@@ -20,8 +20,9 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-          'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC',
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter',
+          'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC',
           sans-serif;
         background-color: #f2f2f7;
         color: #000000;
@@ -3983,7 +3984,8 @@
             `uvicorn`,
           ],
           completed: false,
-        }, {
+        },
+        {
           day: 84,
           title: 'ADK Artifacts 文件整合實務應用指南',
           description:
@@ -3993,17 +3995,94 @@
               text: 'ADK DOCS 學習資源-Artifacts',
               url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/artifacts/index.md',
             },
-
           ],
           refs: [
             {
               text: 'ADK 官方文件網站 Artifacts',
               url: 'https://google.github.io/adk-docs/artifacts/',
             },
-
           ],
           labels: [
-            `artifacts`, `binary`, `mine-type`, `gcs`, `artifact-service`, `version`, `namespace`
+            `artifacts`,
+            `binary`,
+            `mine-type`,
+            `gcs`,
+            `artifact-service`,
+            `version`,
+            `namespace`,
+          ],
+          completed: false,
+        },
+        {
+          day: 83,
+          title: 'ADK 深層搜尋代理：Gemini 驅動的全端研究系統快速入門',
+          description:
+            '介紹 Google ADK 深層搜尋代理開發套件，展示如何使用 Gemini 建構具備人機協作的全端研究代理系統，包含多代理協作、函式調用與迭代搜尋循環，支援本地與雲端部署。',
+          docs: [
+            {
+              text: 'Pack Deep Search',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/pack-deep-search/',
+            },
+          ],
+          refs: [
+            {
+              text: '[ADK-Samples] deep-search',
+              url: 'https://github.com/google/adk-samples/tree/main/python/agents/deep-search',
+            },
+            {
+              text: 'Agent Starter Pack',
+              url: '(https://goo.gle/agent-starter-pack',
+            },
+          ],
+          labels: [
+            `deep-search`,
+            `planner`,
+            `vite-react`,
+            `ui`,
+            `human-in-loop`,
+            `sequential`,
+            `loop`,
+            `custom-agent`,
+            `callback`,
+            `fastapi`,
+            `uvicorn`,
+          ],
+          completed: false,
+        },
+        {
+          day: 85,
+          title: 'App 與 Plugin 在 ADK 代理工作流程中的角色與功能。',
+          description:
+            'Adk Docs 官方 Apps / Plugins 協定文件說明，App 類別是代理工作流程的頂層容器，負責管理代理集合的生命週期、配置與狀態，並能簡化情境快取、恢復及外掛程式等功能的設定。ADK 外掛程式（Plugin）則可透過回呼掛鉤參與代理工作流的各階段，常見應用包括日誌記錄、原則強制執行與回應快取。',
+          docs: [
+            {
+              text: 'ADK DOCS 學習資源-Apps',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/apps/index.md',
+            },
+            {
+              text: 'ADK DOCS 學習資源-Plugins',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/plugins/index.md',
+            },
+          ],
+          refs: [
+            {
+              text: 'ADK 官方文件網站 Apps',
+              url: 'https://google.github.io/adk-docs/apps/',
+            },
+            {
+              text: 'ADK 官方文件網站 Plugins',
+              url: 'https://google.github.io/adk-docs/plugins/',
+            },
+          ],
+          labels: [
+            `apps`,
+            `callback-hooks`,
+            `plugins`,
+            `logging-tracing`,
+            `monitoring-metrics`,
+            `caching`,
+            `policy`,
+            `reflect-retry`,
           ],
           completed: false,
         },
@@ -4018,7 +4097,7 @@
       // DOM 元素
       const tableView = document.getElementById('table-view');
       const paginationContainer = document.getElementById(
-        'pagination-container'
+        'pagination-container',
       );
       const modal = document.getElementById('detail-modal');
       const modalTitle = document.getElementById('modal-title');
@@ -4192,7 +4271,7 @@
         const startIndex = (page - 1) * ITEMS_PER_PAGE;
         const endIndex = Math.min(
           startIndex + ITEMS_PER_PAGE,
-          filteredData.length
+          filteredData.length,
         );
         const pageData = filteredData.slice(startIndex, endIndex);
 
@@ -4251,7 +4330,7 @@
               .toLowerCase()
               .includes(lowerQuery);
             const labelMatch = item.labels.some((label) =>
-              label.toLowerCase().includes(lowerQuery)
+              label.toLowerCase().includes(lowerQuery),
             );
             return titleMatch || descMatch || labelMatch;
           });
@@ -4311,7 +4390,7 @@
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                   </svg>
                 </a>
-              `
+              `,
                 )
                 .join('')}
             </div>
@@ -4338,7 +4417,7 @@
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                   </svg>
                 </a>
-              `
+              `,
                 )
                 .join('')}
             </div>
@@ -4356,7 +4435,7 @@
                 .map(
                   (label) => `
                 <span class="modal-label-tag">${label}</span>
-              `
+              `,
                 )
                 .join('')}
             </div>

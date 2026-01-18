@@ -1737,4 +1737,27 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 </details>
 
+#### 🕗 Day 85
+
+<details>
+<summary>
+說明 App 與 Plugin 在 ADK 代理工作流程中的角色與功能。
+
+- 介紹 **App** 類別作為代理工作流程的頂層容器，用於管理代理集合的生命週期、配置和狀態，並簡化如情境快取、恢復和外掛程式等功能的設定。
+- 介紹 **ADK 外掛程式 (Plugin)** 的概念，它如何使用回呼掛鉤在代理工作流的生命週期中執行，以及其常見應用，如日誌記錄、原則強制執行和回應快取。
+
+🏷️ `apps`, `callback-hooks`, `plugins`, `logging-tracing`, `monitoring-metrics`, `caching`, `policy`, `reflect-retry`
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Apps](./workspace/adk-docs/apps/index.md)
+  - [ADK DOCS 學習資源-Plugins](./workspace/adk-docs/plugins/index.md)
+
+- **參考資源**
+  - [ADK 官方文件網站 Apps](https://google.github.io/adk-docs/apps/)
+  - [ADK 官方文件網站 Plugins](https://google.github.io/adk-docs/plugins/)
+
+</details>
+
 </details>
