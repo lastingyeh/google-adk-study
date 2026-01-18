@@ -603,6 +603,105 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #8e8e93;
       }
+
+      /* Enhanced Flow Visualization */
+      .flow-container {
+        display: flex;
+        gap: 16px;
+      }
+      .flow-col {
+        flex-direction: column;
+        align-items: center;
+      }
+      .flow-row {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        align-items: flex-start;
+      }
+
+      .flow-arrow {
+        color: #c7c7cc;
+        display: flex;
+        justify-content: center;
+        padding: 4px;
+        width: 100%;
+      }
+
+      .flow-node {
+        background: #fff;
+        border: 1px solid #e5e5ea;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        width: 100%;
+        max-width: 600px;
+        overflow: hidden; /* Ensure children don't overflow border radius */
+      }
+
+      .flow-row > .flow-node {
+        width: 300px;
+        flex: 0 0 auto;
+      }
+
+      .node-content {
+        padding: 16px;
+      }
+
+      .node-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 8px;
+        gap: 8px;
+      }
+
+      .node-name {
+        font-weight: 700;
+        color: #1c1c1e;
+        font-size: 15px;
+      }
+
+      .node-type {
+        font-size: 10px;
+        background: #f2f2f7;
+        padding: 3px 8px;
+        border-radius: 10px;
+        color: #666;
+        text-transform: uppercase;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .node-description {
+        font-size: 13.5px;
+        color: #3c3c43;
+        line-height: 1.5;
+      }
+
+      .node-models {
+        margin-top: 8px;
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+
+      .node-children {
+        background: #f9f9fa;
+        border-top: 1px solid #e5e5ea;
+        padding: 16px;
+      }
+
+      .children-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #8e8e93;
+        font-weight: 600;
+        margin-bottom: 12px;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
     </style>
   </head>
   <body>
@@ -4006,6 +4105,64 @@
         renderAgents(filtered);
       }
 
+      // Recursive Agent Flow Rendering
+      function renderAgentList(agents, parentType) {
+        if (!agents || agents.length === 0) return '';
+
+        // Determine layout based on parent type
+        const isParallel = parentType && parentType.includes('Parallel');
+        const containerClass = isParallel ? 'flow-row' : 'flow-col';
+
+        // Arrow only for vertical/sequential flow
+        const arrow = isParallel
+            ? ''
+            : '<div class="flow-arrow"><i data-lucide="arrow-down" style="width:20px;height:20px"></i></div>';
+
+        const itemsHtml = agents.map((agent, index) => {
+            const nodeHtml = renderAgentNode(agent);
+            // Add arrow after element if it's not the last one and we are in vertical mode
+            const isLast = index === agents.length - 1;
+            return nodeHtml + (!isLast && !isParallel ? arrow : '');
+        }).join('');
+
+        return `<div class="flow-container ${containerClass}">${itemsHtml}</div>`;
+      }
+
+      function renderAgentNode(agent) {
+        const hasChildren = agent.sub_agents && agent.sub_agents.length > 0;
+
+        let childrenHtml = '';
+        if (hasChildren) {
+            childrenHtml = `
+                <div class="node-children">
+                    <div class="children-label">
+                        <i data-lucide="git-branch" style="width:14px;height:14px"></i>
+                        Flow: ${agent.type || 'Sequence'}
+                    </div>
+                    ${renderAgentList(agent.sub_agents, agent.type)}
+                </div>
+            `;
+        }
+
+        const modelsHtml = agent.models
+            ? `<div class="node-models">${agent.models.map(m => `<span class="tag tag-model" style="font-size:10px;padding:2px 8px">${m}</span>`).join('')}</div>`
+            : '';
+
+        return `
+            <div class="flow-node">
+                <div class="node-content">
+                    <div class="node-header">
+                        <span class="node-name">${agent.name}</span>
+                        <span class="node-type">${agent.type || 'Agent'}</span>
+                    </div>
+                    <div class="node-description">${agent.description}</div>
+                    ${modelsHtml}
+                </div>
+                ${childrenHtml}
+            </div>
+        `;
+      }
+
       // Modal Functions
       window.openModal = function (agentName) {
         const agent = agentsData.find((a) => a.name === agentName);
@@ -4055,31 +4212,9 @@
         if (agent.sub_agents && agent.sub_agents.length > 0) {
           subAgentsHtml = `
                     <div class="detail-section">
-                        <h3><i data-lucide="network" style="width:18px"></i> Sub-Agents Flow</h3>
-                        <div class="flow-container">
-                            ${agent.sub_agents
-                              .map(
-                                (sub, idx) => `
-                                <div class="sub-agent-card">
-                                    <div style="font-weight:600;color:#1c1c1e;margin-bottom:4px">${
-                                      sub.name
-                                    }</div>
-                                    <div style="font-size:14px;color:#3c3c43">${
-                                      sub.description
-                                    }</div>
-                                    ${
-                                      sub.models
-                                        ? `<div style="margin-top:8px"><span class="tag tag-model" style="font-size:11px">${sub.models.join(
-                                            ', '
-                                          )}</span></div>`
-                                        : ''
-                                    }
-                                </div>
-                            `
-                              )
-                              .join(
-                                '<div class="flow-arrow"><i data-lucide="arrow-down" style="width:20px;height:20px"></i></div>'
-                              )}
+                        <h3><i data-lucide="network" style="width:18px"></i> Agent Flow Design</h3>
+                        <div style="background:#f2f2f7; padding:20px; border-radius:16px; overflow-x:auto;">
+                            ${renderAgentList(agent.sub_agents, agent.type)}
                         </div>
                     </div>
                 `;
@@ -4118,7 +4253,7 @@
 
         modalContent.innerHTML = `
                 <div class="detail-section">
-                    <h3><i data-lucide="book-open" style="width:18px"></i> Description</h3>
+                    <h3><i data-lucide="target" style="width:18px"></i> Design Focus</h3>
                     <div class="description-content">
                         <p>${agent.description.replace(/\n/g, '<br>')}</p>
                         <div style="margin-top:16px;display:flex;flex-wrap:wrap;gap:8px">
