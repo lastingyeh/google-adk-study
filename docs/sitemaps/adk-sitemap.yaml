@@ -18,8 +18,15 @@ agents:
   - https://google.github.io/adk-docs/agents/config/
   - https://google.github.io/adk-docs/agents/custom-agents/
   - https://google.github.io/adk-docs/agents/llm-agents/
-  - https://google.github.io/adk-docs/agents/models/
   - https://google.github.io/adk-docs/agents/multi-agents/
+  - https://google.github.io/adk-docs/agents/models/
+  - https://google.github.io/adk-docs/agents/models/anthropic/
+  - https://google.github.io/adk-docs/agents/models/apigee/
+  - https://google.github.io/adk-docs/agents/models/google-gemini/
+  - https://google.github.io/adk-docs/agents/models/litellm/
+  - https://google.github.io/adk-docs/agents/models/ollama/
+  - https://google.github.io/adk-docs/agents/models/vertex/
+  - https://google.github.io/adk-docs/agents/models/vllm/
   - https://google.github.io/adk-docs/agents/workflow-agents/
   - https://google.github.io/adk-docs/agents/workflow-agents/loop-agents/
   - https://google.github.io/adk-docs/agents/workflow-agents/parallel-agents/
@@ -87,13 +94,15 @@ plugins:
 runtime:
   - https://google.github.io/adk-docs/runtime/
   - https://google.github.io/adk-docs/runtime/api-server/
+  - https://google.github.io/adk-docs/runtime/command-line/
+  - https://google.github.io/adk-docs/runtime/event-loop/
   - https://google.github.io/adk-docs/runtime/resume/
   - https://google.github.io/adk-docs/runtime/runconfig/
+  - https://google.github.io/adk-docs/runtime/web-interface/
 safety:
   - https://google.github.io/adk-docs/safety/
 sessions:
   - https://google.github.io/adk-docs/sessions/
-  - https://google.github.io/adk-docs/sessions/express-mode/
   - https://google.github.io/adk-docs/sessions/memory/
   - https://google.github.io/adk-docs/sessions/rewind/
   - https://google.github.io/adk-docs/sessions/session/
@@ -121,6 +130,7 @@ tools:
   - https://google.github.io/adk-docs/tools/google-cloud/bigquery/
   - https://google.github.io/adk-docs/tools/google-cloud/bigtable/
   - https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/
+  - https://google.github.io/adk-docs/tools/google-cloud/express-mode/
   - https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
   - https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
   - https://google.github.io/adk-docs/tools/google-cloud/spanner/
@@ -137,6 +147,7 @@ tools:
   - https://google.github.io/adk-docs/tools/third-party/notion/
   - https://google.github.io/adk-docs/tools/third-party/paypal/
   - https://google.github.io/adk-docs/tools/third-party/qdrant/
+  - https://google.github.io/adk-docs/tools/third-party/stripe/
 tools-custom:
   - https://google.github.io/adk-docs/tools-custom/
   - https://google.github.io/adk-docs/tools-custom/authentication/

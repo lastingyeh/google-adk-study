@@ -1660,7 +1660,7 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 <summary>
 ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代理 (順序/平行/迴圈) 管理執行流程、自訂代理實現特殊邏輯。支援多代理協作架構，可透過 Agent Config 以 YAML 配置構建無程式碼工作流。
 
-🏷️ `agents`, `workflow`, `sequential`, `loop`, `parallel`, `custom-agent`, `config`, `pattern`, `mutli-agents`
+🏷️ `agents`, `workflow`, `sequential`, `loop`, `parallel`, `custom-agent`, `config`, `pattern`, `multi-agents`
 
 </summary>
 
@@ -1705,7 +1705,7 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 <summary>
 介紹 Google ADK 深層搜尋代理開發套件，展示如何使用 Gemini 建構具備人機協作的全端研究代理系統，包含多代理協作、函式調用與迭代搜尋循環，支援本地與雲端部署。
 
-🏷️ `deep-search`, `planner`, `vite-react`, `ui`, `human-in-loop`, `sequencial`, `loop`, `custom-agent`, `callback`, `fastapi`, `uvicorn`
+🏷️ `deep-search`, `planner`, `vite-react`, `ui`, `human-in-loop`, `sequential`, `loop`, `custom-agent`, `callback`, `fastapi`, `uvicorn`
 
 </summary>
 
@@ -1716,6 +1716,24 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 - **參考資源**
   - [[ADK-Samples] deep-search](https://github.com/google/adk-samples/tree/main/python/agents/deep-search)
   - [Agent Starter Pack](https://goo.gle/agent-starter-pack)
+
+</details>
+
+#### 🕗 Day 84
+
+<details>
+<summary>
+介紹 Artifacts 如何管理與工作階段或使用者相關的具名、版本化二進位資料 (如檔案、圖片)，並說明其在 ADK 中的表示與操作方式。
+
+🏷️ `artifacts`, `binary`, `mine-type`, `gcs`, `artifact-service`, `version`, `namespace`
+</summary>
+
+- **詳細說明**
+
+  - [ADK DOCS 學習資源-Artifacts](./workspace/adk-docs/artifacts/index.md)
+
+- **參考資源**
+  - [ADK 官方文件網站 Artifacts](https://google.github.io/adk-docs/artifacts/)
 
 </details>
 

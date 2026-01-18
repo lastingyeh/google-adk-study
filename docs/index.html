@@ -3899,7 +3899,7 @@
             'custom-agent',
             'config',
             'pattern',
-            'mutli-agents',
+            'multi-agents',
           ],
           completed: false,
         },
@@ -3975,7 +3975,7 @@
             `vite-react`,
             `ui`,
             `human-in-loop`,
-            `sequencial`,
+            `sequential`,
             `loop`,
             `custom-agent`,
             `callback`,
@@ -3983,11 +3983,34 @@
             `uvicorn`,
           ],
           completed: false,
+        }, {
+          day: 84,
+          title: 'ADK Artifacts 文件整合實務應用指南',
+          description:
+            '[Adk Docs 官方 Artifacts 協定文件整理]介紹 Artifacts 如何管理與工作階段或使用者相關的具名、版本化二進位資料 (如檔案、圖片)，並說明其在 ADK 中的表示與操作方式。',
+          docs: [
+            {
+              text: 'ADK DOCS 學習資源-Artifacts',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/artifacts/index.md',
+            },
+
+          ],
+          refs: [
+            {
+              text: 'ADK 官方文件網站 Artifacts',
+              url: 'https://google.github.io/adk-docs/artifacts/',
+            },
+
+          ],
+          labels: [
+            `artifacts`, `binary`, `mine-type`, `gcs`, `artifact-service`, `version`, `namespace`
+          ],
+          completed: false,
         },
       ];
 
       // 設定與狀態
-      const ITEMS_PER_PAGE = 20;
+      const ITEMS_PER_PAGE = 25;
       let currentPage = 1;
       let filteredData = [...learningData];
       let totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);

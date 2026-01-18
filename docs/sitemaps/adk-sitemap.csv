@@ -13,8 +13,15 @@ Agents,Agents,https://google.github.io/adk-docs/agents/
 Agents,Config,https://google.github.io/adk-docs/agents/config/
 Agents,Custom Agents,https://google.github.io/adk-docs/agents/custom-agents/
 Agents,Llm Agents,https://google.github.io/adk-docs/agents/llm-agents/
-Agents,Models,https://google.github.io/adk-docs/agents/models/
 Agents,Multi Agents,https://google.github.io/adk-docs/agents/multi-agents/
+Agents,Models,https://google.github.io/adk-docs/agents/models/
+Agents,Anthropic,https://google.github.io/adk-docs/agents/models/anthropic/
+Agents,Apigee,https://google.github.io/adk-docs/agents/models/apigee/
+Agents,Google Gemini,https://google.github.io/adk-docs/agents/models/google-gemini/
+Agents,Litellm,https://google.github.io/adk-docs/agents/models/litellm/
+Agents,Ollama,https://google.github.io/adk-docs/agents/models/ollama/
+Agents,Vertex,https://google.github.io/adk-docs/agents/models/vertex/
+Agents,Vllm,https://google.github.io/adk-docs/agents/models/vllm/
 Agents,Workflow Agents,https://google.github.io/adk-docs/agents/workflow-agents/
 Agents,Loop Agents,https://google.github.io/adk-docs/agents/workflow-agents/loop-agents/
 Agents,Parallel Agents,https://google.github.io/adk-docs/agents/workflow-agents/parallel-agents/
@@ -68,11 +75,13 @@ Plugins,Plugins,https://google.github.io/adk-docs/plugins/
 Plugins,Reflect And Retry,https://google.github.io/adk-docs/plugins/reflect-and-retry/
 Runtime,Runtime,https://google.github.io/adk-docs/runtime/
 Runtime,Api Server,https://google.github.io/adk-docs/runtime/api-server/
+Runtime,Command Line,https://google.github.io/adk-docs/runtime/command-line/
+Runtime,Event Loop,https://google.github.io/adk-docs/runtime/event-loop/
 Runtime,Resume,https://google.github.io/adk-docs/runtime/resume/
 Runtime,Runconfig,https://google.github.io/adk-docs/runtime/runconfig/
+Runtime,Web Interface,https://google.github.io/adk-docs/runtime/web-interface/
 Safety,Safety,https://google.github.io/adk-docs/safety/
 Sessions,Sessions,https://google.github.io/adk-docs/sessions/
-Sessions,Express Mode,https://google.github.io/adk-docs/sessions/express-mode/
 Sessions,Memory,https://google.github.io/adk-docs/sessions/memory/
 Sessions,Rewind,https://google.github.io/adk-docs/sessions/rewind/
 Sessions,Session,https://google.github.io/adk-docs/sessions/session/
@@ -98,6 +107,7 @@ Tools,Application Integration,https://google.github.io/adk-docs/tools/google-clo
 Tools,Bigquery,https://google.github.io/adk-docs/tools/google-cloud/bigquery/
 Tools,Bigtable,https://google.github.io/adk-docs/tools/google-cloud/bigtable/
 Tools,Code Exec Agent Engine,https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/
+Tools,Express Mode,https://google.github.io/adk-docs/tools/google-cloud/express-mode/
 Tools,Gke Code Executor,https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
 Tools,Mcp Toolbox For Databases,https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
 Tools,Spanner,https://google.github.io/adk-docs/tools/google-cloud/spanner/
@@ -114,6 +124,7 @@ Tools,N8n,https://google.github.io/adk-docs/tools/third-party/n8n/
 Tools,Notion,https://google.github.io/adk-docs/tools/third-party/notion/
 Tools,Paypal,https://google.github.io/adk-docs/tools/third-party/paypal/
 Tools,Qdrant,https://google.github.io/adk-docs/tools/third-party/qdrant/
+Tools,Stripe,https://google.github.io/adk-docs/tools/third-party/stripe/
 Tools-custom,Tools Custom,https://google.github.io/adk-docs/tools-custom/
 Tools-custom,Authentication,https://google.github.io/adk-docs/tools-custom/authentication/
 Tools-custom,Confirmation,https://google.github.io/adk-docs/tools-custom/confirmation/
