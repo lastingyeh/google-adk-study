@@ -9,7 +9,7 @@ import os
 from typing import List, Dict, Any, Optional
 
 import google.genai as genai
-from google.genai.client import File, FileServiceClient
+from google.genai import types as genai_types
 
 # Configure the Gemini API key from environment variables
 # Make sure to have GOOGLE_API_KEY set in your .env file
@@ -26,18 +26,22 @@ class DocumentService:
             api_key: The Google API key. If not provided, it will try to
                      use the one configured globally or from the environment.
         """
-        if api_key:
-            genai.configure(api_key=api_key)
+        # The new API uses a client instance.
+        # Configuring the API key globally is still an option for simplicity here.
         
-        # Check if the API key is configured
-        if not genai.API_KEY:
+        # Determine the key to use
+        key_to_use = api_key or os.getenv("GOOGLE_API_KEY")
+
+        if not key_to_use:
             raise ValueError(
                 "Google API key is not configured. Please set the GOOGLE_API_KEY "
-                "environment variable or pass it to the service."
+                "environment variable or pass it to the service constructor."
             )
-        self.client: FileServiceClient = genai.get_file_service_client()
+            
+                # The client object is the new entry point for file operations.
+        self.client = genai.Client(api_key=key_to_use)
 
-    def upload_file(self, file_path: str, display_name: Optional[str] = None) -> File:
+    def upload_file(self, file_path: str, display_name: Optional[str] = None) -> genai_types.File:
         """
         Uploads a file to the Google AI File API.
 
@@ -52,7 +56,11 @@ class DocumentService:
         if not display_name:
             display_name = os.path.basename(file_path)
         
-        file = genai.upload_file(path=file_path, display_name=display_name)
+        # Use the client to upload the file
+        file = self.client.files.upload(
+            file=file_path, 
+            config={'display_name': display_name}
+        )
         print(f"Successfully uploaded file: {file.display_name} (ID: {file.name})")
         return file
 
@@ -64,9 +72,10 @@ class DocumentService:
             A list of dictionaries, where each dictionary represents a file.
         """
         files_data = []
-        for f in genai.list_files():
+        # Use the client to list files
+        for f in self.client.files.list():
             files_data.append({
-                "id": f.name,
+                "name": f.name,
                 "display_name": f.display_name,
                 "mime_type": f.mime_type,
                 "size_bytes": f.size_bytes,
@@ -86,9 +95,10 @@ class DocumentService:
             A dictionary with file metadata, or None if not found.
         """
         try:
-            f = genai.get_file(name=file_id)
+            # Use the client to get the file
+            f = self.client.files.get(name=file_id)
             return {
-                "id": f.name,
+                "name": f.name,
                 "display_name": f.display_name,
                 "mime_type": f.mime_type,
                 "size_bytes": f.size_bytes,
@@ -110,7 +120,8 @@ class DocumentService:
             A confirmation dictionary.
         """
         try:
-            genai.delete_file(name=file_id)
+            # Use the client to delete the file
+            self.client.files.delete(name=file_id)
             print(f"Successfully deleted file: {file_id}")
             return {"status": "success", "deleted_file_id": file_id}
         except Exception as e:
@@ -145,7 +156,7 @@ if __name__ == '__main__':
         all_files = service.list_files()
         print(f"Found {len(all_files)} files.")
         for f in all_files:
-            print(f"- {f['display_name']} ({f['id']})")
+            print(f"- {f['display_name']} ({f['name']})")
 
         # --- Example: Get a specific file ---
         if file_id:
