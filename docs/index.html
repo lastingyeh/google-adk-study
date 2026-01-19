@@ -4086,10 +4086,38 @@
           ],
           completed: false,
         },
+        {
+          day: 86,
+          title: '代理評估 (Agent Evaluation) 文件整合實務應用指南',
+          description:
+            '說明代理評估的必要性、評估目標與成功標準，以及如何用測試檔/評估集 (EvalSet) 建立自動化評估流程。',
+          docs: [
+            {
+              text: 'ADK DOCS 學習資源-Evaluation',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/evaluate/index.md',
+            },
+          ],
+          refs: [
+            {
+              text: 'ADK 官方文件網站 Evaluation',
+              url: 'https://google.github.io/adk-docs/evaluate/',
+            },
+          ],
+          labels: [
+            `evaluate`,
+            `user-simulation`,
+            `event-config`,
+            `criteria`,
+            `quality`,
+            `judgement`,
+            `trajectory`,
+          ],
+          completed: false,
+        },
       ];
 
       // 設定與狀態
-      const ITEMS_PER_PAGE = 25;
+      const ITEMS_PER_PAGE = 30;
       let currentPage = 1;
       let filteredData = [...learningData];
       let totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);

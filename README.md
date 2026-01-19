@@ -1729,7 +1729,6 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-
   - [ADK DOCS 學習資源-Artifacts](./workspace/adk-docs/artifacts/index.md)
 
 - **參考資源**
@@ -1750,13 +1749,29 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-
   - [ADK DOCS 學習資源-Apps](./workspace/adk-docs/apps/index.md)
   - [ADK DOCS 學習資源-Plugins](./workspace/adk-docs/plugins/index.md)
 
 - **參考資源**
   - [ADK 官方文件網站 Apps](https://google.github.io/adk-docs/apps/)
   - [ADK 官方文件網站 Plugins](https://google.github.io/adk-docs/plugins/)
+
+</details>
+
+#### 🕗 Day 86
+
+<details>
+<summary>
+說明代理評估的必要性、評估目標與成功標準，以及如何用測試檔/評估集 (EvalSet) 建立自動化評估流程。
+
+🏷️ `evaluate`, `user-simulation`, `event-config`, `criteria`, `quality`, `judgement`, `trajectory`
+</summary>
+
+- **詳細說明**
+  - [ADK DOCS 學習資源-Evaluation](./workspace/adk-docs/evaluate/index.md)
+
+- **參考資源**
+  - [ADK 官方文件網站 Evaluation](https://google.github.io/adk-docs/evaluate/)
 
 </details>
 
