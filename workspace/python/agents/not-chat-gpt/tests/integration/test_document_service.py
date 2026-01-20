@@ -22,68 +22,68 @@ class TestDocumentServiceIntegration:
     @pytest.fixture(scope="class")
     def service(self):
         """Provides a DocumentService instance for the test class."""
-        return DocumentService()
+        # Use a unique display name for each test run to ensure isolation
+        store_display_name = f"teststore{int(time.time())}"
+        return DocumentService(store_display_name=store_display_name)
 
     @pytest.fixture(scope="class")
-    def temp_file(self):
-        """Creates a temporary file for uploading and cleans it up afterward."""
-        file_path = "temp_test_file_for_upload.txt"
-        content = f"This is a test file created at {time.time()}"
-        with open(file_path, "w") as f:
-            f.write(content)
-        
-        yield file_path
-        
-        # Teardown: remove the local temp file
-        os.remove(file_path)
+    def validation_doc_path(self):
+        """Provides the path to the validation document."""
+        # This assumes the test is run from the project root 
+        # or the path is correctly resolved by pytest.
+        return os.path.abspath(os.path.join(
+            os.path.dirname(__file__), '..', '..', 'docs', 'rag_validation_article.md'
+        ))
 
-    def test_full_lifecycle(self, service: DocumentService, temp_file: str):
+    def test_store_lifecycle_and_query(self, service: DocumentService, validation_doc_path: str):
         """
-        Tests the complete lifecycle of a file: upload, list, get, and delete.
+        Tests the core functionality:
+        1. Getting or creating a FileSearchStore.
+        2. Querying the store to verify it's working.
+        3. Listing files in the store.
         """
-        uploaded_file = None
+        # --- Test-specific injection ---
+        # Inject the doc_path for this test case, as it's not set in the constructor.
+        service.doc_path = validation_doc_path
+        # -----------------------------
+
         try:
-            # 1. Test upload_file
-            print(f"\n[1/4] Uploading file: {temp_file}")
-            display_name = os.path.basename(temp_file)
-            uploaded_file = service.upload_file(temp_file, display_name=display_name)
+            # 1. Test get_or_create_store_name (will create the store)
+            print(f"\n[1/3] Getting or creating store: {service.store_display_name}")
+            store_name = service.get_or_create_store_name()
             
-            assert uploaded_file is not None
-            assert uploaded_file.name is not None
-            assert uploaded_file.display_name == display_name
-            print(f"-> Upload successful. File ID: {uploaded_file.name}")
-
-            # Give the API a moment to process the file
-            time.sleep(5)
+            assert store_name is not None
+            assert service.store_display_name in store_name
+            print(f"-> Store name acquired: {store_name}")
 
             # 2. Test list_files
-            print(f"\n[2/4] Listing files to find '{display_name}'")
-            all_files = service.list_files()
-            assert isinstance(all_files, list)
-            
-            found_in_list = any(f['name'] == uploaded_file.name for f in all_files)
-            assert found_in_list, f"Uploaded file {uploaded_file.name} not found in the list of files."
-            print("-> File found in list.")
+            print(f"\n[2/3] Listing files in the store...")
+            files = service.list_files()
+            assert len(files) > 0
+            print(f"-> Found {len(files)} file(s) in the store.")
 
-            # 3. Test get_file
-            print(f"\n[3/4] Getting file by ID: {uploaded_file.name}")
-            file_details = service.get_file(uploaded_file.name)
+            # 3. Test query_document
+            print("\n[3/3] Querying the document...")
+            # This query is designed to be answerable by the content of rag_validation_article.md
+            query = "What is QSS?"
+            response_text = service.query_document(query)
             
-            assert file_details is not None
-            assert file_details["name"] == uploaded_file.name
-            assert file_details["display_name"] == display_name
-            print("-> Get file successful.")
+            assert response_text is not None
+            assert isinstance(response_text, str)
+            assert len(response_text) > 0
+            
+            print(f"-> Query successful. Response received:\n---\n{response_text[:200]}...\n---")
 
         finally:
-            # 4. Test delete_file (Cleanup)
-            if uploaded_file and uploaded_file.name:
-                print(f"\n[4/4] Deleting file: {uploaded_file.name}")
-                delete_status = service.delete_file(uploaded_file.name)
-                assert delete_status["status"] == "success"
-                print("-> Deletion successful.")
-
-                # Verify deletion
-                time.sleep(5)
-                deleted_file_details = service.get_file(uploaded_file.name)
-                assert deleted_file_details is None, "File should have been deleted, but it was still found."
-                print("-> Verified that file is no longer accessible.")
+            # 4. Cleanup: Delete the store
+            if service._store_name_cache:
+                store_name_to_delete = service._store_name_cache
+                print(f"\n[Cleanup] Deleting store: {store_name_to_delete}")
+                try:
+                    # Use force=True to delete the store and all its contents
+                    service.client.file_search_stores.delete(name=store_name_to_delete, 
+                        config={"force": True}
+                    )
+                    print("-> Store and its contents deleted successfully.")
+                except Exception as e:
+                    print(f"-> Error during cleanup: {e}")

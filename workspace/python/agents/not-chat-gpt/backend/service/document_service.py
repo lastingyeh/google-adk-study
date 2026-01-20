@@ -92,8 +92,14 @@ class DocumentService:
     def list_files(self) -> list:
         """Lists all files in the managed store."""
         store_name = self.get_or_create_store_name()
-        store = self.client.file_search_stores.get(name=store_name)
-        return [{"name": f.display_name, "id": f.name} for f in store.files]
+        # Correct way to list files in a store is to use the `list_files` method
+        # on the file_search_stores object, passing the store's name.
+        # store = self.client.file_search_stores.get(name=store_name)
+        response = self.client.file_search_stores.documents.list(parent=store_name)
+        # The response is a paginated result, so we iterate through it.
+        # return [{"name": f.display_name, "id": f.name} for f in store.documents()]
+        return [{"name": doc.display_name, "id": doc.name} for doc in response]
+
     
     def query_document(self, query: str):
         """Queries the document store with a given query string."""
