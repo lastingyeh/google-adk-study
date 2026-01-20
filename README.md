@@ -1775,4 +1775,21 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 </details>
 
+#### 🕗 Day 87
+
+<details>
+<summary>
+介紹 Callbacks 如何掛鉤到代理執行過程，提供觀察、自訂與控制代理行為的機制，包括代理前後、LLM 前後與工具執行前後的回呼。
+
+🏷️ `callbacks`, `best-practices`, `types-of-callbacks`, `design-pattern`, `agent-callbacks`, `model-callbacks`, `tool-callbacks`
+</summary>
+
+- **詳細說明**
+  - [ADK DOCS 學習資源-Callbacks](./workspace/adk-docs/callbacks/index.md)
+
+- **參考資源**
+  - [ADK 官方文件網站 Callbacks](https://google.github.io/adk-docs/callbacks/)
+
+</details>
+
 </details>

@@ -117,6 +117,14 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |
 | [Vertex AI 快速模式](./sessions&memory/express-mode.md)      | 說明如何使用 Vertex AI 會話與記憶的快速模式。            | [連結](./sessions&memory/express-mode.md)     |
 
+### 回呼 (Callbacks)
+
+| 標頭                                                           | 描述                                                                                                                               | 連結                                                 |
+| :------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| [回呼總覽](./callbacks/index.md)                               | 介紹 Callbacks 如何掛鉤到代理執行過程，提供觀察、自訂與控制代理行為的機制，包括代理前後、LLM 前後與工具執行前後的回呼。             | [連結](./callbacks/index.md)                         |
+| [回呼類型](./callbacks/types-of-callbacks.md)                  | 詳細說明不同類型的回呼（代理生命週期回呼、LLM 交互回呼、工具執行回呼），包括觸發時機、用途與實作範例。                              | [連結](./callbacks/types-of-callbacks.md)            |
+| [設計模式與最佳實踐](./callbacks/design-patterns-and-best-practices.md) | 彙整 Callbacks 的常見設計模式（護欄策略、狀態管理、日誌記錄、快取、請求修改等）與實施最佳實踐，協助有效利用回呼功能。               | [連結](./callbacks/design-patterns-and-best-practices.md) |
+
 
 ### Artifacts (工件)
 

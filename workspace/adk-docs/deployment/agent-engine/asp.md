@@ -64,7 +64,7 @@
 > [!TIP] "注意"
     ASP 工具在運行時可能會顯示連接到 Google Cloud 的提醒，但在這個階段*不要求*連接。
 
-有關 ASP 對您的 ADK 專案所做更改的更多資訊，請參閱 [您的 ADK 專案變更](https://google.github.io/adk-docs/deploy/agent-engine/asp/#adk-asp-changes)。
+有關 ASP 對您的 ADK 專案所做更改的更多資訊，請參閱 [您的 ADK 專案變更](#您的-adk-專案變更)。
 
 ### 連接到您的 Google Cloud 專案
 

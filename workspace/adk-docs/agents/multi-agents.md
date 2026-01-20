@@ -481,7 +481,7 @@ ParallelAgent gatherer = ParallelAgent.builder()
 
 對於在同一個調用中運行的代理（因此透過 `InvocationContext` 共享同一個 [`Session`](../sessions&memory/session/overview.md) 對象），這是最基礎的被動通訊方式。
 
-* **機制：** 一個代理（或其工具/回調）寫入一個值 (`context.state['data_key'] = processed_data`)，後續代理讀取它 (`data = context.state.get('data_key')`)。狀態更改透過 [`CallbackContext`](https://google.github.io/adk-docs/callbacks/) 進行追蹤。
+* **機制：** 一個代理（或其工具/回調）寫入一個值 (`context.state['data_key'] = processed_data`)，後續代理讀取它 (`data = context.state.get('data_key')`)。狀態更改透過 [`CallbackContext`](../callbacks/index.md) 進行追蹤。
 * **便利性：** [`LlmAgent`](llm-agents.md) 上的 `output_key` 屬性會自動將代理的最終響應文本（或結構化輸出）保存到指定的狀態鍵中。
 * **本質：** 異步、被動通訊。非常適合由 `SequentialAgent` 編排的管線或跨 `LoopAgent` 迭代傳遞數據。
 * **參見：** [狀態管理](../sessions&memory/state.md)

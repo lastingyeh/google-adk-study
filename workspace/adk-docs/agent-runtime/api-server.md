@@ -401,7 +401,7 @@ curl -X POST http://localhost:8000/run \
 
 ## 整合
 
-ADK 使用 [回呼 (Callbacks)](https://google.github.io/adk-docs/callbacks/) 與第三方觀測工具整合。這些整合可以擷取 Agent 呼叫和互動的詳細追蹤，這對於了解行為、除錯問題和評估效能至關重要。
+ADK 使用 [回呼 (Callbacks)](../callbacks/index.md) 與第三方觀測工具整合。這些整合可以擷取 Agent 呼叫和互動的詳細追蹤，這對於了解行為、除錯問題和評估效能至關重要。
 
 * [Comet Opik](https://github.com/comet-ml/opik) 是一個開源 LLM 觀測與評估平台，[原生支援 ADK](https://www.comet.com/docs/opik/tracing/integrations/adk)。
 

@@ -43,7 +43,7 @@ type nul > my_agent\.env
 
 ### 定義 Agent 程式碼
 
-接著，為您的基本 Agent 建立程式碼，其中包含一個名為 `getCurrentTime()` 的 ADK [函式工具 (Function Tool)](https://google.github.io/adk-docs/tools-custom/function-tools/) 的簡單實作。將以下程式碼新增到您的 `HelloTimeAgent.java` 檔案中：
+接著，為您的基本 Agent 建立程式碼，其中包含一個名為 `getCurrentTime()` 的 ADK [函式工具 (Function Tool)](../custom-tools/function-tools/overview.md) 的簡單實作。將以下程式碼新增到您的 `HelloTimeAgent.java` 檔案中：
 
 ```java title="my_agent/src/main/java/com/example/agent/HelloTimeAgent.java"
 package com.example.agent;

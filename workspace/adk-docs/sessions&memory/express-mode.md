@@ -76,7 +76,7 @@ GOOGLE_API_KEY=PASTE_YOUR_ACTUAL_EXPRESS_MODE_API_KEY_HERE
 
 ## 使用 `VertexAiSessionService` 管理會話
 
-[`VertexAiSessionService`](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations) 與 Vertex AI 快速模式 API 金鑰相容。我們可以改為初始化會話物件，而無需任何專案 (project) 或位置 (location)。
+[`VertexAiSessionService`](../sessions&memory/session/overview.md#sessionservice-實作方式) 與 Vertex AI 快速模式 API 金鑰相容。我們可以改為初始化會話物件，而無需任何專案 (project) 或位置 (location)。
 
 > python
 
@@ -107,7 +107,7 @@ session_service = VertexAiSessionService(agent_engine_id=APP_ID)
 
 ## 使用 `VertexAiMemoryBankService` 管理記憶
 
-[`VertexAiMemoryBankService`](https://google.github.io/adk-docs/sessions/memory/#vertex-ai-memory-bank) 與 Vertex AI 快速模式 API 金鑰相容。我們可以改為初始化記憶物件，而無需任何專案或位置。
+[`VertexAiMemoryBankService`](../sessions&memory/memory.md#vertex-ai-memory-bank) 與 Vertex AI 快速模式 API 金鑰相容。我們可以改為初始化記憶物件，而無需任何專案或位置。
 
 > python
 

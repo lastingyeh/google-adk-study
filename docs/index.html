@@ -4114,6 +4114,34 @@
           ],
           completed: false,
         },
+        {
+          day: 87,
+          title: 'ADK Callbacks 回呼機制文件整合實務應用指南',
+          description:
+            '介紹 Callbacks 如何掛鉤到代理執行過程，提供觀察、自訂與控制代理行為的機制，包括代理前後、LLM 前後與工具執行前後的回呼。',
+          docs: [
+            {
+              text: 'ADK DOCS 學習資源-Callbacks',
+              url: 'https://github.com/lastingyeh/google-adk-study/blob/master/workspace/adk-docs/callbacks/index.md',
+            },
+          ],
+          refs: [
+            {
+              text: 'ADK 官方文件網站 Callbacks',
+              url: 'https://google.github.io/adk-docs/callbacks/',
+            },
+          ],
+          labels: [
+            `callbacks`,
+            `best-practices`,
+            `types-of-callbacks`,
+            `design-pattern`,
+            `agent-callbacks`,
+            `model-callbacks`,
+            `tool-callbacks`,
+          ],
+          completed: false,
+        },
       ];
 
       // 設定與狀態
@@ -4125,7 +4153,7 @@
       // DOM 元素
       const tableView = document.getElementById('table-view');
       const paginationContainer = document.getElementById(
-        'pagination-container',
+        'pagination-container'
       );
       const modal = document.getElementById('detail-modal');
       const modalTitle = document.getElementById('modal-title');
@@ -4299,7 +4327,7 @@
         const startIndex = (page - 1) * ITEMS_PER_PAGE;
         const endIndex = Math.min(
           startIndex + ITEMS_PER_PAGE,
-          filteredData.length,
+          filteredData.length
         );
         const pageData = filteredData.slice(startIndex, endIndex);
 
@@ -4358,7 +4386,7 @@
               .toLowerCase()
               .includes(lowerQuery);
             const labelMatch = item.labels.some((label) =>
-              label.toLowerCase().includes(lowerQuery),
+              label.toLowerCase().includes(lowerQuery)
             );
             return titleMatch || descMatch || labelMatch;
           });
@@ -4418,7 +4446,7 @@
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                   </svg>
                 </a>
-              `,
+              `
                 )
                 .join('')}
             </div>
@@ -4445,7 +4473,7 @@
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                   </svg>
                 </a>
-              `,
+              `
                 )
                 .join('')}
             </div>
@@ -4463,7 +4491,7 @@
                 .map(
                   (label) => `
                 <span class="modal-label-tag">${label}</span>
-              `,
+              `
                 )
                 .join('')}
             </div>

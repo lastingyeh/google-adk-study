@@ -19,7 +19,7 @@
 
 **圖 1.** 使用進階工具回應實作的確認回應請求對話框範例。
 
-以下章節介紹如何針對不同的確認情境使用此功能。如需完整的程式碼範例，請參閱 [human_tool_confirmation](https://github.com/google/adk-python/blob/fc90ce968f114f84b14829f8117797a4c256d710/contributing/samples/human_tool_confirmation/agent.py) 範例。還有其他方法可以將人類輸入整合到您的代理工作流程中，詳情請參閱 [人機協作 (Human-in-the-loop)](https://google.github.io/adk-docs/agents/multi-agents/#human-in-the-loop-pattern) 代理模式。
+以下章節介紹如何針對不同的確認情境使用此功能。如需完整的程式碼範例，請參閱 [human_tool_confirmation](https://github.com/google/adk-python/blob/fc90ce968f114f84b14829f8117797a4c256d710/contributing/samples/human_tool_confirmation/agent.py) 範例。還有其他方法可以將人類輸入整合到您的代理工作流程中，詳情請參閱 [人機協作 (Human-in-the-loop)](../../agents/multi-agents.md#人機協同模式-human-in-the-loop-pattern) 代理模式。
 
 ## 布林確認 (Boolean Confirmation)
 

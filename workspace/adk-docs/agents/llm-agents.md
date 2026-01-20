@@ -1085,7 +1085,7 @@ public class CodeExecutionAgentApp {
 
 雖然本頁介紹了 `LlmAgent` 的核心配置，但其他幾個相關概念提供了更進階的控制，並在其他地方有詳細說明：
 
-* **回呼 (Callbacks):** 使用 `before_model_callback`、`after_model_callback` 等攔截執行點（模型呼叫前後、工具呼叫前後）。參見 [Callbacks](https://google.github.io/adk-docs/callbacks/types-of-callbacks/)。
+* **回呼 (Callbacks):** 使用 `before_model_callback`、`after_model_callback` 等攔截執行點（模型呼叫前後、工具呼叫前後）。參見 [Callbacks](../callbacks/types-of-callbacks.md)。
 * **多代理程式控制：** 代理程式互動的進階策略，包括規劃 (`planner`)、控制代理程式轉移 (`disallow_transfer_to_parent`、`disallow_transfer_to_peers`) 以及系統範圍的指令 (`global_instruction`)。參見 [Multi-Agents](multi-agents.md)。
 
 ## 更多補充

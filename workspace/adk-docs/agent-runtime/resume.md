@@ -6,7 +6,7 @@
 
 ADK 代理的執行可能會因為各種因素而中斷，包括網路連接斷開、電源故障或所需的外部系統離線。ADK 的恢復 (Resume) 功能允許代理工作流從上次中斷的地方繼續執行，從而避免需要重新啟動整個工作流。在 ADK Python 1.16 及更高版本中，您可以將 ADK 工作流配置為可恢復，以便它追蹤工作流的執行，並允許您在意外中斷後恢復執行。
 
-本指南說明如何將您的 ADK 代理工作流配置為可恢復。如果您使用自訂代理 (Custom Agents)，您可以將其更新為可恢復。欲了解更多資訊，請參閱[自訂代理新增恢復功能](https://google.github.io/adk-docs/runtime/resume/#custom-agents)。
+本指南說明如何將您的 ADK 代理工作流配置為可恢復。如果您使用自訂代理 (Custom Agents)，您可以將其更新為可恢復。欲了解更多資訊，請參閱[自訂代理新增恢復功能](../agent-runtime/resume.md#為自訂代理新增恢復功能-custom-agents-add-resume-to-custom-agents)。
 
 ## 新增可恢復配置 (Add resumable configuration)
 
@@ -24,10 +24,10 @@ app = App(
 ```
 
 > [!WARNING] "注意：長時間運行的函數、確認、身分驗證" (Caution: Long Running Functions, Confirmations, Authentication)
-    對於使用[長時間運行函數 (Long Running Functions)](https://google.github.io/adk-docs/tools-custom/function-tools/#best-practices)、[確認 (Confirmations)](https://google.github.io/adk-docs/tools-custom/confirmation/) 或需要使用者輸入的[身分驗證 (Authentication)](https://google.github.io/adk-docs/tools-custom/authentication/) 的代理，新增可恢復確認會改變這些功能的運作方式。欲了解更多資訊，請參閱這些功能的說明文件。
+    對於使用[長時間運行函數 (Long Running Functions)](../custom-tools/function-tools/overview.md#長時間執行功能工具-long-running-function-tools)、[確認 (Confirmations)](../custom-tools/function-tools/confirmation.md) 或需要使用者輸入的[身分驗證 (Authentication)](../custom-tools/authentication.md) 的代理，新增可恢復確認會改變這些功能的運作方式。欲了解更多資訊，請參閱這些功能的說明文件。
 
 > [!NOTE] "附註：自訂代理" (Note: Custom Agents)
-    自訂代理預設不支援恢復功能。您必須更新自訂代理的程式碼以支援恢復功能。有關修改自訂代理以支援增量恢復功能的資訊，請參閱[為自訂代理新增恢復功能](https://google.github.io/adk-docs/runtime/resume/#custom-agents)。
+    自訂代理預設不支援恢復功能。您必須更新自訂代理的程式碼以支援恢復功能。有關修改自訂代理以支援增量恢復功能的資訊，請參閱[為自訂代理新增恢復功能](../agent-runtime/resume.md)。
 
 ## 恢復停止的工作流 (Resume a stopped workflow)
 
@@ -78,7 +78,7 @@ runner.run_async(user_id='u_123', session_id='s_abc',
 > [!NOTE] "附註：不支援在恢復時修改工作流" (Note: Workflow modification with Resume not supported)
     在恢復停止的代理工作流之前，請勿對其進行修改。例如，不支援在工作流停止後向其新增或從中移除代理，然後恢復該工作流。
 
-## 為自訂代理新增恢復功能 {#custom-agents} (Add resume to custom Agents)
+## 為自訂代理新增恢復功能 (Add resume to custom Agents)
 
 自訂代理有特定的實作要求，以支援可恢復性。您必須在自訂代理中決定並定義工作流步驟，這些步驟會產生一個結果，該結果可以在移交到下一個處理步驟之前被保留。以下步驟概述了如何修改自訂代理以支援工作流恢復。
 
@@ -88,7 +88,7 @@ runner.run_async(user_id='u_123', session_id='s_abc',
 -   **新增代理狀態檢查點**：修改代理的非同步運行函數，以為代理整體任務的每個已完成步驟生成並保存代理狀態。
 -   **新增代理結束狀態以追蹤代理狀態**：修改代理的非同步運行函數，以便在成功完成代理的全部任務時包含 `end_of_agent=True` 狀態。
 
-下列範例顯示了對[自訂代理 (Custom Agents)](https://google.github.io/adk-docs/agents/custom-agents/#full-code-example) 指南中所示的 `StoryFlowAgent` 類別範例所需的程式碼修改：
+下列範例顯示了對[自訂代理 (Custom Agents)](../agents/custom-agents.md#完整範例程式碼) 指南中所示的 `StoryFlowAgent` 類別範例所需的程式碼修改：
 
 ```python
 class WorkflowStep(int, Enum):

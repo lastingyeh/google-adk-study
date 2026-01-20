@@ -43,7 +43,7 @@ type nul > my-agent\.env
 
 ### 定義 Agent 程式碼
 
-為基本 Agent 建立程式碼，包含一個名為 `getCurrentTime` 的 ADK [Function Tool](https://google.github.io/adk-docs/tools-custom/function-tools/) 簡單實作。
+為基本 Agent 建立程式碼，包含一個名為 `getCurrentTime` 的 ADK [Function Tool](../custom-tools/function-tools/overview.md) 簡單實作。
 將以下程式碼新增至專案目錄中的 `agent.ts` 檔案：
 
 ```typescript title="my-agent/agent.ts"
@@ -173,6 +173,6 @@ npx @google/adk-devtools web
 
 ## 參考資源
 
-*   [Function Tool](https://google.github.io/adk-docs/tools-custom/function-tools/)
+*   [Function Tool](../custom-tools/function-tools/overview.md)
 *   [API Keys](https://aistudio.google.com/app/apikey)
 *   [Models & Authentication](https://google.github.io/adk-docs/agents/models/)

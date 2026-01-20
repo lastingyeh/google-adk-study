@@ -16,13 +16,13 @@ Agent Development Kit (ADK) 中的外掛程式 (Plugin) 是一個自定義程式
     在實作安全防護欄和原則時，使用 ADK 外掛程式比使用回呼 (Callbacks) 具有更好的模組化和靈活性。更多詳細資訊，請參閱 [安全防護欄的回呼與外掛程式](https://google.github.io/adk-docs/safety/#callbacks-and-plugins-for-security-guardrails)。
 
 > [!WARNING] 注意
-    [ADK 網路介面](https://google.github.io/adk-docs/evaluate/#1-adk-web-run-evaluations-via-the-web-ui)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
+    [ADK 網路介面](../evaluation/index.md#1-adk-web---透過-web-ui-執行評估)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
 
 ## 外掛程式如何運作？
 
 ADK 外掛程式擴充了 `BasePlugin` 類別，並包含一個或多個 `callback` 方法，指示外掛程式應在代理生命週期的哪個位置執行。您可以透過在代理的 `Runner` 類別中註冊外掛程式，將其整合到代理中。有關在代理應用程式中如何以及在哪裡觸發外掛程式的更多資訊，請參閱 [外掛程式回呼掛鉤](#外掛程式回呼掛鉤)。
 
-外掛程式功能建立在 [回呼 (Callbacks)](https://google.github.io/adk-docs/callbacks/) 之上，這是 ADK 可擴充架構的關鍵設計元素。典型的代理回呼是針對 *單個代理、單個工具* 的 *特定任務* 進行設定的，而外掛程式只需在 `Runner` 上註冊 *一次*，其回呼就會 *全域性地* 應用於該執行器管理的所有代理、工具和 LLM 調用。外掛程式讓您可以將相關的回呼函式封裝在一起，以便在整個工作流中使用。這使得外掛程式成為實作橫跨整個代理應用程式功能的理想解決方案。
+外掛程式功能建立在 [回呼 (Callbacks)](../callbacks/index.md) 之上，這是 ADK 可擴充架構的關鍵設計元素。典型的代理回呼是針對 *單個代理、單個工具* 的 *特定任務* 進行設定的，而外掛程式只需在 `Runner` 上註冊 *一次*，其回呼就會 *全域性地* 應用於該執行器管理的所有代理、工具和 LLM 調用。外掛程式讓您可以將相關的回呼函式封裝在一起，以便在整個工作流中使用。這使得外掛程式成為實作橫跨整個代理應用程式功能的理想解決方案。
 
 ## 預建外掛程式
 
@@ -297,7 +297,7 @@ npx ts-node path.to.main.ts
 
 </details>
 
-[ADK 網路介面](https://google.github.io/adk-docs/evaluate/#1-adk-web-run-evaluations-via-the-web-ui)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
+[ADK 網路介面](../evaluation/index.md#1-adk-web---透過-web-ui-執行評估)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
 
 上述代理的輸出應如下所示：
 
@@ -465,7 +465,7 @@ async beforeRunCallback(invocationContext: InvocationContext): Promise<Content |
 
 **注意：** 實作這些回呼的外掛程式會在代理層級的回呼執行 *之前* 執行。此外，如果外掛程式層級的代理回呼傳回除了 `None` 或 null 回應之外的任何內容，則代理層級的回呼將 *不會被執行* (被跳過)。
 
-有關作為代理物件一部分定義的代理回呼的更多資訊，請參閱 [回呼類型](https://google.github.io/adk-docs/callbacks/types-of-callbacks/#agent-lifecycle-callbacks)。
+有關作為代理物件一部分定義的代理回呼的更多資訊，請參閱 [回呼類型](../callbacks/types-of-callbacks.md#代理生命週期回調-agent-lifecycle-callbacks)。
 
 ### 模型回呼
 

@@ -48,7 +48,7 @@ await runner.rewind_async(
 )
 ```
 
-當您呼叫 **_rewind_** 方法時，所有由 ADK 管理的「會話層級 (session-level)」資源都會還原到您透過 **_invocation id_** 指定的請求*之前*的狀態，參考[範例連結](https://github.com/google/adk-python/tree/main/contributing/samples/rewind_session)。然而，全域資源（例如應用程式層級或使用者層級的狀態與成果物 Artifacts）則**不會**被還原，限制說明[連結](https://google.github.io/adk-docs/sessions/rewind/#how-it-works)。
+當您呼叫 **_rewind_** 方法時，所有由 ADK 管理的「會話層級 (session-level)」資源都會還原到您透過 **_invocation id_** 指定的請求*之前*的狀態，參考[範例連結](https://github.com/google/adk-python/tree/main/contributing/samples/rewind_session)。然而，全域資源（例如應用程式層級或使用者層級的狀態與成果物 Artifacts）則**不會**被還原，限制說明[連結](#倒回會話-rewind-a-session)。
 
 ## 運作原理
 

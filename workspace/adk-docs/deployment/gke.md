@@ -102,7 +102,7 @@ gcloud container clusters get-credentials adk-cluster \
 
 ### 建立您的代理
 
-我們將參考 [LLM 代理](https://google.github.io/adk-docs/agents/llm-agents/) 頁面上定義的 `capital_agent` 範例。
+我們將參考 [LLM 代理](../agents/llm-agents.md) 頁面上定義的 `capital_agent` 範例。
 
 若要繼續，請按如下方式組織您的專案檔案：
 

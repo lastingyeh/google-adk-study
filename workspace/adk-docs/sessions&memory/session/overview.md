@@ -255,11 +255,11 @@ ADK 提供不同的 `SessionService` 實作方式，讓你可以根據需求選�
 2.  **`VertexAiSessionService`**
 
 - **運作方式：** 透過 API 呼叫使用 Google Cloud Vertex AI 基礎架構進行會話管理。
-- **持久性：** 有。資料透過 [Vertex AI Agent Engine](https://google.github.io/adk-docs/deploy/agent-engine/) 進行可靠且具擴充性的管理。
+- **持久性：** 有。資料透過 [Vertex AI Agent Engine](../../deployment/agent-engine/index.md) 進行可靠且具擴充性的管理。
 - **需求：**
   - Google Cloud 專案 (`pip install vertexai`)
   - 可供設定的 Google Cloud Storage 儲存桶，連結[參考](https://docs.cloud.google.com/vertex-ai/docs/pipelines/configure-project#storage)。
-  - Reasoning Engine 資源名稱/ID，連結[參考](https://google.github.io/adk-docs/deploy/agent-engine/)。
+  - Reasoning Engine 資源名稱/ID，連結[參考](../../deployment/agent-engine/index.md)。
   - 如果你沒有 Google Cloud 專案但想免費試用，請參閱[免費試用 Session 與 Memory](https://google.github.io/adk-docs/sessions/express-mode/)。
 - **適用場景：** 部署在 Google Cloud 上的大規模生產環境應用程式，特別是需要與其他 Vertex AI 功能整合時。
 - **實現方式**
@@ -331,7 +331,7 @@ ADK 提供不同的 `SessionService` 實作方式，讓你可以根據需求選�
 
   </details>
 
-3.  **`DatabaseSessionService`**
+1.  **`DatabaseSessionService`**
 
 - **運作方式：** 連接到關聯式資料庫（例如 PostgreSQL, MySQL, SQLite）將會話資料持久化儲存在資料表中。
 - **持久性：** 有。資料在應用程式重啟後依然存在。

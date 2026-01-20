@@ -9,7 +9,7 @@
 
 ## 代理範例
 
-對於每個指令，我們將參考 [LLM 代理](https://google.github.io/adk-docs/agents/llm-agents/) 頁面上定義的 `Capital Agent` 範例。我們假設它位於一個目錄中 (例如：`capital_agent`)。
+對於每個指令，我們將參考 [LLM 代理](../agents/llm-agents.md) 頁面上定義的 `Capital Agent` 範例。我們假設它位於一個目錄中 (例如：`capital_agent`)。
 
 繼續之前，請確認您的代理程式碼配置如下：
 
@@ -544,7 +544,7 @@ your-project-directory/
 
 #### 程式碼檔案
 
-1. 這是我們的代理定義。這與 [LLM 代理](https://google.github.io/adk-docs/agents/llm-agents/) 中的程式碼相同，但有兩個注意事項：
+1. 這是我們的代理定義。這與 [LLM 代理](../agents/llm-agents.md) 中的程式碼相同，但有兩個注意事項：
 
      * 代理現在初始化為 **全域公開靜態常數變數 (global public static final variable)**。
 
