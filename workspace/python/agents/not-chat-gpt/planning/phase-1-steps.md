@@ -351,7 +351,7 @@ make dev-web
 - [ ] 建立文檔管理端點：
   - `POST /documents/upload`: 檔案上傳
   - `GET /documents`: 文檔列表
-  - `DELETE /documents/{file_id}`: 文檔刪除
+  - `DELETE /documents/{name}`: 文檔刪除
 - [ ] 支援多種檔案格式 (PDF/Word/Markdown/TXT)
 - [ ] 實作檔案元資料管理
 
