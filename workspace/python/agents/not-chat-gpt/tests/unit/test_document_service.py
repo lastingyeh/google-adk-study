@@ -10,27 +10,36 @@ from backend.service.document_service import DocumentService
 
 @pytest.fixture
 def mock_genai_client():
-    """Fixture to mock the genai.Client and its file operations."""
+    """Fixture to mock the genai.Client and its related objects."""
     with patch('google.genai.Client') as mock_client_constructor:
-        mock_client_instance = MagicMock()
-        mock_client_constructor.return_value = mock_client_instance
-        yield mock_client_constructor # Yield the constructor mock itself
+        mock_client = MagicMock()
+        mock_client_constructor.return_value = mock_client
+        
+        # Mock the sub-objects
+        mock_client.file_search_stores = MagicMock()
+        mock_client.files = MagicMock()
+        mock_client.operations = MagicMock()
+        mock_client.models = MagicMock()
+        
+        yield mock_client
+
+@pytest.fixture
+def service(mock_genai_client):
+    """Provides a DocumentService instance with a mocked client."""
+    # Mock os.path.exists to always return True for the validation document
+    with patch('os.path.exists', return_value=True):
+        # Use a consistent key for tests
+        with patch.dict(os.environ, {"GOOGLE_API_KEY": "test_key"}):
+            yield DocumentService(store_display_name="unit-test-store")
 
 class TestDocumentService:
     """Unit tests for the DocumentService."""
 
-    def test_init_with_api_key(self, mock_genai_client):
-        """Test that the service initializes correctly when an API key is provided."""
-        service = DocumentService(api_key="test_key")
-        mock_genai_client.assert_called_once_with(api_key="test_key")
-        assert service.client is not None
-
-    @patch.dict(os.environ, {"GOOGLE_API_KEY": "env_test_key"})
-    def test_init_with_env_var(self, mock_genai_client):
-        """Test that the service initializes correctly using an environment variable."""
-        service = DocumentService()
-        mock_genai_client.assert_called_once_with(api_key="env_test_key")
-        assert service.client is not None
+    def test_init_success(self):
+        """Test that the service initializes correctly with an API key."""
+        with patch.dict(os.environ, {"GOOGLE_API_KEY": "test_key"}):
+            service = DocumentService()
+            assert service.client is not None
 
     @patch.dict(os.environ, {}, clear=True)
     def test_init_no_key_raises_error(self):
@@ -38,81 +47,103 @@ class TestDocumentService:
         with pytest.raises(ValueError, match="Google API key is not configured"):
             DocumentService()
 
-    def test_upload_file(self, mock_genai_client):
-        """Test the upload_file method."""
-        service = DocumentService(api_key="fake_key")
-        
-        mock_file = MagicMock()
-        mock_file.name = "files/test-file-123"
-        mock_file.display_name = "test.txt"
-        mock_genai_client.return_value.files.upload.return_value = mock_file
+    def test_get_or_create_store_name_finds_existing(self, service, mock_genai_client):
+        """Test that an existing store is found and its name is returned and cached."""
+        mock_store = MagicMock()
+        mock_store.display_name = "unit-test-store"
+        mock_store.name = "fileSearchStores/existing-store-123"
+        mock_genai_client.file_search_stores.list.return_value = [mock_store]
 
-        result = service.upload_file("/fake/path/test.txt", display_name="test.txt")
+        # First call - should find the store
+        store_name = service.get_or_create_store_name()
+        assert store_name == "fileSearchStores/existing-store-123"
+        assert service._store_name_cache == "fileSearchStores/existing-store-123"
+        mock_genai_client.file_search_stores.list.assert_called_once()
+        mock_genai_client.file_search_stores.create.assert_not_called()
 
-        mock_genai_client.return_value.files.upload.assert_called_once_with(
-            file="/fake/path/test.txt",
-            config={'display_name': 'test.txt'}
+        # Second call - should use the cache
+        store_name_cached = service.get_or_create_store_name()
+        assert store_name_cached == "fileSearchStores/existing-store-123"
+        # list() should not be called again
+        mock_genai_client.file_search_stores.list.assert_called_once()
+
+    @patch('time.sleep', return_value=None) # Mock sleep to speed up test
+    def test_get_or_create_store_name_creates_new(self, mock_sleep, service, mock_genai_client):
+        """Test that a new store is created when none is found."""
+        # No stores found
+        mock_genai_client.file_search_stores.list.return_value = []
+
+        # Mock the creation process
+        mock_new_store = MagicMock()
+        mock_new_store.name = "fileSearchStores/new-store-456"
+        mock_genai_client.file_search_stores.create.return_value = mock_new_store
+
+        mock_uploaded_file = MagicMock()
+        mock_uploaded_file.name = "files/uploaded-file-789"
+        mock_genai_client.files.upload.return_value = mock_uploaded_file
+
+        # Mock the operation to be done immediately
+        mock_operation = MagicMock()
+        type(mock_operation).done = PropertyMock(return_value=True)
+        mock_genai_client.file_search_stores.import_file.return_value = mock_operation
+
+        # --- Test-specific injection ---
+        # Inject the doc_path for this test case only
+        service.doc_path = "/fake/path/to/doc.md"
+        # -----------------------------
+
+        store_name = service.get_or_create_store_name()
+
+        assert store_name == "fileSearchStores/new-store-456"
+        mock_genai_client.file_search_stores.list.assert_called_once()
+        mock_genai_client.file_search_stores.create.assert_called_once_with(
+            config={'display_name': 'unit-test-store'}
         )
-        assert result == mock_file
-
-    def test_list_files(self, mock_genai_client):
-        """Test the list_files method."""
-        service = DocumentService(api_key="fake_key")
-
-        mock_file = MagicMock()
-        type(mock_file).name = PropertyMock(return_value="files/test-file-123")
-        type(mock_file).display_name = PropertyMock(return_value="test.txt")
-        type(mock_file).mime_type = PropertyMock(return_value="text/plain")
-        type(mock_file).size_bytes = PropertyMock(return_value=100)
-        type(mock_file).create_time = PropertyMock(return_value=MagicMock(isoformat=lambda: "2024-01-01T00:00:00Z"))
-        type(mock_file).uri = PropertyMock(return_value="https://example.com/file")
+        # Verify the injected path was used
+        mock_genai_client.files.upload.assert_called_once()
+        assert mock_genai_client.files.upload.call_args[1]['file'] == "/fake/path/to/doc.md"
         
-        mock_genai_client.return_value.files.list.return_value = [mock_file]
+        mock_genai_client.file_search_stores.import_file.assert_called_once_with(
+            file_search_store_name="fileSearchStores/new-store-456",
+            file_name="files/uploaded-file-789"
+        )
+
+    def test_list_files(self, service, mock_genai_client):
+        """Test the list_files method."""
+        # First, ensure the store name is cached
+        service._store_name_cache = "fileSearchStores/test-store"
+        
+        mock_file_in_store = MagicMock()
+        mock_file_in_store.display_name = "rag_validation_article.md"
+        mock_file_in_store.name = "files/abc-123"
+        
+        mock_store_with_files = MagicMock()
+        type(mock_store_with_files).files = PropertyMock(return_value=[mock_file_in_store])
+        mock_genai_client.file_search_stores.get.return_value = mock_store_with_files
 
         files = service.list_files()
 
+        mock_genai_client.file_search_stores.get.assert_called_once_with(name="fileSearchStores/test-store")
         assert len(files) == 1
-        assert files[0]["name"] == "files/test-file-123"
-        assert files[0]["display_name"] == "test.txt"
+        assert files[0] == {"name": "rag_validation_article.md", "id": "files/abc-123"}
 
-    def test_get_file(self, mock_genai_client):
-        """Test the get_file method."""
-        service = DocumentService(api_key="fake_key")
-        file_id = "files/test-file-123"
-
-        mock_file = MagicMock()
-        type(mock_file).name = PropertyMock(return_value=file_id)
-        # ... (configure other properties as in list_files if needed)
-        mock_genai_client.return_value.files.get.return_value = mock_file
-
-        file_details = service.get_file(file_id)
-
-        mock_genai_client.return_value.files.get.assert_called_once_with(name=file_id)
-        assert file_details is not None
-        assert file_details["name"] == file_id
-
-    def test_get_file_not_found(self, mock_genai_client):
-        """Test get_file when the file does not exist."""
-        service = DocumentService(api_key="fake_key")
-        mock_genai_client.return_value.files.get.side_effect = Exception("File not found")
-
-        result = service.get_file("files/non-existent")
-        assert result is None
-
-    def test_delete_file(self, mock_genai_client):
-        """Test the delete_file method."""
-        service = DocumentService(api_key="fake_key")
-        file_id = "files/to-delete-123"
-
-        service.delete_file(file_id)
-
-        mock_genai_client.return_value.files.delete.assert_called_once_with(name=file_id)
+    def test_query_document(self, service, mock_genai_client):
+        """Test the query_document method."""
+        # Ensure the store name is cached
+        service._store_name_cache = "fileSearchStores/test-store"
         
-    def test_delete_file_error(self, mock_genai_client):
-        """Test delete_file error handling."""
-        service = DocumentService(api_key="fake_key")
-        mock_genai_client.return_value.files.delete.side_effect = Exception("Deletion failed")
+        mock_response = MagicMock()
+        mock_response.text = "This is the mocked response from the model."
+        mock_genai_client.models.generate_content.return_value = mock_response
 
-        result = service.delete_file("files/fail-delete")
-        assert result["status"] == "error"
-        assert "Deletion failed" in result["message"]
+        query = "What is Google ADK?"
+        response_text = service.query_document(query)
+
+        assert response_text == "This is the mocked response from the model."
+        
+        # Verify that generate_content was called with the correct tool configuration
+        call_args, call_kwargs = mock_genai_client.models.generate_content.call_args
+        assert call_kwargs['contents'] == query
+        
+        tools_config = call_kwargs['config'].tools[0]
+        assert tools_config.file_search.file_search_store_names[0] == "fileSearchStores/test-store"
