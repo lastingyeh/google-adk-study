@@ -33,43 +33,56 @@ def file_search_store():
     assert os.path.exists(DOC_PATH), f"Validation document not found at {DOC_PATH}"
 
     client = genai.Client()
+    store_display_name = "not-chat-gpt"
+    
+    # Try to find an existing store
+    store = None
+    for s in client.file_search_stores.list():
+        if s.display_name == store_display_name:
+            store = s
+            print(f"Found existing FileSearchStore: {store.name}")
+            break
 
-    # 1. Create a FileSearchStore
-    store_display_name = f"rag_test_store_{int(time.time())}"
-    print(f"Creating FileSearchStore: {store_display_name}")
-    store = client.file_search_stores.create(config={'display_name': store_display_name})
-    
-    # 2. Upload the file
-    print(f"Uploading file: {DOC_PATH}")
-    # The file object is temporary and will be deleted after 48 hours.
-    uploaded_file = client.files.upload(
-        file=DOC_PATH,
-        config={'display_name': os.path.basename(DOC_PATH)}
-    )
-    print(f"Successfully uploaded file: {uploaded_file.display_name} ({uploaded_file.name})")
+    # If no store is found, create a new one
+    if not store:
+        print(f"Creating FileSearchStore: {store_display_name}")
+        store = client.file_search_stores.create(config={'display_name': store_display_name})
+        
+        # 2. Upload the file
+        print(f"Uploading file: {DOC_PATH}")
+        # The file object is temporary and will be deleted after 48 hours.
+        uploaded_file = client.files.upload(
+            file=DOC_PATH,
+            config={'display_name': os.path.basename(DOC_PATH)}
+        )
+        print(f"Successfully uploaded file: {uploaded_file.display_name} ({uploaded_file.name})")
 
-    # 3. Import the file into the store
-    print(f"Importing file {uploaded_file.name} into store {store.name}...")
-    operation = client.file_search_stores.import_file(
-        file_search_store_name=store.name,
-        file_name=uploaded_file.name
-    )
-    
-    # Wait for the import to complete
-    while not operation.done:
-        print("Waiting for file import to complete...")
-        time.sleep(10)
-        operation = client.operations.get(operation)
-    
-    print("File import completed.")
+        # 3. Import the file into the store
+        print(f"Importing file {uploaded_file.name} into store {store.name}...")
+        operation = client.file_search_stores.import_file(
+            file_search_store_name=store.name,
+            file_name=uploaded_file.name
+        )
+        
+        # Wait for the import to complete
+        while not operation.done:
+            print("Waiting for file import to complete...")
+            time.sleep(10)
+            operation = client.operations.get(operation)
+        
+        print("File import completed.")
 
     # Yield the store to the tests
     yield store
     
     # --- Teardown ---
-    print(f"\nCleaning up: Deleting FileSearchStore {store.name}")
-    client.file_search_stores.delete(name=store.name, config={'force': True})
-    print("Cleanup complete.")
+    # Note: For simplicity in this example, we are not deleting the store.
+    # In a real-world scenario, you might want to have a separate cleanup script
+    # or a flag to control deletion.
+    print(f"\nSkipping cleanup for FileSearchStore {store.name} to allow reuse.")
+    # print(f"\nCleaning up: Deleting FileSearchStore {store.name}")
+    # client.file_search_stores.delete(name=store.name, config={'force': True})
+    # print("Cleanup complete.")
 
 
 def query_model_with_file_search(question: str, store: any) -> str:
