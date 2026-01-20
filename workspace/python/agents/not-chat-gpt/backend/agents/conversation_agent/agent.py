@@ -8,20 +8,18 @@
 
 此檔案主要定義一個名為 `root_agent` 的代理，為 ADK 啟動時的入口。依框架需求，若要在 Web 介面中自動列出該代理，必須使用名稱 `root_agent` 做為變數。
 """
-
 from __future__ import annotations
+
+import os
 from typing import Dict, Any
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from google.adk.tools.tool_context import ToolContext
 from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
-from backend.agents.tools.document_tools import DOCUMENT_TOOLS
+from tools.document_tools import DOCUMENT_TOOLS
 
 
-# ============================================================================
-# TOOLS: State Management
-# ============================================================================
-
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
 
 def remember_user_info(
     key: str, value: str, tool_context: ToolContext
@@ -74,43 +72,38 @@ def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
 
 conversation_agent = Agent(
     name="ConversationAgent",  # 代理名稱，可於 UI 下拉選單看到
-    model="gemini-2.0-flash",  # 使用的模型：高速度、適合互動式對話
+    model=MODEL_NAME,  # 使用的模型：高速度、適合互動式對話
     description="一個具備狀態管理與 RAG 文件查詢能力的友善 AI 助理。",  # 簡述用途
-    tools=[remember_user_info, get_user_info] + DOCUMENT_TOOLS,
+    tools=[remember_user_info, get_user_info] + DOCUMENT_TOOLS,  # 整合狀態管理與文件查詢工具
     instruction=(  # 系統指令：影響基礎回應行為
         """
         你是一個溫暖且樂於助人的助理，具備持久記憶與強大的文件查詢能力。
 
-        **核心能力**:
-        1.  **個人化記憶**: 你能記住用戶的個人資訊和偏好，並在對話中自然地使用。
-        2.  **文件查詢 (RAG)**: 你能使用 `search_files` 工具，在提供的文件庫中尋找答案。
+        核心能力:
+        1.  個人化記憶: 你能記住用戶的個人資訊和偏好，並在對話中自然地使用。
+        2.  文件查詢 (RAG): 你能使用 `search_files` 工具，在提供的文件庫中尋找答案。
 
-        **工具使用策略**:
+        工具使用策略:
 
-        1. **記憶查詢 (`get_user_info`)**:
+        1. 記憶查詢 (`get_user_info`):
            - 當 session 剛啟動且缺乏用戶 context 時，調用此工具載入已知的用戶資訊。
            - 當用戶提到「我之前說過」、「你還記得我嗎」等暗示有歷史記錄的話語時。
 
-        2. **資訊儲存 (`remember_user_info`)**:
+        2. 資訊儲存 (`remember_user_info`):
            - 用戶主動分享個人資訊時立即儲存（姓名、工作、興趣、偏好等）。
 
-        3. **文件列表 (`list_all_available_documents`)**:
-           - 當用戶詢問「你能查哪些資料？」或「你的知識庫有哪些文件？」時使用。
-           - 在進行複雜查詢前，可以先用此工具確認可用的文件範圍。
-
-        4. **文件搜尋 (`search_files`)**:
-           - **這是你的主要資訊來源**。當用戶的問題需要基於特定文件內容來回答時，**務必使用此工具**。
-           - 當問題涉及政策、報告、手冊等具體內容時，優先使用 `search_files`。
+        3. 文件搜尋 (`search_files`):
+           - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
 
-        **互動準則**:
+        互動準則:
         - 優先使用 `search_files` 來回答知識型問題，並根據搜尋結果進行回覆。
         - 如果搜尋結果中包含引用 (citations)，請在回答中清晰地標示出來源。
         - 結合個人化記憶與文件查詢結果，提供全面且精準的回答。
         - 保持溫暖友善的對話風格。
         """
     ),
-    before_model=before_model_callback,  # 註冊模型呼叫前的回調函數
+    before_model_callback=before_model_callback,  # 註冊模型呼叫前的回調函數
 )
 
 # 擴充建議：

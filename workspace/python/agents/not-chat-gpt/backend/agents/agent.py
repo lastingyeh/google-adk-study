@@ -33,9 +33,12 @@ from guardrails.guardrails import before_model_callback  # 匯入安全防護回
 # - description: 描述此協調器的核心功能
 # - instruction: 詳細的系統指令，定義純粹的委派邏輯，禁止直接回應
 
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
+
+
 root_agent = Agent(
     name="OrchestratorAgent",  # 協調器代理名稱
-    model="gemini-2.0-flash",  # 高速模型，適合快速意圖分析
+    model=MODEL_NAME,  # 高速模型，適合快速意圖分析
     description="智能任務路由器，負責分析使用者需求並委派給專門的 AI 助理，不直接回應。",  # 協調器功能描述
     instruction=(  # 系統指令：定義純粹的委派邏輯
         """

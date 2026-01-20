@@ -8,21 +8,20 @@
 
 此檔案主要定義一個名為 `root_agent` 的代理，為 ADK 啟動時的入口。依框架需求，若要在 Web 介面中自動列出該代理，必須使用名稱 `root_agent` 做為變數。
 """
-
 from __future__ import annotations
+
+import os
 from typing import Dict, Any
 
 from google.adk.agents import Agent
 from google.adk.tools.tool_context import ToolContext
 from google.adk.planners import BuiltInPlanner
 from guardrails.guardrails import before_model_callback
-from backend.agents.tools.document_tools import DOCUMENT_TOOLS
+from tools.document_tools import DOCUMENT_TOOLS
+from google.genai import types
 
 
-# ============================================================================
-# TOOLS: State Management
-# ============================================================================
-
+MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
 
 def remember_user_info(
     key: str, value: str, tool_context: ToolContext
@@ -126,9 +125,11 @@ def validate_answer_completeness(
 
 strategic_planner_agent = Agent(
     name="StrategicPlannerAgent",
-    model="gemini-2.0-flash",
+    model=MODEL_NAME,
     description="一個使用結構化思考模式來解決複雜問題的策略規劃助理。",
-    planner=BuiltInPlanner(),
+    planner=BuiltInPlanner(
+        thinking_config=types.ThinkingConfig(include_thoughts=True)
+    ),
     tools=[
         remember_user_info,
         get_user_info,
@@ -142,43 +143,39 @@ strategic_planner_agent = Agent(
         你是一位頂尖的策略規劃師，專門將複雜問題拆解成可執行的步驟。
         你的核心工作流程是：分析 -> 提取 -> 搜尋 -> 驗證。
 
-        **核心能力**:
-        1.  **結構化思考**: 你使用 <PLANNING>, <REASONING>, <ACTION> 的結構來展示你的思考過程。
-        2.  **文件查詢 (RAG)**: 你能使用 `search_files` 工具，在提供的文件庫中尋找解決問題所需的資料。
+        核心能力:
+        1.  結構化思考: 你使用 <PLANNING>, <REASONING>, <ACTION> 的結構來展示你的思考過程。
+        2.  文件查詢 (RAG): 你能使用 `search_files` 工具，在提供的文件庫中尋找解決問題所需的資料。
 
-        **工具使用策略**:
+        工具使用策略:
 
-        1. **意圖分析 (`analyze_user_intent`)**:
-           - **第一步**：接到任何複雜問題時，首先呼叫此工具來釐清用戶的真正目的。
+        1. 意圖分析 (`analyze_user_intent`):
+           - 第一步：接到任何複雜問題時，首先呼叫此工具來釐清用戶的真正目的。
 
-        2. **關鍵字提取 (`extract_search_keywords`)**:
-           - **第二步**：根據分析後的意圖，從原始問題中提取最核心的關鍵字，準備用於搜尋。
+        2. 關鍵字提取 (`extract_search_keywords`):
+           - 第二步：根據分析後的意圖，從原始問題中提取最核心的關鍵字，準備用於搜尋。
 
-        3. **文件搜尋 (`search_files`)**:
-           - **第三步**：使用提取出的關鍵字，呼叫 `search_files` 工具在知識庫中進行搜尋。
-           - **這是你獲取外部知識的主要手段**。不要依賴你的內部知識，優先從文件中尋找答案。
+        3. 文件搜尋 (`search_files`):
+           - 第三步：使用提取出的關鍵字，呼叫 `search_files` 工具在知識庫中進行搜尋。
+           - 這是你獲取外部知識的主要手段。不要依賴你的內部知識，優先從文件中尋找答案。
 
-        4. **答案完整性驗證 (`validate_answer_completeness`)**:
-           - **第四步**：在生成最終答案後，呼叫此工具，將你的答案與原始問題進行比對，確保回答的完整性和相關性。
+        4. 答案完整性驗證 (`validate_answer_completeness`):
+           - 第四步：在生成最終答案後，呼叫此工具，將你的答案與原始問題進行比對，確保回答的完整性和相關性。
 
-        5. **記憶工具 (`get_user_info`, `remember_user_info`)**:
+        5. 記憶工具 (`get_user_info`, `remember_user_info`):
            - 在規劃過程中，如果需要用戶的個人背景資訊來制定更個人化的策略，可以使用 `get_user_info`。
            - 如果在規劃過程中產生了值得長期記憶的用戶偏好，可以使用 `remember_user_info`。
         
-        6. **文件列表 (`list_all_available_documents`)**:
-           - 在規劃初期，如果需要了解當前可用的所有文件資源，可以呼叫此工具。
+        6. 文件搜尋 (`search_files`):
+           - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
+           - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
 
-        **互動準則**:
-        - **嚴格遵循思考流程**：分析 -> 提取 -> 搜尋 -> 驗證。
-        - **優先使用工具**：你的所有決策和資訊都應基於工具的返回結果。
-        - **引用來源**：如果 `search_files` 的結果包含引用，務必在最終答案中清晰地標示出來。
-        - **保持專業**：你的回答應該是結構化、有條理且基於事實的。
+        互動準則:
+        - 嚴格遵循思考流程：分析 -> 提取 -> 搜尋 -> 驗證。
+        - 優先使用工具：你的所有決策和資訊都應基於工具的返回結果。
+        - 引用來源：如果 `search_files` 的結果包含引用，務必在最終答案中清晰地標示出來。
+        - 保持專業：你的回答應該是結構化、有條理且基於事實的。
         """
     ),
-    before_model=before_model_callback,
+    before_model_callback=before_model_callback,
 )
-
-# 擴充建議：
-# - 可以新增工具 (tools) 參數：整合計算、查詢或外部 API。
-# - 可以加入記憶模組：讓代理根據歷史對話調整回應。
-# - 可以針對 domain 調整 instruction，例如客服、教學、旅遊規劃等場景。
