@@ -242,3 +242,51 @@ ADK 提供的內建功能比預期更完整，建議優先驗證框架能力再�
 - ✅ 服務註冊與工廠模式整合
 - ✅ 啟動流程改造與驗證
 - ✅ Makefile 指令更新 (`make dev-main`)
+
+---
+
+## 2.5.1 Gemini File Search 整合 (Agentic RAG)
+
+**目標達成**: 成功整合 Gemini File Search API，為 Agent 賦予了從指定文檔中檢索資訊並回答問題的能力 (Agentic RAG)，實現了知識庫問答功能。
+
+### 核心實作內容
+
+#### 1. DocumentService 服務層封裝
+
+- **實作位置**: `backend/services/document_service.py`
+- **核心概念**: 建立一個 `DocumentService` 來集中管理所有與 Gemini File API 的互動。
+- **主要職責**:
+  - **封裝 SDK 操作**: 使用 `google-generativeai` SDK，將底層的 `genai.files` API 呼叫（如 `upload_file`, `list_files`, `get_file`, `delete_file`）封裝成高階的服務方法。
+  - **狀態管理**: 追蹤已上傳檔案的狀態與元資料。
+  - **錯誤處理**: 統一處理 API 請求可能發生的錯誤。
+
+#### 2. `file_search` 功能工具化
+
+- **實作位置**: `backend/tools/document_tools.py`
+- **核心概念**: 將 `DocumentService` 的 `file_search` 功能包裝成一個 Agent 可以直接呼叫的工具 (Tool)。
+- **設計模式**:
+  - Agent 本身不直接與 `DocumentService` 或 Gemini SDK 互動。
+  - Agent 透過呼叫 `file_search` 工具來觸發 RAG 流程。
+  - 工具內部再呼叫 `DocumentService` 來執行實際的檔案檢索。
+  - 這種設計降低了 Agent 的複雜性，並提高了模組的獨立性與可測試性。
+
+#### 3. Agent 整合與模型配置
+
+- **工具註冊**: 將 `file_search` 工具註冊到 `ConversationAgent` 和 `StrategicPlannerAgent` 中。
+- **模型配置**: 在初始化 Gemini 模型時，將 `file_search` 工具傳遞給模型，使其具備使用此工具的能力。
+- **自動化 RAG**: 當使用者提出與已上傳文件相關的問題時，LLM 會自動判斷並呼叫 `file_search` 工具來尋找答案，並根據檢索結果生成回應。
+
+### 技術特色與優勢
+
+- **關注點分離 (SoC)**: 透過 `Service -> Tool -> Agent` 的分層架構，將資料處理、工具邏輯和 Agent 決策清晰地分開。
+- **Agent 輕量化**: Agent 只需專注於對話流程與工具選擇，無需了解檔案檢索的底層實作細節。
+- **可擴展性**: 未來若要增加新的文檔來源（如資料庫、Web API），只需擴展 `DocumentService` 或新增工具，而無需修改 Agent 核心邏輯。
+- **零配置 RAG**: 對於 Agent 來說，RAG 是一個開箱即用的能力，由模型根據上下文自動觸發。
+
+### 完成狀態
+
+- ✅ `google-generativeai` SDK 安裝與配置
+- ✅ `DocumentService` 服務層封裝完成
+- ✅ `file_search` 工具實作與註冊
+- ✅ Agent 成功整合 RAG 工具
+- ✅ 文檔上傳與問答功能測試驗證

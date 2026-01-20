@@ -344,7 +344,7 @@ make dev-web
 - [x] 建立 `backend/services/document_service.py`
 - [x] 封裝 File API 操作 (upload, list, get, delete)
 - [x] 在 ConversationAgent 與 StrategicPlannerAgent 中整合 `file_search` 工具
-- [ ] 測試文檔上傳與索引功能
+- [x] 測試文檔上傳與索引功能
 
 ### 2.5.2 文檔管理 API
 
