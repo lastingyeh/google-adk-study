@@ -1,4 +1,5 @@
 import os
+import io
 import pytest
 from unittest.mock import patch, MagicMock, PropertyMock
 
@@ -99,13 +100,38 @@ class TestDocumentService:
         mock_genai_client.file_search_stores.create.assert_called_once_with(
             config={'display_name': 'unit-test-store'}
         )
-        # Verify the injected path was used
-        mock_genai_client.files.upload.assert_called_once()
-        assert mock_genai_client.files.upload.call_args[1]['file'] == "/fake/path/to/doc.md"
+        # Verify the file upload is NOT called anymore during store creation
+        mock_genai_client.files.upload.assert_not_called()
+        mock_genai_client.file_search_stores.import_file.assert_not_called()
+
+    @patch('time.sleep', return_value=None)
+    def test_upload_file_from_stream(self, mock_sleep, service, mock_genai_client):
+        """Test that a file-like object can be uploaded successfully."""
+        # Arrange
+        service._store_name_cache = "fileSearchStores/test-store"
         
+        mock_uploaded_file = MagicMock()
+        mock_uploaded_file.name = "files/uploaded-stream-file-123"
+        mock_genai_client.files.upload.return_value = mock_uploaded_file
+
+        mock_operation = MagicMock()
+        type(mock_operation).done = PropertyMock(return_value=True)
+        mock_genai_client.file_search_stores.import_file.return_value = mock_operation
+
+        file_name = "test_upload.txt"
+        file_data = io.BytesIO(b"This is a test file from a stream.")
+
+        # Act
+        service.upload_file(file_name=file_name, file_data=file_data)
+
+        # Assert
+        mock_genai_client.files.upload.assert_called_once_with(
+            file=file_data,
+            config={'display_name': file_name}
+        )
         mock_genai_client.file_search_stores.import_file.assert_called_once_with(
-            file_search_store_name="fileSearchStores/new-store-456",
-            file_name="files/uploaded-file-789"
+            file_search_store_name="fileSearchStores/test-store",
+            file_name="files/uploaded-stream-file-123"
         )
 
     def test_list_files(self, service, mock_genai_client):
@@ -118,14 +144,21 @@ class TestDocumentService:
         mock_file_in_store.name = "files/abc-123"
         
         mock_store_with_files = MagicMock()
-        type(mock_store_with_files).files = PropertyMock(return_value=[mock_file_in_store])
-        mock_genai_client.file_search_stores.get.return_value = mock_store_with_files
+        
+        # The list method returns a paginated result, so we mock an iterator
+        mock_documents = [MagicMock(), MagicMock()]
+        mock_documents[0].display_name = "doc1.txt"
+        mock_documents[0].name = "files/abc-123"
+        mock_documents[1].display_name = "doc2.pdf"
+        mock_documents[1].name = "files/def-456"
+        mock_genai_client.file_search_stores.documents.list.return_value = mock_documents
 
         files = service.list_files()
 
-        mock_genai_client.file_search_stores.get.assert_called_once_with(name="fileSearchStores/test-store")
-        assert len(files) == 1
-        assert files[0] == {"name": "rag_validation_article.md", "id": "files/abc-123"}
+        mock_genai_client.file_search_stores.documents.list.assert_called_once_with(parent="fileSearchStores/test-store")
+        assert len(files) == 2
+        assert files[0] == {"display_name": "doc1.txt", "name": "files/abc-123"}
+        assert files[1] == {"display_name": "doc2.pdf", "name": "files/def-456"}
 
     def test_query_document(self, service, mock_genai_client):
         """Test the query_document method."""

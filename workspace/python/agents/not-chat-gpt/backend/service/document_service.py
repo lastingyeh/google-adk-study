@@ -44,12 +44,8 @@ class DocumentService:
 
         if not store:
             print(f"No existing store found. Creating FileSearchStore: {self.store_display_name}")
-            assert os.path.exists(self.doc_path), f"Validation document not found at {self.doc_path}"
-            
             store = self.client.file_search_stores.create(config={'display_name': self.store_display_name})
-            print(f"Store created: {store.name}. Now uploading and importing file...")
-
-            self._upload_and_import_file(store.name)
+            print(f"Store created: {store.name}.")
         
         self._store_name_cache = store.name
         return self._store_name_cache
@@ -67,12 +63,23 @@ class DocumentService:
             raise
         return None
 
-    def _upload_and_import_file(self, store_name: str):
-        """Uploads the document and imports it into the store."""
-        print(f"Uploading file: {self.doc_path}")
+    def upload_file(self, file_name: str, file_data):
+        """
+        Uploads a file from a file-like object and imports it into the store.
+
+        Args:
+            file_name: The name of the file.
+            file_data: The file-like object to upload.
+        """
+        store_name = self.get_or_create_store_name()
+        self._upload_and_import_file(store_name, file_name, file_data)
+
+    def _upload_and_import_file(self, store_name: str, file_name: str, file_data):
+        """Uploads the document from a file-like object and imports it into the store."""
+        print(f"Uploading file: {file_name}")
         uploaded_file = self.client.files.upload(
-            file=self.doc_path,
-            config={'display_name': os.path.basename(self.doc_path)}
+            file=file_data,
+            config={'display_name': file_name}
         )
         print(f"Successfully uploaded file: {uploaded_file.display_name} ({uploaded_file.name})")
 
