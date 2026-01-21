@@ -2,7 +2,7 @@
 # Conversation Agent 開發環境設定 (使用 uv)
 # =============================================================================
 
-.PHONY: help install dev dev-web dev-main dev-fastapi debug test clean sync lock add remove init redis-up redis-down
+.PHONY: help install dev dev-web dev-main dev-fastapi dev-fastapi-debug debug test clean sync lock add remove init redis-up redis-down
 
 # 預設目標
 .DEFAULT_GOAL := help
@@ -21,6 +21,7 @@ help:
 	@echo "| make dev        - 啟動 CLI 對話模式 (adk run)                           |"
 	@echo "| make dev-web    - 啟動 Web 開發伺服器 (adk web)                         |"
 	@echo "| make dev-fastapi- 啟動 FastAPI 原生開發伺服器                           |"
+	@echo "| make dev-fastapi-debug- 啟動 FastAPI 原生開發伺服器 (偵錯模式)            |"
 	@echo "| make dev-main   - 使用 Redis Session 啟動 Web 模式                      |"
 	@echo "| make debug      - 啟動偵錯模式（支援 VS Code 附加偵錯）                  |"
 	@echo "| make redis-up   - 啟動 Redis 服務                                        |"
@@ -98,6 +99,19 @@ dev-fastapi:
 	@echo "🛑 按下 Ctrl+C 停止伺服器"
 	@echo ""
 	uv run uvicorn backend.fast_api_app:app --reload
+
+# 啟動 FastAPI 原生開發伺服器 (偵錯模式)
+dev-fastapi-debug:
+	@echo "==============================================================================="
+	@echo "| 🐛 啟動 FastAPI 偵錯模式                                                 |"
+	@echo "==============================================================================="
+	@echo "| 📍 伺服器位址：http://localhost:8000                                      |"
+	@echo "| 🔍 Debugger 監聽：5678                                                   |"
+	@echo "| 🔗 VS Code 連接：按 F5 選擇 'Python: Remote Attach' 並輸入 5678         |"
+	@echo "| 🔄 熱重載：已停用 (由偵錯器控制)                                         |"
+	@echo "| 💡 提示：在 VS Code 中設定中斷點後開始偵錯                              |"
+	@echo "==============================================================================="
+	uv run python -m debugpy --listen 5678 -m uvicorn backend.fast_api_app:app --reload
 
 # 使用 Redis Session 啟動 Web 開發伺服器
 dev-main:

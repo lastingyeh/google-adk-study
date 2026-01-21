@@ -77,11 +77,15 @@ class DocumentService:
     def _upload_and_import_file(self, store_name: str, file_name: str, file_data):
         """Uploads the document from a file-like object and imports it into the store."""
         print(f"Uploading file: {file_name}")
+        
+        # 根據檔名判斷 MIME type
+        mime_type = self._get_mime_type(file_name)
+        
         uploaded_file = self.client.files.upload(
             file=file_data,
-            config={'display_name': file_name}
+            config={'display_name': file_name, 'mime_type': mime_type}
         )
-        print(f"Successfully uploaded file: {uploaded_file.display_name} ({uploaded_file.name})")
+        print(f"Successfully uploaded file: {uploaded_file.display_name} ({uploaded_file.name}) with MIME type: {mime_type}")
 
         print(f"Importing file {uploaded_file.name} into store {store_name}...")
         operation = self.client.file_search_stores.import_file(
@@ -122,3 +126,40 @@ class DocumentService:
         )
     
         return response.text
+
+    def _get_mime_type(self, file_name: str) -> str:
+        """Determines the MIME type based on the file extension."""
+        extension = os.path.splitext(file_name)[1].lower()
+        if extension == ".md":
+            return "text/markdown"
+        elif extension == ".pdf":
+            return "application/pdf"
+        elif extension == ".txt":
+            return "text/plain"
+        else:
+            raise ValueError(f"Unsupported file type: {extension}. Only .md, .pdf, and .txt are supported.")
+
+    def delete_document(self, document_id: str):
+        """
+        Deletes a document from the FileSearchStore by its ID.
+
+        Args:
+            document_id: The unique resource name of the document to delete.
+                         (e.g., 'corpora/my-corpus-123/documents/my-document-456')
+        """
+        print(f"Attempting to delete document: {document_id}")
+        try:
+            self.client.file_search_stores.documents.delete(
+                name=document_id,
+                config={"force": True}
+            )
+            print(f"Successfully deleted document: {document_id}")
+        except exceptions.NotFound:
+            print(f"Document not found: {document_id}")
+            raise FileNotFoundError(f"Document with ID '{document_id}' not found.")
+        except exceptions.PermissionDenied as e:
+            print(f"Error: Permission denied while deleting document. Details: {e}")
+            raise
+        except Exception as e:
+            print(f"An unexpected error occurred while deleting document: {e}")
+            raise

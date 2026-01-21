@@ -348,12 +348,11 @@ make dev-web
 
 ### 2.5.2 文檔管理 API
 
-- [ ] 建立文檔管理端點：
+- [x] 建立文檔管理端點：
   - `POST /documents/upload`: 檔案上傳
   - `GET /documents`: 文檔列表
   - `DELETE /documents/{name}`: 文檔刪除
-- [ ] 支援多種檔案格式 (PDF/Word/Markdown/TXT)
-- [ ] 實作檔案元資料管理
+- [x] 支援多種檔案格式 (PDF/Markdown/TXT)
 
 ### 2.5.3 引用來源追蹤 (Citations)
 
