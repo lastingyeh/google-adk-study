@@ -81,4 +81,4 @@ app = App(
 
 如需如何使用`LlmEventSummarizer` 完整實作，請參閱以下範例：
 
-- [關於 LlmEventSummarizer 參考範例](../../python/agents/hello-world-app/)
+- [LlmEventSummarizer 參考範例](../../python/agents/hello-world-app/)

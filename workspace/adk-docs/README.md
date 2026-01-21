@@ -53,6 +53,20 @@ ADK 文件提供了多種程式語言的快速入門指南，可協助您在幾�
 | [多代理系統](./agents/multi-agents.md)                    | 說明如何將多個代理組合成多代理系統 (MAS)，包括代理層次結構、協作模式與交互機制。                                          | [連結](./agents/multi-agents.md)                      |
 | [Agent Config](./agents/config.md)                        | 介紹如何使用 YAML 格式的 Agent Config 無需編寫程式碼即可構建 ADK 工作流 (實驗性功能)。                                    | [連結](./agents/config.md)                            |
 
+### Models for Agents (代理模型)
+ADK 允許您將各種大型語言模型 (LLM) 整合到您的代理程式中。本節介紹如何使用 Gemini 模型以及整合其他熱門模型,包括外部託管或本地運行的模型。ADK 主要使用兩種機制進行模型整合：直接字串/註冊表 (適用於 Google Cloud 模型) 和模型連接器 (適用於更廣泛的相容性)。
+
+| 標頭                                                  | 描述                                                                                                                     | 連結                                              |
+| :---------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------ |
+| [模型總覽](./models-for-agents/index.md)              | 介紹 ADK 支援的各種 AI 模型整合方式,包括直接字串/註冊表與模型連接器兩種整合機制,以及各模型類型的適用場景。                | [連結](./models-for-agents/index.md)              |
+| [Google Gemini 模型](./models-for-agents/google-gemini.md) | 深入說明如何在 ADK 中使用 Google Gemini 系列模型,包括透過 Google AI Studio 或 Vertex AI 進行驗證,以及支援的進階功能。      | [連結](./models-for-agents/google-gemini.md)      |
+| [Vertex AI 託管模型](./models-for-agents/vertex.md)   | 說明如何使用部署到 Vertex AI 端點的模型,包括 Model Garden 模型、微調模型,以及透過 Vertex AI 使用的第三方模型如 Claude。   | [連結](./models-for-agents/vertex.md)             |
+| [Anthropic Claude 模型](./models-for-agents/anthropic.md) | 介紹如何在 Java ADK 中使用 Claude 包裝類別直接整合 Anthropic 的 Claude 模型,包括透過 Anthropic API 金鑰進行驗證。         | [連結](./models-for-agents/anthropic.md)          |
+| [Apigee AI Gateway](./models-for-agents/apigee.md)    | 說明如何透過 Apigee AI 閘道器使用模型,提供企業級的模型安全、流量治理、效能優化與監控功能。                                | [連結](./models-for-agents/apigee.md)             |
+| [LiteLLM 模型連接器](./models-for-agents/litellm.md)  | 介紹如何使用 LiteLLM 函式庫作為翻譯層,為超過 100 多個 LLM 提供標準化介面,包括 OpenAI、Anthropic、Cohere 等供應商的模型。 | [連結](./models-for-agents/litellm.md)            |
+| [Ollama 模型託管](./models-for-agents/ollama.md)      | 說明如何透過 Ollama 在本地託管並運行開源模型,並透過 LiteLLM 與 ADK 整合,包括模型選擇與配置的最佳實踐。                    | [連結](./models-for-agents/ollama.md)             |
+| [vLLM 模型託管](./models-for-agents/vllm.md)          | 介紹如何使用 vLLM 高效託管模型並將其作為與 OpenAI 相容的 API 端點,透過 LiteLLM 與 ADK 整合。                             | [連結](./models-for-agents/vllm.md)               |
+
 ### Custom Tools (自訂工具)
 
 ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（或工具集），可由代理在推理過程中呼叫，以完成搜尋、資料查詢、API 呼叫、RAG、跨系統整合等工作。以下整理本資料夾中與自訂工具相關的主題與索引，方便依需求快速查找。
