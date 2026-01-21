@@ -2,7 +2,7 @@
 # Conversation Agent 開發環境設定 (使用 uv)
 # =============================================================================
 
-.PHONY: help install dev dev-web dev-main debug test clean sync lock add remove init redis-up redis-down
+.PHONY: help install dev dev-web dev-main dev-fastapi debug test clean sync lock add remove init redis-up redis-down
 
 # 預設目標
 .DEFAULT_GOAL := help
@@ -20,6 +20,7 @@ help:
 	@echo "| make remove PKG - 移除依賴套件                                           |"
 	@echo "| make dev        - 啟動 CLI 對話模式 (adk run)                           |"
 	@echo "| make dev-web    - 啟動 Web 開發伺服器 (adk web)                         |"
+	@echo "| make dev-fastapi- 啟動 FastAPI 原生開發伺服器                           |"
 	@echo "| make dev-main   - 使用 Redis Session 啟動 Web 模式                      |"
 	@echo "| make debug      - 啟動偵錯模式（支援 VS Code 附加偵錯）                  |"
 	@echo "| make redis-up   - 啟動 Redis 服務                                        |"
@@ -88,6 +89,15 @@ dev-web:
 	@echo "🛑 按下 Ctrl+C 停止伺服器"
 	@echo ""
 	uv run adk web backend
+
+# 啟動 FastAPI 原生開發伺服器
+dev-fastapi:
+	@echo "🚀 啟動 FastAPI 原生開發伺服器 (Uvicorn)..."
+	@echo "📱 開啟 http://localhost:8000/docs"
+	@echo "🔄 熱重載已啟用"
+	@echo "🛑 按下 Ctrl+C 停止伺服器"
+	@echo ""
+	uv run uvicorn backend.fast_api_app:app --reload
 
 # 使用 Redis Session 啟動 Web 開發伺服器
 dev-main:
