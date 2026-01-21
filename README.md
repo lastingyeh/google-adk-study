@@ -25,12 +25,13 @@
 
 - **詳細說明**
   - [文件連結](./docs/google-adk-docs-community_summary.md)
+
 - **參考資源**
-  - [Google ADK Getting Started ](https://google.github.io/adk-docs/community/#getting-started)
+  - [[ADK-Docs] 官方文件-Google ADK Getting Started](https://google.github.io/adk-docs/community/#getting-started)
   - [Getting Started with Agent Development Kit Tools (MCP, Google Search, LangChain, etc.)](https://www.youtube.com/watch?v=5ZmaWY7UX6k)
   - [software-bug-assistant](https://github.com/google/adk-samples/tree/main/python/agents/software-bug-assistant)
   - [Tools Make an Agent: From Zero to Assistant with ADK](https://cloud.google.com/blog/topics/developers-practitioners/tools-make-an-agent-from-zero-to-assistant-with-adk?e=48754805?utm_source%3Dtwitter?utm_source%3Dlinkedin)
-  - [Tools for Agents: ADK Tools list](https://google.github.io/adk-docs/tools/)
+  - [[ADK-Docs] 官方文件-Tools for Agents: ADK Tools list](https://google.github.io/adk-docs/tools/)
 
 </details>
 
@@ -1126,7 +1127,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Model Context Protocol Site Map](./docs/sitemaps/mcp-sitemap.md)
 
 - **參考資源**
-  - [Google ADK Docs](https://google.github.io/adk-docs/)
+  - [[ADK-Docs] 官方文件](https://google.github.io/adk-docs/)
   - [A2A Protocol](https://a2a-protocol.org/)
   - [Model Context Protocol](https://modelcontextprotocol.io/)
 
@@ -1150,7 +1151,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 - **參考資源**
   - [Mastering Google's Interactions API: A Unified Gateway to Gemini Models and Deep Research Agent
     ](https://raphaelmansuy.github.io/adk_training/blog/interactions-api-deep-research)
-  - [Google ADK Docs](https://google.github.io/adk-docs/)
+  - [[ADK-Docs] 官方文件](https://google.github.io/adk-docs/)
   - [[Code Wiki] adk-python](https://codewiki.google/github.com/google/adk-python)
 
 </details>
@@ -1166,7 +1167,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 
 <details>
 <summary>
-參考官方 Visual Builder for agents 規格定義，定義 YAML 格式的規範設計與範本提供 `Agent Marketplace` 頁面功能整合與未來支援 `Visual Builder` 標準化。
+參考官方 Visual Builder 規格定義，定義 YAML 格式的規範設計與範本提供 `Agent Marketplace` 頁面功能整合與未來支援 `Visual Builder` 標準化。
 
 ```
 已完成進度 (4/49)
@@ -1183,8 +1184,9 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 - **詳細說明**
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
+
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1212,7 +1214,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1244,7 +1246,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1276,7 +1278,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1310,7 +1312,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1342,7 +1344,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
   - [Agent 規格標準化範本](./docs/agents/agents-template.yaml)
   - [agents.yaml 連結](./docs/agents/agents.yaml)
 - **參考資源**
-  - [[Google ADK Docs] Visual Builder for agents](https://google.github.io/adk-docs/visual-builder/)
+  - [[ADK-Docs] 官方文件-Visual Builder](https://google.github.io/adk-docs/visual-builder/)
 
 </details>
 
@@ -1458,10 +1460,10 @@ Part 2/2：基於 Google ADK 的多代理系統，利用 Web Browser Agent 與 B
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#快速入門-get-started)
+  - [[ADK-Docs] 學習文件-Get Started](./workspace/adk-docs/get-started/about.md)
 
 - **參考資源**
-  - [ADK 官方文件網站](https://google.github.io/adk-docs/)
+  - [[ADK-Docs] 官方文件](https://google.github.io/adk-docs/)
   - [Google AI Studio](https://aistudio.google.com/app/api-keys)
   - [Gemini API Models](https://ai.google.dev/gemini-api/docs/models)
 
@@ -1479,15 +1481,15 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源](./workspace/adk-docs/README.md#會話與記憶-sessions--memory)
+  - [[ADK-Docs] 學習文件-Session & Memory](./workspace/adk-docs/sessions&memory/sessions.md)
 
 - **參考資源**
-  - [ADK 官方文件網站](https://google.github.io/adk-docs/)
+  - [[ADK-Docs] 官方文件-Sessions](https://google.github.io/adk-docs/sessions/)
+  - [[ADK-Docs] 官方文件-VertexAiSessionService](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations)
+  - [[ADK-Docs] 官方文件-VertexAiMemoryBankService](https://google.github.io/adk-docs/sessions/memory/#vertex-ai-memory-bank)
   - [Google AI Studio](https://aistudio.google.com/app/api-keys)
   - [Gemini API Models](https://ai.google.dev/gemini-api/docs/models)
   - [GCP Express Mode](https://console.cloud.google.com/expressmode)
-  - [VertexAiSessionService](https://google.github.io/adk-docs/sessions/session/#sessionservice-implementations)
-  - [VertexAiMemoryBankService](https://google.github.io/adk-docs/sessions/memory/#vertex-ai-memory-bank)
   - [Vertex AI Memory Bank](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/memory-bank/overview)
   - [免費試用 Session 與 Memory](https://google.github.io/adk-docs/sessions/express-mode/)
 
@@ -1547,14 +1549,14 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 - **詳細說明**
 
+  - [[ADK-Docs] 學習文件-Deployment](./workspace/adk-docs/deployment/deploy.md)
   - [Pack Policy As Code](./workspace/python/agents/pack-policy-as-code/)
-  - [ADK docs Deployment 文件整合](./workspace/adk-docs/README.md#部署-deployment)
 
 - **參考資源**
 
   - [adk-samples 存儲庫 (policy as code)](https://github.com/google/adk-samples/tree/3d9fe35ce097760c5dceb7136a2c72802c3c6021/python/agents/policy-as-code)
   - [agent-starter-pack 官方文件](https://github.com/GoogleCloudPlatform/agent-starter-pack)
-  - [[adk-docs] Deployment](https://google.github.io/adk-docs/deploy/)
+  - [[ADK-Docs] 官方文件-Deployment](https://google.github.io/adk-docs/deploy/)
 
 </details>
 
@@ -1571,11 +1573,11 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-Agent Runtime](./workspace/adk-docs/README.md#代理執行-agent-runtime)
+  - [[ADK-Docs] 學習文件-Runtime](./workspace/adk-docs/agent-runtime/index.md)
 
 - **參考資源**
 
-  - [ADK 官方文件網站](https://google.github.io/adk-docs/runtime/)
+  - [[ADK-Docs] 官方文件-Runtime](https://google.github.io/adk-docs/runtime/)
 
 </details>
 
@@ -1591,14 +1593,14 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-Context](./workspace/adk-docs/context/index.md)
+  - [[ADK-Docs] 學習文件-Context](./workspace/adk-docs/context/index.md)
   - [[整理 adk-python 官方範例]: caching 使用的 Agent 範例-[cache-analysis]](./workspace/python/agents/cache-analysis/)
   - [[整理 adk-python 官方範例]: caching 使用的 Agent 範例-[static-instruction]](./workspace/python/agents/static-instruction/)
   - [[整理 adk-python 官方範例]: compaction 使用的 Agent 範例-[hello-world-app]](./workspace/python/agents/hello-world-app/)
 
 - **參考資源**
 
-  - [ADK 官方文件網站 Context](https://google.github.io/adk-docs/context/)
+  - [[ADK-Docs] 官方文件-Context](https://google.github.io/adk-docs/context/)
   - [adk-python 官方範例位置](https://github.com/google/adk-python)
   - [[adk-python] cache_analysis 範例](https://github.com/google/adk-python/tree/main/contributing/samples/cache_analysis)
   - [[adk-python] static_instruction 範例](https://github.com/google/adk-python/tree/main/contributing/samples/static_instruction)
@@ -1618,12 +1620,12 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-Custom Tools](./workspace/adk-docs/custom-tools/index.md)
+  - [[ADK-Docs] 學習文件-Custom Tools](./workspace/adk-docs/custom-tools/index.md)
   - [[整理 adk-python 官方範例]: confirmation 使用的 Agent 範例-[human-tool-confirmation]](./workspace/python/agents/human-tool-confirmation/)
 
 - **參考資源**
 
-  - [ADK 官方文件網站 Context](https://google.github.io/adk-docs/tools-custom/)
+  - [[ADK-Docs] 官方文件-Custom Tools](https://google.github.io/adk-docs/tools-custom/)
   - [adk-python 官方範例位置](https://github.com/google/adk-python)
   - [[adk-python] human_tool_confirmation 範例](https://github.com/google/adk-python/tree/main/contributing/samples/human_tool_confirmation)
 
@@ -1641,13 +1643,13 @@ ADK 代理執行核心 (Runtime) 透過事件迴圈驅動代理程式。您可�
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-Custom Tools](./workspace/adk-docs/custom-tools/index.md)
+  - [[ADK-Docs] 學習文件-Custom Tools](./workspace/adk-docs/custom-tools/index.md)
   - [[整理 adk-python 官方範例]: confirmation 使用的 Agent 範例-[human-tool-confirmation]](./workspace/python/agents/human-tool-confirmation/)
   - [[Articles] AI 代理 (AI Agent) 記憶優化技術指南](./workspace/articles/memory/implementing-9-techniques-to-optimize-ai-agent-memory.md)
 
 - **參考資源**
 
-  - [ADK 官方文件網站 Context](https://google.github.io/adk-docs/tools-custom/)
+  - [[ADK-Docs] 官方文件-Custom Tools](https://google.github.io/adk-docs/tools-custom/)
   - [adk-python 官方範例位置](https://github.com/google/adk-python)
   - [[adk-python] human_tool_confirmation 範例](https://github.com/google/adk-python/tree/main/contributing/samples/human_tool_confirmation)
   - [Implementing 9 Techniques to Optimize AI Agent Memory](https://medium.com/@fareedkhandev/67d813e3d796?sk=14ccc929e8d9c64b0ca7c4c80fe79b45)
@@ -1666,11 +1668,11 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-Agents](./workspace/adk-docs/agents/index.md)
+  - [[ADK-Docs] 學習文件-Agents](./workspace/adk-docs/agents/index.md)
 
 - **參考資源**
 
-  - [ADK 官方文件網站 Agents](https://google.github.io/adk-docs/agents/)
+  - [[ADK-Docs] 官方文件-Agents](https://google.github.io/adk-docs/agents/)
 
 </details>
 
@@ -1687,12 +1689,12 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 - **詳細說明**
 
-  - [ADK DOCS 學習資源-A2A](./workspace/adk-docs/a2a-protocol/index.md)
+  - [[ADK-Docs] 學習文件-A2A](./workspace/adk-docs/a2a-protocol/index.md)
   - [A2A Basic](./workspace/python/agents/a2a-basic/)
 
 - **參考資源**
 
-  - [ADK 官方文件網站 A2A](https://google.github.io/adk-docs/a2a/)
+  - [[ADK-Docs] 官方文件-A2A](https://google.github.io/adk-docs/a2a/)
   - [A2A Protocol 官方網站](https://a2a-protocol.org/)
   - [[Code Wiki] a2a-protocol](https://codewiki.google/github.com/google/adk-python)
   - [[adk-python] a2a_basic](https://github.com/google/adk-python/tree/main/contributing/samples/a2a_basic)
@@ -1729,10 +1731,10 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-  - [ADK DOCS 學習資源-Artifacts](./workspace/adk-docs/artifacts/index.md)
+  - [[ADK-Docs] 學習文件-Artifacts](./workspace/adk-docs/artifacts/index.md)
 
 - **參考資源**
-  - [ADK 官方文件網站 Artifacts](https://google.github.io/adk-docs/artifacts/)
+  - [[ADK-Docs] 官方文件-Artifacts](https://google.github.io/adk-docs/artifacts/)
 
 </details>
 
@@ -1740,21 +1742,21 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 <details>
 <summary>
-說明 Apps 與 Plugin 在 ADK 代理工作流程中的角色與功能。
+說明 App 與 Plugin 在 ADK 代理工作流程中的角色與功能。
 
-- 介紹 **Apps** 類別作為代理工作流程的頂層容器，用於管理代理集合的生命週期、配置和狀態，並簡化如情境快取、恢復和外掛程式等功能的設定。
+- 介紹 **App** 類別作為代理工作流程的頂層容器，用於管理代理集合的生命週期、配置和狀態，並簡化如情境快取、恢復和外掛程式等功能的設定。
 - 介紹 **ADK 外掛程式 (Plugin)** 的概念，它如何使用回呼掛鉤在代理工作流的生命週期中執行，以及其常見應用，如日誌記錄、原則強制執行和回應快取。
 
 🏷️ `apps`, `callback-hooks`, `plugins`, `logging-tracing`, `monitoring-metrics`, `caching`, `policy`, `reflect-retry`
 </summary>
 
 - **詳細說明**
-  - [ADK DOCS 學習資源-Apps](./workspace/adk-docs/apps/index.md)
-  - [ADK DOCS 學習資源-Plugins](./workspace/adk-docs/plugins/index.md)
+  - [[ADK-Docs] 學習文件-Apps](./workspace/adk-docs/apps/index.md)
+  - [[ADK-Docs] 學習文件-Plugins](./workspace/adk-docs/plugins/index.md)
 
 - **參考資源**
-  - [ADK 官方文件網站 Apps](https://google.github.io/adk-docs/apps/)
-  - [ADK 官方文件網站 Plugins](https://google.github.io/adk-docs/plugins/)
+  - [[ADK-Docs] 官方文件-Apps](https://google.github.io/adk-docs/apps/)
+  - [[ADK-Docs] 官方文件-Plugins](https://google.github.io/adk-docs/plugins/)
 
 </details>
 
@@ -1768,10 +1770,10 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-  - [ADK DOCS 學習資源-Evaluation](./workspace/adk-docs/evaluation/index.md)
+  - [[ADK-Docs] 學習文件-Evaluation](./workspace/adk-docs/evaluation/index.md)
 
 - **參考資源**
-  - [ADK 官方文件網站 Evaluation](https://google.github.io/adk-docs/evaluate/)
+  - [[ADK-Docs] 官方文件-Evaluation](https://google.github.io/adk-docs/evaluate/)
 
 </details>
 
@@ -1785,10 +1787,10 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-  - [ADK DOCS 學習資源-Callbacks](./workspace/adk-docs/callbacks/index.md)
+  - [[ADK-Docs] 學習文件-Callbacks](./workspace/adk-docs/callbacks/index.md)
 
 - **參考資源**
-  - [ADK 官方文件網站 Callbacks](https://google.github.io/adk-docs/callbacks/)
+  - [[ADK-Docs] 官方文件-Callbacks](https://google.github.io/adk-docs/callbacks/)
 
 </details>
 
@@ -1805,13 +1807,13 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 </summary>
 
 - **詳細說明**
-  - [ADK DOCS 學習資源-Events](./workspace/adk-docs/events/index.md)
-  - [ADK DOCS 學習資源-MCP](./workspace/adk-docs/mcp/index.md)
+  - [[ADK-Docs] 學習文件-Events](./workspace/adk-docs/events/index.md)
+  - [[ADK-Docs] 學習文件-MCP](./workspace/adk-docs/mcp/index.md)
   - [genmedia agent](./workspace/python/agents/genmedia-agent/)
 
 - **參考資源**
-  - [ADK 官方文件網站 Events](https://google.github.io/adk-docs/events/)
-  - [ADK 官方文件網站 MCP](https://google.github.io/adk-docs/mcp/)
+  - [[ADK-Docs] 官方文件-Events](https://google.github.io/adk-docs/events/)
+  - [[ADK-Docs] 官方文件-MCP](https://google.github.io/adk-docs/mcp/)
   - [[vertex-ai-creative-studio] genmedia_agent](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/adk)
   - [MCP Servers for Genmedia: Go Implementations](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/blob/main/experiments/mcp-genmedia/mcp-genmedia-go/README.md)
 
