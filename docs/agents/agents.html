@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
@@ -20,8 +20,9 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
-          'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC',
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter',
+          'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans TC',
           sans-serif;
         background-color: #f2f2f7;
         color: #000000;
@@ -632,7 +633,7 @@
         background: #fff;
         border: 1px solid #e5e5ea;
         border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         width: 100%;
         max-width: 600px;
         overflow: hidden; /* Ensure children don't overflow border radius */
@@ -3950,6 +3951,54 @@
             },
           ],
         },
+        {
+          name: 'GenMedia Agent',
+          description:
+            '一個創意助理代理,透過生成式媒體工具協助使用者創建音訊、圖片和影片。整合了 Veo 影片生成、Chirp3 音訊生成、Imagen 圖片生成,以及 AVTool 音視訊合成工具。能夠｀據使用者需求主動提供建議,並支援多語言翻譯功能。',
+          code_ref: 'workspace/python/agents/genmedia-agent',
+          type: 'LlmAgent',
+          models: ['gemini-2.0-flash'],
+          tools: [
+            {
+              name: 'imagen',
+              type: 'MCPToolset',
+              description: '圖片生成工具,使用 Imagen 模型生成高品質圖片。',
+              transports: 'stdio',
+              refs: 'mcp-imagen-go',
+            },
+            {
+              name: 'chirp3',
+              type: 'MCPToolset',
+              description:
+                '音訊生成工具,使用 Chirp3 模型生成自然語音和音訊內容。',
+              transports: 'stdio',
+              refs: 'mcp-chirp3-go',
+            },
+            {
+              name: 'veo',
+              type: 'MCPToolset',
+              description: '影片生成工具,使用 Veo 模型生成高品質影片內容。',
+              transports: 'stdio',
+              refs: 'mcp-veo-go',
+            },
+            {
+              name: 'avtool',
+              type: 'MCPToolset',
+              description: '音視訊合成工具,用於合成和編輯音訊與影片媒體。',
+              transports: 'stdio',
+              refs: 'mcp-avtool-go',
+            },
+          ],
+          tags: [
+            'generative-ai',
+            'media-generation',
+            'mcp',
+            'imagen',
+            'chirp3',
+            'veo',
+            'multimedia',
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';
@@ -3973,16 +4022,14 @@
       const modalSubtitle = document.getElementById('modal-subtitle');
 
       // Stats
-      document.getElementById(
-        'total-agents'
-      ).textContent = `${agentsData.length} Agents`;
+      document.getElementById('total-agents').textContent =
+        `${agentsData.length} Agents`;
       const totalTools = agentsData.reduce(
         (acc, agent) => acc + (agent.tools ? agent.tools.length : 0),
         0
       );
-      document.getElementById(
-        'total-tools'
-      ).textContent = `${totalTools} Tools`;
+      document.getElementById('total-tools').textContent =
+        `${totalTools} Tools`;
 
       // Populate Filters
       const uniqueModels = new Set();
@@ -4115,15 +4162,17 @@
 
         // Arrow only for vertical/sequential flow
         const arrow = isParallel
-            ? ''
-            : '<div class="flow-arrow"><i data-lucide="arrow-down" style="width:20px;height:20px"></i></div>';
+          ? ''
+          : '<div class="flow-arrow"><i data-lucide="arrow-down" style="width:20px;height:20px"></i></div>';
 
-        const itemsHtml = agents.map((agent, index) => {
+        const itemsHtml = agents
+          .map((agent, index) => {
             const nodeHtml = renderAgentNode(agent);
             // Add arrow after element if it's not the last one and we are in vertical mode
             const isLast = index === agents.length - 1;
             return nodeHtml + (!isLast && !isParallel ? arrow : '');
-        }).join('');
+          })
+          .join('');
 
         return `<div class="flow-container ${containerClass}">${itemsHtml}</div>`;
       }
@@ -4133,7 +4182,7 @@
 
         let childrenHtml = '';
         if (hasChildren) {
-            childrenHtml = `
+          childrenHtml = `
                 <div class="node-children">
                     <div class="children-label">
                         <i data-lucide="git-branch" style="width:14px;height:14px"></i>
@@ -4145,8 +4194,8 @@
         }
 
         const modelsHtml = agent.models
-            ? `<div class="node-models">${agent.models.map(m => `<span class="tag tag-model" style="font-size:10px;padding:2px 8px">${m}</span>`).join('')}</div>`
-            : '';
+          ? `<div class="node-models">${agent.models.map((m) => `<span class="tag tag-model" style="font-size:10px;padding:2px 8px">${m}</span>`).join('')}</div>`
+          : '';
 
         return `
             <div class="flow-node">

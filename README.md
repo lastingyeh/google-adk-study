@@ -1740,9 +1740,9 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 <details>
 <summary>
-說明 App 與 Plugin 在 ADK 代理工作流程中的角色與功能。
+說明 Apps 與 Plugin 在 ADK 代理工作流程中的角色與功能。
 
-- 介紹 **App** 類別作為代理工作流程的頂層容器，用於管理代理集合的生命週期、配置和狀態，並簡化如情境快取、恢復和外掛程式等功能的設定。
+- 介紹 **Apps** 類別作為代理工作流程的頂層容器，用於管理代理集合的生命週期、配置和狀態，並簡化如情境快取、恢復和外掛程式等功能的設定。
 - 介紹 **ADK 外掛程式 (Plugin)** 的概念，它如何使用回呼掛鉤在代理工作流的生命週期中執行，以及其常見應用，如日誌記錄、原則強制執行和回應快取。
 
 🏷️ `apps`, `callback-hooks`, `plugins`, `logging-tracing`, `monitoring-metrics`, `caching`, `policy`, `reflect-retry`
@@ -1789,6 +1789,31 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 
 - **參考資源**
   - [ADK 官方文件網站 Callbacks](https://google.github.io/adk-docs/callbacks/)
+
+</details>
+
+#### 🕗 Day 88
+
+<details>
+<summary>
+說明 Events 與 MCP 在 ADK 代理工作流程中的角色與功能。
+
+- 介紹 **Events** 的概念、用途，以及如何使用事件來追蹤代理的執行歷程與狀態變化。
+- **MCP** 是模型上下文協定 (MCP) 是開放標準，標準化 LLM 與外部系統的通訊。ADK 支援使用與提供 MCP 工具，包含用於資料庫的 MCP 工具箱（支援 BigQuery、PostgreSQL、MongoDB 等多種資料來源）、FastMCP 伺服器整合，以及 Google Cloud 生成式媒體服務的 MCP 工具。
+
+🏷️ `events`, `mcp`, `artifact`, `session-service`, `transfer`, `streamable`, `llm-response`, `gcp`, `toolbox`, `database`, `genmedia`
+</summary>
+
+- **詳細說明**
+  - [ADK DOCS 學習資源-Events](./workspace/adk-docs/events/index.md)
+  - [ADK DOCS 學習資源-MCP](./workspace/adk-docs/mcp/index.md)
+  - [genmedia agent](./workspace/python/agents/genmedia-agent/)
+
+- **參考資源**
+  - [ADK 官方文件網站 Events](https://google.github.io/adk-docs/events/)
+  - [ADK 官方文件網站 MCP](https://google.github.io/adk-docs/mcp/)
+  - [[vertex-ai-creative-studio] genmedia_agent](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/adk)
+  - [MCP Servers for Genmedia: Go Implementations](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/blob/main/experiments/mcp-genmedia/mcp-genmedia-go/README.md)
 
 </details>
 

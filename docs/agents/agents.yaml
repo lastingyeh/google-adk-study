@@ -2625,3 +2625,41 @@ agents:
                 description: |
                   將報告中的引用標籤 (<cite source="src-N"/>) 替換為 Markdown 格式的連結，
                   並修正標點符號周圍的多餘空格。最終產生帶有完整引用的報告。
+  - name: GenMedia Agent
+    description: |
+      一個創意助理代理，透過生成式媒體工具協助使用者創建音訊、圖片和影片。
+      整合了 Veo 影片生成、Chirp3 音訊生成、Imagen 圖片生成，以及 AVTool 音視訊合成工具。
+      能夠根據使用者需求主動提供建議，並支援多語言翻譯功能。
+    code_ref: workspace/python/agents/genmedia-agent
+    type: LlmAgent
+    models:
+      - gemini-2.0-flash
+    tools:
+      - name: imagen
+        type: MCPToolset
+        description: 圖片生成工具，使用 Imagen 模型生成高品質圖片。
+        transports: stdio
+        refs: mcp-imagen-go
+      - name: chirp3
+        type: MCPToolset
+        description: 音訊生成工具，使用 Chirp3 模型生成自然語音和音訊內容。
+        transports: stdio
+        refs: mcp-chirp3-go
+      - name: veo
+        type: MCPToolset
+        description: 影片生成工具，使用 Veo 模型生成高品質影片內容。
+        transports: stdio
+        refs: mcp-veo-go
+      - name: avtool
+        type: MCPToolset
+        description: 音視訊合成工具，用於合成和編輯音訊與影片媒體。
+        transports: stdio
+        refs: mcp-avtool-go
+    tags:
+      - generative-ai
+      - media-generation
+      - mcp
+      - imagen
+      - chirp3
+      - veo
+      - multimedia
