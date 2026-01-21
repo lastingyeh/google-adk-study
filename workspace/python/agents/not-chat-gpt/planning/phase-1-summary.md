@@ -290,3 +290,32 @@ ADK 提供的內建功能比預期更完整，建議優先驗證框架能力再�
 - ✅ `file_search` 工具實作與註冊
 - ✅ Agent 成功整合 RAG 工具
 - ✅ 文檔上傳與問答功能測試驗證
+
+## 2.5.2 檔案管理 API 實作
+
+目標達成: 成功為 DocumentService 實作了一套完整的檔案生命週期管理 API，包含上傳、列表和刪除功能，並透過 FastAPI 將這些功能暴露為 RESTful 端點。
+
+### 核心實作內容
+
+#### DocumentService 功能擴充
+
+上傳 (upload_file): 實現了接收檔案串流 (file-like object) 的上傳功能，並加入了基於副檔名的 MIME Type 自動判斷機制，以支援 PDF、Markdown 和純文字檔案。
+列表 (list_files): 封裝了 file_search_stores.documents.list API，提供一個簡潔的方法來獲取儲存區內所有文件的列表。
+刪除 (delete_document): 實作了文件的刪除功能，並根據 API 要求使用 force=True 參數來強制移除文件引用。
+
+**FastAPI 端點整合**
+POST /documents/upload: 提供了一個標準的檔案上傳端點。
+GET /documents: 讓前端或客戶端可以輕鬆獲取當前知識庫中的檔案列表。
+DELETE /documents/{document_id:path}: 採用了 FastAPI 的 :path 轉換器，優雅地處理了包含斜線 / 的文件 ID，實現了 RESTful 風格的資源刪除。
+
+痛點與觀察：display_name 的行為
+在實作過程中，發現一個關於 Gemini File Search API 的重要行為特性，這也是目前開發上的一個主要痛點：
+
+**display_name 未被繼承**
+在呼叫 client.files.upload() 時，我們可以為 File 物件設定一個 display_name (例如 my_document.pdf)。
+然而，當我們呼叫 store.import_file() 將這個 File 匯入到 FileSearchStore 中時，新建立的 Document 物件並不會繼承這個 display_name。
+
+結果:
+呼叫 store.documents.list() 時，回傳的 Document 物件列表中的 display_name 欄位是亂碼。
+Document 物件本身則被賦予一個新的、由系統生成的唯一 ID (例如 corpora/my-corpus-123/documents/a1b2c3d4e5f6)，這串 ID 對使用者來說沒有可讀性。
+這導致我們無法僅透過 list_files 的結果來辨識每個文件的原始檔案名稱，增加了前端展示和管理的複雜性。
