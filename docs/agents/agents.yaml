@@ -2663,3 +2663,60 @@ agents:
       - chirp3
       - veo
       - multimedia
+
+  - name: Auto Insurance Agent
+    description: 汽車保險代理人系統，採用多代理人架構處理客戶服務、理賠、道路救援、會員註冊與獎勵優惠查詢。
+    code_ref: workspace/python/agents/pack-auto-insurance-agent/
+    type: App
+    models:
+      - gemini-2.5-flash
+    tools:
+      - name: membership
+        type: APIHubToolset
+        description: 會員帳戶管理 API，用於註冊新會員和查詢會員資訊。
+    sub_agents:
+      - name: membership_agent
+        description: 專門負責註冊新會員的代理人。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        tools:
+          - name: membership
+            type: APIHubToolset
+            description: 會員帳戶管理 API，用於建立新的會員 ID。
+      - name: roadside_agent
+        description: 提供道路救援服務，包括拖吊、接電、燃料補充、更換輪胎等。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        tools:
+          - name: roadsideAssistance
+            type: APIHubToolset
+            description: 道路救援 API，用於建立拖吊請求並提供預計到達時間。
+      - name: claims_agent
+        description: 處理汽車保險理賠案件，支援事故、冰雹損壞等各類理賠。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        tools:
+          - name: claims
+            type: APIHubToolset
+            description: 理賠 API，用於開啟新的理賠案件並記錄相關細節。
+      - name: rewards_agent
+        description: 尋找附近商店、餐廳和劇院等地點的獎勵優惠。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        tools:
+          - name: rewards
+            type: APIHubToolset
+            description: 獎勵 API，用於查詢會員可用的合作夥伴優惠。
+    tags:
+      - insurance
+      - customer-service
+      - multi-agent
+      - api-hub
+      - fastapi
+      - claims
+      - roadside-assistance
+      - rewards
