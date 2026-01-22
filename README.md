@@ -1834,7 +1834,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [Pack Auto Insurance Agent](./workspace/python/agents/pack-auto-insurance-agent/)
 
 - **參考資源**
-  - [[ADK-Docs] 官方文件-Models](https://google.github.io/adk-docs/models/)
+  - [[ADK-Docs] 官方文件-Models](https://google.github.io/adk-docs/agents/models/)
   - [[ADK-Samples] auto-insurance-agent](https://github.com/google/adk-samples/tree/main/python/agents/auto-insurance-agent)
 
 </details>
