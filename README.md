@@ -1809,13 +1809,33 @@ ADK 提供三大核心代理類別：LLM 代理用於智慧推理、工作流代
 - **詳細說明**
   - [[ADK-Docs] 學習文件-Events](./workspace/adk-docs/events/index.md)
   - [[ADK-Docs] 學習文件-MCP](./workspace/adk-docs/mcp/index.md)
-  - [genmedia agent](./workspace/python/agents/genmedia-agent/)
+  - [Genmedia Agent](./workspace/python/agents/genmedia-agent/)
 
 - **參考資源**
   - [[ADK-Docs] 官方文件-Events](https://google.github.io/adk-docs/events/)
   - [[ADK-Docs] 官方文件-MCP](https://google.github.io/adk-docs/mcp/)
   - [[vertex-ai-creative-studio] genmedia_agent](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/adk)
   - [MCP Servers for Genmedia: Go Implementations](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/blob/main/experiments/mcp-genmedia/mcp-genmedia-go/README.md)
+
+</details>
+
+#### 🕗 Day 89
+
+<details>
+<summary>
+ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可透過註冊表直接介接 Google 模型，或利用 LiteLLM、Apigee 等連接器擴展至第三方或本地模型（Ollama、vLLM）。結合企業級驗證與流量治理，簡化代理程式開發並確保安全與效能。
+
+🏷️ `llm`, `gemini`, `claude`, `vertex-ai`, `litellm`, `apigee`, `ollama`, `vllm`, `model-integration`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Models](./workspace/adk-docs/models-for-agents/index.md)
+  - [Pack Auto Insurance Agent](./workspace/python/agents/pack-auto-insurance-agent/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Models](https://google.github.io/adk-docs/models/)
+  - [[ADK-Samples] auto-insurance-agent](https://github.com/google/adk-samples/tree/main/python/agents/auto-insurance-agent)
 
 </details>
 

@@ -12,8 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# 定義部署到測試環境 (Staging) 並執行驗證的完整流程。內容包含 Docker 映像檔構建、部署至 Cloud Run、獲取服務資訊、執行壓力測試、匯出結果以及最終觸發生產環境部署。
+#
+# ### 重點摘要
+# - **核心概念**：自動化測試環境部署與壓力驗證。
+# - **關鍵技術**：Docker, Cloud Run, Locust (壓力測試), GCS, Cloud Build Triggers。
+# - **重要結論**：透過在 Staging 環境執行實際的負載測試，確保服務在推向生產環境前具備足夠的穩定性與效能。
+# - **行動項目**：設定 `_STAGING_PROJECT_ID` 並定期檢閱上傳至 GCS 的壓力測試報告。
 steps:
-  # Build and Push
+  # 步驟 1: 建立並推送 Docker 映像檔
+  # 使用 Docker 構建映像檔，標記版本並推送到 Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -31,7 +39,8 @@ steps:
         "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME",
       ]
 
-  # Deploy to Staging
+  # 步驟 2: 部署到測試環境 (Staging Environment)
+  # 將服務部署到 Cloud Run 的測試專案中
   - name: "gcr.io/cloud-builders/gcloud"
     id: deploy-staging
     entrypoint: gcloud
@@ -46,7 +55,8 @@ steps:
       - "--project"
       - "${_STAGING_PROJECT_ID}"
 
-  # Fetch Staging Service URL
+  # 步驟 3: 獲取測試服務 URL
+  # 從 Cloud Run 服務描述中提取 URL 並保存到檔案中
   - name: "gcr.io/cloud-builders/gcloud"
     id: fetch-staging-url
     entrypoint: /bin/bash
@@ -56,7 +66,8 @@ steps:
         echo $(gcloud run services describe pack-auto-insurance-agent \
         --region ${_REGION} --project ${_STAGING_PROJECT_ID} --format="value(status.url)") > staging_url.txt
 
-  # Fetch ID Token
+  # 步驟 4: 獲取身份驗證令牌 (ID Token)
+  # 獲取目前身份的令牌以進行後續的測試驗證
   - name: gcr.io/cloud-builders/gcloud
     id: fetch-id-token
     entrypoint: /bin/bash
@@ -65,7 +76,8 @@ steps:
       - |
         echo $(gcloud auth print-identity-token -q) > id_token.txt
 
-  # Load Testing
+  # 步驟 5: 執行壓力測試 (Load Testing)
+  # 使用 Locust 執行壓力測試，模擬用戶訪問並生成報告
   - name: "python:3.12-slim"
     id: load_test
     entrypoint: /bin/bash
@@ -84,7 +96,8 @@ steps:
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Export Load Test Results to GCS
+  # 步驟 6: 將壓力測試結果匯出至 GCS
+  # 將生成的 CSV 與 HTML 報告上傳到 Google Cloud Storage
   - name: gcr.io/cloud-builders/gcloud
     id: export-results-to-gcs
     entrypoint: /bin/bash
@@ -94,11 +107,12 @@ steps:
         export _TIMESTAMP=$(date +%Y%m%d-%H%M%S)
         gsutil -m cp -r tests/load_test/.results gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}
         echo "_________________________________________________________________________"
-        echo "Load test results copied to gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
-        echo "HTTP link: https://console.cloud.google.com/storage/browser/${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "壓力測試結果已複製到 gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "HTTP 連結: https://console.cloud.google.com/storage/browser/${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
         echo "_________________________________________________________________________"
 
-  # Trigger Prod Deployment
+  # 步驟 7: 觸發生產環境部署 (Production Deployment)
+  # 執行部署觸發器，將通過測試的版本推向生產環境
   - name: gcr.io/cloud-builders/gcloud
     id: trigger-prod-deployment
     entrypoint: gcloud
@@ -115,6 +129,7 @@ steps:
       - "--sha"
       - $COMMIT_SHA
 
+  # 步驟 8: 輸出建置觸發器連結
   - name: gcr.io/cloud-builders/gcloud
     id: echo-view-build-trigger-link
     entrypoint: /bin/bash
@@ -122,14 +137,16 @@ steps:
       - "-c"
       - |
         echo "_________________________________________________________________________"
-        echo "Production deployment triggered. View progress and / or approve on the Cloud Build Console:"
+        echo "生產環境部署已觸發。請在 Cloud Build 控制台查看進度及/或核准："
         echo "https://console.cloud.google.com/cloud-build/builds;region=$LOCATION"
         echo "_________________________________________________________________________"
 
+# 變數替換
 substitutions:
   _STAGING_PROJECT_ID: YOUR_STAGING_PROJECT_ID
   _REGION: us-central1
 
+# 日誌設定
 logsBucket: gs://${PROJECT_ID}-pack-auto-insurance-agent-logs/build-logs
 options:
   substitutionOption: ALLOW_LOOSE

@@ -12,27 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Google Cloud Build 的設定檔，專用於將名為 `pack-auto-insurance-agent` 的服務部署到 Google Cloud Run 的生產環境中。它定義了部署所需的映像檔路徑、區域以及目標專案 ID。
+#
+# ### 重點摘要
+# - **核心概念**：自動化生產環境部署流程。
+# - **關鍵技術**：Google Cloud Build, Google Cloud Run, Artifact Registry, gcloud CLI。
+# - **重要結論**：透過定義明確的步驟與變數，確保部署過程的一致性與可重複性。
+# - **行動項目**：在使用前需將 `_PROD_PROJECT_ID` 替換為實際的生產環境專案 ID。
 steps:
-   
+  # 步驟 1: 觸發部署到生產環境 (Production Environment)
+  # 使用 gcloud slim 映像檔執行 Cloud Run 部署命令
   - name: "gcr.io/cloud-builders/gcloud-slim"
     id: trigger-deployment
     entrypoint: gcloud
     args:
       - "run"
       - "deploy"
-      - "pack-auto-insurance-agent"
+      - "pack-auto-insurance-agent" # 服務名稱
       - "--image"
-      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME"
+      - "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME" # 使用指定區域的 Artifact Registry 映像檔
       - "--region"
-      - "$_REGION"
+      - "$_REGION" # 部署區域
       - "--project"
-      - $_PROD_PROJECT_ID
+      - $_PROD_PROJECT_ID # 目標生產環境專案 ID
 
+# 變數替換 (Substitutions)
 substitutions:
-  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID
-  _REGION: us-central1
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID # 生產環境專案 ID
+  _REGION: us-central1 # 預設區域
 
+# 日誌儲存桶設定
 logsBucket: gs://${PROJECT_ID}-pack-auto-insurance-agent-logs/build-logs
 options:
-  substitutionOption: ALLOW_LOOSE
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  substitutionOption: ALLOW_LOOSE # 允許鬆散的變數替換
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 使用區域性用戶擁有的儲存桶

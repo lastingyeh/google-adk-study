@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-You can add your unit tests here.
-This is where you test your business logic, including agent functionality,
-data processing, and other core components of your application.
+您可以在此處添加您的單元測試。
+這適用於測試您的業務邏輯，包括代理功能、
+數據處理以及應用程序的其他核心組件。
 """
 
 
 def test_dummy() -> None:
-    """Placeholder - replace with real tests."""
+    """佔位測試 - 請替換為真實測試。"""
     assert 1 == 1

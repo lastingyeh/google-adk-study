@@ -1,42 +1,48 @@
 # Copyright 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache License 2.0 版本（「本授權」）授權；
+# 除非遵守本授權，否則您不得使用此檔案。
+# 您可以在以下網址獲得本授權的副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則根據本授權分發的軟體
+# 是按「現狀」基礎分發的，無任何明示或暗示的保證或條件。
+# 請參閱本授權以了解管理權限和限制的特定語言。
 
-# BigQuery dataset for telemetry external tables
+/*
+## 重點摘要
+- **核心概念**：建立端對端的遙測解決方案，結合 Cloud Logging、Cloud Storage 與 BigQuery 進行 GenAI 代理的監控與分析。
+- **關鍵技術**：Cloud Logging 儲存桶, 日誌接收器 (Log Sinks), BigQuery 外部資料表 (External Tables), 連結資料集 (Linked Datasets), SQL 檢視表。
+- **重要結論**：實現了長達 10 年的日誌保留期，並通過 BigQuery 提供了強大的查詢能力，可直接分析提示 (Prompts) 與回應 (Responses)。
+- **行動項目**：確認 `sql/completions.sql` 檔案路徑正確，以便生成檢視表查詢。
+*/
+
+# 用於遙測 (Telemetry) 外部資料表的 BigQuery 資料集
 resource "google_bigquery_dataset" "telemetry_dataset" {
   for_each      = local.deploy_project_ids
   project       = each.value
   dataset_id    = replace("${var.project_name}_telemetry", "-", "_")
-  friendly_name = "${var.project_name} Telemetry"
+  friendly_name = "${var.project_name} 遙測數據"
   location      = var.region
-  description   = "Dataset for GenAI telemetry data stored in GCS"
+  description   = "存儲在 GCS 中的 GenAI 遙測數據的資料集"
   depends_on    = [resource.google_project_service.cicd_services, resource.google_project_service.deploy_project_services]
 }
 
-# BigQuery connection for accessing GCS telemetry data
+# 用於存取 GCS 遙測數據的 BigQuery 連接
 resource "google_bigquery_connection" "genai_telemetry_connection" {
   for_each      = local.deploy_project_ids
   project       = each.value
   location      = var.region
   connection_id = "${var.project_name}-genai-telemetry"
-  friendly_name = "${var.project_name} GenAI Telemetry Connection"
+  friendly_name = "${var.project_name} GenAI 遙測連接"
 
   cloud_resource {}
 
   depends_on = [resource.google_project_service.cicd_services, resource.google_project_service.deploy_project_services]
 }
 
-# Wait for the BigQuery connection service account to propagate in IAM
+# 等待 BigQuery 連接服務帳號在 IAM 中傳播
 resource "time_sleep" "wait_for_bq_connection_sa" {
   for_each = local.deploy_project_ids
 
@@ -45,7 +51,7 @@ resource "time_sleep" "wait_for_bq_connection_sa" {
   depends_on = [google_bigquery_connection.genai_telemetry_connection]
 }
 
-# Grant the BigQuery connection service account access to read from the logs bucket
+# 授予 BigQuery 連接服務帳號從日誌儲存桶讀取的權限
 resource "google_storage_bucket_iam_member" "telemetry_connection_access" {
   for_each = local.deploy_project_ids
   bucket   = google_storage_bucket.logs_data_bucket[each.value].name
@@ -56,24 +62,23 @@ resource "google_storage_bucket_iam_member" "telemetry_connection_access" {
 }
 
 # ====================================================================
-# Dedicated Cloud Logging Bucket for GenAI Telemetry
+# 用於 GenAI 遙測的專用 Cloud Logging 儲存桶
 # ====================================================================
 
-# Create a custom Cloud Logging bucket for GenAI telemetry logs with long-term retention
+# 建立自定義 Cloud Logging 儲存桶，用於長期保留 GenAI 遙測日誌
 resource "google_logging_project_bucket_config" "genai_telemetry_bucket" {
   for_each         = local.deploy_project_ids
   project          = each.value
   location         = var.region
   bucket_id        = "${var.project_name}-genai-telemetry"
-  retention_days   = 3650  # 10 years retention (maximum allowed)
-  enable_analytics = true  # Required for linked datasets
-  description      = "Dedicated Cloud Logging bucket for ${var.project_name} GenAI telemetry with 10 year retention"
+  retention_days   = 3650  # 10 年保留期（允許的最大值）
+  enable_analytics = true  # 連結資料集所需
+  description      = "專用於 ${var.project_name} GenAI 遙測的 Cloud Logging 儲存桶，保留期 10 年"
 
   depends_on = [resource.google_project_service.cicd_services, resource.google_project_service.deploy_project_services]
 }
 
-# Log sink to route only GenAI telemetry logs to the dedicated bucket
-# Filter by bucket name in the GCS path (which includes project_name) to isolate this agent's logs
+# 日誌接收器，僅將 GenAI 遙測日誌路由到專用儲存桶
 resource "google_logging_project_sink" "genai_logs_to_bucket" {
   for_each    = local.deploy_project_ids
   name        = "${var.project_name}-genai-logs"
@@ -85,12 +90,12 @@ resource "google_logging_project_sink" "genai_logs_to_bucket" {
   depends_on             = [google_logging_project_bucket_config.genai_telemetry_bucket]
 }
 
-# Create a linked dataset to the GenAI telemetry logs bucket for querying via BigQuery
+# 建立連結到 GenAI 遙測日誌儲存桶的連結資料集，以便透過 BigQuery 查詢
 resource "google_logging_linked_dataset" "genai_logs_linked_dataset" {
   for_each    = local.deploy_project_ids
   link_id     = replace("${var.project_name}_genai_telemetry_logs", "-", "_")
   bucket      = google_logging_project_bucket_config.genai_telemetry_bucket[each.key].bucket_id
-  description = "Linked dataset for ${var.project_name} GenAI telemetry Cloud Logging bucket"
+  description = "${var.project_name} GenAI 遙測 Cloud Logging 儲存桶的連結資料集"
   location    = var.region
   parent      = "projects/${each.value}"
 
@@ -100,7 +105,7 @@ resource "google_logging_linked_dataset" "genai_logs_linked_dataset" {
   ]
 }
 
-# Wait for linked dataset to fully propagate
+# 等待連結資料集完全傳播
 resource "time_sleep" "wait_for_linked_dataset" {
   for_each = local.deploy_project_ids
 
@@ -110,10 +115,10 @@ resource "time_sleep" "wait_for_linked_dataset" {
 }
 
 # ====================================================================
-# Feedback Logs to Cloud Logging Bucket
+# 反饋日誌到 Cloud Logging 儲存桶
 # ====================================================================
 
-# Log sink for user feedback logs - routes to the same Cloud Logging bucket
+# 使用者反饋日誌的日誌接收器 - 路由到同一個 Cloud Logging 儲存桶
 resource "google_logging_project_sink" "feedback_logs_to_bucket" {
   for_each    = local.deploy_project_ids
   name        = "${var.project_name}-feedback"
@@ -126,10 +131,10 @@ resource "google_logging_project_sink" "feedback_logs_to_bucket" {
 }
 
 # ====================================================================
-# Completions External Table (GCS-based)
+# 完成 (Completions) 外部資料表 (基於 GCS)
 # ====================================================================
 
-# External table for completions data (messages/parts) stored in GCS
+# 存儲在 GCS 中的完成數據（訊息/組件）的外部資料表
 resource "google_bigquery_table" "completions_external_table" {
   for_each            = local.deploy_project_ids
   project             = each.value
@@ -146,7 +151,7 @@ resource "google_bigquery_table" "completions_external_table" {
     max_bad_records       = 1000
   }
 
-  # Schema matching the ADK completions format
+  # 與 ADK 完成格式匹配的結構描述 (Schema)
   schema = jsonencode([
     {
       name = "parts"
@@ -176,16 +181,16 @@ resource "google_bigquery_table" "completions_external_table" {
 }
 
 # ====================================================================
-# Completions View (Joins Logs with GCS Data)
+# 完成檢視表 (Completions View - 連結日誌與 GCS 數據)
 # ====================================================================
 
-# View that joins Cloud Logging data with GCS-stored completions data
+# 連結 Cloud Logging 數據與 GCS 存儲的完成數據的檢視表
 resource "google_bigquery_table" "completions_view" {
   for_each            = local.deploy_project_ids
   project             = each.value
   dataset_id          = google_bigquery_dataset.telemetry_dataset[each.key].dataset_id
   table_id            = "completions_view"
-  description         = "View of GenAI completion logs joined with the GCS prompt/response external table"
+  description         = "GenAI 完成日誌與 GCS 提示/回應外部資料表連結的檢視表"
   deletion_protection = false
 
   view {

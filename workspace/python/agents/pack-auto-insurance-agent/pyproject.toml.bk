@@ -1,0 +1,32 @@
+[project]
+name = "auto-insurance-agent" # 專案名稱：汽車保險代理人
+version = "0.1.0" # 版本號
+description = "AI agent for auto insurance using Apigee API Hub for tools" # 描述：使用 Apigee API Hub 工具的汽車保險 AI 代理人
+authors = [
+    {name = "David Rush",email = "davidrush@google.com"} # 作者資訊
+]
+license = {text = "Apache License 2.0"} # 授權協議：Apache License 2.0
+readme = "README.md" # 說明文件
+requires-python = ">=3.12" # Python 版本要求：3.12 以上
+dependencies = [
+    "google-adk (>=1.5.0,<2.0.0)", # Google ADK (Agent Development Kit) 依賴
+    "google-cloud-aiplatform[adk,agent-engines] (>=1.100.0,<2.0.0)", # Google Cloud AI Platform (Vertex AI) 依賴，包含 ADK 與代理引擎
+    "python-dotenv (>=1.1.1,<2.0.0)", # 用於載入環境變數的 .env 工具
+    "google-cloud-secret-manager (>=2.24.0,<3.0.0)" # Google Cloud Secret Manager 依賴，用於管理敏感資訊
+]
+
+[tool.poetry] # Poetry 套件管理工具設定
+
+[tool.poetry.group.dev.dependencies] # 開發環境依賴群組
+google-adk = ">=1.5.0,<2.0.0"
+
+[tool.poetry.group.deployment] # 部署環境依賴群組
+optional = true # 此群組為選填
+
+[tool.poetry.group.deployment.dependencies] # 部署環境具體依賴
+absl-py = "^2.2.2" # Abseil Python 函式庫
+google-cloud-aiplatform = { version = ">=1.100.0", extras = ["adk","agent-engines"] }
+
+[build-system] # 建置系統設定
+requires = ["poetry-core>=2.0.0,<3.0.0"] # 要求使用 poetry-core
+build-backend = "poetry.core.masonry.api" # 建置後端 API

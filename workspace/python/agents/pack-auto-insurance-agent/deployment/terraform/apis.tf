@@ -1,40 +1,37 @@
 # Copyright 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache License 2.0 版本（「本授權」）授權；
+# 除非遵守本授權，否則您不得使用此檔案。
+# 您可以在以下網址獲得本授權的副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則根據本授權分發的軟體
+# 是按「現狀」基礎分發的，無任何明示或暗示的保證或條件。
+# 請參閱本授權以了解管理權限和限制的特定語言。
 
-resource "google_project_service" "cicd_services" {
-  count              = length(local.cicd_services)
+# 重點摘要
+/*
+#- **核心概念**：在 CI/CD 專案中啟用必要的 Google Cloud API 服務。
+- **關鍵技術**：Terraform `google_project_service`, `for_each` 迴圈。
+- **重要結論**：集中管理所需的雲端服務，確保部署流程中所有依賴的 API 都已正確開啟。
+- **行動項目**：確保執行帳號具備在專案中啟用服務的權限。
+*/
+
+# 初始化 Google Cloud 服務
+resource "google_project_service" "apis" {
+  for_each = toset([
+    "aiplatform.googleapis.com",      # Vertex AI API
+    "cloudbuild.googleapis.com",      # Cloud Build API
+    "iam.googleapis.com",             # IAM API
+    "run.googleapis.com",             # Cloud Run API
+    "secretmanager.googleapis.com",   # Secret Manager API
+    "storage.googleapis.com",         # Cloud Storage API
+    "compute.googleapis.com",         # Compute Engine API
+    "artifactregistry.googleapis.com", # Artifact Registry API
+    "cloudresourcemanager.googleapis.com" # Cloud Resource Manager API
+  ])
   project            = var.cicd_runner_project_id
-  service            = local.cicd_services[count.index]
-  disable_on_destroy = false
-}
-
-resource "google_project_service" "deploy_project_services" {
-  for_each = {
-    for pair in setproduct(keys(local.deploy_project_ids), local.deploy_project_services) :
-    "${pair[0]}_${replace(pair[1], ".", "_")}" => {
-      project = local.deploy_project_ids[pair[0]]
-      service = pair[1]
-    }
-  }
-  project            = each.value.project
-  service            = each.value.service
-  disable_on_destroy = false
-}
-
-# Enable Cloud Resource Manager API for the CICD runner project
-resource "google_project_service" "cicd_cloud_resource_manager_api" {
-  project            = var.cicd_runner_project_id
-  service            = "cloudresourcemanager.googleapis.com"
+  service            = each.key
   disable_on_destroy = false
 }

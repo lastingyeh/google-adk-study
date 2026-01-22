@@ -12,8 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# 定義了提取請求 (Pull Request, PR) 的檢查流程。它包含三個主要步驟：安裝專案依賴項、執行單元測試以及執行整合測試。這確保了程式碼變更在合併前符合品質標準。
+#
+# ### 重點摘要
+# - **核心概念**：自動化 PR 驗證與持續整合 (CI)。
+# - **關鍵技術**：Python 3.12, uv (套件管理員), pytest (測試框架), Cloud Build。
+# - **重要結論**：透過自動化的單元與整合測試，提高程式碼庫的穩定性並減少回歸錯誤。
+# - **行動項目**：確保所有測試案例在 PR 合併前皆能成功通過。
 steps:
-  # Install uv package manager and sync dependencies
+  # 步驟 1: 安裝 uv 套件管理員並同步依賴項
+  # 使用 python 3.12 slim 映像檔，安裝特定版本的 uv 並執行同步
   - name: "python:3.12-slim"
     id: install-dependencies
     entrypoint: /bin/bash
@@ -24,7 +32,8 @@ steps:
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run unit tests using pytest
+  # 步驟 2: 使用 pytest 執行單元測試 (Unit Tests)
+  # 透過 uv 執行位於 tests/unit 目錄下的測試
   - name: "python:3.12-slim"
     id: unit-tests
     entrypoint: /bin/bash
@@ -35,7 +44,8 @@ steps:
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
-  # Run integration tests
+  # 步驟 3: 執行整合測試 (Integration Tests)
+  # 透過 uv 執行位於 tests/integration 目錄下的測試
   - name: "python:3.12-slim"
     id: integration-tests
     entrypoint: /bin/bash
@@ -46,6 +56,7 @@ steps:
     env:
       - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
 
+# 日誌儲存桶設定
 logsBucket: gs://${PROJECT_ID}-pack-auto-insurance-agent-logs/build-logs
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

@@ -22,8 +22,8 @@ from auto_insurance_agent.agent import root_agent
 
 def test_agent_stream() -> None:
     """
-    Integration test for the agent stream functionality.
-    Tests that the agent returns valid streaming responses.
+    代理串流功能的整合測試。
+    測試重點：驗證代理是否能返回有效的串流回應。
     """
 
     session_service = InMemorySessionService()
@@ -43,7 +43,7 @@ def test_agent_stream() -> None:
             run_config=RunConfig(streaming_mode=StreamingMode.SSE),
         )
     )
-    assert len(events) > 0, "Expected at least one message"
+    assert len(events) > 0, "期望至少有一條訊息"
 
     has_text_content = False
     for event in events:
@@ -54,4 +54,4 @@ def test_agent_stream() -> None:
         ):
             has_text_content = True
             break
-    assert has_text_content, "Expected at least one message with text content"
+    assert has_text_content, "期望至少有一條包含文本內容的訊息"

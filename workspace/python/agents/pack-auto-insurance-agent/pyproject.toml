@@ -1,32 +1,130 @@
+# ## 重點摘要
+# - **核心概念**：此檔案為 Python 專案的配置核心，定義了專案元數據、依賴關係以及開發工具鏈的配置。
+# - **關鍵技術**：
+#   - **google-adk** (Google 代理開發套件): Google 提供的 AI 代理開發框架。
+#   - **Ruff**: 高性能、極速的 Python 程式碼檢查工具 (Linter)。
+#   - **Ty**: 由 Astral 團隊開發，基於 Rust 的 Python 類型檢查器。
+#   - **Hatch**: 現代 Python 專案管理與打包建置系統。
+# - **重要結論**：該專案是一個基於 Google ADK 的自動保險代理人 (Auto Insurance Agent) 系統，集成了嚴格的開發規範、測試框架與自動化檢查工具。
+# - **行動項目**：
+#   - 開發前請確保安裝 `google-adk` 相關依賴。
+#   - 定期執行 `ruff` 與 `ty` 進行程式碼品質控管。
+#   - 使用 `pytest` 進行功能驗證。
 [project]
-name = "auto-insurance-agent"
+# 專案基本資訊 (Project Metadata)
+name = "pack-auto-insurance-agent"
 version = "0.1.0"
-description = "AI agent for auto insurance using Apigee API Hub for tools"
-authors = [
-    {name = "David Rush",email = "davidrush@google.com"}
-]
-license = {text = "Apache License 2.0"}
-readme = "README.md"
-requires-python = ">=3.12"
+description = ""
+authors = [{ name = "Lastingyeh", email = "lastingyeh@gmail.com" }]
+
+# 專案依賴項 (Dependencies)
 dependencies = [
-    "google-adk (>=1.5.0,<2.0.0)",
-    "google-cloud-aiplatform[adk,agent-engines] (>=1.100.0,<2.0.0)",
-    "python-dotenv (>=1.1.1,<2.0.0)",
-    "google-cloud-secret-manager (>=2.24.0,<3.0.0)"
+    "google-adk>=1.15.0,<2.0.0",                                # Google 代理開發套件
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0", # OpenTelemetry 生成式 AI 儀表化
+    "gcsfs>=2024.11.0",                                         # Google Cloud Storage 檔案系統介面
+    "google-cloud-logging>=3.12.0,<4.0.0",                      # Google Cloud 紀錄服務
+    "google-cloud-aiplatform[evaluation]>=1.118.0,<2.0.0",      # Vertex AI 平台與評估功能
+    "fastapi~=0.115.8",                                         # 高性能 Web 框架
+    "uvicorn~=0.34.0",                                          # ASGI 伺服器
+    "asyncpg>=0.30.0,<1.0.0",                                   # 非同步 PostgreSQL 驅動
+]
+requires-python = ">=3.10,<3.14"
+
+
+[dependency-groups]
+# 開發用依賴群組 (Dev Dependencies)
+dev = [
+    "pytest>=8.3.4,<9.0.0",          # 測試框架
+    "pytest-asyncio>=0.23.8,<1.0.0", # Pytest 非同步支援
+    "nest-asyncio>=1.6.0,<2.0.0",    # 支援巢狀事件迴圈
 ]
 
-[tool.poetry]
+[project.optional-dependencies]
+# 選用依賴項：Jupyter Notebook 環境
+jupyter = ["jupyter>=1.0.0,<2.0.0"]
+# 選用依賴項：程式碼檢查工具 (Linting)
+lint = ["ruff>=0.4.6,<1.0.0", "ty>=0.0.1a0", "codespell>=2.2.0,<3.0.0"]
 
-[tool.poetry.group.dev.dependencies]
-google-adk = ">=1.5.0,<2.0.0"
+[tool.ruff]
+# Ruff 配置：設定每行長度限制與目標 Python 版本
+line-length = 88
+target-version = "py310"
 
-[tool.poetry.group.deployment]
-optional = true
+[tool.ruff.lint]
+# 啟用的 Lint 規則
+select = [
+    "E",   # pycodestyle (風格錯誤)
+    "F",   # pyflakes (邏輯錯誤)
+    "W",   # pycodestyle warnings (風格警告)
+    "I",   # isort (匯入排序)
+    "C",   # flake8-comprehensions (推導式最佳化)
+    "B",   # flake8-bugbear (潛在設計缺陷)
+    "UP",  # pyupgrade (語法升級建議)
+    "RUF", # ruff 特定規則
+]
+# 忽略的規則：行過長、複雜度過高、預設參數可變物件
+ignore = ["E501", "C901", "B006"]
 
-[tool.poetry.group.deployment.dependencies]
-absl-py = "^2.2.2"
-google-cloud-aiplatform = { version = ">=1.100.0", extras = ["adk","agent-engines"] }
+[tool.ruff.lint.isort]
+# 識別為第一方開發的模組
+known-first-party = ["auto_insurance_agent", "frontend"]
+
+[tool.ty]
+# Ty 是 Astral 團隊開發的 Rust 基底類型檢查器 (與 ruff/uv 同團隊)
+# 詳見: https://docs.astral.sh/ty/
+
+[tool.ty.environment]
+python-version = "3.10"
+
+[tool.ty.src]
+# 排除虛擬環境目錄
+exclude = [".venv/**"]
+
+[tool.ty.rules]
+# 忽略第三方函式庫與動態程式碼模式中的常見問題
+unresolved-import = "ignore"     # 忽略無法解析的匯入
+unresolved-attribute = "ignore"  # 忽略無法解析的屬性
+invalid-argument-type = "ignore" # 忽略引數類型無效
+invalid-assignment = "ignore"    # 忽略賦值無效
+invalid-return-type = "ignore"   # 忽略傳回類型無效
+
+[tool.codespell]
+# 拼寫檢查配置
+ignore-words-list = "rouge"
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+# 建置系統：使用 Hatchling 作為後端
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+# Pytest 初始化設定
+pythonpath = "."
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.hatch.build.targets.wheel]
+# Hatch 建置目標：定義包含在 Wheel 包中的套件
+packages = ["auto_insurance_agent", "frontend"]
+
+[tool.agent-starter-pack]
+# 代理啟動包生成元數據 (Generation metadata)
+# 這些欄位讓產出的專案可以作為遠端範本運作
+name = "pack-auto-insurance-agent"
+description = "AI agent for auto insurance using Apigee API Hub for tools"
+base_template = "remote_5597460043107675597"
+agent_directory = "auto_insurance_agent"
+
+# 生成上下文 (Generation context)
+generated_at = "2026-01-21T07:12:31.654446+00:00"
+asp_version = "0.31.5"
+
+[tool.agent-starter-pack.create_params]
+# 專案建立時使用的參數
+deployment_target = "cloud_run"    # 部署目標：Cloud Run
+session_type = "cloud_sql"         # 對話階段存儲：Cloud SQL
+cicd_runner = "google_cloud_build" # CI/CD 執行器：Cloud Build
+include_data_ingestion = false     # 是否包含資料擷取
+datastore = "none"                 # 資料存儲類型

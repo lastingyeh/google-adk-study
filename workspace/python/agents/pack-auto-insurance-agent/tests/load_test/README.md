@@ -1,83 +1,14 @@
-# Robust Load Testing for Generative AI Applications
+# 測試案例說明 - Load Tests
 
-This directory provides a comprehensive load testing framework for your Generative AI application, leveraging the power of [Locust](http://locust.io), a leading open-source load testing tool.
+## 簡介
 
-## Local Load Testing
+此文件包含了 `load_test` 目錄下的壓力測試案例說明。這些測試旨在模擬多用戶併發訪問，驗證系統在高負載下的穩定性與錯誤處理能力。
 
-Follow these steps to execute load tests on your local machine:
+## 聊天串流壓力測試 (`tests/load_test/load_test.py`)
 
-**1. Start the FastAPI Server:**
+此部分涵蓋對聊天串流 API 的壓力測試。
 
-Launch the FastAPI server in a separate terminal:
-
-```bash
-uv run uvicorn auto_insurance_agent.fast_api_app:app --host 0.0.0.0 --port 8000 --reload
-```
-
-**2. (In another tab) Create virtual environment with Locust**
-Using another terminal tab, This is suggested to avoid conflicts with the existing application python environment.
-
-```bash
-python3 -m venv .locust_env && source .locust_env/bin/activate && pip install locust==2.31.1
-```
-
-**3. Execute the Load Test:**
-Trigger the Locust load test with the following command:
-
-```bash
-locust -f tests/load_test/load_test.py \
--H http://127.0.0.1:8000 \
---headless \
--t 30s -u 10 -r 2 \
---csv=tests/load_test/.results/results \
---html=tests/load_test/.results/report.html
-```
-
-This command initiates a 30-second load test, simulating 2 users spawning per second, reaching a maximum of 60 concurrent users.
-
-**Results:**
-
-Comprehensive CSV and HTML reports detailing the load test performance will be generated and saved in the `tests/load_test/.results` directory.
-
-## Remote Load Testing (Targeting Cloud Run)
-
-This framework also supports load testing against remote targets, such as a staging Cloud Run instance. This process is seamlessly integrated into the Continuous Delivery (CD) pipeline.
-
-**Prerequisites:**
-
-- **Dependencies:** Ensure your environment has the same dependencies required for local testing.
-- **Cloud Run Invoker Role:** You'll need the `roles/run.invoker` role to invoke the Cloud Run service.
-
-**Steps:**
-
-**1. Obtain Cloud Run Service URL:**
-
-Navigate to the Cloud Run console, select your service, and copy the URL displayed at the top. Set this URL as an environment variable:
-
-```bash
-export RUN_SERVICE_URL=https://your-cloud-run-service-url.run.app
-```
-
-**2. Obtain ID Token:**
-
-Retrieve the ID token required for authentication:
-
-```bash
-export _ID_TOKEN=$(gcloud auth print-identity-token -q)
-```
-
-**3. Execute the Load Test:**
-Create virtual environment with Locust:
-```bash
-python3 -m venv .locust_env && source .locust_env/bin/activate && pip install locust==2.31.1
-```
-
-Execute load tests. The following command executes the same load test parameters as the local test but targets your remote Cloud Run instance.
-```bash
-locust -f tests/load_test/load_test.py \
--H $RUN_SERVICE_URL \
---headless \
--t 30s -u 60 -r 2 \
---csv=tests/load_test/.results/results \
---html=tests/load_test/.results/report.html
-```
+| 群組 | 測試案例編號 | 描述 | 前置條件 | 測試步驟 | 測試數據 | 預期結果 |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **壓力測試** | **TC-LOAD-001** | 模擬用戶聊天串流互動 | 測試環境已就緒 | 1. 建立會話<br>2. 發送聊天訊息<br>3. 監控串流回應與錯誤代碼 | 訊息: "Hello! Weather in New york?" | 1. 狀態碼為 200<br>2. 串流回應中無 4xx/5xx 錯誤<br>3. 若遇 429 則正確紀錄 |
+| **壓力測試** | **TC-LOAD-002** | 高併發連線穩定性測試 | Locust 已配置 | 1. 啟動多個模擬用戶<br>2. 持續發送聊天請求<br>3. 觀察系統響應時間與成功率 | 併發用戶數: [依環境配置] | 1. 系統保持可用<br>2. 響應時間在預期範圍內 |

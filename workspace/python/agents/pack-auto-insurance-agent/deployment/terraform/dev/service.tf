@@ -1,30 +1,37 @@
 # Copyright 2025 Google LLC
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
+# 根據 Apache License 2.0 版本（「本授權」）授權；
+# 除非遵守本授權，否則您不得使用此檔案。
+# 您可以在以下網址獲得本授權的副本：
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 除非適用法律要求或書面同意，否則根據本授權分發的軟體
+# 是按「現狀」基礎分發的，無任何明示或暗示的保證或條件。
+# 請參閱本授權以了解管理權限和限制的特定語言。
 
-# Get project information to access the project number
+/*
+## 重點摘要
+- **核心概念**：為開發 (Dev) 環境配置 Cloud SQL 與 Cloud Run 服務。
+- **關鍵技術**：Cloud SQL (Postgres), Cloud Run, Secret Manager, 隨機密碼。
+- **重要結論**：開發環境採用與生產環境類似的架構，但關閉了備份功能以節省成本。
+- **行動項目**：確認開發環境專案 ID 正確。
+*/
+
+
+# 獲取專案資訊以存取專案編號
 data "google_project" "project" {
   project_id = var.dev_project_id
 }
 
-# Generate a random password for the database user
+# 為資料庫使用者生成隨機密碼
 resource "random_password" "db_password" {
   length           = 16
   special          = true
   override_special = "!#$%&*()-_=+[]{}<>:?"
 }
 
-# Cloud SQL Instance
+# Cloud SQL 實例
 resource "google_sql_database_instance" "session_db" {
   project          = var.dev_project_id
   name             = "${var.project_name}-db-dev"
@@ -36,10 +43,10 @@ resource "google_sql_database_instance" "session_db" {
     tier = "db-custom-1-3840"
 
     backup_configuration {
-      enabled = false # No backups for dev
+      enabled = false # 開發環境不啟用備份
     }
-    
-    # Enable IAM authentication
+
+    # 啟用 IAM 身分驗證
     database_flags {
       name  = "cloudsql.iam_authentication"
       value = "on"
@@ -49,22 +56,22 @@ resource "google_sql_database_instance" "session_db" {
   depends_on = [resource.google_project_service.services]
 }
 
-# Cloud SQL Database
+# Cloud SQL 資料庫
 resource "google_sql_database" "database" {
   project  = var.dev_project_id
-  name     = "${var.project_name}" # Use project name for DB to avoid conflict with default 'postgres'
+  name     = "${var.project_name}" # 使用專案名稱避免衝突
   instance = google_sql_database_instance.session_db.name
 }
 
-# Cloud SQL User
+# Cloud SQL 使用者
 resource "google_sql_user" "db_user" {
   project  = var.dev_project_id
-  name     = "${var.project_name}" # Use project name for user to avoid conflict with default 'postgres'
+  name     = "${var.project_name}"
   instance = google_sql_database_instance.session_db.name
   password = google_secret_manager_secret_version.db_password.secret_data
 }
 
-# Store the password in Secret Manager
+# 將密碼存儲在 Secret Manager 中
 resource "google_secret_manager_secret" "db_password" {
   project   = var.dev_project_id
   secret_id = "${var.project_name}-db-password"
@@ -81,7 +88,7 @@ resource "google_secret_manager_secret_version" "db_password" {
   secret_data = random_password.db_password.result
 }
 
-
+# Cloud Run 服務
 resource "google_cloud_run_v2_service" "app" {
   name                = var.project_name
   location            = var.region
@@ -101,13 +108,13 @@ resource "google_cloud_run_v2_service" "app" {
           memory = "8Gi"
         }
       }
-      # Mount the volume
+      # 掛載卷
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
 
-      # Environment variables
+      # 環境變數
       env {
         name  = "INSTANCE_CONNECTION_NAME"
         value = google_sql_database_instance.session_db.connection_name
@@ -153,7 +160,7 @@ resource "google_cloud_run_v2_service" "app" {
     }
 
     session_affinity = true
-    # Cloud SQL volume
+    # Cloud SQL 卷掛載
     volumes {
       name = "cloudsql"
       cloud_sql_instance {
@@ -167,15 +174,13 @@ resource "google_cloud_run_v2_service" "app" {
     percent = 100
   }
 
-  # This lifecycle block prevents Terraform from overwriting the container image when it's
-  # updated by Cloud Run deployments outside of Terraform (e.g., via CI/CD pipelines)
+  # 生命週期塊：防止 Terraform 覆蓋更新後的鏡像
   lifecycle {
     ignore_changes = [
       template[0].containers[0].image,
     ]
   }
 
-  # Make dependencies conditional to avoid errors.
   depends_on = [
     resource.google_project_service.services,
     google_sql_user.db_user,

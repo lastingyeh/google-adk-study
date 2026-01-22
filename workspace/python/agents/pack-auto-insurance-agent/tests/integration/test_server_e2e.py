@@ -26,7 +26,7 @@ import pytest
 import requests
 from requests.exceptions import RequestException
 
-# Configure logging
+# 配置日誌紀錄
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -38,13 +38,13 @@ HEADERS = {"Content-Type": "application/json"}
 
 
 def log_output(pipe: Any, log_func: Any) -> None:
-    """Log the output from the given pipe."""
+    """紀錄來自給定管道的輸出。"""
     for line in iter(pipe.readline, ""):
         log_func(line.strip())
 
 
 def start_server() -> subprocess.Popen[str]:
-    """Start the FastAPI server using subprocess and log its output."""
+    """使用子進程啟動 FastAPI 伺服器並紀錄其輸出。"""
     command = [
         sys.executable,
         "-m",
@@ -66,7 +66,7 @@ def start_server() -> subprocess.Popen[str]:
         env=env,
     )
 
-    # Start threads to log stdout and stderr in real-time
+    # 啟動線程以實時紀錄標準輸出和標準錯誤
     threading.Thread(
         target=log_output, args=(process.stdout, logger.info), daemon=True
     ).start()
@@ -78,45 +78,48 @@ def start_server() -> subprocess.Popen[str]:
 
 
 def wait_for_server(timeout: int = 90, interval: int = 1) -> bool:
-    """Wait for the server to be ready."""
+    """等待伺服器就緒。"""
     start_time = time.time()
     while time.time() - start_time < timeout:
         try:
             response = requests.get("http://127.0.0.1:8000/docs", timeout=10)
             if response.status_code == 200:
-                logger.info("Server is ready")
+                logger.info("伺服器已就緒")
                 return True
         except RequestException:
             pass
         time.sleep(interval)
-    logger.error(f"Server did not become ready within {timeout} seconds")
+    logger.error(f"伺服器未在 {timeout} 秒內就緒")
     return False
 
 
 @pytest.fixture(scope="session")
 def server_fixture(request: Any) -> Iterator[subprocess.Popen[str]]:
-    """Pytest fixture to start and stop the server for testing."""
-    logger.info("Starting server process")
+    """Pytest fixture 用於啟動和停止測試伺服器。"""
+    logger.info("正在啟動伺服器進程")
     server_process = start_server()
     if not wait_for_server():
-        pytest.fail("Server failed to start")
-    logger.info("Server process started")
+        pytest.fail("伺服器啟動失敗")
+    logger.info("伺服器進程已啟動")
 
     def stop_server() -> None:
-        logger.info("Stopping server process")
+        logger.info("正在停止伺服器進程")
         server_process.terminate()
         server_process.wait()
-        logger.info("Server process stopped")
+        logger.info("伺服器進程已停止")
 
     request.addfinalizer(stop_server)
     yield server_process
 
 
 def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
-    """Test the chat stream functionality."""
-    logger.info("Starting chat stream test")
+    """
+    測試聊天串流功能。
+    測試重點：驗證透過 API 調用代理時，是否能正確處理會話並返回串流回應。
+    """
+    logger.info("開始聊天串流測試")
 
-    # Create session first
+    # 先建立會話
     user_id = "test_user_123"
     session_data = {"state": {"preferred_language": "English", "visit_count": 1}}
 
@@ -128,10 +131,10 @@ def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
         timeout=60,
     )
     assert session_response.status_code == 200
-    logger.info(f"Session creation response: {session_response.json()}")
+    logger.info(f"會話建立回應: {session_response.json()}")
     session_id = session_response.json()["id"]
 
-    # Then send chat message
+    # 然後發送聊天訊息
     data = {
         "app_name": "auto_insurance_agent",
         "user_id": user_id,
@@ -147,19 +150,19 @@ def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
         STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=60
     )
     assert response.status_code == 200
-    # Parse SSE events from response
+    # 從回應中解析 SSE 事件
     events = []
     for line in response.iter_lines():
         if line:
-            # SSE format is "data: {json}"
+            # SSE 格式為 "data: {json}"
             line_str = line.decode("utf-8")
             if line_str.startswith("data: "):
-                event_json = line_str[6:]  # Remove "data: " prefix
+                event_json = line_str[6:]  # 移除 "data: " 前綴
                 event = json.loads(event_json)
                 events.append(event)
 
-    assert events, "No events received from stream"
-    # Check for valid content in the response
+    assert events, "未從串流接收到任何事件"
+    # 檢查回應中是否有有效的內容
     has_text_content = False
     for event in events:
         content = event.get("content")
@@ -173,8 +176,11 @@ def test_chat_stream(server_fixture: subprocess.Popen[str]) -> None:
 
 
 def test_chat_stream_error_handling(server_fixture: subprocess.Popen[str]) -> None:
-    """Test the chat stream error handling."""
-    logger.info("Starting chat stream error handling test")
+    """
+    測試聊天串流錯誤處理。
+    測試重點：驗證當傳入無效數據時，伺服器是否正確返回 422 錯誤。
+    """
+    logger.info("開始聊天串流錯誤處理測試")
     data = {
         "input": {"messages": [{"type": "invalid_type", "content": "Cause an error"}]}
     }
@@ -182,18 +188,16 @@ def test_chat_stream_error_handling(server_fixture: subprocess.Popen[str]) -> No
         STREAM_URL, headers=HEADERS, json=data, stream=True, timeout=10
     )
 
-    assert response.status_code == 422, (
-        f"Expected status code 422, got {response.status_code}"
-    )
-    logger.info("Error handling test completed successfully")
+    assert response.status_code == 422, f"期望狀態碼 422，但得到 {response.status_code}"
+    logger.info("錯誤處理測試成功完成")
 
 
 def test_collect_feedback(server_fixture: subprocess.Popen[str]) -> None:
     """
-    Test the feedback collection endpoint (/feedback) to ensure it properly
-    logs the received feedback.
+    測試反饋收集端點 (/feedback)。
+    測試重點：確保伺服器能正確接收並紀錄收到的用戶反饋。
     """
-    # Create sample feedback data
+    # 建立範例反饋數據
     feedback_data = {
         "score": 4,
         "user_id": "test-user-456",

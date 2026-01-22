@@ -1,8 +1,8 @@
-# Project name used for resource naming
+# 用於資源命名的專案名稱
 project_name = "pack-auto-insurance-agent"
 
-# Your Dev Google Cloud project id
+# 您的開發環境 (Dev) Google Cloud 專案 ID
 dev_project_id = "your-dev-project-id"
 
-# The Google Cloud region you will use to deploy the infrastructure
+# 用於部署基礎設施的 Google Cloud 區域
 region = "us-central1"
