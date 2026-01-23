@@ -65,10 +65,10 @@ class RedisSessionService(BaseSessionService):
         session_data = {
             "app_name": app_name,
             "user_id": user_id,
-            "session_id": session_id,
+            "id": session_id,
             "state": state or {},
-            "created_at": datetime.now().isoformat(),
-            "updated_at": datetime.now().isoformat(),
+            "create_time": datetime.now().timestamp(),
+            "update_time": datetime.now().timestamp(),
             "events": []
         }
 
@@ -118,7 +118,7 @@ class RedisSessionService(BaseSessionService):
                 user_id=user_id,
                 state=session_data.get("state", {}),
                 events=session_data.get("events", []),
-                last_update_time=0
+                last_update_time=session_data.get("update_time", 0)
             )
         except Exception as e:
             print(f"   ⚠️  從 Redis 檢索會話時失敗：{e}")
@@ -144,12 +144,12 @@ class RedisSessionService(BaseSessionService):
                     # 重建 Session 物件並進行欄位映射
                     # Redis 存儲為 session_id，但 Session 模型預期為 id
                     session = Session(
-                        id=session_data.get("session_id"),
+                        id=session_data.get("id"),
                         app_name=session_data.get("app_name"),
                         user_id=session_data.get("user_id"),
                         state=session_data.get("state", {}),
                         events=[],  # 將從事件數據重建
-                        last_update_time=0
+                        last_update_time=session_data.get("update_time", 0)
                     )
                     sessions.append(session)
 
@@ -190,30 +190,10 @@ class RedisSessionService(BaseSessionService):
 
             key = f"session:{app_name}:{user_id}:{session_id}"
 
-            # 轉換會話為 JSON 格式
-            session_data = {
-                "app_name": app_name,
-                "user_id": user_id,
-                "session_id": session_id,
-                "state": dict(session.state),
-                "created_at": session.created_at.isoformat() if hasattr(session, 'created_at') else datetime.utcnow().isoformat(),
-                "updated_at": datetime.utcnow().isoformat(),
-                "events": [
-                    {
-                        "id": e.id,
-                        "timestamp": e.timestamp,
-                        "partial": e.partial,
-                        "author": e.author if hasattr(e, 'author') else "unknown",
-                        "actions": {
-                            "state_delta": e.actions.state_delta if e.actions else {}
-                        } if e.actions else {}
-                    }
-                    for e in session.events
-                ]
-            }
-
             # 存儲至 Redis 並設置 24 小時過期時間
             if self.redis_client:
+                session_data = session.model_dump(mode='json')
+                session_data["update_time"] = datetime.now().timestamp()
                 self.redis_client.set(key, json.dumps(session_data), ex=86400)
 
         except Exception as e:
