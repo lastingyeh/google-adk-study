@@ -104,9 +104,10 @@ safety:
 sessions:
   - https://google.github.io/adk-docs/sessions/
   - https://google.github.io/adk-docs/sessions/memory/
-  - https://google.github.io/adk-docs/sessions/rewind/
-  - https://google.github.io/adk-docs/sessions/session/
   - https://google.github.io/adk-docs/sessions/state/
+  - https://google.github.io/adk-docs/sessions/session/
+  - https://google.github.io/adk-docs/sessions/session/migrate/
+  - https://google.github.io/adk-docs/sessions/session/rewind/
 streaming:
   - https://google.github.io/adk-docs/streaming/
   - https://google.github.io/adk-docs/streaming/configuration/
@@ -133,12 +134,16 @@ tools:
   - https://google.github.io/adk-docs/tools/google-cloud/express-mode/
   - https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
   - https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
+  - https://google.github.io/adk-docs/tools/google-cloud/pubsub/
   - https://google.github.io/adk-docs/tools/google-cloud/spanner/
   - https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/
   - https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/
   - https://google.github.io/adk-docs/tools/third-party/
   - https://google.github.io/adk-docs/tools/third-party/ag-ui/
+  - https://google.github.io/adk-docs/tools/third-party/asana/
   - https://google.github.io/adk-docs/tools/third-party/atlassian/
+  - https://google.github.io/adk-docs/tools/third-party/cartesia/
+  - https://google.github.io/adk-docs/tools/third-party/elevenlabs/
   - https://google.github.io/adk-docs/tools/third-party/github/
   - https://google.github.io/adk-docs/tools/third-party/gitlab/
   - https://google.github.io/adk-docs/tools/third-party/hugging-face/
@@ -146,6 +151,7 @@ tools:
   - https://google.github.io/adk-docs/tools/third-party/n8n/
   - https://google.github.io/adk-docs/tools/third-party/notion/
   - https://google.github.io/adk-docs/tools/third-party/paypal/
+  - https://google.github.io/adk-docs/tools/third-party/postman/
   - https://google.github.io/adk-docs/tools/third-party/qdrant/
   - https://google.github.io/adk-docs/tools/third-party/stripe/
 tools-custom:
