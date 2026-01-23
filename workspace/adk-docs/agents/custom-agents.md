@@ -1,12 +1,15 @@
 # 自定義代理 (Custom agents)
-🔔 `更新日期：2026-01-14`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/custom-agents/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
 自定義代理在 ADK 中提供了極致的靈活性，允許您透過直接繼承 `BaseAgent` 並實現自己的控制流來定義**任意編排邏輯**。這超越了 `SequentialAgent`、`LoopAgent` 和 `ParallelAgent` 的預定義模式，使您能夠構建高度特定且複雜的代理工作流。
 
 > [!WARNING] 進階概念
-    透過直接實現 `_run_async_impl`（或其在其他語言中的等效項）來構建自定義代理可提供強大的控制力，但比使用預定義的 `LlmAgent` 或標準 `WorkflowAgent` 類型更為複雜。我們建議在嘗試自定義編排邏輯之前，先了解這些基礎代理類型。
+透過直接實現 `_run_async_impl`（或其在其他語言中的等效項）來構建自定義代理可提供強大的控制力，但比使用預定義的 `LlmAgent` 或標準 `WorkflowAgent` 類型更為複雜。我們建議在嘗試自定義編排邏輯之前，先了解這些基礎代理類型。
 
 ## 簡介：超越預定義的工作流
 
@@ -15,7 +18,7 @@
 自定義代理本質上是您創建的任何繼承自 `google.adk.agents.BaseAgent` 的類別，並在其 `_run_async_impl` 非同步方法中實現其核心執行邏輯。您可以完全控制此方法如何呼叫其他代理（子代理）、管理狀態以及處理事件。
 
 > [!NOTE]
-    用於實現代理核心非同步邏輯的特定方法名稱可能會因 SDK 語言而略有不同（例如，Java 中的 `runAsyncImpl`、Python 中的 `_run_async_impl` 或 TypeScript 中的 `runAsyncImpl`）。詳情請參閱各語言特定的 API 文件。
+用於實現代理核心非同步邏輯的特定方法名稱可能會因 SDK 語言而略有不同（例如，Java 中的 `runAsyncImpl`、Python 中的 `_run_async_impl` 或 TypeScript 中的 `runAsyncImpl`）。詳情請參閱各語言特定的 API 文件。
 
 ### 為什麼要使用它們？
 

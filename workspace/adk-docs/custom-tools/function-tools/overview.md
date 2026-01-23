@@ -1,9 +1,10 @@
 # 功能工具
 
-🔔 `更新日期：2026-01-12`
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/tools-custom/function-tools/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
-
 
 當預建的 ADK 工具無法滿足您的需求時，您可以建立自訂的 *功能工具 (function tools)*。建立功能工具讓您能夠建立量身打造的功能，例如連接到專有資料庫或實作獨特的演算法。
 例如，一個名為 `myfinancetool` 的功能工具，可能是一個計算特定財務指標的函式。ADK 也支援長時間執行函式，因此如果該計算需要一段時間，代理 (Agent) 可以繼續處理其他任務。

@@ -1,5 +1,8 @@
 # ADK 中的多代理系統 (Multi-Agent Systems)
-🔔 `更新日期：2026-01-14`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/multi-agents/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
@@ -20,7 +23,7 @@
 ADK 提供核心構建塊（原生內建），使您能夠在多代理系統中結構化並管理交互。
 
 > [!NOTE]
-    原生內建的特定參數或方法名稱可能會因 SDK 語言而異（例如 Python 中的 `sub_agents`，Java 中的 `subAgents`）。詳情請參考特定語言的 API 文件。
+原生內建的特定參數或方法名稱可能會因 SDK 語言而異（例如 Python 中的 `sub_agents`，Java 中的 `subAgents`）。詳情請參考特定語言的 API 文件。
 
 ### 1.1. 代理層次結構（父代理、子代理） (Agent Hierarchy (Parent agent, Sub Agents))
 
@@ -487,7 +490,7 @@ ParallelAgent gatherer = ParallelAgent.builder()
 * **參見：** [狀態管理](../sessions&memory/state.md)
 
 > [!NOTE] 調用上下文與 `temp:` 狀態
-    當父代理調用子代理時，它會傳遞相同的 `InvocationContext`。這意味著它們共享相同的臨時 (`temp:`) 狀態，這對於傳遞僅與當前輪次相關的數據非常理想。
+當父代理調用子代理時，它會傳遞相同的 `InvocationContext`。這意味著它們共享相同的臨時 (`temp:`) 狀態，這對於傳遞僅與當前輪次相關的數據非常理想。
 
 <details>
 <summary>Python</summary>

@@ -1,5 +1,8 @@
 # 使用 OpenAPI 整合 REST API
-🔔 `更新日期：2026-01-13`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/tools-custom/openapi-tools/
 
 [`ADK 支援`: `Python v0.1.0`]
 

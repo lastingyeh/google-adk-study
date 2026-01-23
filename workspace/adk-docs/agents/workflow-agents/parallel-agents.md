@@ -1,5 +1,8 @@
 # 平行代理 (Parallel agents)
-🔔 `更新日期：2026-01-14`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/workflow-agents/parallel-agents/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.2.0`]
 

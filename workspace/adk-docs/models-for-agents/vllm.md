@@ -1,5 +1,8 @@
 # 為 ADK 代理程式託管 vLLM 模型
-🔔 `更新日期：2026-01-21`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/models/vllm/
 
 [`ADK 支援`: `Python v0.1.0`]
 
@@ -38,7 +41,7 @@ try:
     auth_headers = {"Authorization": f"Bearer {gcloud_token}"}
 except Exception as e:
     # 如果無法取得權限，輸出警告
-    print(f"Warning: Could not get gcloud token - {e}. Endpoint might be unsecured or require different auth.")
+    print(f"警告：無法取得 gcloud 令牌 - {e}。端點可能未受保護或需要不同的驗證方式。")
     auth_headers = None # 或進行適當的錯誤處理
 
 # 初始化 LlmAgent
@@ -52,7 +55,7 @@ agent_vllm = LlmAgent(
         # api_key="YOUR_ENDPOINT_API_KEY"
     ),
     name="vllm_agent",
-    instruction="You are a helpful assistant running on a self-hosted vLLM endpoint.",
+    instruction="您是運行在自行託管的 vLLM 端點上的樂於助人的助理。",
     # ... 其他代理程式參數
 )
 ```

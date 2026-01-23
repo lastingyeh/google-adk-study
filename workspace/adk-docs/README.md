@@ -1,6 +1,6 @@
 # Google ADK 文件學習指南
 
-🔔 `更新日期：2026 年 1 月 20 日`
+🔔 `更新日期：2026 年 1 月 23 日`
 
 ---
 🪧 `以官方文件 (Google ADK Docs) 為基礎的學習資源`
@@ -13,16 +13,16 @@
 
 您可以在各支援語言的程式碼儲存庫中找到發行說明。有關 ADK 發行版本的詳細資訊，請參閱以下位置：
 
-- [ADK Python 發行說明](https://github.com/google/adk-python/releases) (v1.22.0)
-- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.2)
+- [ADK Python 發行說明](https://github.com/google/adk-python/releases) (v1.23.0)
+- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.4)
 - [ADK Go 發行說明](https://github.com/google/adk-go/releases) (v0.3.0)
 - [ADK Java 發行說明](https://github.com/google/adk-java/releases) (v0.5.0)
 
-### 關於 ADK 文件
+### Agent Development Kit 簡介
 
-Google ADK 文件提供了全面的資源，涵蓋從基礎概念到進階功能的各個方面。無論您是想了解如何建立代理程式、管理會話與記憶，還是部署到生產環境，這些文件都能為您提供所需的指引和範例。
+Agent Development Kit (ADK) 是一個靈活且模組化的架構，用於**開發和部署 AI 代理 (AI agents)**。雖然針對 Gemini 和 Google 生態系統進行了優化，但 ADK 是**模型無關 (model-agnostic)**、**部署無關 (deployment-agnostic)**，並且是為了**與其他框架的相容性**而構建的。ADK 旨在讓代理開發感覺更像軟體開發，使開發人員更輕鬆地創建、部署和編排代理架構，涵蓋從簡單任務到複雜工作流的範圍。
 
-- [關於 ADK](./get-started/index.md)
+[前往 Google ADK 文件](./index.md)
 
 ## Building Agents (建立代理程式)
 
@@ -55,6 +55,7 @@ ADK 文件提供了多種程式語言的快速入門指南，可協助您在幾�
 | [Agent Config](./agents/config.md)                        | 介紹如何使用 YAML 格式的 Agent Config 無需編寫程式碼即可構建 ADK 工作流 (實驗性功能)。                                    | [連結](./agents/config.md)                            |
 
 ### Models for Agents (代理模型)
+
 ADK 允許您將各種大型語言模型 (LLM) 整合到您的代理程式中。本節介紹如何使用 Gemini 模型以及整合其他熱門模型,包括外部託管或本地運行的模型。ADK 主要使用兩種機制進行模型整合：直接字串/註冊表 (適用於 Google Cloud 模型) 和模型連接器 (適用於更廣泛的相容性)。
 
 | 標頭                                                  | 描述                                                                                                                     | 連結                                              |
@@ -67,6 +68,12 @@ ADK 允許您將各種大型語言模型 (LLM) 整合到您的代理程式中。
 | [LiteLLM 模型連接器](./models-for-agents/litellm.md)  | 介紹如何使用 LiteLLM 函式庫作為翻譯層,為超過 100 多個 LLM 提供標準化介面,包括 OpenAI、Anthropic、Cohere 等供應商的模型。 | [連結](./models-for-agents/litellm.md)            |
 | [Ollama 模型託管](./models-for-agents/ollama.md)      | 說明如何透過 Ollama 在本地託管並運行開源模型,並透過 LiteLLM 與 ADK 整合,包括模型選擇與配置的最佳實踐。                    | [連結](./models-for-agents/ollama.md)             |
 | [vLLM 模型託管](./models-for-agents/vllm.md)          | 介紹如何使用 vLLM 高效託管模型並將其作為與 OpenAI 相容的 API 端點,透過 LiteLLM 與 ADK 整合。                             | [連結](./models-for-agents/vllm.md)               |
+
+### Tools for Agents (代理工具)
+| 標頭                                              | 描述                                                                                                                     | 連結                                              |
+| :------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------ |
+
+
 
 ### Custom Tools (自訂工具)
 

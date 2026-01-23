@@ -1,6 +1,8 @@
 # 模型上下文協定 (Model Context Protocol) 工具
 
-🔔 `更新日期：2026-01-13`
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/tools-custom/mcp-tools/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 

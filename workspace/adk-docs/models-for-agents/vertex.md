@@ -1,5 +1,8 @@
 # 為 ADK 代理託管的 Vertex AI 模型
-🔔 `更新日期：2026-01-21`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/models/vertex/
 
 為了實現企業級的可擴展性、可靠性以及與 Google Cloud MLOps 生態系統的整合，您可以使用部署到 Vertex AI 端點（Endpoints）的模型。這包括來自 Model Garden 的模型或您自己微調的模型。
 
@@ -238,10 +241,10 @@ Vertex AI 透過模型即服務 (MaaS) 提供精選的開源模型，例如 Meta
 1. **Vertex AI 環境：** 確保已完成統一的 Vertex AI 設定（ADC、環境變數、`GOOGLE_GENAI_USE_VERTEXAI=TRUE`）。
 
 2. **安裝 LiteLLM：**
-        ```shell
-        # 安裝 LiteLLM 函式庫
-        pip install litellm
-        ```
+    ```shell
+    # 安裝 LiteLLM 函式庫
+    pip install litellm
+    ```
 
 **範例：**
 

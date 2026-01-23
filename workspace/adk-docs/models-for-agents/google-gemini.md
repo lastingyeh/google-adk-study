@@ -1,5 +1,8 @@
 # ADK Agent 的 Google Gemini 模型
-🔔 `更新日期：2026-01-21`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/models/google-gemini/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.2.0`]
 
@@ -81,7 +84,6 @@ LlmAgent agentGeminiFlash =
 ```
 
 </details>
-
 
 ## Gemini 模型驗證
 

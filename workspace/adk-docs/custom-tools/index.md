@@ -1,6 +1,8 @@
 # ADK 自定義工具 (Custom Tools)
 
-🔔 `更新日期：2026-01-12`
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/tools-custom/
 
 [`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
@@ -14,7 +16,7 @@
 *   與其他軟體或服務互動
 
 > [!TIP] ADK 工具列表 (ADK Tools list)
-    在為 ADK 構建您自己的工具之前，請查看 **[ADK 工具列表](https://google.github.io/adk-docs/tools/)**，瞭解可用於 ADK 代理程式的預建工具。
+在為 ADK 構建您自己的工具之前，請查看 **[ADK 工具列表](https://google.github.io/adk-docs/tools/)**，瞭解可用於 ADK 代理程式的預建工具。
 
 ## 什麼是工具 (Tool)？
 
