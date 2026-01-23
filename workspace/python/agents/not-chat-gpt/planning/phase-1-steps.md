@@ -380,9 +380,8 @@ make dev-web
 
 ### 2.5.3 引用來源追蹤 (Citations)
 
-- [ ] 修改 Agent 回應處理，檢查 `citation_metadata`
-- [ ] 格式化引用資訊顯示 (包含頁碼)
-- [ ] 更新 API 回應格式包含引用資訊
+- [x] 修改 Agent 回應處理，檢查 `citations`
+- [x] 更新 API 回應格式包含引用資訊
 - [ ] 測試多文檔聯合查詢功能
 
 ### 2.5.4 RAG 評估測試

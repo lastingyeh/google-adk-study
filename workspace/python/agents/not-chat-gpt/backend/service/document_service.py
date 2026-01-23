@@ -93,10 +93,10 @@ class DocumentService:
             file_name=uploaded_file.name
         )
         
-        while not operation.done:
-            print("Waiting for file import to complete...")
-            time.sleep(10)
-            operation = self.client.operations.get(operation)
+        # while not operation.done:
+        #     print("Waiting for file import to complete...")
+        #     time.sleep(10)
+        #     operation = self.client.operations.get(operation)
         
         print("File import completed.")
 
@@ -125,7 +125,25 @@ class DocumentService:
             )
         )
     
-        return response.text
+        # 擷取引用 (citations)
+        citations = []
+        grounding = response.candidates[0].grounding_metadata if response.candidates else None
+
+        if grounding and hasattr(grounding, "grounding_chunks"):
+            for chunk in grounding.grounding_chunks:
+                citations.append({
+                    "source": str(chunk),
+                    "text": getattr(chunk, "text", "")[:200] + "..."
+                })
+    
+        return {
+            "status": "success",
+            "answer": response.text,
+            "citations": citations,
+            "source_count": len(citations),
+            "report": f"找到答案並包含 {len(citations)} 個來源",
+        }
+
 
     def _get_mime_type(self, file_name: str) -> str:
         """Determines the MIME type based on the file extension."""

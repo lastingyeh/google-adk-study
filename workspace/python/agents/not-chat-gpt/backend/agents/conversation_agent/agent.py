@@ -13,7 +13,6 @@ from __future__ import annotations
 import os
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
-from google.adk.tools.tool_context import ToolContext
 from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
 from tools.document_tools import DOCUMENT_TOOLS
 from tools.session_tools import SESSION_TOOLS
@@ -65,6 +64,7 @@ conversation_agent = Agent(
         3. 文件搜尋 (`search_files`):
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
+           - 如有引用來源，請在回答中清楚標示出處。
            
         4. 記憶儲存 (`remember_long_term_knowledge`):
            - 在對話結束或用戶明確要求時，調用此工具將對話內容保存至長期記憶服務。

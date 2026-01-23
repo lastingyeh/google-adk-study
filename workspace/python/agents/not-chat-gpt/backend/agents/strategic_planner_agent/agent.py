@@ -138,6 +138,8 @@ strategic_planner_agent = Agent(
         6. 文件搜尋 (`search_files`):
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
+           - 如有引用來源，請在回答中清楚標示出處。
+
            
         7. 記憶儲存 (`remember_long_term_knowledge`):
            - 在對話結束或用戶明確要求時，調用此工具將對話內容保存至長期記憶服務。
