@@ -11,6 +11,7 @@ from google.adk.cli.fast_api import get_fast_api_app
 
 # 匯入您的 DocumentService
 from backend.service.document_service import DocumentService
+from backend.factory import session_service_uri_factory, memory_service_uri_factory
 
 # 獲取 backend 目錄的路徑
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -19,6 +20,8 @@ BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
 app: FastAPI = get_fast_api_app(
     agents_dir=BACKEND_DIR,
     web=True,
+    session_service_uri=session_service_uri_factory(),
+    memory_service_uri=memory_service_uri_factory(),
 )
 app.title = "not-chat-gpt"
 app.description = "與 not-chat-gpt 代理互動的 API"

@@ -13,7 +13,7 @@ class DocumentService:
     def __init__(self, store_display_name: str = "not-chat-gpt", api_key: Optional[str] = None):
         # Determine the key to use
         key_to_use = api_key or os.getenv("GOOGLE_API_KEY")
-        self.model = os.getenv("GENAI_MODEL", "gemini-3-flash-preview")
+        self.model = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
 
         if not key_to_use:
             raise ValueError(

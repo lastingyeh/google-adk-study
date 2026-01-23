@@ -346,6 +346,30 @@ make dev-web
 - [x] 在 ConversationAgent 與 StrategicPlannerAgent 中整合 `file_search` 工具
 - [x] 測試文檔上傳與索引功能
 
+透過 API 上傳檔案
+
+```bash
+  curl --location 'http://localhost:8000/documents/upload' \
+  --header 'Content-Type: application/json' \
+  --form 'file=@"postman-cloud:///1f0f68f3-989e-4520-ab01-6e8463649029"'
+
+  curl --location 'http://localhost:8000/run' \
+  --header 'Content-Type: application/json' \
+  --data '{
+      "appName": "conversation_agent",
+      "userId": "u_123",
+      "sessionId": "s_123",
+      "newMessage": {
+          "role": "user",
+          "parts": [
+              {
+                  "text": "Aethelred Dynamics 是做什麼的？"
+              }
+          ]
+      }
+  }'
+```
+
 ### 2.5.2 文檔管理 API
 
 - [x] 建立文檔管理端點：
