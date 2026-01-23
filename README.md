@@ -1862,3 +1862,28 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 </details>
 
 </details>
+
+### 🗓️ 第 91 天開始 ~：官方文件 (ADK Docs) 學習整理與完整實踐
+
+<details>
+<summary>第四階段： 官方文件 (ADK Docs) 持續更新，完整實踐 Agent 實作與範例整理
+</summary>
+
+#### 🕗 Day 91
+
+<details>
+<summary>
+[整合 1/3] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+
+🏷️ `agent-tools`, `google-search`, `code-execution`, `computer-use`, `agent-tools`, `playwright`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Tools for Agents](https://google.github.io/adk-docs/tools/)
+
+</details>
+</details>
