@@ -1,9 +1,8 @@
 import os
-import sys
 
 from dotenv import load_dotenv
-from pathlib import Path
 from google.adk.cli.service_registry import get_service_registry
+from google.adk.memory import VertexAiMemoryBankService, InMemoryMemoryService, BaseMemoryService
 
 from backend.service.redis_session_service import RedisSessionService
 
@@ -52,7 +51,12 @@ def session_service_uri_factory():
 
 # memory service uri factory
 def memory_service_uri_factory():
-    return os.getenv("MEMORY_SERVICE_URI")
+    MEMORY_SERVICE_URI = os.getenv("MEMORY_SERVICE_URI")
+    if MEMORY_SERVICE_URI:
+        print("✅ Using MEMORY_SERVICE_URI for memory service.")
+        return MEMORY_SERVICE_URI
+    print("⚠️ No memory service URI configured, defaulting to None.")
+    return None
 
 def redis_factory(uri: str, **kwargs):
     """
@@ -73,3 +77,12 @@ def redis_factory(uri: str, **kwargs):
     
     # 建立並回傳 Redis 會話服務實例
     return RedisSessionService(uri=uri, **kwargs_copy)
+
+def memory_service_factory() -> BaseMemoryService:
+    MEMORY_SERVICE_URI = os.getenv("MEMORY_SERVICE_URI")
+    if MEMORY_SERVICE_URI:
+        agent_engine_id = MEMORY_SERVICE_URI.split("://")[-1]
+        print("✅ Using MEMORY_SERVICE_URI for memory service.")
+        return VertexAiMemoryBankService(agent_engine_id=agent_engine_id)
+    print("⚠️ No memory service URI configured, defaulting to InMemoryMemoryService.")
+    return InMemoryMemoryService()

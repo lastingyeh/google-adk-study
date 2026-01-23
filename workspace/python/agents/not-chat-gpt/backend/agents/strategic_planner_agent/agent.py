@@ -18,40 +18,12 @@ from google.adk.tools.tool_context import ToolContext
 from google.adk.planners import BuiltInPlanner
 from guardrails.guardrails import before_model_callback
 from tools.document_tools import DOCUMENT_TOOLS
+from tools.session_tools import SESSION_TOOLS
+from tools.memory_tools import MEMORY_TOOLS
 from google.genai import types
 
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
-
-def remember_user_info(
-    key: str, value: str, tool_context: ToolContext
-) -> Dict[str, Any]:
-    """儲存關於使用者的長期資訊（例如姓名、偏好）。
-
-    說明：
-    - 使用 `user:` 前綴，代表此資訊將跨工作階段永久保存。
-    - 用於建立個人化體驗。
-    """
-    tool_context.state[f"user:{key}"] = value
-    return {"status": "success", "message": f"已記住 {key} 為 {value}"}
-
-
-def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
-    """載入使用者的完整上下文資訊，在對話開始時使用。"""
-    user_data = {}
-    
-    # 載入所有以 user: 開頭的狀態
-    for key, value in tool_context.state.to_dict().items():
-        if key.startswith("user:"):
-            clean_key = key.replace("user:", "")
-            user_data[clean_key] = value
-    
-    return {
-        "status": "success",
-        "user_context": user_data,
-        "total_items": len(user_data),
-        "message": "已載入完整使用者上下文" if user_data else "尚無使用者資訊"
-    }
 
 
 def analyze_user_intent(query: str, tool_context: ToolContext) -> Dict[str, Any]:
@@ -131,13 +103,10 @@ strategic_planner_agent = Agent(
         thinking_config=types.ThinkingConfig(include_thoughts=True)
     ),
     tools=[
-        remember_user_info,
-        get_user_info,
         analyze_user_intent,
         extract_search_keywords,
         validate_answer_completeness,
-    ]
-    + DOCUMENT_TOOLS,
+    ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS,
     instruction=(
         """
         你是一位頂尖的策略規劃師，專門將複雜問題拆解成可執行的步驟。
@@ -162,18 +131,26 @@ strategic_planner_agent = Agent(
         4. 答案完整性驗證 (`validate_answer_completeness`):
            - 第四步：在生成最終答案後，呼叫此工具，將你的答案與原始問題進行比對，確保回答的完整性和相關性。
 
-        5. 記憶工具 (`get_user_info`, `remember_user_info`):
+        5. 狀態工具 (`get_user_info`, `remember_user_info`):
            - 在規劃過程中，如果需要用戶的個人背景資訊來制定更個人化的策略，可以使用 `get_user_info`。
            - 如果在規劃過程中產生了值得長期記憶的用戶偏好，可以使用 `remember_user_info`。
         
         6. 文件搜尋 (`search_files`):
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
+           
+        7. 記憶儲存 (`remember_long_term_knowledge`):
+           - 在對話結束或用戶明確要求時，調用此工具將對話內容保存至長期記憶服務。
+           
+        8. 記憶查詢 (`load_memory`):
+           - 當需要回顧或查詢長期記憶中的資訊時，使用此工具進行檢索。
+           - 如果使用者提示有過去的對話內容或資訊，則調用此工具。
 
         互動準則:
         - 嚴格遵循思考流程：分析 -> 提取 -> 搜尋 -> 驗證。
         - 優先使用工具：你的所有決策和資訊都應基於工具的返回結果。
         - 引用來源：如果 `search_files` 的結果包含引用，務必在最終答案中清晰地標示出來。
+        - 回憶與整合：結合使用者的個人化記憶與文件查詢結果，提供全面且精準的策略建議。
         - 保持專業：你的回答應該是結構化、有條理且基於事實的。
         """
     ),

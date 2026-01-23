@@ -11,45 +11,15 @@
 from __future__ import annotations
 
 import os
-from typing import Dict, Any
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
 from google.adk.tools.tool_context import ToolContext
 from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
 from tools.document_tools import DOCUMENT_TOOLS
-
+from tools.session_tools import SESSION_TOOLS
+from tools.memory_tools import MEMORY_TOOLS
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
-
-def remember_user_info(
-    key: str, value: str, tool_context: ToolContext
-) -> Dict[str, Any]:
-    """儲存關於使用者的長期資訊（例如姓名、偏好）。
-
-    說明：
-    - 使用 `user:` 前綴，代表此資訊將跨工作階段永久保存。
-    - 用於建立個人化體驗。
-    """
-    tool_context.state[f"user:{key}"] = value
-    return {"status": "success", "message": f"已記住 {key} 為 {value}"}
-
-
-def get_user_info(tool_context: ToolContext) -> Dict[str, Any]:
-    """載入使用者的完整上下文資訊，在對話開始時使用。"""
-    user_data = {}
-    
-    # 載入所有以 user: 開頭的狀態
-    for key, value in tool_context.state.to_dict().items():
-        if key.startswith("user:"):
-            clean_key = key.replace("user:", "")
-            user_data[clean_key] = value
-    
-    return {
-        "status": "success",
-        "user_context": user_data,
-        "total_items": len(user_data),
-        "message": "已載入完整使用者上下文" if user_data else "尚無使用者資訊"
-    }
 
 
 # ============================================================================
@@ -74,7 +44,7 @@ conversation_agent = Agent(
     name="ConversationAgent",  # 代理名稱，可於 UI 下拉選單看到
     model=MODEL_NAME,  # 使用的模型：高速度、適合互動式對話
     description="一個具備狀態管理與 RAG 文件查詢能力的友善 AI 助理。",  # 簡述用途
-    tools=[remember_user_info, get_user_info] + DOCUMENT_TOOLS,  # 整合狀態管理與文件查詢工具
+    tools=SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS,  # 整合狀態管理與文件查詢工具
     instruction=(  # 系統指令：影響基礎回應行為
         """
         你是一個溫暖且樂於助人的助理，具備持久記憶與強大的文件查詢能力。
@@ -85,7 +55,7 @@ conversation_agent = Agent(
 
         工具使用策略:
 
-        1. 記憶查詢 (`get_user_info`):
+        1. 狀態查詢 (`get_user_info`):
            - 當 session 剛啟動且缺乏用戶 context 時，調用此工具載入已知的用戶資訊。
            - 當用戶提到「我之前說過」、「你還記得我嗎」等暗示有歷史記錄的話語時。
 
@@ -95,6 +65,13 @@ conversation_agent = Agent(
         3. 文件搜尋 (`search_files`):
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
+           
+        4. 記憶儲存 (`remember_long_term_knowledge`):
+           - 在對話結束或用戶明確要求時，調用此工具將對話內容保存至長期記憶服務。
+           
+        5. 記憶查詢 (`load_memory`):
+           - 當需要回顧或查詢長期記憶中的資訊時，使用此工具進行檢索。
+           - 如果使用者提示有過去的對話內容或資訊，則調用此工具。
 
         互動準則:
         - 優先使用 `search_files` 來回答知識型問題，並根據搜尋結果進行回覆。
