@@ -10,7 +10,7 @@
 
 ## 環境變數
 
-按照 [設定和安裝](../get-started/installation/) 指南中的說明設定您的環境變數。您還需要安裝 `kubectl` 命令列工具。您可以在 [Google Kubernetes Engine 文件](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl) 中找到相關說明。
+按照 [設定和安裝](../get-started/index.md) 指南中的說明設定您的環境變數。您還需要安裝 `kubectl` 命令列工具。您可以在 [Google Kubernetes Engine 文件](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl) 中找到相關說明。
 
 ```bash
 export GOOGLE_CLOUD_PROJECT=your-project-id # 您的 GCP 專案 ID

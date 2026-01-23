@@ -254,8 +254,12 @@ mvn compile exec:java \
 >
 > ADK Web ***不適用於生產環境部署***。您應該僅在開發和偵錯階段使用 ADK Web。
 
+## 下一步：建構您的 Agent
 
-### 參考資源
+現在您已經安裝了 ADK 並執行了您的第一個 Agent，試著跟隨我們的建構指南來打造您自己的 Agent：
+- [建立你的代理](https://google.github.io/adk-docs/tutorials/)
+
+## 參考資源
 
 *   [Gemini 3 Pro Preview](https://ai.google.dev/gemini-api/docs/models#gemini-3-pro)
 *   [Google AI Studio API 金鑰](https://aistudio.google.com/app/apikey)

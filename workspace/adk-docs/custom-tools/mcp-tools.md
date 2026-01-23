@@ -76,7 +76,7 @@ sequenceDiagram
 
 在開始之前，請確保您已完成以下設定：
 
-* **設定 ADK：** 遵循快速入門中的標準 ADK [設定說明](../get-started/installation/python.md)。
+* **設定 ADK：** 遵循快速入門中的標準 ADK [設定說明](../get-started/index.md)。
 * **安裝/更新 Python/Java：** MCP 需要 Python 3.9 或更高版本，或者 Java 17 或更高版本。
 * **設定 Node.js 和 npx：** **(僅限 Python)** 許多社群 MCP 伺服器以 Node.js 套件形式發佈並使用 `npx` 執行。如果您尚未安裝，請安裝 Node.js（包含 npx）。詳情請參閱 [https://nodejs.org/en](https://nodejs.org/en)。
 * **驗證安裝：** **(僅限 Python)** 確認在啟動的虛擬環境中，`adk` 和 `npx` 已包含在您的 PATH 中：

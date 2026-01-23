@@ -171,6 +171,11 @@ npx @google/adk-devtools web
 > **警告：ADK Web 僅供開發使用**
 > ADK Web ***不適合用於正式生產部署***。您應僅將 ADK Web 用於開發和除錯目的。
 
+## 下一步：建構您的 Agent
+
+現在您已經安裝了 ADK 並執行了您的第一個 Agent，試著跟隨我們的建構指南來打造您自己的 Agent：
+- [建立你的代理](https://google.github.io/adk-docs/tutorials/)
+
 ## 參考資源
 
 *   [Function Tool](../custom-tools/function-tools/overview.md)

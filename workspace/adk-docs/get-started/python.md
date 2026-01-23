@@ -127,16 +127,16 @@ adk web --port 8000
 
 ![adk-web-dev-ui-chat.png](https://google.github.io/adk-docs/assets/adk-web-dev-ui-chat.png)
 
-> [!WARNING] 警告：ADK Web 僅供開發使用**
+> [!WARNING] 警告：ADK Web 僅供開發使用
 >
 > ADK Web **不適用於正式的生產環境部署**。您應該僅將 ADK Web 用於開發和除錯目的。
 
 ## 下一步：建構您的 Agent
 
 現在您已經安裝了 ADK 並執行了您的第一個 Agent，試著跟隨我們的建構指南來打造您自己的 Agent：
-
+- [建立你的代理](https://google.github.io/adk-docs/tutorials/)
 ---
 
-### 參考資源
+## 參考資源
 
 *   **Google AI Studio API Keys**: [https://aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)

@@ -28,7 +28,7 @@
 
 當您將 ADK 專案部署到 Agent Engine 時，您需要一些額外的文件來支持部署操作。以下 ASP 命令會備份您的專案，然後為部署目的向您的專案添加文件。
 
-這些說明假設您有一個現有的 ADK 專案正在進行部署修改。如果您沒有 ADK 專案，或者想使用測試專案，請完成 Python [快速入門](https://google.github.io/adk-docs/get-started/quickstart/) 指南，該指南會創建一個 [multi_tool_agent](https://github.com/google/adk-docs/tree/main/examples/python/snippets/get-started/multi_tool_agent) 專案。以下說明以 `multi_tool_agent` 專案為例。
+這些說明假設您有一個現有的 ADK 專案正在進行部署修改。如果您沒有 ADK 專案，或者想使用測試專案，請完成 Python [快速入門](../../get-started/python.md) 指南，該指南會創建一個 [multi_tool_agent](https://github.com/google/adk-docs/tree/main/examples/python/snippets/get-started/multi_tool_agent) 專案。以下說明以 `multi_tool_agent` 專案為例。
 
 要準備您的 ADK 專案以部署到 Agent Engine：
 

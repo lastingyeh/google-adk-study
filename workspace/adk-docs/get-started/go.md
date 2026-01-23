@@ -172,10 +172,14 @@ go run agent.go web api webui
 
 > **注意：** ADK Web 僅供開發使用，不應用於生產環境部署。請僅在開發和除錯時使用 ADK Web。
 
+## 下一步：建構您的 Agent
+
+現在您已經安裝了 ADK 並執行了您的第一個 Agent，試著跟隨我們的建構指南來打造您自己的 Agent：
+- [建立你的代理](https://google.github.io/adk-docs/tutorials/)
 
 ---
 
-### 參考資源
+## 參考資源
 
 *   [ADK Go 套件文件](https://pkg.go.dev/google.golang.org/adk)
 *   [Gemini API 文件](https://ai.google.dev/docs)

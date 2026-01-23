@@ -1157,7 +1157,7 @@ Google ADK 1.17 支援自定義對話存儲（如 Redis），解決持久化與�
 </details>
 </details>
 
-### 🗓️ 第 61 天 ~ ：檢視與標準化設計
+### 🗓️ 第 61-90 天：Agent Marketplace 整合與官方文件 (ADK Docs) 學習整理
 
 <details>
 <summary>第三階段：檢視前60天所學內容，進行標準化設計與實作。
@@ -1836,6 +1836,28 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 - **參考資源**
   - [[ADK-Docs] 官方文件-Models](https://google.github.io/adk-docs/agents/models/)
   - [[ADK-Samples] auto-insurance-agent](https://github.com/google/adk-samples/tree/main/python/agents/auto-insurance-agent)
+
+</details>
+
+#### 🕗 Day 90
+
+<details>
+<summary>
+更新 [ADK Docs] Get Started & Agent Runtime 相關文件內容，並補充 LLM 整合說明。
+
+🏷️ `get-started`, `runtime`, `event-loop`, `api-server`, `fastapi`, `run-config`, `resume`, `workflow`, `async`, `streaming`
+
+</summary>
+
+- **詳細說明**
+
+  - [[ADK-Docs] 學習文件-Get Started](./workspace/adk-docs/get-started/index.md)
+  - [[ADK-Docs] 學習文件-Runtime](./workspace/adk-docs/agent-runtime/index.md)
+
+- **參考資源**
+
+  - [[ADK-Docs] 官方文件-Get Started](https://google.github.io/adk-docs/get-started/)
+  - [[ADK-Docs] 官方文件-Runtime](https://google.github.io/adk-docs/runtime/)
 
 </details>
 

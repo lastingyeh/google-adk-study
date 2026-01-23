@@ -1,6 +1,6 @@
 # Runtime Configuration
 
-🔔 `更新日期：2026 年 1 月 9 日`
+🔔 `更新日期：2026 年 1 月 22 日`
 
 `RunConfig` 定義了 ADK 中 Agent 的執行時行為與選項。它控制語音與串流設定、函式呼叫、Artifact 儲存以及 LLM 呼叫的限制。
 
@@ -119,10 +119,10 @@ public abstract class RunConfig {
 
 ### `speech_config`
 
-[**ADK 支援**: `Python v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Java v0.1.0`]
 
 > [!Note]
-    無論語言為何,`SpeechConfig` 的介面或定義皆相同。
+無論語言為何,`SpeechConfig` 的介面或定義皆相同。
 
 具備音訊功能的 Live Agent 的語音設定。`SpeechConfig` 類別具有以下結構:
 
@@ -174,19 +174,19 @@ class PrebuiltVoiceConfig(_common.BaseModel):
 
 ### `response_modalities`
 
-[**ADK 支援**: `Python v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Java v0.1.0`]
 
 定義 Agent 的輸出模態。若未設定,預設為 AUDIO。回應模態決定 Agent 如何透過各種管道 (例如文字、音訊) 與使用者溝通。
 
 ### `save_input_blobs_as_artifacts`
 
-[**ADK 支援**: `Python v0.1.0` | `Go v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Go v0.1.0` | `Java v0.1.0`]
 
 啟用時,輸入 Blob 將在 Agent 執行期間儲存為 Artifact。這對於除錯和稽核用途非常有用,允許開發人員檢閱 Agent 接收到的確切資料。
 
 ### `support_cfc`
 
-[**ADK 支援**: `Python v0.1.0` (實驗性)]
+[`ADK 支援`: `Python v0.1.0` | `實驗性`]
 
 啟用組合式函式呼叫 (CFC) 支援。僅適用於使用 StreamingMode.SSE 時。啟用時,將呼叫 LIVE API,因為只有它支援 CFC 功能。
 
@@ -195,7 +195,7 @@ class PrebuiltVoiceConfig(_common.BaseModel):
 
 ### `streaming_mode`
 
-[**ADK 支援**: `Python v0.1.0` | `Go v0.1.0` (實驗性)]
+[`ADK 支援`: `Python v0.1.0` | `Go v0.1.0` | `實驗性`]
 
 設定 Agent 的串流行為。可能的值:
 
@@ -207,13 +207,13 @@ class PrebuiltVoiceConfig(_common.BaseModel):
 
 ### `output_audio_transcription`
 
-[**ADK 支援**: `Python v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Java v0.1.0`]
 
 用於轉錄具備音訊回應功能的 Live Agent 音訊輸出的設定。這啟用了音訊回應的自動轉錄,以用於無障礙功能、記錄保存和多模態應用程式。
 
 ### `max_llm_calls`
 
-[**ADK 支援**: `Python v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Java v0.1.0`]
 
 設定單次 Agent 執行的 LLM 呼叫總數限制。
 
@@ -224,7 +224,7 @@ class PrebuiltVoiceConfig(_common.BaseModel):
 
 ## 驗證規則
 
-[**ADK 支援**: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
 `RunConfig` 類別會驗證其參數以確保 Agent 正常運作。雖然 Python ADK 使用 `Pydantic` 進行自動型別驗證,但 Java 和 TypeScript ADK 依賴其靜態型別系統,並可能在 `RunConfig` 的建構函式中包含顯式檢查。
 特別針對 `max_llm_calls` 參數:
@@ -437,7 +437,7 @@ RunConfig runConfig =
 
 ### 啟用 CFC 支援
 
-[**ADK 支援**: `Python v0.1.0` | `Typescript v0.2.0` (實驗性)]
+[`ADK 支援`: `Python v0.1.0` | `Typescript v0.2.0` | `實驗性`]
 
 <details>
 <summary>範例說明</summary>
@@ -470,5 +470,5 @@ const config: RunConfig = {
 
 啟用組合式函式呼叫 (CFC) 會建立一個可根據模型輸出動態執行函式的 Agent,這對於需要複雜工作流程的應用程式非常強大。
 
-> [!TIP] "實驗性發布"
-    組合式函式呼叫 (CFC) 串流功能為實驗性發布。
+> [!TIP] 實驗性發布
+組合式函式呼叫 (CFC) 串流功能為實驗性發布。
