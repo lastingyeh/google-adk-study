@@ -14,19 +14,19 @@
 |    3 | 電腦使用 (Computer Use)     | 使用 Gemini 模型操作電腦使用者介面       | [computer-use](./gemini-api/computer-use.md)     |
 
 ## Google Cloud 工具
-| 序號 | 名稱                                              | 說明                                                | 連結                                                                            |
-| ---: | ------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------- |
-|    1 | Apigee API Hub                                    | 將 Apigee API hub 中任何已記載的 API 轉換為工具     | https://google.github.io/adk-docs/tools/google-cloud/apigee-api-hub/            |
-|    2 | API 註冊表 (API Registry)                         | 以 MCP 工具的形式動態連接 Google Cloud 服務         | https://google.github.io/adk-docs/tools/google-cloud/api-registry/              |
-|    3 | 應用程式整合 (Application Integration)            | 使用整合連接器將您的 agent 連結到企業應用程式       | https://google.github.io/adk-docs/tools/google-cloud/application-integration/   |
-|    4 | BigQuery Agent 分析                               | 大規模分析及除錯 agent 行為                         | https://google.github.io/adk-docs/observability/bigquery-agent-analytics/       |
-|    5 | BigQuery 工具                                     | 連接 BigQuery 以擷取數據並進行分析                  | https://google.github.io/adk-docs/tools/google-cloud/bigquery/                  |
-|    6 | Bigtable 工具                                     | 與 Bigtable 互動以擷取數據並執行 SQL                | https://google.github.io/adk-docs/tools/google-cloud/bigtable/                  |
-|    7 | GKE 程式碼執行器 (GKE Code Executor)              | 在安全且可擴充的 GKE 環境中執行 AI 生成的程式碼     | https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/         |
-|    8 | Spanner 工具                                      | 與 Spanner 互動以擷取數據、搜尋並執行 SQL           | https://google.github.io/adk-docs/tools/google-cloud/spanner/                   |
-|    9 | 資料庫專用 MCP 工具箱 (MCP Toolbox for Databases) | 為您的 agent 連接超過 30 種不同的資料來源           | https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/ |
-|   10 | Vertex AI RAG 引擎                                | 使用 Vertex AI RAG 引擎執行私有數據擷取             | https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/      |
-|   11 | Vertex AI 搜尋 (Vertex AI Search)                 | 在 Vertex AI 搜尋中搜尋您的私有、已配置的資料儲存庫 | https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/          |
+| 序號 | 名稱                                              | 說明                                                | 連結                                                                     |
+| ---: | ------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------------------------------ |
+|    1 | Apigee API Hub                                    | 將 Apigee API hub 中任何已記載的 API 轉換為工具     | [apigee-api-hub](./google-cloud/apigee-api-hub.md)                       |
+|    2 | API 註冊表 (API Registry)                         | 以 MCP 工具的形式動態連接 Google Cloud 服務         | [api-registry](./google-cloud/api-registry.md)                           |
+|    3 | 應用程式整合 (Application Integration)            | 使用整合連接器將您的 agent 連結到企業應用程式       | [application-integration](./google-cloud/application-integration.md)     |
+|    4 | BigQuery Agent 分析                               | 大規模分析及除錯 agent 行為                         | [bigquery-agent-analytics](./google-cloud/bigquery-agent-analytics.md)   |
+|    5 | BigQuery 工具                                     | 連接 BigQuery 以擷取數據並進行分析                  | [bigquery](./google-cloud/bigquery.md)                                   |
+|    6 | Bigtable 工具                                     | 與 Bigtable 互動以擷取數據並執行 SQL                | [bigtable](./google-cloud/bigtable.md)                                   |
+|    7 | GKE 程式碼執行器 (GKE Code Executor)              | 在安全且可擴充的 GKE 環境中執行 AI 生成的程式碼     | [gke-code-executor](./google-cloud/gke-code-executor.md)                 |
+|    8 | Spanner 工具                                      | 與 Spanner 互動以擷取數據、搜尋並執行 SQL           | [spanner](./google-cloud/spanner.md)                                     |
+|    9 | 資料庫專用 MCP 工具箱 (MCP Toolbox for Databases) | 為您的 agent 連接超過 30 種不同的資料來源           | [mcp-toolbox-for-databases](./google-cloud/mcp-toolbox-for-databases.md) |
+|   10 | Vertex AI RAG 引擎                                | 使用 Vertex AI RAG 引擎執行私有數據擷取             | [vertex-ai-rag-engine](./google-cloud/vertex-ai-rag-engine.md)           |
+|   11 | Vertex AI 搜尋 (Vertex AI Search)                 | 在 Vertex AI 搜尋中搜尋您的私有、已配置的資料儲存庫 | [vertex-ai-search](./google-cloud/vertex-ai-search.md)                   |
 
 ## 第三方工具
 | 序號 | 名稱         | 說明                                           | 連結                                                              |
