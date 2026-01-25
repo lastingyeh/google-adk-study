@@ -1880,10 +1880,10 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 </summary>
 
 - **詳細說明**
-  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/gemini-api/index.md)
+  - [[ADK-Docs] 學習文件-Tools for Agents [Gemini API 系列]](./workspace/adk-docs/tools-for-agents/gemini-api/index.md)
 
 - **參考資源**
-  - [[ADK-Docs] 官方文件-Tools for Agents](https://google.github.io/adk-docs/tools/)
+  - [[ADK-Docs] 官方文件-Tools for Agents [Gemini API 系列]](https://google.github.io/adk-docs/tools/)
 
 </details>
 
@@ -1898,11 +1898,11 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 </summary>
 
 - **詳細說明**
-  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/google-cloud/index.md)
+  - [[ADK-Docs] 學習文件-Tools for Agents [Google Cloud 系列]](./workspace/adk-docs/tools-for-agents/google-cloud/index.md)
   - [API Registry Agent](./workspace/python/agents/api-registry-agent/)
 
 - **參考資源**
-  - [[ADK-Docs] 官方文件-Tools for Agents](https://google.github.io/adk-docs/tools/)
+  - [[ADK-Docs] 官方文件-Tools for Agents [Google Cloud 系列]](https://google.github.io/adk-docs/tools/)
   - [[adk-python] api_registry_agent 範例](https://github.com/google/adk-python/tree/main/contributing/samples/api_registry_agent/)
 
 </details>
