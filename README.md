@@ -1873,17 +1873,37 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/3] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+[整合 1/5] [Gemini API 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
-🏷️ `agent-tools`, `google-search`, `code-execution`, `computer-use`, `agent-tools`, `playwright`
+🏷️  `agent-tools`,`google-search`,`code-execution`,`computer-use`,`agent-tools`,`playwright`,
 
 </summary>
 
 - **詳細說明**
-  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/index.md)
+  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/gemini-api/index.md)
 
 - **參考資源**
   - [[ADK-Docs] 官方文件-Tools for Agents](https://google.github.io/adk-docs/tools/)
+
+</details>
+
+#### 🕗 Day 92
+
+<details>
+<summary>
+[整合 2/5] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+
+🏷️  `agent-tools`,`bigquery`,`connector`,`api-registry`,`apigee-api``application-integration`,
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Tools for Agents](./workspace/adk-docs/tools-for-agents/google-cloud/index.md)
+  - [API Registry Agent](./workspace/python/agents/api-registry-agent/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Tools for Agents](https://google.github.io/adk-docs/tools/)
+  - [[adk-python] api_registry_agent 範例](https://github.com/google/adk-python/tree/main/contributing/samples/api_registry_agent/)
 
 </details>
 </details>
