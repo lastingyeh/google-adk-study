@@ -93,11 +93,6 @@ class DocumentService:
             file_name=uploaded_file.name
         )
         
-        # while not operation.done:
-        #     print("Waiting for file import to complete...")
-        #     time.sleep(10)
-        #     operation = self.client.operations.get(operation)
-        
         print("File import completed.")
 
     def list_files(self) -> list:
