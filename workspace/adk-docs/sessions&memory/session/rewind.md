@@ -1,6 +1,8 @@
 # 為 Agent 倒回 (Rewind) 會話
 
-🔔 `更新日期：2026 年 1 月 5 日`
+> 🔔 `更新日期：2026-01-26`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/sessions/session/rewind/
 
 ADK 的會話倒回 (Rewind) 功能允許您將會話還原到之前的請求狀態，讓您能夠撤銷錯誤、探索替代路徑，或從已知的良好起點重新開始流程。本文件提供該功能的概述、使用方法及其限制。
 
@@ -64,7 +66,6 @@ await runner.rewind_async(
 - **外部依賴項**：倒回功能不管理外部依賴。如果您的 Agent 工具與外部系統互動，您需要自行負責將這些系統還原至先前的狀態。
 - **原子性 (Atomicity)**：狀態更新、成果物更新和事件持久化並非在單一原子事務中執行。因此，應避免倒回進行中的活躍會話，或在倒回期間同時操作會話成果物，以防止數據不一致。
 
-## 參考資源
+## 下一步
 
 - [rewind_session 範例程式碼](https://github.com/google/adk-python/tree/main/contributing/samples/rewind_session)
-- [限制說明](https://google.github.io/adk-docs/sessions/rewind/#how-it-works)

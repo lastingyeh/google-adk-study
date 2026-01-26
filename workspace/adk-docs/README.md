@@ -142,8 +142,9 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 
 | 標頭                                                         | 描述                                                     | 連結                                          |
 | :----------------------------------------------------------- | :------------------------------------------------------- | :-------------------------------------------- |
-| [對話上下文簡介](./sessions&memory/sessions.md)              | 簡介 `Session`、`State` 與 `Memory` 如何管理對話上下文。 | [連結](./sessions&memory/sessions.md)         |
-| [會話 (Session) 概觀](./sessions&memory/session/overview.md) | 深入探討 `Session` 如何追蹤個別對話。                    | [連結](./sessions&memory/session/overview.md) |
+| [對話上下文簡介](./sessions&memory/index.md)                 | 簡介 `Session`、`State` 與 `Memory` 如何管理對話上下文。 | [連結](./sessions&memory/index.md)            |
+| [會話 (Session) 概觀](./sessions&memory/session/index.md)    | 深入探討 `Session` 如何追蹤個別對話。                    | [連結](./sessions&memory/session/index.md)    |
+| [會話遷移 (Migrate)](./sessions&memory/session/migrate.md)   | 說明如何在會話模型或儲存後端間進行遷移與相容性處理。     | [連結](./sessions&memory/session/migrate.md)  |
 | [會話倒回 (Rewind)](./sessions&memory/session/rewind.md)     | 說明如何將會話還原到之前的狀態。                         | [連結](./sessions&memory/session/rewind.md)   |
 | [State](./sessions&memory/state.md)                          | 解釋 `State` 如何作為 `Session` 的暫存記事本。           | [連結](./sessions&memory/state.md)            |
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |
