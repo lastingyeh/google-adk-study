@@ -1875,7 +1875,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 <summary>
 [整合 1/5] [Gemini API 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
-🏷️  `agent-tools`,`google-search`,`code-execution`,`computer-use`,`agent-tools`,`playwright`,
+🏷️  `agent-tools`,`google-search`,`code-execution`,`computer-use`,`agent-tools`,`playwright`
 
 </summary>
 
@@ -1893,7 +1893,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 <summary>
 [整合 2/5] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
-🏷️  `agent-tools`,`bigquery`,`connector`,`api-registry`,`apigee-api``application-integration`,
+🏷️  `agent-tools`,`bigquery`,`connector`,`api-registry`,`apigee-api``application-integration`
 
 </summary>
 
@@ -1902,8 +1902,28 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [API Registry Agent](./workspace/python/agents/api-registry-agent/)
 
 - **參考資源**
-  - [[ADK-Docs] 官方文件-Tools for Agents [Google Cloud 系列]](https://google.github.io/adk-docs/tools/)
+  - [[ADK-Docs] 官方文件-Tools for Agents [Google Cloud 系列]](https://google.github.io/adk-docs/tools/google-cloud/)
   - [[adk-python] api_registry_agent 範例](https://github.com/google/adk-python/tree/main/contributing/samples/api_registry_agent/)
+
+</details>
+
+#### 🕗 Day 93
+
+<details>
+<summary>
+[整合 3/5] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+
+🏷️ `bigquery`, `bigtable`, `data-agent`, `express-mode`, `gke-code-executor`, `mcp-toolbox`, `pubsub`, `spanner`, `vertex-ai-rag-engine`, `vertext-ai-search`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Tools for Agents [Google Cloud 系列]](./workspace/adk-docs/tools-for-agents/google-cloud/index.md)
+  - [Agent Engine Code Execution](./workspace/python/agents/agent-engine-code-execution/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Tools for Agents [Google Cloud 系列]](https://google.github.io/adk-docs/tools/google-cloud/)
+  - [[adk-python] agent_engine_code_execution 範例](https://github.com/google/adk-python/tree/main/contributing/samples/agent_engine_code_execution)
 
 </details>
 </details>

@@ -147,7 +147,7 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [會話倒回 (Rewind)](./sessions&memory/session/rewind.md)     | 說明如何將會話還原到之前的狀態。                         | [連結](./sessions&memory/session/rewind.md)   |
 | [State](./sessions&memory/state.md)                          | 解釋 `State` 如何作為 `Session` 的暫存記事本。           | [連結](./sessions&memory/state.md)            |
 | [記憶 (Memory)](./sessions&memory/memory.md)                 | 介紹如何利用 `MemoryService` 實現長期知識。              | [連結](./sessions&memory/memory.md)           |
-| [Vertex AI 快速模式](./sessions&memory/express-mode.md)      | 說明如何使用 Vertex AI 會話與記憶的快速模式。            | [連結](./sessions&memory/express-mode.md)     |
+
 
 ### 回呼 (Callbacks)
 
