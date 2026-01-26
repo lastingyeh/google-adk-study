@@ -16,11 +16,12 @@ from typing import Dict, Any
 from google.adk.agents import Agent
 from google.adk.tools.tool_context import ToolContext
 from google.adk.planners import BuiltInPlanner
+from google.adk.tools import google_search
+from google.genai import types
 from guardrails.guardrails import before_model_callback
 from tools.document_tools import DOCUMENT_TOOLS
 from tools.session_tools import SESSION_TOOLS
 from tools.memory_tools import MEMORY_TOOLS
-from google.genai import types
 
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
@@ -106,6 +107,7 @@ strategic_planner_agent = Agent(
         analyze_user_intent,
         extract_search_keywords,
         validate_answer_completeness,
+        google_search,
     ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS,
     instruction=(
         """
@@ -139,7 +141,6 @@ strategic_planner_agent = Agent(
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
            - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
            - 如有引用來源，請在回答中清楚標示出處。
-
            
         7. 記憶儲存 (`remember_long_term_knowledge`):
            - 在對話結束或用戶明確要求時，調用此工具將對話內容保存至長期記憶服務。
@@ -148,10 +149,16 @@ strategic_planner_agent = Agent(
            - 當需要回顧或查詢長期記憶中的資訊時，使用此工具進行檢索。
            - 如果使用者提示有過去的對話內容或資訊，則調用此工具。
 
+        9. 網路搜尋 (`google_search`):
+           - 當文件庫中無法找到答案時，使用此工具進行網路搜尋。
+           - 當使用者明確要求提供即時資訊時，使用此工具。
+           - 請根據搜尋結果提供最新且準確的資訊，並標示來源。
+
         互動準則:
         - 嚴格遵循思考流程：分析 -> 提取 -> 搜尋 -> 驗證。
         - 優先使用工具：你的所有決策和資訊都應基於工具的返回結果。
         - 引用來源：如果 `search_files` 的結果包含引用，務必在最終答案中清晰地標示出來。
+        - 引用來源：如果 `google_search` 的結果包含引用，務必在最終答案中清晰地標示出來。
         - 回憶與整合：結合使用者的個人化記憶與文件查詢結果，提供全面且精準的策略建議。
         - 保持專業：你的回答應該是結構化、有條理且基於事實的。
         """
