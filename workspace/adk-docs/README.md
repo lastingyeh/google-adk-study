@@ -78,7 +78,7 @@ ADK 提供多種預建工具，可讓代理程式輕鬆連結 Google 服務與�
 | [工具總覽](./tools-for-agents/index.md)                            | 預建工具目錄，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。         | [連結](./tools-for-agents/index.md)                   |
 | [Gemini API 工具](./tools-for-agents/index.md#gemini-api-工具)     | 包含 Google 搜尋 (Google Search)、程式碼執行 (Code Execution) 與電腦使用 (Computer Use)。              | [連結](./tools-for-agents/index.md#gemini-api-工具)   |
 | [Google Cloud 工具](./tools-for-agents/index.md#google-cloud-工具) | 整合 BigQuery, Spanner, Vertex AI RAG 引擎等 Google Cloud 服務。                                       | [連結](./tools-for-agents/index.md#google-cloud-工具) |
-| [第三方工具](./tools-for-agents/index.md#第三方工具)               | 連結 Asana, Atlassian, GitHub, GitLab, Notion, Slack, Stripe 等外部平台。                              | [連結](./tools-for-agents/index.md#第三方工具)        |
+| [第三方工具](./tools-for-agents/index.md#第三方工具)               | 連結 Asana, Atlassian, GitHub, GitLab, Notion, Slack, Stripe, Agent UI 等外部平台。                              | [連結](./tools-for-agents/index.md#第三方工具)        |
 | [工具限制 (Limitations)](./tools-for-agents/limitations.md)        | 了解特定內建工具（如 Google Search 或程式碼執行）的使用限制及其解決方案（如 `AgentTool` 或繞過參數）。 | [連結](./tools-for-agents/limitations.md)             |
 
 

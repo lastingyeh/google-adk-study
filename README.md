@@ -1873,7 +1873,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/5] [Gemini API 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+[整合 1/4] [Gemini API 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
 🏷️  `agent-tools`,`google-search`,`code-execution`,`computer-use`,`agent-tools`,`playwright`
 
@@ -1891,7 +1891,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 2/5] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+[整合 2/4] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
 🏷️  `agent-tools`,`bigquery`,`connector`,`api-registry`,`apigee-api``application-integration`
 
@@ -1911,7 +1911,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 3/5] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+[整合 3/4] [Google Cloud 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
 
 🏷️ `bigquery`, `bigtable`, `data-agent`, `express-mode`, `gke-code-executor`, `mcp-toolbox`, `pubsub`, `spanner`, `vertex-ai-rag-engine`, `vertext-ai-search`
 
@@ -1924,6 +1924,24 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 - **參考資源**
   - [[ADK-Docs] 官方文件-Tools for Agents [Google Cloud 系列]](https://google.github.io/adk-docs/tools/google-cloud/)
   - [[adk-python] agent_engine_code_execution 範例](https://github.com/google/adk-python/tree/main/contributing/samples/agent_engine_code_execution)
+
+</details>
+
+#### 🕗 Day 94
+
+<details>
+<summary>
+[整合 4/4] [Third Party 系列] 整合 ADK 所提供的多種預建工具，涵蓋 Gemini API、Google Cloud 與多種第三方工具（如 GitHub, Notion, Stripe 等）。
+
+🏷️ `notion`, `github`, `mcp`, `streamable`, `stdio`, `postman`, `paypal`, `hugging-face`, `ag-ui`, `strip`, `n8n`, `strip`, `qdrant`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Tools for Agents [Third Party 系列]](./workspace/adk-docs/tools-for-agents/third-party/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Tools for Agents [Third Party 系列]](https://google.github.io/adk-docs/tools/third-party/)
 
 </details>
 </details>

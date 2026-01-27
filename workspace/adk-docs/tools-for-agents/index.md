@@ -31,21 +31,21 @@
 ## 第三方工具
 | 序號 | 名稱         | 說明                                           | 連結                                                              |
 | ---: | ------------ | ---------------------------------------------- | ----------------------------------------------------------------- |
-|    1 | Asana        | 管理專案、任務和目標以進行團隊協作             | https://google.github.io/adk-docs/tools/third-party/asana/        |
-|    2 | Atlassian    | 管理問題、搜尋頁面並更新團隊內容               | https://google.github.io/adk-docs/tools/third-party/atlassian/    |
-|    3 | Cartesia     | 生成語音、在地化聲音並建立音訊內容             | https://google.github.io/adk-docs/tools/third-party/cartesia/     |
-|    4 | ElevenLabs   | 生成語音、複製聲音、轉錄音訊並建立音效         | https://google.github.io/adk-docs/tools/third-party/elevenlabs/   |
-|    5 | GitHub       | 分析程式碼、管理 Issue 和 PR，並自動化工作流程 | https://google.github.io/adk-docs/tools/third-party/github/       |
-|    6 | GitLab       | 執行語義程式碼搜尋、檢查流水線、管理合併請求   | https://google.github.io/adk-docs/tools/third-party/gitlab/       |
-|    7 | Hugging Face | 存取模型、資料集、研究論文和 AI 工具           | https://google.github.io/adk-docs/tools/third-party/hugging-face/ |
-|    8 | Linear       | 管理問題、追蹤專案並簡化開發流程               | https://google.github.io/adk-docs/tools/third-party/linear/       |
-|    9 | n8n          | 觸發自動化工作流程、連接應用程式並處理資料     | https://google.github.io/adk-docs/tools/third-party/n8n/          |
-|   10 | Notion       | 搜尋工作區、建立頁面並管理任務和資料庫         | https://google.github.io/adk-docs/tools/third-party/notion/       |
-|   11 | Postman      | 管理 API 集合、工作區並生成客戶端程式碼        | https://google.github.io/adk-docs/tools/third-party/postman/      |
-|   12 | Paypal       | 管理付款、發送發票並處理訂閱                   | https://google.github.io/adk-docs/tools/third-party/paypal/       |
-|   13 | Qdrant       | 使用語義向量搜尋儲存和擷取資訊                 | https://google.github.io/adk-docs/tools/third-party/qdrant/       |
-|   14 | Stripe       | 管理付款、客戶、訂閱和發票                     | https://google.github.io/adk-docs/tools/third-party/stripe/       |
-
+|    1 | Asana        | 管理專案、任務和目標以進行團隊協作             | [asana](./third-party/asana.md)                                   |
+|    2 | Atlassian    | 管理問題、搜尋頁面並更新團隊內容               | [atlassian](./third-party/atlassian.md)                           |
+|    3 | Cartesia     | 生成語音、在地化聲音並建立音訊內容             | [cartesia](./third-party/cartesia.md)                             |
+|    4 | ElevenLabs   | 生成語音、複製聲音、轉錄音訊並建立音效         | [elevenlabs](./third-party/elevenlabs.md)                         |
+|    5 | GitHub       | 分析程式碼、管理 Issue 和 PR，並自動化工作流程 | [github](./third-party/github.md)                                 |
+|    6 | GitLab       | 執行語義程式碼搜尋、檢查流水線、管理合併請求   | [gitlab](./third-party/gitlab.md)                                 |
+|    7 | Hugging Face | 存取模型、資料集、研究論文和 AI 工具           | [hugging-face](./third-party/hugging-face.md)                     |
+|    8 | Linear       | 管理問題、追蹤專案並簡化開發流程               | [linear](./third-party/linear.md)                                 |
+|    9 | n8n          | 觸發自動化工作流程、連接應用程式並處理資料     | [n8n](./third-party/n8n.md)                                       |
+|   10 | Notion       | 搜尋工作區、建立頁面並管理任務和資料庫         | [notion](./third-party/notion.md)                                 |
+|   11 | Postman      | 管理 API 集合、工作區並生成客戶端程式碼        | [postman](./third-party/postman.md)                               |
+|   12 | Paypal       | 管理付款、發送發票並處理訂閱                   | [paypal](./third-party/paypal.md)                                 |
+|   13 | Qdrant       | 使用語義向量搜尋儲存和擷取資訊                 | [qdrant](./third-party/qdrant.md)                                 |
+|   14 | Stripe       | 管理付款、客戶、訂閱和發票                     | [stripe](./third-party/stripe.md)                                 |
+|   15 | Agent UI(AG-UI)       | 一致的介面，以賦能跨技術棧（從行動端到網頁端，甚至是命令行）的豐富客戶端。                    | [ag-ui](./third-party/ag-ui.md)                                 |
 ---
 
 ## 在 ADK agent 中使用預建工具(pre-built tools with ADK Agents)
