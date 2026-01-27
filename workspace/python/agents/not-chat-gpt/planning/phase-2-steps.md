@@ -38,10 +38,10 @@
 
 ### 3.2 Code Execution (參考 Day 21: code-calculator)
 
-- [ ] 整合 `BuiltInCodeExecutor`:
+- [x] 整合 `BuiltInCodeExecutor`:
   - 在 `StrategicPlannerAgent` 的工具列表中加入 `BuiltInCodeExecutor`。
   - 確保只有在策略規劃模式 (`#think`) 下才能執行程式碼，以符合安全設計。
-- [ ] 功能測試與驗證:
+- [x] 功能測試與驗證:
   - 測試案例:
     - `#think 計算 123 * 456`
     - `#think 寫一個 Python 函式來計算費波那契數列`
