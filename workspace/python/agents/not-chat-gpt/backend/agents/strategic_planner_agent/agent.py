@@ -16,12 +16,12 @@ from typing import Dict, Any
 from google.adk.agents import Agent
 from google.adk.tools.tool_context import ToolContext
 from google.adk.planners import BuiltInPlanner
-from google.adk.tools import google_search
 from google.genai import types
 from guardrails.guardrails import before_model_callback
 from tools.document_tools import DOCUMENT_TOOLS
 from tools.session_tools import SESSION_TOOLS
 from tools.memory_tools import MEMORY_TOOLS
+from tools.search_agent_tool import SEARCH_AGENT_TOOL
 
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
@@ -107,8 +107,7 @@ strategic_planner_agent = Agent(
         analyze_user_intent,
         extract_search_keywords,
         validate_answer_completeness,
-        google_search,
-    ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS,
+    ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS + [SEARCH_AGENT_TOOL],
     instruction=(
         """
         你是一位頂尖的策略規劃師，專門將複雜問題拆解成可執行的步驟。
@@ -149,7 +148,7 @@ strategic_planner_agent = Agent(
            - 當需要回顧或查詢長期記憶中的資訊時，使用此工具進行檢索。
            - 如果使用者提示有過去的對話內容或資訊，則調用此工具。
 
-        9. 網路搜尋 (`google_search`):
+        9. 網路搜尋 (`search_agent`):
            - 當文件庫中無法找到答案時，使用此工具進行網路搜尋。
            - 當使用者明確要求提供即時資訊時，使用此工具。
            - 請根據搜尋結果提供最新且準確的資訊，並標示來源。
@@ -158,7 +157,7 @@ strategic_planner_agent = Agent(
         - 嚴格遵循思考流程：分析 -> 提取 -> 搜尋 -> 驗證。
         - 優先使用工具：你的所有決策和資訊都應基於工具的返回結果。
         - 引用來源：如果 `search_files` 的結果包含引用，務必在最終答案中清晰地標示出來。
-        - 引用來源：如果 `google_search` 的結果包含引用，務必在最終答案中清晰地標示出來。
+        - 引用來源：如果 `search_agent` 的結果包含引用，務必在最終答案中清晰地標示出來。
         - 回憶與整合：結合使用者的個人化記憶與文件查詢結果，提供全面且精準的策略建議。
         - 保持專業：你的回答應該是結構化、有條理且基於事實的。
         """

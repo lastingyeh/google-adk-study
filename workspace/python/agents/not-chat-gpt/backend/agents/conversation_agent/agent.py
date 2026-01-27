@@ -13,11 +13,11 @@ from __future__ import annotations
 import os
 
 from google.adk.agents import Agent  # 匯入 ADK 提供的 Agent 類別，用來建立代理核心物件
-from google.adk.tools import google_search
 from guardrails.guardrails import before_model_callback  # 匯入安全防護回調函數
 from tools.document_tools import DOCUMENT_TOOLS
 from tools.session_tools import SESSION_TOOLS
 from tools.memory_tools import MEMORY_TOOLS
+from tools.search_agent_tool import SEARCH_AGENT_TOOL
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
 
@@ -44,7 +44,7 @@ conversation_agent = Agent(
     name="ConversationAgent",  # 代理名稱，可於 UI 下拉選單看到
     model=MODEL_NAME,  # 使用的模型：高速度、適合互動式對話
     description="一個具備狀態管理與 RAG 文件查詢能力的友善 AI 助理。",  # 簡述用途
-    tools=SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS + [google_search],  # 整合狀態管理與文件查詢工具
+    tools=SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS + [SEARCH_AGENT_TOOL],  # 整合狀態管理與文件查詢工具
     instruction=(  # 系統指令：影響基礎回應行為
         """
         你是一個溫暖且樂於助人的助理，具備持久記憶與強大的文件查詢能力。
@@ -74,14 +74,14 @@ conversation_agent = Agent(
            - 當需要回顧或查詢長期記憶中的資訊時，使用此工具進行檢索。
            - 如果使用者提示有過去的對話內容或資訊，則調用此工具。
       
-        6. 網路搜尋 (`google_search`):
+        6. 網路搜尋 (`search_agent`):
            - 當文件庫中無法找到答案時，使用此工具進行網路搜尋。
            - 當使用者明確要求提供即時資訊時，使用此工具。
            - 請根據搜尋結果提供最新且準確的資訊，並標示來源。
 
         互動準則:
         - 優先使用 `search_files` 來回答知識型問題，並根據搜尋結果進行回覆。
-        - 當文件庫中無法找到答案時，使用 `google_search` 進行網路搜尋，並根據結果提供回覆。
+        - 當文件庫中無法找到答案時，使用 `search_agent` 進行網路搜尋，並根據結果提供回覆。
         - 如果搜尋結果中包含引用 (citations)，請在回答中清晰地標示出來源。
         - 結合個人化記憶與文件查詢結果，提供全面且精準的回答。
         - 保持溫暖友善的對話風格。

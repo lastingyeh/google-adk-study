@@ -27,10 +27,10 @@
 
 ### 3.1 Google Search Grounding (參考 Day 7: grounding-agent)
 
-- [ ] 啟用 Grounding 功能:
+- [x] 啟用 Grounding 功能:
   - 在 `ConversationAgent` 和 `StrategicPlannerAgent` 中使用 `google_search` Tool。
   - 確保 Agent 在需要時能自動觸發網路搜尋以獲取最新資訊。
-- [ ] 功能測試與驗證:
+- [x] 功能測試與驗證:
   - 測試案例: 提出需要即時資訊的問題，例如「今天天氣如何？」或「最新的 AI 新聞是什麼？」。
   - 驗證要點:
     - Agent 能正確回傳包含網路搜尋結果的答案。
