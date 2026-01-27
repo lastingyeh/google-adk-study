@@ -1,6 +1,8 @@
 # Runtime Configuration
 
-🔔 `更新日期：2026 年 1 月 22 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/runtime/runconfig/
 
 `RunConfig` 定義了 ADK 中 Agent 的執行時行為與選項。它控制語音與串流設定、函式呼叫、Artifact 儲存以及 LLM 呼叫的限制。
 
@@ -10,10 +12,10 @@
 
 `RunConfig` 類別包含 Agent 執行時行為的設定參數。
 
--   Python ADK 使用 Pydantic 進行此驗證。
--   Go ADK 預設使用可變結構 (mutable structs)。
--   Java ADK 通常使用不可變資料類別 (immutable data classes)。
--   TypeScript ADK 使用標準介面,並由 TypeScript 編譯器提供型別安全。
+- Python ADK 使用 Pydantic 進行此驗證。
+- Go ADK 預設使用可變結構 (mutable structs)。
+- Java ADK 通常使用不可變資料類別 (immutable data classes)。
+- TypeScript ADK 使用標準介面,並由 TypeScript 編譯器提供型別安全。
 
 <details>
 <summary>範例說明</summary>
@@ -191,7 +193,7 @@ class PrebuiltVoiceConfig(_common.BaseModel):
 啟用組合式函式呼叫 (CFC) 支援。僅適用於使用 StreamingMode.SSE 時。啟用時,將呼叫 LIVE API,因為只有它支援 CFC 功能。
 
 > [!TIP] "實驗性發布"
-    `support_cfc` 功能為實驗性質,其 API 或行為可能會在未來版本中變更。
+`support_cfc` 功能為實驗性質,其 API 或行為可能會在未來版本中變更。
 
 ### `streaming_mode`
 

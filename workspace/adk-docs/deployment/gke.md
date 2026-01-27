@@ -1,6 +1,8 @@
 # 部署到 Google Kubernetes Engine (GKE)
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/deploy/gke/
 
 [GKE](https://cloud.google.com/gke) 是 Google Cloud 託管的 Kubernetes 服務。它允許您使用 Kubernetes 部署和管理容器化應用程式。
 
@@ -12,7 +14,7 @@
 
 按照 [設定和安裝](../get-started/index.md) 指南中的說明設定您的環境變數。您還需要安裝 `kubectl` 命令列工具。您可以在 [Google Kubernetes Engine 文件](https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl) 中找到相關說明。
 
-```bash
+```shell
 export GOOGLE_CLOUD_PROJECT=your-project-id # 您的 GCP 專案 ID
 export GOOGLE_CLOUD_LOCATION=us-central1 # 或者您偏好的位置
 export GOOGLE_GENAI_USE_VERTEXAI=true # 如果使用 Vertex AI，請設為 true
@@ -21,13 +23,13 @@ export GOOGLE_CLOUD_PROJECT_NUMBER=$(gcloud projects describe --format json $GOO
 
 如果您沒有安裝 `jq`，可以使用以下命令獲取專案編號：
 
-```bash
+```shell
 gcloud projects describe $GOOGLE_CLOUD_PROJECT
 ```
 
 並從輸出中複製專案編號。
 
-```bash
+```shell
 export GOOGLE_CLOUD_PROJECT_NUMBER=YOUR_PROJECT_NUMBER
 ```
 
@@ -37,7 +39,7 @@ export GOOGLE_CLOUD_PROJECT_NUMBER=YOUR_PROJECT_NUMBER
 
 啟用您的專案所需的 API。您可以使用 `gcloud` 命令列工具執行此操作。
 
-```bash
+```shell
 gcloud services enable \
     container.googleapis.com \
     artifactregistry.googleapis.com \
@@ -47,7 +49,7 @@ gcloud services enable \
 
 授予預設 Compute Engine 服務帳戶所需的角色，以便 `gcloud builds submit` 命令使用。
 
-```bash
+```shell
 ROLES_TO_ASSIGN=(
     "roles/artifactregistry.writer"
     "roles/storage.objectViewer"
@@ -62,7 +64,7 @@ for ROLE in "${ROLES_TO_ASSIGN[@]}"; do
 done
 ```
 
-## 部署負載
+## 部署負載 (Deployment payload)
 
 當您將 ADK 代理工作流程部署到 Google Cloud GKE 時，
 以下內容將上傳至服務：
@@ -74,7 +76,7 @@ done
 預設部署*不*包含 ADK 網頁使用者介面庫，
 除非您將其指定為部署設定，例如 `adk deploy gke` 命令的 `--with_ui` 選項。
 
-## 部署選項
+## 部署選項 (Deployment options)
 
 您可以**使用 Kubernetes 資訊清單手動**或**使用 `adk deploy gke` 命令自動**將代理部署到 GKE。選擇最適合您工作流程的方法。
 
@@ -86,7 +88,7 @@ done
 
 > 如果建立 GKE Standard 叢集，請確保已啟用 [Workload Identity](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity)。Workload Identity 在 Autopilot 叢集中預設啟用。
 
-```bash
+```shell
 gcloud container clusters create-auto adk-cluster \
     --location=$GOOGLE_CLOUD_LOCATION \
     --project=$GOOGLE_CLOUD_PROJECT
@@ -475,8 +477,6 @@ adk-default-service-name   LoadBalancer   34.118.228.70   34.63.153.253   80:325
 <details>
 <summary>UI 測試</summary>
 
-### UI 測試
-
 如果您在啟用 UI 的情況下部署了代理：
 
 您只需在網頁瀏覽器中導航到 kubernetes 服務 URL 即可測試您的代理。
@@ -497,8 +497,6 @@ kubectl logs -l app=adk-agent
 
 <details>
 <summary>API 測試 (curl)</summary>
-
-### API 測試 (curl)
 
 您可以使用 `curl` 等工具與代理的 API 端點互動。這對於程式化互動或在沒有 UI 的情況下部署很有用。
 

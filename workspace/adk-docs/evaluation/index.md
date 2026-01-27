@@ -1,5 +1,8 @@
 # 為什麼要評估代理 (Agents)
-🔔 `更新日期：2026-01-19`
+
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/evaluate/
 
 [`ADK 支援`: `Python`]
 
@@ -135,7 +138,7 @@ ADK 提供兩種方法，根據預定義的資料集和評估標準來評估代�
 手動建立評估集可能很複雜，因此提供了 UI 工具來幫助擷取相關的工作階段，並輕鬆將其轉換為評估集中的評估。請在下方進一步了解如何使用 Web UI 進行評估。以下是一個包含兩個工作階段的評估集範例。評估集檔案由正式的 Pydantic 資料模型支援。兩個關鍵的架構檔案是 [Eval Set](https://github.com/google/adk-python/blob/main/src/google/adk/evaluation/eval_set.py) 和 [Eval Case](https://github.com/google/adk-python/blob/main/src/google/adk/evaluation/eval_case.py)。
 
 > [!WARNING]
-    此評估集評估方法需要使用付費服務：[Vertex Gen AI Evaluation Service API](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/evaluation)。
+此評估集評估方法需要使用付費服務：[Vertex Gen AI Evaluation Service API](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/evaluation)。
 
 *(注意：包含註解是為了說明目的，應將其移除以使 JSON 有效。)*
 

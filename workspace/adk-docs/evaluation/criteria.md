@@ -1,5 +1,8 @@
 # 評估標準 (Evaluation Criteria)
-🔔 `更新日期：2026-01-19`
+
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/evaluate/criteria/
 
 [`ADK 支援`: `Python`]
 

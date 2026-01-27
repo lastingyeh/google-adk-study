@@ -1,5 +1,7 @@
 # 使用網頁介面
-🔔 `更新日期：2026-01-22`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/runtime/web-interface/
 
 [`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 

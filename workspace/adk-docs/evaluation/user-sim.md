@@ -1,5 +1,8 @@
 # 使用者模擬 (User Simulation)
-🔔 `更新日期：2026-01-19`
+
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/evaluate/user-sim/
 
 [`ADK 支援`: `Python v1.18.0`]
 
@@ -39,8 +42,8 @@ stateDiagram-v2
 LLM 會結合此對話計畫與對話歷史記錄，動態產生使用者提示，直到它判斷對話已完成。
 
 > [!TIP] 在 Colab 中嘗試
-    您可以在 [Simulating User Conversations to Dynamically Evaluate ADK Agents](https://github.com/google/adk-samples/blob/main/python/notebooks/evaluation/user_simulation_in_adk_evals.ipynb) 的互動式筆記本中親自測試整個流程。
-    您將定義一個對話情境，執行「預演」(dry run) 以檢查對話，然後執行完整評估以對代理的回應進行評分。
+您可以在 [Simulating User Conversations to Dynamically Evaluate ADK Agents](https://github.com/google/adk-samples/blob/main/python/notebooks/evaluation/user_simulation_in_adk_evals.ipynb) 的互動式筆記本中親自測試整個流程。
+您將定義一個對話情境，執行「預演」(dry run) 以檢查對話，然後執行完整評估以對代理的回應進行評分。
 
 ## 範例：使用對話情境評估 [`hello_world`](https://github.com/google/adk-python/tree/main/contributing/samples/hello_world) 代理
 

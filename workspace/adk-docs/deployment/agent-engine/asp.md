@@ -1,6 +1,8 @@
 # 使用 Agent Starter Pack 部署至 Agent Engine
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`： https://google.github.io/adk-docs/deploy/agent-engine/asp/
 
 此部署程序描述了如何使用 [Agent Starter Pack](https://github.com/GoogleCloudPlatform/agent-starter-pack) (ASP) 和 ADK 命令列介面 (CLI) 工具執行部署。使用 ASP 部署到 Agent Engine 執行階段是一條加速路徑，您應該僅將其用於 _*開發和測試*_。ASP 工具配置的 Google Cloud 資源並非執行 ADK 代理程式工作流所嚴格必需的，在生產部署中使用之前，您應該徹底審查該配置。
 
@@ -62,7 +64,7 @@
 ```
 
 > [!TIP] "注意"
-    ASP 工具在運行時可能會顯示連接到 Google Cloud 的提醒，但在這個階段*不要求*連接。
+ASP 工具在運行時可能會顯示連接到 Google Cloud 的提醒，但在這個階段*不要求*連接。
 
 有關 ASP 對您的 ADK 專案所做更改的更多資訊，請參閱 [您的 ADK 專案變更](#您的-adk-專案變更)。
 
@@ -100,7 +102,7 @@
 使用 ASP 工具時，您是分階段部署的。在第一階段，您運行一個 `make` 命令，該命令會配置在 Agent Engine 上運行 ADK 工作流所需的服務。在第二階段，該工具會將您的專案程式碼上傳到 Agent Engine 服務，並在託管環境中運行。
 
 > [!WARNING] "重要"
-    *在執行這些步驟之前，請確保您的 Google Cloud 目標部署專案已設置為您當前的專案*。`make backend` 命令在執行部署時會使用您當前設置的 Google Cloud 專案。有關設置和檢查當前專案的信息，請參閱 [連接到您的 Google Cloud 專案](#連接到您的-google-cloud-專案)。
+*在執行這些步驟之前，請確保您的 Google Cloud 目標部署專案已設置為您當前的專案*。`make backend` 命令在執行部署時會使用您當前設置的 Google Cloud 專案。有關設置和檢查當前專案的信息，請參閱 [連接到您的 Google Cloud 專案](#連接到您的-google-cloud-專案)。
 
 要將 ADK 專案部署到 Google Cloud 專案中的 Agent Engine：
 
@@ -341,4 +343,4 @@ Agent Starter Pack 是一套用於快速建立 **生產等級 GenAI Agents** 的
 
 ## 測試已部署的代理程式
 
-完成 ADK 代理程式部署後，您應該在其新的託管環境中測試工作流。有關測試部署到 Agent Engine 的 ADK 代理程式的更多資訊，請參閱 [在 Agent Engine 中測試已部署的代理程式](./test.md)。
+完成 ADK 代理程式部署後，您應該在其新的託管環境中測試工作流。有關測試部署到 Agent Engine 的 ADK 代理程式的更多資訊，請參閱 [在 Agent Engine 中測試已部署的代理程式](test.md)。

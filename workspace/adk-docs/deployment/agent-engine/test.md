@@ -1,8 +1,10 @@
 # 在 Agent Engine 中測試已部署的代理
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/deploy/agent-engine/test/
 
-這些說明解釋了如何測試部署到 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview) 執行環境的 ADK 代理。在使用這些說明之前，您需要先使用[可用方法](./index.md)之一，完成將代理部署到 Agent Engine 執行環境的操作。本指南將向您展示如何透過 Google Cloud 控制台查看、互動和測試您部署的代理，並使用 REST API 呼叫或適用於 Python 的 Vertex AI SDK 與代理進行互動。
+這些說明解釋了如何測試部署到 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview) 執行環境的 ADK 代理。在使用這些說明之前，您需要先使用[可用方法](index.md)之一，完成將代理部署到 Agent Engine 執行環境的操作。本指南將向您展示如何透過 Google Cloud 控制台查看、互動和測試您部署的代理，並使用 REST API 呼叫或適用於 Python 的 Vertex AI SDK 與代理進行互動。
 
 ## 測試模式整合說明
 
@@ -47,7 +49,7 @@
 您需要專案的位址和資源識別資訊（`PROJECT_ID`、`LOCATION_ID`、`RESOURCE_ID`）才能測試您的部署。您可以使用 Cloud 控制台或 `gcloud` 命令列工具來尋找這些資訊。
 
 > [!NOTE] Vertex AI 快速模式 (express mode) API 金鑰
-    如果您使用的是 Vertex AI 快速模式，您可以跳過此步驟並使用您的 API 金鑰。
+如果您使用的是 Vertex AI 快速模式，您可以跳過此步驟並使用您的 API 金鑰。
 
 要使用 Google Cloud 控制台尋找您的專案資訊：
 
@@ -110,10 +112,10 @@
 如果部署成功，此請求將回應有效請求清單和預期的資料格式。
 
 > [!TIP] 移除連線 URL 的 `:query` 參數
-    如果您使用 Cloud 控制台 Agent Engine 區塊中提供的 **查詢 URL (Query URL)**，請確保從位址結尾移除 `:query` 參數。
+如果您使用 Cloud 控制台 Agent Engine 區塊中提供的 **查詢 URL (Query URL)**，請確保從位址結尾移除 `:query` 參數。
 
 > [!TIP] 代理連線的存取權限
-    此連線測試要求呼叫使用者具有已部署代理的有效存取權杖 (access token)。從其他環境進行測試時，請確保呼叫使用者具有連線到您 Google Cloud 專案中代理的權限。
+此連線測試要求呼叫使用者具有已部署代理的有效存取權杖 (access token)。從其他環境進行測試時，請確保呼叫使用者具有連線到您 Google Cloud 專案中代理的權限。
 
 ### 發送代理請求
 
@@ -145,7 +147,7 @@
         -d '{"class_method": "async_create_session", "input": {"user_id": "u_123"},}'
     ```
 
-1.  在上述命令的回應中，從 **id** 欄位提取建立的 **工作階段 ID (Session ID)**：
+2.  在上述命令的回應中，從 **id** 欄位提取建立的 **工作階段 ID (Session ID)**：
 
     ```json
     {
@@ -160,11 +162,11 @@
     }
     ```
 
-2.  在開發環境的終端機視窗中，使用此範本和上一步中建立的工作階段 ID 建立請求，向您的代理發送訊息：
+3.  在開發環境的終端機視窗中，使用此範本和上一步中建立的工作階段 ID 建立請求，向您的代理發送訊息：
 
     > Google Cloud 專案
 
-    ```
+    ```shell
     # 使用工作階段 ID 向代理發送串流查詢請求
     curl \
     -H "Authorization: Bearer $(gcloud auth print-access-token)" \
@@ -286,7 +288,7 @@ async for event in remote_app.async_stream_query(
 ```
 
 > [!NOTE]
-    雖然與模型的底層通訊可能涉及圖片的 Base64 編碼，但將圖片資料發送到部署在 Agent Engine 上的代理的推薦且受支援的方法是提供 GCS URI。
+雖然與模型的底層通訊可能涉及圖片的 Base64 編碼，但將圖片資料發送到部署在 Agent Engine 上的代理的推薦且受支援的方法是提供 GCS URI。
 
 ## 清理部署
 

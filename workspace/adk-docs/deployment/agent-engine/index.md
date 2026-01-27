@@ -1,6 +1,8 @@
 # 部署到 Vertex AI Agent Engine
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/deploy/agent-engine/
 
 Google Cloud Vertex AI
 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview)
@@ -13,7 +15,7 @@ Google Cloud Vertex AI
 *   **[Agent Starter Pack 部署](./asp.md)**：如果您沒有現有的 Google Cloud 專案，並且是專門為開發和測試而創建專案，請遵循此加速部署路徑。Agent Starter Pack (ASP) 可幫助您快速部署 ADK 專案，並配置運行帶有 Agent Engine 執行階段的 ADK Agent 並非嚴格必需的 Google Cloud 服務。
 
 > [!NOTE] "Google Cloud 上的 Agent Engine 服務"
-    Agent Engine 是一項付費服務，如果您超過免費存取層級，可能會產生費用。更多資訊可以在 [Agent Engine 定價頁面](https://cloud.google.com/vertex-ai/pricing#vertex-ai-agent-engine) 中找到。
+Agent Engine 是一項付費服務，如果您超過免費存取層級，可能會產生費用。更多資訊可以在 [Agent Engine 定價頁面](https://cloud.google.com/vertex-ai/pricing#vertex-ai-agent-engine) 中找到。
 
 ## 部署酬載 (Deployment payload)
 

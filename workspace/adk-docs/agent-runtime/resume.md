@@ -1,6 +1,8 @@
 # 恢復停止的代理 (Resume stopped agents)
 
-🔔 `更新日期：2026 年 1 月 22 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/runtime/resume/
 
 [`ADK 支援`: `Python v1.14.0`]
 

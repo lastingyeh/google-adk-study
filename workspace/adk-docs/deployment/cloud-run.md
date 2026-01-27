@@ -1,6 +1,8 @@
 # 部署到 Cloud Run
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/deploy/cloud-run/
 
 [Cloud Run](https://cloud.google.com/run)
 是一個全託管平台，讓您可以直接在 Google 的可擴展基礎架構上運行您的程式碼。
@@ -46,7 +48,7 @@
 
 按照 [設定與安裝](../get-started/installation/) 指南中的說明設定您的環境變數。
 
-```
+``` shell
 export GOOGLE_CLOUD_PROJECT=your-project-id
 export GOOGLE_CLOUD_LOCATION=us-central1 # 或者您偏好的位置
 export GOOGLE_GENAI_USE_VERTEXAI=True
@@ -56,7 +58,7 @@ _(將 `your-project-id` 替換為您的實際 GCP 專案 ID)_
 
 或者，您也可以使用來自 AI Studio 的 API 金鑰
 
-```bash
+```shell
 export GOOGLE_CLOUD_PROJECT=your-project-id
 export GOOGLE_CLOUD_LOCATION=us-central1 # 或者您偏好的位置
 export GOOGLE_GENAI_USE_VERTEXAI=FALSE
@@ -81,14 +83,14 @@ export GOOGLE_API_KEY=your-api-key
 
 您可以手動建立 Secret 或使用 CLI：
 
-```
+```shell
 echo "<<put your GOOGLE_API_KEY here>>" | gcloud secrets create GOOGLE_API_KEY --project=my-project --data-file=-
 ```
 
 ### 讀取權限
 您應該給予您的服務帳戶適當的權限以讀取此 Secret。
 
-```
+```shell
 gcloud secrets add-iam-policy-binding GOOGLE_API_KEY --member="serviceAccount:1234567890-compute@developer.gserviceaccount.com" --role="roles/secretmanager.secretAccessor" --project=my-project
 ```
 
@@ -119,7 +121,7 @@ gcloud secrets add-iam-policy-binding GOOGLE_API_KEY --member="serviceAccount:12
 
 可選但建議：設定環境變數可以讓部署指令更簡潔。
 
-```
+```shell
 # 設定您的 Google Cloud 專案 ID
 export GOOGLE_CLOUD_PROJECT="your-gcp-project-id"
 
@@ -140,7 +142,7 @@ export APP_NAME="capital-agent-app"
 
 ##### 最小指令
 
-```
+```shell
 adk deploy cloud_run \
 --project=$GOOGLE_CLOUD_PROJECT \
 --region=$GOOGLE_CLOUD_LOCATION \
@@ -149,7 +151,7 @@ $AGENT_PATH
 
 ##### 帶有可選旗標的完整指令
 
-```
+```shell
 adk deploy cloud_run \
 --project=$GOOGLE_CLOUD_PROJECT \
 --region=$GOOGLE_CLOUD_LOCATION \
@@ -198,7 +200,7 @@ $AGENT_PATH
 
 按如下方式組織您的專案檔案：
 
-```
+```text
 your-project-directory/
 ├── capital_agent/
 │   ├── __init__.py
@@ -304,7 +306,7 @@ your-project-directory/
 
 範例結構：
 
-```txt
+```text
 your-project-directory/
 ├── capital_agent/
 │   ├── __init__.py
@@ -319,7 +321,7 @@ your-project-directory/
 
 在終端機中導航到 `your-project-directory`。
 
-```
+```shell
 gcloud run deploy capital-agent-service \
 --source . \
 --region $GOOGLE_CLOUD_LOCATION \
@@ -608,7 +610,7 @@ your-project-directory/
 
 在終端機中導航到 `your-project-directory`。
 
-```
+```shell
 gcloud run deploy capital-agent-service \
 --source . \
 --region $GOOGLE_CLOUD_LOCATION \
@@ -678,7 +680,7 @@ ADK 開發者 UI 允許您直接在瀏覽器中與您的代理互動、管理工
 
 將範例 URL 替換為您已部署的 Cloud Run 服務的實際 URL。
 
-```
+```shell
 export APP_URL="YOUR_CLOUD_RUN_SERVICE_URL"
 # Example: export APP_URL="https://adk-default-service-name-abc123xyz.a.run.app"
 # 範例：export APP_URL="https://adk-default-service-name-abc123xyz.a.run.app"
@@ -698,7 +700,7 @@ export TOKEN=$(gcloud auth print-identity-token)
 
 驗證已部署的應用程式名稱。
 
-```
+```shell
 curl -X GET -H "Authorization: Bearer $TOKEN" $APP_URL/list-apps
 ```
 
@@ -708,7 +710,7 @@ curl -X GET -H "Authorization: Bearer $TOKEN" $APP_URL/list-apps
 
 初始化或更新特定使用者和工作階段的狀態。如果不同，請將 `capital_agent` 替換為您的實際應用程式名稱。值 `user_123` 和 `session_abc` 是範例識別碼；您可以將它們替換為您想要的使用者和工作階段 ID。
 
-```
+```shell
 curl -X POST -H "Authorization: Bearer $TOKEN" \
     $APP_URL/apps/capital_agent/users/user_123/sessions/session_abc \
     -H "Content-Type: application/json" \
@@ -719,7 +721,7 @@ curl -X POST -H "Authorization: Bearer $TOKEN" \
 
 發送提示給您的代理。將 `capital_agent` 替換為您的應用程式名稱，並根據需要調整使用者/工作階段 ID 和提示。
 
-```
+```shell
 curl -X POST -H "Authorization: Bearer $TOKEN" \
     $APP_URL/run_sse \
     -H "Content-Type: application/json" \

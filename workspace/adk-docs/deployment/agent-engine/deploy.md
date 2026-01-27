@@ -1,6 +1,8 @@
 # 部署至 Vertex AI Agent Engine
 
-🔔 `更新日期：2026 年 1 月 8 日`
+> 🔔 `更新日期：2026-01-27`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/deploy/agent-engine/deploy/
 
 本部署程序說明如何將 ADK 代理程式代碼標準部署至 Google Cloud
 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview)。
@@ -38,14 +40,8 @@
 5. **在您的專案中啟用 Cloud Resource Manager API**
     * 要使用 Agent Engine，您需要[啟用 Cloud Resource Manager API](https://console.developers.google.com/apis/api/cloudresourcemanager.googleapis.com/overview)。點擊「啟用」按鈕以啟用該 API。啟用後，它應顯示為「API 已啟用」。
 
-6. **建立 Google Cloud Storage (GCS) Bucket**：
-    * Agent Engine 需要一個 GCS bucket 來存放您代理程式的代碼和部署所需的依賴項。如果您已經有一個 GCS bucket，建議專門為部署用途建立一個新的。
-    * 按照[說明](https://cloud.google.com/storage/docs/creating-buckets)建立 GCS bucket。建立第一個 bucket 時，您應該從預設設定開始。
-    * 建立儲存 bucket 後，您應該可以在 [Cloud Storage Buckets 頁面](https://console.cloud.google.com/storage/browser) 上看到它。
-    * 您需要 GCS bucket 路徑來設定為您的暫存 bucket（staging bucket）。例如，如果您的 GCS bucket 名稱為 "my-bucket"，則您的 bucket 路徑應為 "gs://my-bucket"。
-
 > [!NOTE] "不使用 GCS bucket 進行部署"
-    您可以使用不同的配置方法來避免在部署時使用 Google Cloud Storage bucket。有關此方法的詳細資訊，請參閱 Agent Engine 文件中的 [部署代理程式](https://docs.cloud.google.com/agent-builder/agent-engine/deploy#from-source-files)。
+您可以使用不同的配置方法來避免在部署時使用 Google Cloud Storage bucket。有關此方法的詳細資訊，請參閱 Agent Engine 文件中的 [部署代理程式](https://docs.cloud.google.com/agent-builder/agent-engine/deploy#from-source-files)。
 
 ## 設定您的開發環境
 
