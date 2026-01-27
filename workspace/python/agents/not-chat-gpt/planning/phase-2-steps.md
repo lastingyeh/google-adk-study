@@ -52,7 +52,7 @@
 
 ### 3.3 File Upload/Download (參考 Day 26: artifact-agent)
 
-- [ ] 整合 `Artifact Tool`:
+- [x] 整合 `Artifact Tool`:
   - 在 Agent 中加入檔案上傳與下載的工具。
   - 實作後端邏輯以處理檔案的暫存與讀取。
 - [ ] API 端點擴充:

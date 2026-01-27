@@ -23,6 +23,7 @@ from tools.session_tools import SESSION_TOOLS
 from tools.memory_tools import MEMORY_TOOLS
 from tools.search_agent_tool import SEARCH_AGENT_TOOL
 from tools.code_exector_tool import CODE_EXECUTOR_AGENT_TOOL
+from tools.artifact_tools import ARTIFACT_TOOLS
 
 
 MODEL_NAME = os.getenv("MODEL_NAME", "gemini-3-flash-preview")
@@ -108,7 +109,7 @@ strategic_planner_agent = Agent(
         analyze_user_intent,
         extract_search_keywords,
         validate_answer_completeness,
-    ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS + [SEARCH_AGENT_TOOL, CODE_EXECUTOR_AGENT_TOOL],
+    ] + SESSION_TOOLS + MEMORY_TOOLS + DOCUMENT_TOOLS + [SEARCH_AGENT_TOOL, CODE_EXECUTOR_AGENT_TOOL] + ARTIFACT_TOOLS,
     instruction=(
         """
         你是一位頂尖的策略規劃師，專門將複雜問題拆解成可執行的步驟。
@@ -119,6 +120,7 @@ strategic_planner_agent = Agent(
         2.  文件查詢 (RAG): 你能使用 `search_files` 工具，在提供的文件庫中尋找解決問題所需的資料。
         3.  網路搜尋: 你能使用 `search_agent` 工具來進行即時的網路搜尋，以獲取最新資訊。
         4.  程式碼執行: 你能使用 `code_exector_agent` 工具來編寫並執行 Python 程式碼以解決技術性問題。
+        5.  檔案管理: 你能使用 Artifact 工具來儲存、載入和列出檔案。
 
         工具使用策略:
 
@@ -159,6 +161,11 @@ strategic_planner_agent = Agent(
         10. 程式碼執行 (`code_exector_agent`):
            - 當問題需要技術性解決方案或數據處理時，使用此工具來編寫並執行 Python 程式碼。
            - 確保程式碼的正確性與效率，並根據執行結果調整你的策略建議。
+        
+        11. 檔案管理 (Artifact 工具):
+           - 當使用者要求保存檔案時，按照使用者需求編輯並儲存檔案，使用 `save_artifact` 工具來儲存檔案。
+           - 當需要載入先前保存的資料時，使用 `load_artifact` 工具。
+           - 使用 `list_artifacts` 工具來查看當前可用的檔案列表。
 
         互動準則:
         - 嚴格遵循思考流程：分析 -> 提取 -> 搜尋 -> 編寫程式碼執行 -> 驗證。
@@ -167,6 +174,7 @@ strategic_planner_agent = Agent(
         - 引用來源：如果 `search_agent` 的結果包含引用，務必在最終答案中清晰地標示出來。
         - 編寫程式碼並執行：當需要技術性解決方案時，使用 `code_exector_agent` 來編寫並執行程式碼，並根據結果調整你的策略建議。
         - 回憶與整合：結合使用者的個人化記憶與文件查詢結果，提供全面且精準的策略建議。
+        - 檔案管理：按照使用者需求，適時使用 Artifact 工具來儲存和載入重要資料。
         - 保持專業：你的回答應該是結構化、有條理且基於事實的。
         """
     ),

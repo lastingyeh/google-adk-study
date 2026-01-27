@@ -4,6 +4,8 @@ import sys
 from dotenv import load_dotenv
 from google.adk.cli.service_registry import get_service_registry
 from google.adk.memory import VertexAiMemoryBankService, InMemoryMemoryService, BaseMemoryService
+from google.adk.artifacts import InMemoryArtifactService, GcsArtifactService, BaseArtifactService
+
 
 # 添加 backend 目錄到 Python 路徑
 sys.path.append(os.path.dirname(__file__))
@@ -90,3 +92,22 @@ def memory_service_factory() -> BaseMemoryService:
         return VertexAiMemoryBankService(agent_engine_id=agent_engine_id)
     print("⚠️ No memory service URI configured, defaulting to InMemoryMemoryService.")
     return InMemoryMemoryService()
+
+# artifact service uri factory
+def artifact_service_uri_factory():
+    ARTIFACT_SERVICE_URI = os.getenv("ARTIFACT_SERVICE_URI")
+    if ARTIFACT_SERVICE_URI:
+        print("✅ Using ARTIFACT_SERVICE_URI for artifact service.")
+        return ARTIFACT_SERVICE_URI
+    print("⚠️ No artifact service URI configured, defaulting to None.")
+    return None
+
+# artifact service factory
+def artifact_service_factory() -> BaseArtifactService:
+    ARTIFACT_SERVICE_URI = os.getenv("ARTIFACT_SERVICE_URI")
+    if ARTIFACT_SERVICE_URI:
+        bucket_name = ARTIFACT_SERVICE_URI.split("://")[-1]
+        print("✅ Using ARTIFACT_SERVICE_URI for artifact service.")
+        return GcsArtifactService(bucket_name=bucket_name)
+    print("⚠️ No artifact service URI configured, defaulting to InMemoryArtifactService.")
+    return InMemoryArtifactService()

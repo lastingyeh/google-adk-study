@@ -1,3 +1,4 @@
 # Ignore sqlite database files
 *.db
-
+# Ignore ADK artifact files
+.adk
