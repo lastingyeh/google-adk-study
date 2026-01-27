@@ -1,5 +1,8 @@
 # 代理 (Agents)
-🔔 `更新日期：2026-01-14`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/
 
 [`ADK 支援`: `Python` | `TypeScript` | `Go` | `Java`]
 

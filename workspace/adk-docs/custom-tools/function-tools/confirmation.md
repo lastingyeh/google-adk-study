@@ -1,6 +1,8 @@
 # 取得 ADK 工具的操作確認
 
-🔔 `更新日期：2026-01-13`
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/tools-custom/confirmation/
 
 [`ADK 支援`: `Python v1.14.0` | `Experimental`]
 

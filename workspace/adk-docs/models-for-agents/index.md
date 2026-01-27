@@ -1,5 +1,8 @@
 # 適用於 ADK Agent 的 AI 模型
-🔔 `更新日期：2026-01-21`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/models/
 
 [`ADK 支援`: `Python` | `Typescript` | `Go` | `Java`]
 

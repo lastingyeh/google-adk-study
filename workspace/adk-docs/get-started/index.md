@@ -1,5 +1,8 @@
-# 開始使用
-🔔 `更新日期：2026-01-22`
+# 開始使用 (Get Started)
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/get-started/
 
 Agent Development Kit (ADK) 旨在賦予開發者快速構建、管理、評估和部署 AI 驅動代理的能力。這些快速入門指南可讓您在不到 20 分鐘的時間內設置並運行一個簡單的代理。
 

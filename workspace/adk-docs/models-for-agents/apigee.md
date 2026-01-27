@@ -1,5 +1,8 @@
 # Apigee AI Gateway for ADK agents
-🔔 `更新日期：2026-01-21`
+
+> 🔔 `更新日期：2026-01-23`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/agents/models/apigee/
 
 [`ADK 支援`: `Python v1.18.0` | `Java v0.4.0`]
 
