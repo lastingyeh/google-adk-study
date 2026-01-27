@@ -1,10 +1,14 @@
 import os
+import sys
 
 from dotenv import load_dotenv
 from google.adk.cli.service_registry import get_service_registry
 from google.adk.memory import VertexAiMemoryBankService, InMemoryMemoryService, BaseMemoryService
 
-from backend.service.redis_session_service import RedisSessionService
+# 添加 backend 目錄到 Python 路徑
+sys.path.append(os.path.dirname(__file__))
+
+from service.redis_session_service import RedisSessionService
 
 # 在所有其他匯入之前，從 .env 檔案載入環境變數
 load_dotenv()
