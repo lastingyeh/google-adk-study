@@ -131,6 +131,7 @@ tools:
   - https://google.github.io/adk-docs/tools/google-cloud/bigquery/
   - https://google.github.io/adk-docs/tools/google-cloud/bigtable/
   - https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/
+  - https://google.github.io/adk-docs/tools/google-cloud/data-agent/
   - https://google.github.io/adk-docs/tools/google-cloud/express-mode/
   - https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
   - https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
@@ -143,6 +144,8 @@ tools:
   - https://google.github.io/adk-docs/tools/third-party/asana/
   - https://google.github.io/adk-docs/tools/third-party/atlassian/
   - https://google.github.io/adk-docs/tools/third-party/cartesia/
+  - https://google.github.io/adk-docs/tools/third-party/chroma/
+  - https://google.github.io/adk-docs/tools/third-party/daytona/
   - https://google.github.io/adk-docs/tools/third-party/elevenlabs/
   - https://google.github.io/adk-docs/tools/third-party/github/
   - https://google.github.io/adk-docs/tools/third-party/gitlab/

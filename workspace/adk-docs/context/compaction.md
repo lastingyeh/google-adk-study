@@ -76,9 +76,3 @@ app = App(
 ```
 
 您可以透過修改 `SlidingWindowCompactor` 的摘要器類別 `LlmEventSummarizer`（包括更改該類別的 `prompt_template` 設定），進一步優化其操作。更多細節請參閱 [`LlmEventSummarizer` 程式碼](https://github.com/google/adk-python/blob/main/src/google/adk/apps/llm_event_summarizer.py#L60)。
-
-## 下一步
-
-如需如何使用`LlmEventSummarizer` 完整實作，請參閱以下範例：
-
-- [LlmEventSummarizer 參考範例](../../python/agents/hello-world-app/)

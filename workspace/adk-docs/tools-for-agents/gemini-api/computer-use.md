@@ -104,8 +104,6 @@ root_agent = Agent(
 
 有關完整的程式碼範例，請參閱 [computer_use](https://github.com/google/adk-python/tree/main/contributing/samples/computer_use) 代理範例專案。
 
-## 下一步
+### 實作範例
 
-如需如何使用`Computer Use` 完整實作，請參閱以下範例：
-
-- [Computer Use 參考範例](../../../python/agents/computer-use/)
+-   [`Computer Use`](../../../python/agents/computer-use/): 展示如何使用電腦使用工具集來操作瀏覽器完成任務的完整代理範例。

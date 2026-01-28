@@ -168,10 +168,10 @@ def request_time_off(days: int, tool_context: ToolContext):
 -   此功能不支援 [DatabaseSessionService](https://google.github.io/adk-docs/api-reference/python/google-adk.html#google.adk.sessions.DatabaseSessionService)。
 -   此功能不支援 [VertexAiSessionService](https://google.github.io/adk-docs/api-reference/python/google-adk.html#google.adk.sessions.VertexAiSessionService)。
 
+### 實作範例
+
+-   [`Human Tool Comfirmation`](../../../python/agents/human-tool-confirmation/): 使用進階工具確認功能，要求使用者批准或拒絕工具調用請求，並提供結構化回應數據。
+
 ## 下一步
 
 如需更多關於為代理工作流程建構 ADK 工具的資訊，請參閱 [函數工具 (Function tools)](./overview.md)。
-
-如需如何使用 進階確認 `Advanced confirmation` 完整實作，請參閱以下範例：
-
-- [human_tool_confirmation 參考範例](../../../python/agents/human-tool-confirmation/)

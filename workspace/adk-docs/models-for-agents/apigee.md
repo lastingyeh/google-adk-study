@@ -83,6 +83,6 @@ LlmAgent agent =
 
 在此配置下，您代理的每一次 API 呼叫都會先經過 Apigee。在請求安全地轉發到基礎 AI 模型端點之前，所有必要的原則（安全性、速率限制、記錄）都會在此執行。有關使用 Apigee 代理的完整程式碼範例，請參閱 [Hello World Apigee LLM](https://github.com/google/adk-python/tree/main/contributing/samples/hello_world_apigeellm)。
 
-## 下一步
+### 實作範例
 
-- [Pack Auto Insurance Agent 參考範例](../../python/agents/pack-auto-insurance-agent/)
+-   [`Pack Auto Insurance Agent`](../../python/agents/pack-auto-insurance-agent/): 展示如何使用 ApigeeLlm 封裝來治理生成式 AI 模型流量的完整代理範例。

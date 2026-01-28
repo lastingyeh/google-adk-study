@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://google.github.io/adk-docs/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/01/23`
+**更新日期 (Data Updated)**: `2026/01/28`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 
@@ -119,42 +119,45 @@
 | 107 |  | Bigquery | [https://google.github.io/adk-docs/tools/google-cloud/bigquery/](https://google.github.io/adk-docs/tools/google-cloud/bigquery/) |
 | 108 |  | Bigtable | [https://google.github.io/adk-docs/tools/google-cloud/bigtable/](https://google.github.io/adk-docs/tools/google-cloud/bigtable/) |
 | 109 |  | Code Exec Agent Engine | [https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/](https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/) |
-| 110 |  | Express Mode | [https://google.github.io/adk-docs/tools/google-cloud/express-mode/](https://google.github.io/adk-docs/tools/google-cloud/express-mode/) |
-| 111 |  | Gke Code Executor | [https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/](https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/) |
-| 112 |  | Mcp Toolbox For Databases | [https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/](https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/) |
-| 113 |  | Pubsub | [https://google.github.io/adk-docs/tools/google-cloud/pubsub/](https://google.github.io/adk-docs/tools/google-cloud/pubsub/) |
-| 114 |  | Spanner | [https://google.github.io/adk-docs/tools/google-cloud/spanner/](https://google.github.io/adk-docs/tools/google-cloud/spanner/) |
-| 115 |  | Vertex Ai Rag Engine | [https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/](https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/) |
-| 116 |  | Vertex Ai Search | [https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/](https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/) |
-| 117 |  | Third Party | [https://google.github.io/adk-docs/tools/third-party/](https://google.github.io/adk-docs/tools/third-party/) |
-| 118 |  | Ag Ui | [https://google.github.io/adk-docs/tools/third-party/ag-ui/](https://google.github.io/adk-docs/tools/third-party/ag-ui/) |
-| 119 |  | Asana | [https://google.github.io/adk-docs/tools/third-party/asana/](https://google.github.io/adk-docs/tools/third-party/asana/) |
-| 120 |  | Atlassian | [https://google.github.io/adk-docs/tools/third-party/atlassian/](https://google.github.io/adk-docs/tools/third-party/atlassian/) |
-| 121 |  | Cartesia | [https://google.github.io/adk-docs/tools/third-party/cartesia/](https://google.github.io/adk-docs/tools/third-party/cartesia/) |
-| 122 |  | Elevenlabs | [https://google.github.io/adk-docs/tools/third-party/elevenlabs/](https://google.github.io/adk-docs/tools/third-party/elevenlabs/) |
-| 123 |  | Github | [https://google.github.io/adk-docs/tools/third-party/github/](https://google.github.io/adk-docs/tools/third-party/github/) |
-| 124 |  | Gitlab | [https://google.github.io/adk-docs/tools/third-party/gitlab/](https://google.github.io/adk-docs/tools/third-party/gitlab/) |
-| 125 |  | Hugging Face | [https://google.github.io/adk-docs/tools/third-party/hugging-face/](https://google.github.io/adk-docs/tools/third-party/hugging-face/) |
-| 126 |  | Linear | [https://google.github.io/adk-docs/tools/third-party/linear/](https://google.github.io/adk-docs/tools/third-party/linear/) |
-| 127 |  | N8n | [https://google.github.io/adk-docs/tools/third-party/n8n/](https://google.github.io/adk-docs/tools/third-party/n8n/) |
-| 128 |  | Notion | [https://google.github.io/adk-docs/tools/third-party/notion/](https://google.github.io/adk-docs/tools/third-party/notion/) |
-| 129 |  | Paypal | [https://google.github.io/adk-docs/tools/third-party/paypal/](https://google.github.io/adk-docs/tools/third-party/paypal/) |
-| 130 |  | Postman | [https://google.github.io/adk-docs/tools/third-party/postman/](https://google.github.io/adk-docs/tools/third-party/postman/) |
-| 131 |  | Qdrant | [https://google.github.io/adk-docs/tools/third-party/qdrant/](https://google.github.io/adk-docs/tools/third-party/qdrant/) |
-| 132 |  | Stripe | [https://google.github.io/adk-docs/tools/third-party/stripe/](https://google.github.io/adk-docs/tools/third-party/stripe/) |
-| 133 | **Tools-custom** | Tools Custom | [https://google.github.io/adk-docs/tools-custom/](https://google.github.io/adk-docs/tools-custom/) |
-| 134 |  | Authentication | [https://google.github.io/adk-docs/tools-custom/authentication/](https://google.github.io/adk-docs/tools-custom/authentication/) |
-| 135 |  | Confirmation | [https://google.github.io/adk-docs/tools-custom/confirmation/](https://google.github.io/adk-docs/tools-custom/confirmation/) |
-| 136 |  | Function Tools | [https://google.github.io/adk-docs/tools-custom/function-tools/](https://google.github.io/adk-docs/tools-custom/function-tools/) |
-| 137 |  | Mcp Tools | [https://google.github.io/adk-docs/tools-custom/mcp-tools/](https://google.github.io/adk-docs/tools-custom/mcp-tools/) |
-| 138 |  | Openapi Tools | [https://google.github.io/adk-docs/tools-custom/openapi-tools/](https://google.github.io/adk-docs/tools-custom/openapi-tools/) |
-| 139 |  | Performance | [https://google.github.io/adk-docs/tools-custom/performance/](https://google.github.io/adk-docs/tools-custom/performance/) |
-| 140 | **Tutorials** | Tutorials | [https://google.github.io/adk-docs/tutorials/](https://google.github.io/adk-docs/tutorials/) |
-| 141 |  | Agent Team | [https://google.github.io/adk-docs/tutorials/agent-team/](https://google.github.io/adk-docs/tutorials/agent-team/) |
-| 142 |  | Coding With Ai | [https://google.github.io/adk-docs/tutorials/coding-with-ai/](https://google.github.io/adk-docs/tutorials/coding-with-ai/) |
-| 143 | **Visual-builder** | Visual Builder | [https://google.github.io/adk-docs/visual-builder/](https://google.github.io/adk-docs/visual-builder/) |
+| 110 |  | Data Agent | [https://google.github.io/adk-docs/tools/google-cloud/data-agent/](https://google.github.io/adk-docs/tools/google-cloud/data-agent/) |
+| 111 |  | Express Mode | [https://google.github.io/adk-docs/tools/google-cloud/express-mode/](https://google.github.io/adk-docs/tools/google-cloud/express-mode/) |
+| 112 |  | Gke Code Executor | [https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/](https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/) |
+| 113 |  | Mcp Toolbox For Databases | [https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/](https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/) |
+| 114 |  | Pubsub | [https://google.github.io/adk-docs/tools/google-cloud/pubsub/](https://google.github.io/adk-docs/tools/google-cloud/pubsub/) |
+| 115 |  | Spanner | [https://google.github.io/adk-docs/tools/google-cloud/spanner/](https://google.github.io/adk-docs/tools/google-cloud/spanner/) |
+| 116 |  | Vertex Ai Rag Engine | [https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/](https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/) |
+| 117 |  | Vertex Ai Search | [https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/](https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/) |
+| 118 |  | Third Party | [https://google.github.io/adk-docs/tools/third-party/](https://google.github.io/adk-docs/tools/third-party/) |
+| 119 |  | Ag Ui | [https://google.github.io/adk-docs/tools/third-party/ag-ui/](https://google.github.io/adk-docs/tools/third-party/ag-ui/) |
+| 120 |  | Asana | [https://google.github.io/adk-docs/tools/third-party/asana/](https://google.github.io/adk-docs/tools/third-party/asana/) |
+| 121 |  | Atlassian | [https://google.github.io/adk-docs/tools/third-party/atlassian/](https://google.github.io/adk-docs/tools/third-party/atlassian/) |
+| 122 |  | Cartesia | [https://google.github.io/adk-docs/tools/third-party/cartesia/](https://google.github.io/adk-docs/tools/third-party/cartesia/) |
+| 123 |  | Chroma | [https://google.github.io/adk-docs/tools/third-party/chroma/](https://google.github.io/adk-docs/tools/third-party/chroma/) |
+| 124 |  | Daytona | [https://google.github.io/adk-docs/tools/third-party/daytona/](https://google.github.io/adk-docs/tools/third-party/daytona/) |
+| 125 |  | Elevenlabs | [https://google.github.io/adk-docs/tools/third-party/elevenlabs/](https://google.github.io/adk-docs/tools/third-party/elevenlabs/) |
+| 126 |  | Github | [https://google.github.io/adk-docs/tools/third-party/github/](https://google.github.io/adk-docs/tools/third-party/github/) |
+| 127 |  | Gitlab | [https://google.github.io/adk-docs/tools/third-party/gitlab/](https://google.github.io/adk-docs/tools/third-party/gitlab/) |
+| 128 |  | Hugging Face | [https://google.github.io/adk-docs/tools/third-party/hugging-face/](https://google.github.io/adk-docs/tools/third-party/hugging-face/) |
+| 129 |  | Linear | [https://google.github.io/adk-docs/tools/third-party/linear/](https://google.github.io/adk-docs/tools/third-party/linear/) |
+| 130 |  | N8n | [https://google.github.io/adk-docs/tools/third-party/n8n/](https://google.github.io/adk-docs/tools/third-party/n8n/) |
+| 131 |  | Notion | [https://google.github.io/adk-docs/tools/third-party/notion/](https://google.github.io/adk-docs/tools/third-party/notion/) |
+| 132 |  | Paypal | [https://google.github.io/adk-docs/tools/third-party/paypal/](https://google.github.io/adk-docs/tools/third-party/paypal/) |
+| 133 |  | Postman | [https://google.github.io/adk-docs/tools/third-party/postman/](https://google.github.io/adk-docs/tools/third-party/postman/) |
+| 134 |  | Qdrant | [https://google.github.io/adk-docs/tools/third-party/qdrant/](https://google.github.io/adk-docs/tools/third-party/qdrant/) |
+| 135 |  | Stripe | [https://google.github.io/adk-docs/tools/third-party/stripe/](https://google.github.io/adk-docs/tools/third-party/stripe/) |
+| 136 | **Tools-custom** | Tools Custom | [https://google.github.io/adk-docs/tools-custom/](https://google.github.io/adk-docs/tools-custom/) |
+| 137 |  | Authentication | [https://google.github.io/adk-docs/tools-custom/authentication/](https://google.github.io/adk-docs/tools-custom/authentication/) |
+| 138 |  | Confirmation | [https://google.github.io/adk-docs/tools-custom/confirmation/](https://google.github.io/adk-docs/tools-custom/confirmation/) |
+| 139 |  | Function Tools | [https://google.github.io/adk-docs/tools-custom/function-tools/](https://google.github.io/adk-docs/tools-custom/function-tools/) |
+| 140 |  | Mcp Tools | [https://google.github.io/adk-docs/tools-custom/mcp-tools/](https://google.github.io/adk-docs/tools-custom/mcp-tools/) |
+| 141 |  | Openapi Tools | [https://google.github.io/adk-docs/tools-custom/openapi-tools/](https://google.github.io/adk-docs/tools-custom/openapi-tools/) |
+| 142 |  | Performance | [https://google.github.io/adk-docs/tools-custom/performance/](https://google.github.io/adk-docs/tools-custom/performance/) |
+| 143 | **Tutorials** | Tutorials | [https://google.github.io/adk-docs/tutorials/](https://google.github.io/adk-docs/tutorials/) |
+| 144 |  | Agent Team | [https://google.github.io/adk-docs/tutorials/agent-team/](https://google.github.io/adk-docs/tutorials/agent-team/) |
+| 145 |  | Coding With Ai | [https://google.github.io/adk-docs/tutorials/coding-with-ai/](https://google.github.io/adk-docs/tutorials/coding-with-ai/) |
+| 146 | **Visual-builder** | Visual Builder | [https://google.github.io/adk-docs/visual-builder/](https://google.github.io/adk-docs/visual-builder/) |
 
 ## 總結說明 (Summary) 
 
-- **總頁面數 (Total Pages)**: `143`
+- **總頁面數 (Total Pages)**: `146`
 - **總分類數 (Categories)**: `27`

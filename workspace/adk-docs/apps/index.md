@@ -102,6 +102,6 @@ if __name__ == "__main__":
 python main.py
 ```
 
-## 下一步
+### 實作範例
 
-有關更完整的範例程式碼實作，請參閱 [Hello World App](../../python/agents/hello-world-app/) 程式碼範例。
+-   [`Hello World App`](../../python/agents/hello-world-app/)

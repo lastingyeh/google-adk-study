@@ -41,15 +41,11 @@ app = App(
 -   **`ttl_seconds`** (int)：快取的存活時間 (TTL)，以秒為單位。此設定決定快取內容在重新整理前儲存的時間。預設值為 `1800`（30 分鐘）。
 -   **`cache_intervals`** (int)：相同快取內容在過期前可使用的最大次數。此設定可讓您控制快取更新的頻率，即使 TTL 尚未過期。預設值為 `10`。
 
-## 下一步
+### 實作範例
 
-如需如何使用及測試內容快取功能的完整實作，請參閱以下範例：
+- [`Cache Analysis`](../../python/agents/cache-analysis/)：展示如何分析內容快取效能的程式碼範例。
 
--   [`cache_analysis`](../../python/agents/cache-analysis/)：展示如何分析內容快取效能的程式碼範例。
-
-如果您的使用案例需要提供在整個工作階段中使用的指令，請考慮為代理使用 `static_instruction` 參數，這允許您修正生成式模型的系統指令。如需更多詳細資訊，請參閱此範例程式碼：
-
--   [`static_instruction`](../../python/agents/static-instruction/)：使用靜態指令實作數位寵物代理，更多姿資訊[參考](#static_instruction-vs-instructions)。
+- [`Static Instruction`](../../python/agents/static-instruction/)：使用靜態指令實作數位寵物代理，更多資訊[參考](#static_instruction-vs-instructions)。
 
 ---
 ## 更多資訊

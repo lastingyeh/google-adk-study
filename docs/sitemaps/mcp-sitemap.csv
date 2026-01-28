@@ -4,16 +4,28 @@ Antitrust,Antitrust,https://modelcontextprotocol.io/community/antitrust
 Communication,Communication,https://modelcontextprotocol.io/community/communication
 Governance,Governance,https://modelcontextprotocol.io/community/governance
 Sep-guidelines,Sep Guidelines,https://modelcontextprotocol.io/community/sep-guidelines
+Seps,1024 Mcp Client Security Requirements For Local Server ,https://modelcontextprotocol.io/community/seps/1024-mcp-client-security-requirements-for-local-server-
+Seps,1034  Support Default Values For All Primitive Types In,https://modelcontextprotocol.io/community/seps/1034--support-default-values-for-all-primitive-types-in
+Seps,1036 Url Mode Elicitation For Secure Out Of Band Intera,https://modelcontextprotocol.io/community/seps/1036-url-mode-elicitation-for-secure-out-of-band-intera
 Seps,1046 Support Oauth Client Credentials Flow In Authoriza,https://modelcontextprotocol.io/community/seps/1046-support-oauth-client-credentials-flow-in-authoriza
 Seps,1302 Formalize Working Groups And Interest Groups In Mc,https://modelcontextprotocol.io/community/seps/1302-formalize-working-groups-and-interest-groups-in-mc
+Seps,1303 Input Validation Errors As Tool Execution Errors,https://modelcontextprotocol.io/community/seps/1303-input-validation-errors-as-tool-execution-errors
 Seps,1319 Decouple Request Payload From Rpc Methods Definiti,https://modelcontextprotocol.io/community/seps/1319-decouple-request-payload-from-rpc-methods-definiti
 Seps,1330 Elicitation Enum Schema Improvements And Standards,https://modelcontextprotocol.io/community/seps/1330-elicitation-enum-schema-improvements-and-standards
+Seps,1577  Sampling With Tools,https://modelcontextprotocol.io/community/seps/1577--sampling-with-tools
+Seps,1613 Establish Json Schema 2020 12 As Default Dialect F,https://modelcontextprotocol.io/community/seps/1613-establish-json-schema-2020-12-as-default-dialect-f
+Seps,1686 Tasks,https://modelcontextprotocol.io/community/seps/1686-tasks
+Seps,1699 Support Sse Polling Via Server Side Disconnect,https://modelcontextprotocol.io/community/seps/1699-support-sse-polling-via-server-side-disconnect
+Seps,1730 Sdks Tiering System,https://modelcontextprotocol.io/community/seps/1730-sdks-tiering-system
 Seps,1850 Pr Based Sep Workflow,https://modelcontextprotocol.io/community/seps/1850-pr-based-sep-workflow
+Seps,2085 Governance Succession And Amendment,https://modelcontextprotocol.io/community/seps/2085-governance-succession-and-amendment
+Seps,2133 Extensions,https://modelcontextprotocol.io/community/seps/2133-extensions
 Seps,932 Model Context Protocol Governance,https://modelcontextprotocol.io/community/seps/932-model-context-protocol-governance
 Seps,973 Expose Additional Metadata For Implementations Res,https://modelcontextprotocol.io/community/seps/973-expose-additional-metadata-for-implementations-res
 Seps,985 Align Oauth 20 Protected Resource Metadata With Rf,https://modelcontextprotocol.io/community/seps/985-align-oauth-20-protected-resource-metadata-with-rf
 Seps,986 Specify Format For Tool Names,https://modelcontextprotocol.io/community/seps/986-specify-format-for-tool-names
 Seps,990 Enable Enterprise Idp Policy Controls During Mcp O,https://modelcontextprotocol.io/community/seps/990-enable-enterprise-idp-policy-controls-during-mcp-o
+Seps,991 Enable Url Based Client Registration Using Oauth C,https://modelcontextprotocol.io/community/seps/991-enable-url-based-client-registration-using-oauth-c
 Seps,994 Shared Communication Practicesguidelines,https://modelcontextprotocol.io/community/seps/994-shared-communication-practicesguidelines
 Seps,Seps,https://modelcontextprotocol.io/community/seps
 Working-interest-groups,Working Interest Groups,https://modelcontextprotocol.io/community/working-interest-groups
@@ -22,6 +34,8 @@ Develop,Build Client,https://modelcontextprotocol.io/docs/develop/build-client
 Develop,Build Server,https://modelcontextprotocol.io/docs/develop/build-server
 Develop,Connect Local Servers,https://modelcontextprotocol.io/docs/develop/connect-local-servers
 Develop,Connect Remote Servers,https://modelcontextprotocol.io/docs/develop/connect-remote-servers
+Extensions,Apps,https://modelcontextprotocol.io/docs/extensions/apps
+Extensions,Extensions,https://modelcontextprotocol.io/extensions
 Getting-started,Intro,https://modelcontextprotocol.io/docs/getting-started/intro
 Learn,Architecture,https://modelcontextprotocol.io/docs/learn/architecture
 Learn,Client Concepts,https://modelcontextprotocol.io/docs/learn/client-concepts
@@ -30,6 +44,18 @@ Sdk,Sdk,https://modelcontextprotocol.io/docs/sdk
 Tools,Inspector,https://modelcontextprotocol.io/docs/tools/inspector
 Tutorials,Authorization,https://modelcontextprotocol.io/docs/tutorials/security/authorization
 Examples,Examples,https://modelcontextprotocol.io/examples
+About,About,https://modelcontextprotocol.io/registry/about
+Authentication,Authentication,https://modelcontextprotocol.io/registry/authentication
+Faq,Faq,https://modelcontextprotocol.io/registry/faq
+Github-actions,Github Actions,https://modelcontextprotocol.io/registry/github-actions
+Moderation-policy,Moderation Policy,https://modelcontextprotocol.io/registry/moderation-policy
+Package-types,Package Types,https://modelcontextprotocol.io/registry/package-types
+Quickstart,Quickstart,https://modelcontextprotocol.io/registry/quickstart
+Registry-aggregators,Registry Aggregators,https://modelcontextprotocol.io/registry/registry-aggregators
+Remote-servers,Remote Servers,https://modelcontextprotocol.io/registry/remote-servers
+Terms-of-service,Terms Of Service,https://modelcontextprotocol.io/registry/terms-of-service
+Versioning,Versioning,https://modelcontextprotocol.io/registry/versioning
+Versioning,Versioning,https://modelcontextprotocol.io/specification/versioning
 2024-11-05,Architecture,https://modelcontextprotocol.io/specification/2024-11-05/architecture
 2024-11-05,Basic,https://modelcontextprotocol.io/specification/2024-11-05/basic
 2024-11-05,Lifecycle,https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle
@@ -135,4 +161,3 @@ Draft,Tools,https://modelcontextprotocol.io/specification/draft/server/tools
 Draft,Completion,https://modelcontextprotocol.io/specification/draft/server/utilities/completion
 Draft,Logging,https://modelcontextprotocol.io/specification/draft/server/utilities/logging
 Draft,Pagination,https://modelcontextprotocol.io/specification/draft/server/utilities/pagination
-Versioning,Versioning,https://modelcontextprotocol.io/specification/versioning

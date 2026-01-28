@@ -92,8 +92,6 @@ MCP 工具箱為以下資料庫和資料平台提供現成的工具集：
 
 代理開發套件 (ADK) 和 [Genkit](https://genkit.dev/) 提供對這些 MCP 工具的內建支援，讓您的 AI 代理能夠有效率地編排生成式媒體工作流程。如需實作指南，請參考 [ADK 範例代理](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/adk) 和 [Genkit 範例](https://github.com/GoogleCloudPlatform/vertex-ai-creative-studio/tree/main/experiments/mcp-genmedia/sample-agents/genkit)。
 
-## 下一步
+### 實作範例
 
-如需如何使用`genmedia_agent` 完整實作，請參閱以下範例：
-
-- [關於 genmedia_agent 參考範例](../../python/agents/genmedia-agent/)
+-   [`Genmedia Agent`](../../python/agents/genmedia-agent/): 使用 MCP 工具與 Google Cloud 生成式媒體服務互動，以建立包含圖像和語音的多媒體內容。

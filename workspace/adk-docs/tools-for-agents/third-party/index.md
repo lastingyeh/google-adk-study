@@ -11,6 +11,7 @@
 | <img src="https://google.github.io/adk-docs/assets/tools-asana.png" style="width:32px;"/> | Asana | 管理專案、任務和目標以進行團隊協作 | [asana.md](./asana.md) |
 | <img src="https://google.github.io/adk-docs/assets/tools-atlassian.png" style="width:32px;"/> | Atlassian | 管理議題、搜尋頁面並更新團隊內容 | [atlassan.md](./atlassan.md) |
 | <img src="https://google.github.io/adk-docs/assets/tools-cartesia.png" style="width:32px;"/> | Cartesia | 生成語音、在地化聲音並建立音訊內容 | [cartesa.md](./cartesa.md) |
+| <img src="https://google.github.io/adk-docs/assets/tools-chroma.png" style="width:32px;"/> | Chroma | 使用語義向量搜尋與儲存內容 | [chroma.md](./chroma.md)
 | <img src="https://google.github.io/adk-docs/assets/plugins-daytona.png" style="width:32px;"/> | Daytona | 在安全的沙盒中執行程式碼、執行 shell 指令並管理檔案 | [dayton.md](./dayton.md) |
 | <img src="https://google.github.io/adk-docs/assets/tools-elevenlabs.png" style="width:32px;"/> | ElevenLabs | 生成語音、複製聲音、轉錄音訊並建立音效 | [elevenabs.md](./elevenabs.md) |
 | <img src="https://google.github.io/adk-docs/assets/tools-github.png" style="width:32px;"/> | GitHub | 分析程式碼、管理議題和 PR，並自動化工作流 | [github.md](./github.md) |

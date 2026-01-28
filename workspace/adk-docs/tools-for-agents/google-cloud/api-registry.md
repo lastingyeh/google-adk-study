@@ -119,8 +119,6 @@ root_agent = LlmAgent(
 -   [api_registry_agent](https://github.com/google/adk-python/tree/main/contributing/samples/api_registry_agent/) ADK 程式碼範例
 -   [Google Cloud API 登錄中心](https://docs.cloud.google.com/api-registry/docs/overview) 文件
 
-## 下一步
+### 實作範例
 
-如需如何使用`BigQuery API Registry Agent` 完整實作，請參閱以下範例：
-
-- [BigQuery API Registry Agent 參考範例](../../python/agents/api-registry-agent/)
+-   [`BigQuery API Registry Agent`](../../python/agents/api-registry-agent/): 展示如何使用 API 登錄中心連接器工具來存取 BigQuery 服務的完整代理範例。

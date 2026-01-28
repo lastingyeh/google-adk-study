@@ -66,6 +66,6 @@ await runner.rewind_async(
 - **外部依賴項**：倒回功能不管理外部依賴。如果您的 Agent 工具與外部系統互動，您需要自行負責將這些系統還原至先前的狀態。
 - **原子性 (Atomicity)**：狀態更新、成果物更新和事件持久化並非在單一原子事務中執行。因此，應避免倒回進行中的活躍會話，或在倒回期間同時操作會話成果物，以防止數據不一致。
 
-## 下一步
+### 實作範例
 
-- [rewind_session 範例程式碼](https://github.com/google/adk-python/tree/main/contributing/samples/rewind_session)
+-   [`Rewind Session`](https://github.com/google/adk-python/tree/main/contributing/samples/rewind_session): 展示如何使用會話倒回功能的完整範例。

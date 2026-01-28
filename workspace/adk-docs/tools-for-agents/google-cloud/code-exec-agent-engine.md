@@ -178,8 +178,6 @@ root_agent = Agent(
 
 有關使用此範例程式碼的 ADK 代理的完整版本，請參閱 [agent_engine_code_execution 範例](https://github.com/google/adk-python/tree/main/contributing/samples/agent_engine_code_execution)。
 
-## 下一步
+### 實作範例
 
-如需如何使用`Agent Engine Code Execution` 完整實作，請參閱以下範例：
-
-- [Agent Engine Code Execution 參考範例](../../../python/agents/agent-engine-code-execution/)
+-   [`Agent Engine Code Execution`](../../../python/agents/agent-engine-code-execution/): 展示如何使用 Agent Engine 程式碼執行工具來執行多步驟程式碼任務的完整代理範例。
