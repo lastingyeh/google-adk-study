@@ -71,14 +71,5 @@ async def list_artifacts(
         "message": f"已成功列出 {len(filenames)} 個 Artifact 檔案"
     }
 
-def _get_mime_type(file_name: str) -> str:
-    """Determines the MIME type based on the file extension."""
-    extension = os.path.splitext(file_name)[1].lower()
-    if extension == ".md":
-        return "text/markdown"
-    elif extension == ".txt":
-        return "text/plain"
-    else:
-        raise ValueError(f"Unsupported file type: {extension}. Only .md and .txt are supported.")
 
 ARTIFACT_TOOLS = [save_artifact, load_artifact, list_artifacts]
