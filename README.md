@@ -1944,4 +1944,28 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Docs] 官方文件-Tools for Agents [Third Party 系列]](https://google.github.io/adk-docs/tools/third-party/)
 
 </details>
+
+#### 🕗 Day 95
+
+<details>
+<summary>
+[整合 1/3] [Observability] ADK 整合 BigQuery 分析、Cloud Trace 追蹤與標準日誌，透過 OpenTelemetry 提供多模態監控，優化代理效能與除錯。
+
+🏷️ `observability`, `bigquery-analytics`, `cloud-trace`, `logging`, `opentelemetry`, `multimodal`, `debugging`, `performance`, `gcs-offloading`, `adk-plugins`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Logging [Observability 系列]](./workspace/adk-docs/observability/logging.md)
+  - [[ADK-Docs] 學習文件-Cloud Trace [Observability 系列]](./workspace/adk-docs/observability/cloud-trace.md)
+  - [[ADK-Docs] 學習文件-BigQuery Agent Analytics [Observability 系列]](./workspace/adk-docs/observability/bigquery-agent-analytics.md)
+  - [Short Movie Agents](./workspace/python/agents/short-movie-agents/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-Logging [Observability 系列]](https://google.github.io/adk-docs/observability/logging/)
+  - [[ADK-Docs] 官方文件-Cloud Trace [Observability 系列]](https://google.github.io/adk-docs/observability/cloud-trace/)
+  - [[ADK-Docs] 官方文件-BigQuery Agent Analytics [Observability 系列]](https://google.github.io/adk-docs/observability/bigquery-agent-analytics/)
+  - [[ADK-Samples] Short Movie Agents](https://github.com/google/adk-samples/tree/main/python/agents/short-movie-agents)
+
+</details>
 </details>

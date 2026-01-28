@@ -272,7 +272,7 @@ if __name__ == "__main__":
 
 ### 實作範例
 
--   [`Short Movie Agents`](../../python/agents/short-movie-agents/): 展示如何使用 Cloud Trace 來監控和偵錯生成式 AI 代理的完整範例。
+-   [`Short Movie Agents`](../../python/agents/short-movie-agents/): 展示透過實現`CloudTraceSpanExporter`使用 Cloud Trace 來監控和偵錯生成式 AI 代理的完整範例。
 
 ## 資源
 
