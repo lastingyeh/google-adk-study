@@ -4081,6 +4081,68 @@
             },
           ],
         },
+        {
+          name: 'Short Movie Agents',
+          description:
+            '短片生成代理示範是一個 ADK 範例，展示了如何使用多代理架構 (Multi-agent architecture)，根據使用者的意圖建構端到端的影片。',
+          code_ref: 'workspace/python/agents/short-movie-agents',
+          type: 'Agent',
+          models: ['gemini-2.5-flash'],
+          'server-port': 8000,
+          tags: [
+            'multi-agent',
+            'video-generation',
+            'imagen-4',
+            'veo-3',
+            'storyboarding',
+          ],
+          sub_agents: [
+            {
+              name: 'story_agent',
+              description: '負責根據使用者的創作意圖生成故事內容。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              output_key: 'story',
+            },
+            {
+              name: 'screenplay_agent',
+              description: '負責根據故事撰寫詳細的劇本。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              output_key: 'screenplay',
+            },
+            {
+              name: 'storyboard_agent',
+              description:
+                '負責根據劇本和故事建立分鏡腳本，並使用 Imagen 4 模型生成分鏡圖。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              tools: [
+                {
+                  name: 'storyboard_generate',
+                  type: 'FunctionTool',
+                  description: '使用 Imagen 4 生成代表場景的分鏡圖。',
+                },
+              ],
+              output_key: 'storyboard',
+            },
+            {
+              name: 'video_agent',
+              description:
+                '負責根據劇本和分鏡圖建立最終影片，並使用 Veo 3 進行影片製作。',
+              type: 'Agent',
+              models: ['gemini-2.5-flash'],
+              tools: [
+                {
+                  name: 'video_generate',
+                  type: 'FunctionTool',
+                  description: '根據提示詞和分鏡影像使用 Veo 3 生成影片。',
+                },
+              ],
+              output_key: 'video',
+            },
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';

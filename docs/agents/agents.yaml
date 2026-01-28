@@ -2720,3 +2720,63 @@ agents:
       - claims
       - roadside-assistance
       - rewards
+
+  - name: Short Movie Agents
+    description: 根據使用者輸入，協調創作一個簡短的動畫營火故事，利用故事生成、分鏡腳本創作和影片生成的專業子代理。
+    code_ref: workspace/python/agents/short-movie-agents
+    type: Agent
+    models:
+      - gemini-2.5-flash
+    server-port: 8000
+    tags:
+      - short-movie
+      - content-creation
+      - multi-agent
+      - vertex-ai
+      - imagen
+      - veo
+      - fastapi
+    sub_agents:
+      - name: story_agent
+        description: 以親切且具吸引力的「童軍團長」風格提供答案與指導。所有回應皆以簡短、具啟發性的故事或軼事形式呈現。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        output_key: story
+        tags:
+          - story-generation
+          - scout-leader
+      - name: screenplay_agent
+        description: 負責根據故事撰寫劇本的代理。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        output_key: screenplay
+        tags:
+          - screenplay-writing
+      - name: storyboard_agent
+        description: 負責根據劇本和故事建立分鏡腳本的代理。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        output_key: storyboard
+        tools:
+          - name: storyboard_generate
+            type: FunctionTool
+            description: 生成代表傳遞的提示詞的分鏡圖。
+        tags:
+          - storyboard-generation
+          - imagen
+      - name: video_agent
+        description: 負責根據劇本和分鏡圖建立影片的代理。
+        type: Agent
+        models:
+          - gemini-2.5-flash
+        output_key: video
+        tools:
+          - name: video_generate
+            type: FunctionTool
+            description: 根據傳遞的提示詞和分鏡影像生成影片。
+        tags:
+          - video-generation
+          - veo
