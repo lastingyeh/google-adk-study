@@ -55,10 +55,10 @@
 - [x] 整合 `Artifact Tool`:
   - 在 Agent 中加入檔案上傳與下載的工具。
   - 實作後端邏輯以處理檔案的暫存與讀取。
-- [ ] API 端點擴充:
-  - 建立 `POST /artifacts/upload` 端點。
-  - 建立 `GET /artifacts/download/{file_id}` 端點。
-- [ ] 功能測試與驗證:
+- [x] GCS 驗證:
+  - 確認透過 Agent 上傳後的檔案是否存在。
+  - 確認透過 GCS 上傳的檔案 Agent 是否可以存取。
+- [x] 功能測試與驗證:
   - 測試案例:
     - 上傳一個 `data.csv` 檔案，並要求 Agent 分析內容 (`#think 分析這個 CSV 檔案的欄位與前五行`)。
     - 要求 Agent 生成一個檔案並提供下載連結 (`#think 產生一份關於專案架構的 Markdown 文件`)。

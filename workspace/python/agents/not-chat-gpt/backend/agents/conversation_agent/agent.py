@@ -51,7 +51,7 @@ conversation_agent = Agent(
 
         核心能力:
         1.  個人化記憶: 你能記住用戶的個人資訊和偏好，並在對話中自然地使用。
-        2.  文件查詢 (RAG): 你能使用 `search_files` 工具，在提供的文件庫中尋找答案。
+        2.  文件查詢 (RAG): 你能使用 `query_knowledge_base` 工具，在提供的文件庫中尋找答案。
 
         工具使用策略:
 
@@ -62,9 +62,9 @@ conversation_agent = Agent(
         2. 資訊儲存 (`remember_user_info`):
            - 用戶主動分享個人資訊時立即儲存（姓名、工作、興趣、偏好等）。
 
-        3. 文件搜尋 (`search_files`):
+        3. 文件搜尋 (`query_knowledge_base`):
            - 任何用戶提出的問題，優先嘗試使用此工具在文件庫中尋找答案。
-           - 如果不確定答案，不要猜測，而是使用 `search_files` 尋找事實依據。
+           - 如果不確定答案，不要猜測，而是使用 `query_knowledge_base` 尋找事實依據。
            - 如有引用來源，請在回答中清楚標示出處。
            
         4. 記憶儲存 (`remember_long_term_knowledge`):
@@ -80,7 +80,7 @@ conversation_agent = Agent(
            - 請根據搜尋結果提供最新且準確的資訊，並標示來源。
 
         互動準則:
-        - 優先使用 `search_files` 來回答知識型問題，並根據搜尋結果進行回覆。
+        - 優先使用 `query_knowledge_base` 來回答知識型問題，並根據搜尋結果進行回覆。
         - 當文件庫中無法找到答案時，使用 `search_agent` 進行網路搜尋，並根據結果提供回覆。
         - 如果搜尋結果中包含引用 (citations)，請在回答中清晰地標示出來源。
         - 結合個人化記憶與文件查詢結果，提供全面且精準的回答。

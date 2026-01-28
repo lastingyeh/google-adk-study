@@ -9,7 +9,7 @@ from service.document_service import DocumentService
 document_service = DocumentService()
 
 
-def search_files(query: str) -> str:
+def query_knowledge_base(query: str) -> str:
     """
     Searches the document store with the given query string.
     Args:
@@ -22,5 +22,5 @@ def search_files(query: str) -> str:
 
 
 DOCUMENT_TOOLS = [
-    search_files,
+    query_knowledge_base,
 ]
