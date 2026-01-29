@@ -1949,9 +1949,9 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/3] [Observability] ADK 整合 BigQuery 分析、Cloud Trace 追蹤與標準日誌，透過 OpenTelemetry 提供多模態監控，優化代理效能與除錯。
+[整合 1/2] [Observability] ADK 整合觀察性與可觀測性工具與實作指南，涵蓋日誌、追蹤、模型監控與分析，包含 BigQuery、Cloud Trace、MLflow、Arize、Weave 等整合案例，適合作為開發與運維建立可觀測性流程的參考資源。
 
-🏷️ `observability`, `bigquery-analytics`, `cloud-trace`, `logging`, `opentelemetry`, `multimodal`, `debugging`, `performance`, `gcs-offloading`, `adk-plugins`
+🏷️ `observability`, `logging`, `tracing`, `model-monitoring`, `bigquery-analytics`, `cloud-trace`, `mlflow`, `arize`, `weave`, `monocle`, `phoenix`, `agentops`, `bigquery-agent-analytics`, `freeplay`
 
 </summary>
 
@@ -1966,6 +1966,37 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Docs] 官方文件-Cloud Trace [Observability 系列]](https://google.github.io/adk-docs/observability/cloud-trace/)
   - [[ADK-Docs] 官方文件-BigQuery Agent Analytics [Observability 系列]](https://google.github.io/adk-docs/observability/bigquery-agent-analytics/)
   - [[ADK-Samples] Short Movie Agents](https://github.com/google/adk-samples/tree/main/python/agents/short-movie-agents)
+
+</details>
+
+#### 🕗 Day 96
+
+<details>
+<summary>
+[整合 2/2] [Observability] ADK 整合觀察性與可觀測性工具與實作指南，涵蓋日誌、追蹤、模型監控與分析，包含 BigQuery、Cloud Trace、MLflow、Arize、Weave 等整合案例，適合作為開發與運維建立可觀測性流程的參考資源。
+
+🏷️ `observability`, `logging`, `tracing`, `model-monitoring`, `bigquery-analytics`, `cloud-trace`, `mlflow`, `arize`, `weave`, `monocle`, `phoenix`, `agentops`, `bigquery-agent-analytics`, `freeplay`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-觀測性總覽 [Observability 系列]](./workspace/adk-docs/observability/index.md)
+  - [[ADK-Docs] 學習文件-AgentOps [Observability 系列]](./workspace/adk-docs/observability/agentops.md)
+  - [[ADK-Docs] 學習文件-Arize AX [Observability 系列]](./workspace/adk-docs/observability/arize-ax.md)
+  - [[ADK-Docs] 學習文件-Freeplay [Observability 系列]](./workspace/adk-docs/observability/freeplay.md)
+  - [[ADK-Docs] 學習文件-MLflow [Observability 系列]](./workspace/adk-docs/observability/mlflow.md)
+  - [[ADK-Docs] 學習文件-Monocle [Observability 系列]](./workspace/adk-docs/observability/monocle.md)
+  - [[ADK-Docs] 學習文件-Phoenix [Observability 系列]](./workspace/adk-docs/observability/phoenix.md)
+  - [[ADK-Docs] 學習文件-Weave (by WandB) [Observability 系列]](./workspace/adk-docs/observability/weave.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件-AgentOps [Observability 系列]](https://google.github.io/adk-docs/observability/agentops/)
+  - [[ADK-Docs] 官方文件-Arize AX [Observability 系列]](https://google.github.io/adk-docs/observability/arize-ax/)
+  - [[ADK-Docs] 官方文件-Freeplay [Observability 系列]](https://google.github.io/adk-docs/observability/freeplay/)
+  - [[ADK-Docs] 官方文件-MLflow [Observability 系列]](https://google.github.io/adk-docs/observability/mlflow/)
+  - [[ADK-Docs] 官方文件-Monocle [Observability 系列]](https://google.github.io/adk-docs/observability/monocle/)
+  - [[ADK-Docs] 官方文件-Phoenix [Observability 系列]](https://google.github.io/adk-docs/observability/phoenix/)
+  - [[ADK-Docs] 官方文件-Weave (by WandB) [Observability 系列]](https://google.github.io/adk-docs/observability/weave/)
 
 </details>
 </details>
