@@ -1,5 +1,8 @@
 # 使用 Agent2Agent (A2A) 協定的 ADK
-🔔 `更新日期：2026-01-15`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/a2a/
 
 [`ADK 支援`: `Python` | `Go` | `Experimental`]
 

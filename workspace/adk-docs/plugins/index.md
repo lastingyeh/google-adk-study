@@ -1,6 +1,8 @@
 # 外掛程式 (Plugins)
 
-🔔 `更新日期：2026-01-18`
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/plugins/
 
 [`ADK 支援`: `Python v1.7.0`]
 
@@ -13,10 +15,10 @@ Agent Development Kit (ADK) 中的外掛程式 (Plugin) 是一個自定義程式
 -   **請求或回應修改 (Request or response modification)**：動態地為 AI 模型提示 (prompts) 增加資訊，或標準化工具輸出回應。
 
 > [!TIP] 提示
-    在實作安全防護欄和原則時，使用 ADK 外掛程式比使用回呼 (Callbacks) 具有更好的模組化和靈活性。更多詳細資訊，請參閱 [安全防護欄的回呼與外掛程式](https://google.github.io/adk-docs/safety/#callbacks-and-plugins-for-security-guardrails)。
+在實作安全防護欄和原則時，使用 ADK 外掛程式比使用回呼 (Callbacks) 具有更好的模組化和靈活性。更多詳細資訊，請參閱 [安全防護欄的回呼與外掛程式](https://google.github.io/adk-docs/safety/#callbacks-and-plugins-for-security-guardrails)。
 
 > [!WARNING] 注意
-    [ADK 網路介面](../evaluation/index.md#1-adk-web---透過-web-ui-執行評估)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
+[ADK 網路介面](../evaluation/index.md#1-adk-web---透過-web-ui-執行評估)不支援外掛程式。如果您的 ADK 工作流使用了外掛程式，則必須在不使用網路介面的情況下執行工作流。
 
 ## 外掛程式如何運作？
 
@@ -310,7 +312,6 @@ Hello world: query is [hello world]
 [Plugin] LLM request count: 2
 ** Got event from hello_world
 ```
-
 
 有關執行 ADK 代理的更多資訊，請參閱 [快速入門](https://google.github.io/adk-docs/get-started/quickstart/#set-up-the-model) 指南。
 

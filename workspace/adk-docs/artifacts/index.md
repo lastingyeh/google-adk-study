@@ -1,27 +1,15 @@
 # Artifacts
 
-🔔 `更新日期：2026-01-18`
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/artifacts/
 
-  [`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
+[`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
 在 ADK 中，**Artifacts** 代表了一種關鍵機制，用於管理與特定使用者互動工作階段 (session) 相關聯，或跨多個工作階段與使用者持續關聯的具名、版本化二進位資料。它們允許您的 Agent 和工具處理簡單字串以外的資料，實現涉及檔案、影像、音訊和其他二進位格式的更豐富互動。
 
 > [!NOTE]
-    原生應用 (primitives) 的具體參數或方法名稱可能因 SDK 語言而略有不同（例如，Python 中的 `save_artifact`，Java 中的 `saveArtifact`）。請參閱特定語言的 API 文件以獲取詳細資訊。
-
-## Overview (目錄)
-
-| 章節                       | 說明                                                                                   |
-| :------------------------- | :------------------------------------------------------------------------------------- |
-| **什麼是 Artifacts？**     | 定義 Artifacts 為具名、版本化的二進位資料，並說明其在 ADK 中的表示方式。               |
-| **Artifacts 的範圍**       | 解釋 Artifacts 如何與特定工作階段或使用者關聯，以及 `scope` 參數的作用。               |
-| **儲存 Artifacts**         | 說明如何使用 `save_artifact` 函式儲存新的 Artifact 或建立現有 Artifact 的新版本。      |
-| **列出與擷取 Artifacts**   | 描述如何使用 `list_artifacts` 查詢可用 Artifacts，並使用 `get_artifact` 擷取特定版本。 |
-| **刪除 Artifacts**         | 說明如何使用 `delete_artifact` 永久刪除 Artifact 及其所有版本。                        |
-| **在工具中使用 Artifacts** | 展示如何在自訂工具中接收、處理及回傳 Artifacts，以實現更複雜的互動。                   |
-| **使用案例**               | 提供 Artifacts 在實際應用中的範例，例如處理上傳的檔案或產生圖表。                      |
-| **API 參考**               | 提供與 Artifacts 相關的核心函式簽章和參數說明。                                        |
-
+原生應用 (primitives) 的具體參數或方法名稱可能因 SDK 語言而略有不同（例如，Python 中的 `save_artifact`，Java 中的 `saveArtifact`）。請參閱特定語言的 API 文件以獲取詳細資訊。
 
 ## 什麼是 Artifacts？
 

@@ -1,6 +1,8 @@
 # Apps：工作流程管理類別
 
-🔔 `更新日期：2026-01-18`
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/apps/
 
 [`ADK 支援`: `Python v1.14.0`]
 
@@ -60,7 +62,7 @@ app = App(
 ```
 
 > [!TIP] 建議：使用 `app` 變數名稱
-    在您的代理專案程式碼中，將您的 ***App*** 物件設定為變數名稱 `app`，以便與 ADK 命令列介面執行器工具相容。
+在您的代理專案程式碼中，將您的 ***App*** 物件設定為變數名稱 `app`，以便與 ADK 命令列介面執行器工具相容。
 
 ### 執行您的 App 代理
 
@@ -93,12 +95,10 @@ if __name__ == "__main__":
 ```
 
  > [!NOTE]
-    `Runner.run_debug()` 命令需要 ADK Python v1.18.0 或更高版本。
-    您也可以使用 `Runner.run()`，這需要更多的設定程式碼。如需更多詳細資訊，請參閱
+`Runner.run_debug()` 命令需要 ADK Python v1.18.0 或更高版本。
+您也可以使用 `Runner.run()`，這需要更多的設定程式碼。如需更多詳細資訊，請參閱使用以下命令執行包含 `main.py` 程式碼的 App 代理：
 
-使用以下命令執行包含 `main.py` 程式碼的 App 代理：
-
-```console
+```shell
 python main.py
 ```
 

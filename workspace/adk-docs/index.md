@@ -7,7 +7,7 @@
 
 > 🔔 `更新日期：2026-01-23`
 >
-> 🔗 `資料來源：https://google.github.io/adk-docs/`
+> 🔗 `資料來源`：https://google.github.io/adk-docs/
 
 Agent Development Kit (ADK) 是一個靈活且模組化的架構，用於**開發和部署 AI 代理 (AI agents)**。雖然針對 Gemini 和 Google 生態系統進行了優化，但 ADK 是**模型無關 (model-agnostic)**、**部署無關 (deployment-agnostic)**，並且是為了**與其他框架的相容性**而構建的。ADK 旨在讓代理開發感覺更像軟體開發，使開發人員更輕鬆地創建、部署和編排代理架構，涵蓋從簡單任務到複雜工作流的範圍。
 

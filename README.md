@@ -1999,4 +1999,21 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Docs] 官方文件-Weave (by WandB) [Observability 系列]](https://google.github.io/adk-docs/observability/weave/)
 
 </details>
+#### 🕗 Day 97
+
+<details>
+<summary>
+[Safety and Security] 探討 AI 系統的安全與保護措施，涵蓋風險評估、資料隱私、權限控管、異常偵測與回應機制。強調設計時需考量潛在威脅，並持續監控與更新安全策略，以確保系統穩定運作並保護用戶資料，降低外部攻擊與內部濫用風險。
+
+🏷️ `safety`, `security`, `callback`, `policy`, `auth`, `guardrails`, `plugins`, `sandbox`, `evaluation`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-安全性 [Safety and Security]](./workspace/adk-docs/safety-and-security/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Safety and Security]](https://google.github.io/adk-docs/safety/)
+
+</details>
 </details>

@@ -1,5 +1,8 @@
 # Reflect and Retry 工具外掛程式
-🔔 `更新日期：2026-01-18`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/plugins/reflect-and-retry/
 
 [`ADK 支援`: `Python v1.16.0`]
 
@@ -13,11 +16,6 @@ Reflect and Retry 工具外掛程式可以協助您的代理程式從 ADK [工�
 ## 新增 Reflect and Retry 外掛程式
 
 將此外掛程式新增到您 ADK 專案 App 物件的 plugins 設定中，如下所示：
-
-<details>
-<summary>範例說明</summary>
-
-> Python
 
 ```python
 from google.adk.apps.app import App
@@ -33,8 +31,6 @@ app = App(
     ],
 )
 ```
-
-</details>
 
 使用此配置，如果代理程式呼叫的任何工具傳回錯誤，請求將會更新並再次嘗試，每個工具最多重試 3 次。
 
@@ -52,11 +48,6 @@ Reflect and Retry 外掛程式具有以下配置選項：
 
 您可以透過擴展 `ReflectAndRetryToolPlugin` 類別來進一步修改此外掛程式的行為。以下程式碼範例展示了透過選擇具有錯誤狀態的回應來擴展行為的簡單示範：
 
-<details>
-<summary>範例說明</summary>
-
-> Python
-
 ```python
 class CustomRetryPlugin(ReflectAndRetryToolPlugin):
   async def extract_error_from_result(self, *, tool, tool_args, tool_context, result):
@@ -69,8 +60,6 @@ class CustomRetryPlugin(ReflectAndRetryToolPlugin):
 # 設定最大重試次數為 5 次
 error_handling_plugin = CustomRetryPlugin(max_retries=5)
 ```
-
-</details>
 
 ## 後續步驟
 

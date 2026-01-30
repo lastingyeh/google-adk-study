@@ -1,5 +1,8 @@
 # Callbacks 的設計模式與最佳實踐
-🔔 `更新日期：2026-01-20`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/callbacks/design-patterns-and-best-practices/
 
 Callbacks（回調）為代理（agent）生命週期提供了強大的掛鉤（hooks）。以下是一些常見的設計模式，展示了如何在 ADK 中有效地利用它們，隨後是實施的最佳實踐。
 

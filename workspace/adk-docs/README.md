@@ -1,6 +1,6 @@
 # Google ADK 文件學習指南
 
-🔔 `更新日期：2026 年 1 月 27 日`
+🔔 `更新日期：2026 年 1 月 30 日`
 
 ---
 🪧 `以官方文件 (Google ADK Docs) 為基礎的學習資源`
@@ -14,7 +14,7 @@
 您可以在各支援語言的程式碼儲存庫中找到發行說明。有關 ADK 發行版本的詳細資訊，請參閱以下位置：
 
 - [ADK Python 發行說明](https://github.com/google/adk-python/releases) (v1.23.0)
-- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.4)
+- [ADK TypeScript 發行說明](https://github.com/google/adk-js/releases) (v0.2.5)
 - [ADK Go 發行說明](https://github.com/google/adk-go/releases) (v0.3.0)
 - [ADK Java 發行說明](https://github.com/google/adk-java/releases) (v0.5.0)
 
@@ -143,8 +143,18 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [評估標準 (Evaluation Criteria)](./evaluation/criteria.md) | 彙整 ADK 提供的評估準則（工具軌跡、最終回應品質、幻覺、Safety、量表 Rubrics、LLM-as-a-Judge 等）與使用時機。 | [連結](./evaluation/criteria.md) |
 | [使用者模擬 (User Simulation)](./evaluation/user-sim.md)   | 介紹以 ConversationScenario 動態產生使用者回合進行對話式評估，以及相關 EvalConfig / user simulator 設定。    | [連結](./evaluation/user-sim.md) |
 
+### 安全性  (Safety and Security)
+| 標頭                                                | 描述                                                                                       | 連結                                 |
+| :-------------------------------------------------- | :----------------------------------------------------------------------------------------- | :----------------------------------- |
+| [安全性總覽](./safety-and-security/index.md)        | 介紹 ADK 中的安全性概念與功能，涵蓋輸入驗證、輸出過濾、原則強制執行與監控等方面。          | [連結](./safety-and-security/index.md) |
 
 ## Components (元件)
+
+### 技術總覽 (Technical Overview)
+
+| 標頭                                      | 描述                                                                                           | 連結                                 |
+| :---------------------------------------- | :--------------------------------------------------------------------------------------------- | :----------------------------------- |
+| [技術總覽](./get-started/about.md) | 提供 ADK 核心元件的技術總覽，包括代理、模型、工具、上下文管理 與回呼等，說明它們如何協同工作以構建智能代理。 | [連結](./get-started/about.md) |
 
 ### 上下文 (Context)
 
@@ -218,9 +228,6 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [快速入門：使用代理 (Python)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md) | 說明如何讓您的 Python 代理使用 A2A 協定來調用另一個遠端代理。                                    | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md)    |
 | [快速入門：使用代理 (Go)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md)  | 說明如何讓您的 Go 代理使用 A2A 協定來調用另一個遠端代理。                                        | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md) |
 
-
-
-
 ## 參考資源
 
 - [Google ADK Docs](https://google.github.io/adk-docs/)
@@ -228,7 +235,3 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 - [[code wiki] agent-starter-pack](https://codewiki.google/github.com/googlecloudplatform/agent-starter-pack)
 - [Google AI Studio](https://aistudio.google.com/)
 - [Gemini Live API](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/live-api)
-
-## 免責聲明
-
-本文件僅為個人學習與教育目的而創建。其內容是基於個人在學習 Google ADK 過程中的理解與整理，並非 Google 的官方觀點或文件。所有資訊請以 Google 官方發布為準。

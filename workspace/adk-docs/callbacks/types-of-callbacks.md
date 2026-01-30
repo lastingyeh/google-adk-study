@@ -1,5 +1,8 @@
 # 回調類型 (Types of Callbacks)
-🔔 `更新日期：2026-01-20`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/callbacks/types-of-callbacks/
 
 [`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
@@ -10,7 +13,7 @@
 這些回調可用於繼承自 `BaseAgent` 的 *任何* 代理（包括 `LlmAgent`、`SequentialAgent`、`ParallelAgent`、`LoopAgent` 等）。
 
 > [!NOTE]
-    具體的方法名稱或返回類型可能會因 SDK 語言而略有不同（例如，在 Python 中返回 `None`，在 Java 中返回 `Optional.empty()` 或 `Maybe.empty()`）。詳情請參閱特定語言的 API 文件。
+具體的方法名稱或返回類型可能會因 SDK 語言而略有不同（例如，在 Python 中返回 `None`，在 Java 中返回 `Optional.empty()` 或 `Maybe.empty()`）。詳情請參閱特定語言的 API 文件。
 
 ### 代理前置回調 (Before Agent Callback)
 

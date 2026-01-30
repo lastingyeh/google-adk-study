@@ -1,5 +1,8 @@
 # 快速入門：透過 A2A 使用遠端代理
-🔔 `更新日期：2026-01-15`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/a2a/quickstart-consuming/
 
 [`ADK 支援`: `Python` | `實驗性預覽`]
 
@@ -89,15 +92,15 @@ adk api_server --a2a --port 8001 contributing/samples/a2a_basic/remote_a2a
 ```
 
 > [!NOTE] 使用 `--log_level debug` 添加日誌以進行偵錯
-  要啟用除錯級別的日誌記錄，您可以在 `adk api_server` 中添加 `--log_level debug`，例如：
-  ```bash
-  # 使用 debug 模式啟動 api_server 以獲取更詳細的日誌
-  adk api_server --a2a --port 8001 contributing/samples/a2a_basic/remote_a2a --log_level debug
-  ```
-  這將為您提供更豐富的日誌，以便在測試代理時進行檢查。
+要啟用除錯級別的日誌記錄，您可以在 `adk api_server` 中添加 `--log_level debug`，例如：
+```bash
+# 使用 debug 模式啟動 api_server 以獲取更詳細的日誌
+adk api_server --a2a --port 8001 contributing/samples/a2a_basic/remote_a2a --log_level debug
+```
+這將為您提供更豐富的日誌，以便在測試代理時進行檢查。
 
 > [!NOTE] 為什麼使用連接埠 8001？
-  在此快速入門中，在本地進行測試時，您的代理將使用 localhost，因此公開代理（遠端質數代理）的 A2A 伺服器 `port` 必須與使用方代理的連接埠不同。您將與使用方代理互動的 `adk web` 預設連接埠是 `8000`，這就是為什麼 A2A 伺服器使用單獨的連接埠 `8001` 創建的原因。
+在此快速入門中，在本地進行測試時，您的代理將使用 localhost，因此公開代理（遠端質數代理）的 A2A 伺服器 `port` 必須與使用方代理的連接埠不同。您將與使用方代理互動的 `adk web` 預設連接埠是 `8000`，這就是為什麼 A2A 伺服器使用單獨的連接埠 `8001` 創建的原因。
 
 執行後，您應該會看到類似以下的內容：
 

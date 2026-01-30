@@ -1,5 +1,8 @@
 # 使用 Gemini 進行快取 (Context caching)
-🔔 `更新日期：2026-01-10`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/context/caching/
 
 [`ADK 支援`: `Python v1.15.0`]
 
@@ -48,6 +51,7 @@ app = App(
 - [`Static Instruction`](../../python/agents/static-instruction/)：使用靜態指令實作數位寵物代理，更多資訊[參考](#static_instruction-vs-instructions)。
 
 ---
+
 ## 更多資訊
 
 ### `static_instruction` V.S. `instructions`

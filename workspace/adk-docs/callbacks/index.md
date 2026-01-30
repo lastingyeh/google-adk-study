@@ -1,5 +1,9 @@
 # Callbacks：觀察、自定義與控制代理行為
-🔔 `更新日期：2026-01-20`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/callbacks/
+
 
 [`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.1.0`]
 
@@ -25,7 +29,7 @@ Callbacks（回呼）是 ADK 的核心功能，提供了一種強大的機制來
 * **整合與增強 (Integrate & Enhance)：** 觸發外部操作（API 呼叫、通知）或添加快取等功能。
 
 > [!TIP]
-    在實現安全護欄和策略時，建議使用 ADK 插件 (Plugins)，這比回呼 (Callbacks) 具有更好的模組化和靈活性。更多詳情請參閱 [安全護欄的回呼與插件](https://google.github.io/adk-docs/safety/#callbacks-and-plugins-for-security-guardrails)。
+在實現安全護欄和策略時，建議使用 ADK 插件 (Plugins)，這比回呼 (Callbacks) 具有更好的模組化和靈活性。更多詳情請參閱 [安全護欄的回呼與插件](../safety-and-security/index.md#安全護欄的回呼與插件)。
 
 **如何添加：**
 

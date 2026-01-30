@@ -1,5 +1,8 @@
 # 快速入門：透過 A2A 公開遠端代理
-🔔 `更新日期：2026-01-15`
+
+> 🔔 `更新日期：2026-01-30`
+>
+> 🔗 `資料來源`：https://google.github.io/adk-docs/a2a/quickstart-exposing/
 
 [`ADK 支援`: `Python` | `Experimental`]
 
@@ -152,7 +155,7 @@ uvicorn contributing.samples.a2a_root.remote_a2a.hello_world.agent:a2a_app --hos
 ```
 
 > [!NOTE] 為什麼使用連接埠 8001？
-    在此快速入門中，當在本地進行測試時，您的代理將使用 localhost，因此公開代理（遠端質數代理）的 A2A 伺服器 `連接埠 (port)` 必須與消耗代理的連接埠不同。您將與消耗代理進行互動的 `adk web` 預設連接埠是 `8000`，這就是為什麼 A2A 伺服器使用單獨的連接埠 `8001` 建立。
+在此快速入門中，當在本地進行測試時，您的代理將使用 localhost，因此公開代理（遠端質數代理）的 A2A 伺服器 `連接埠 (port)` 必須與消耗代理的連接埠不同。您將與消耗代理進行互動的 `adk web` 預設連接埠是 `8000`，這就是為什麼 A2A 伺服器使用單獨的連接埠 `8001` 建立。
 
 執行後，您應該會看到如下內容：
 
