@@ -177,7 +177,7 @@ Live API 是 Google 的即時對話式 AI 技術，可實現與 Gemini 模型的
 - **情感對話 (Affective Dialog)**：高級模型理解語氣和情感背景，調整回應以匹配對話氛圍和使用者情緒（僅限原生音訊模型）
 
 > [!NOTE] 了解更多
-有關原生音訊模型和這些功能的詳細資訊，請參閱 [第 5 部分：音訊和影片 - 主動性和情感對話](part5.md#proactivity-and-affective-dialog)。
+有關原生音訊模型和這些功能的詳細資訊，請參閱 [第 5 部分：音訊和影片 - 主動性和情感對話](part5.md#主動性與情感對話-proactivity-and-affective-dialog)。
 
 **技術規格：**
 
@@ -220,7 +220,7 @@ ADK 將這些挑戰轉化為簡單的宣告式 API。開發人員不再需要花
 | 功能 | 原生 Live API (`google-genai` SDK) | ADK 雙向串流 (`adk-python` 和 `adk-java` SDK) |
 |---------|-----------------------------------|------------------------------------------------------|
 | **代理程式框架** | ❌ 不提供 | ✅ 單代理、帶子代理的多代理、順序工作流代理、工具生態系統、部署就緒、評估、安全等（見 [ADK 代理程式文件](https://google.github.io/adk-docs/agents/)） |
-| **工具執行** | ❌ 手動工具執行和回應處理 | ✅ 自動工具執行（見 [第 3 部分：工具呼叫事件](part3.md#tool-call-events)） |
+| **工具執行** | ❌ 手動工具執行和回應處理 | ✅ 自動工具執行（見 [第 3 部分：工具呼叫事件](part3#工具調用事件)） |
 | **連接管理** | ❌ 手動重連和對話恢復 | ✅ 自動重連和對話恢復（見 [第 4 部分：Live API 對話恢復](part4.md#live-api-session-resumption)） |
 | **事件模型** | ❌ 自定義事件結構和序列化 | ✅ 帶有中繼資料的統一事件模型（見 [第 3 部分：事件處理](part3.md)） |
 | **非同步事件處理框架** | ❌ 手動非同步協調和串流處理 | ✅ `LiveRequestQueue`、`run_live()` 非同步產生器、自動雙向流協調（見 [第 2 部分](part2.md) 和 [第 3 部分](part3.md)） |
@@ -469,7 +469,7 @@ agent = Agent(
 代理程式實例是**無狀態且可重用的**——您只需建立它一次，並將其用於所有串流對話。代理程式配置在 [ADK 代理程式文件](https://google.github.io/adk-docs/agents/) 中有詳細介紹。
 
 > [!NOTE] 模型可用性
-有關最新支援的模型及其能力的資訊，請參閱 [第 5 部分：理解音訊模型架構](part5.md#understanding-audio-model-architectures)。
+有關最新支援的模型及其能力的資訊，請參閱 [第 5 部分：理解音訊模型架構](part5.md#了解音訊模型架構)。
 
 > [!NOTE] Agent vs LlmAgent
 `Agent` 是 `LlmAgent` 的建議簡寫（兩者都從 `google.adk.agents` 導入）。它們是完全相同的——使用您喜歡的任何一個即可。本指南為了簡潔使用 `Agent`，但在其他 ADK 文件和範例中您可能會看到 `LlmAgent`。
@@ -951,7 +951,7 @@ finally:
 
 此範例顯示了核心模式。對於生產應用程式，請考慮：
 
-- **錯誤處理 (ADK)**：為 ADK 串流事件添加適當的錯誤處理。有關錯誤事件處理的詳細資訊，請參閱 [第 3 部分：錯誤事件](part3.md#error-events)。
+- **錯誤處理 (ADK)**：為 ADK 串流事件添加適當的錯誤處理。有關錯誤事件處理的詳細資訊，請參閱 [第 3 部分：錯誤事件](part3.md#錯誤事件)。
     - 透過在關閉期間捕捉 `asyncio.CancelledError` 來優雅地處理任務取消
     - 使用 `return_exceptions=True` 檢查來自 `asyncio.gather()` 的異常 - 異常不會自動傳播
 - **錯誤處理 (Web)**：在上游/下游任務中處理特定於 Web 應用程式的錯誤。例如，使用 FastAPI 您需要：
