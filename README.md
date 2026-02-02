@@ -1999,6 +1999,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Docs] 官方文件-Weave (by WandB) [Observability 系列]](https://google.github.io/adk-docs/observability/weave/)
 
 </details>
+
 #### 🕗 Day 97
 
 <details>
@@ -2014,6 +2015,24 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 - **參考資源**
   - [[ADK-Docs] 官方文件 [Safety and Security]](https://google.github.io/adk-docs/safety/)
+
+</details>
+
+#### 🕗 Day 98
+
+<details>
+<summary>
+[整合 1/2] [BIDI Streaming Live] Google ADK 支援 Gemini Live API，實現低延遲的雙向串流（Bidi-streaming）互動。開發者可透過 RunConfig 設定語音配置、自動 VAD 與逐字稿。核心組件如 LiveRequestQueue 負責傳送多模態輸入，run_live() 則處理包含中斷偵測與工具調用的即時事件，支援多代理程式協作與串流工具開發。
+
+🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-即時雙向串流 [Bidi-streaming (live)]](./workspace/adk-docs/bidi-streaming-live/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Bidi-streaming (live)]](https://google.github.io/adk-docs/streaming/)
 
 </details>
 </details>

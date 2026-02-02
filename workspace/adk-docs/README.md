@@ -1,6 +1,6 @@
 # Google ADK 文件學習指南
 
-🔔 `更新日期：2026 年 1 月 30 日`
+🔔 `更新日期：2026 年 2 月 2 日`
 
 ---
 🪧 `以官方文件 (Google ADK Docs) 為基礎的學習資源`
@@ -24,7 +24,7 @@ Agent Development Kit (ADK) 是一個靈活且模組化的架構，用於**開�
 
 [前往 Google ADK 文件](./index.md)
 
-## Building Agents (建立代理程式)
+## 建立代理程式 (Building Agents)
 
 ### 快速入門 (Get started)
 
@@ -97,7 +97,8 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [工具身份驗證](./custom-tools/authentication.md)                                  | 工具存取受保護資源的驗證機制（API Key、OAuth2、OIDC、Service Account…），以及安全儲存憑證的建議。                     | [連結](./custom-tools/authentication.md)              |
 
 
-## Run Agents (執行代理程式)
+## 執行代理程式 (Run Agents)
+
 ### 代理執行 (Agent Runtime)
 
 | 標頭                                                   | 描述                                                                                   | 連結                                     |
@@ -227,6 +228,22 @@ ADK 的「工具 (Tools)」是具備結構化輸入/輸出的程式化函數（�
 | [快速入門：公開代理 (Go)](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing-go.md)    | 指導如何使用 Go ADK 將您的代理公開為 A2A 服務。                                                  | [連結](./a2a-protocol/a2a-quickstart%20(exposing)/quickstart-exposing-go.md)   |
 | [快速入門：使用代理 (Python)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md) | 說明如何讓您的 Python 代理使用 A2A 協定來調用另一個遠端代理。                                    | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming.md)    |
 | [快速入門：使用代理 (Go)](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md)  | 說明如何讓您的 Go 代理使用 A2A 協定來調用另一個遠端代理。                                        | [連結](./a2a-protocol/a2a-quickstart%20(consuming)/quickstart-consuming-go.md) |
+
+### 雙向串流 (Bidirectional Streaming)
+
+ADK 中的雙向 (Bidi) 串流 (Live) 為 AI 代理增加了 Gemini Live API 的低延遲雙向語音和視訊互動能力。這使得代理能夠處理即時的音訊與視訊輸入，並提供類人的對話體驗。
+
+| 標頭 | 描述 | 連結 |
+| :--- | :--- | :--- |
+| [雙向串流總覽](./bidi-streaming-live/index.md) | 介紹 ADK 中的雙向串流概念、Gemini Live API 的整合、開發指南系列以及快速上手資源。 | [連結](./bidi-streaming-live/index.md) |
+| [設定串流行為](./bidi-streaming-live/configuration.md) | 說明如何透過 RunConfig 設定即時（串流）代理程式的配置，例如語音配置 (speech_config)。 | [連結](./bidi-streaming-live/configuration.md) |
+| [串流工具 (Streaming Tools)](./bidi-streaming-live/streaming-tools.md) | 介紹如何定義串流工具，允許工具將中間結果串流傳回給代理，以實現如監控股價或影片串流的反應。 | [連結](./bidi-streaming-live/streaming-tools.md) |
+| [開發指南：第 1 部分](./bidi-streaming-live/dev-guide/part1.md) | 介紹雙向串流基礎、底層 Live API 技術（Gemini/Vertex AI）、ADK 架構組件及 FastAPI 實作範例。 | [連結](./bidi-streaming-live/dev-guide/part1.md) |
+| [開發指南：第 2 部分](./bidi-streaming-live/dev-guide/part2.md) | 深入探討如何使用 LiveRequestQueue 發送訊息，包括文字、音訊/影片串流、活動訊號與控制訊號。 | [連結](./bidi-streaming-live/dev-guide/part2.md) |
+| [開發指南：第 3 部分](./bidi-streaming-live/dev-guide/part3.md) | 掌握 run_live() 事件處理，包括文字/音訊事件、逐字稿、自動工具執行與多代理程式工作流。 | [連結](./bidi-streaming-live/dev-guide/part3.md) |
+| [開發指南：第 4 部分](./bidi-streaming-live/dev-guide/part4.md) | 詳解 RunConfig 配置，涵蓋回應型態、串流模式、會話恢復、上下文視窗壓縮與配額管理。 | [連結](./bidi-streaming-live/dev-guide/part4.md) |
+| [開發指南：第 5 部分](./bidi-streaming-live/dev-guide/part5.md) | 說明如何處理音訊、圖片與影片，包含 VAD、語音配置、音訊逐字稿與主動/情感對話功能。 | [連結](./bidi-streaming-live/dev-guide/part5.md) |
+
 
 ## 參考資源
 
