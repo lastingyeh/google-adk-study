@@ -1,130 +1,124 @@
-# Bidi-streaming 技術深度筆記
+# 雙向串流 (Bidi-streaming) 深度實作指南
 
-歡迎來到這份深度技術筆記。我是你們的資深技術導師，今天我們將深入探討 Google **代理程式開發套件 (ADK)** 的核心靈魂：**雙向串流 (Bidi-streaming)**。
+歡迎來到這堂深度技術實作課。我是你們的資深技術導師。今天我們要探討的是 ADK（Agent Development Kit）中最具革命性的技術核心：**雙向串流 (Bidi-streaming)**。
 
-在傳統的 AI 互動中，我們習慣了「提問並等待」的僵化模式，這就像在傳送電子郵件；而 **雙向串流** 則代表了一場根本性的變革——它讓 AI 互動變得更像「撥打電話」：流暢、自然，且具備即時中斷與回應的能力。我們將從架構、生命週期到實戰配置，逐一解構這項技術。
+在傳統的 AI 互動中，我們習慣了「提問並等待」的模式，這就像是在發送電子郵件。而 ADK 的雙向串流則將這種互動轉化為如同「電話交談」般的體驗——流暢、自然，且具備即時中斷、澄清與回應的能力。這不僅是技術的升級，更是人機互動範式的根本轉變。
 
-### 📌 雙向串流學習地圖
+## 📌 ADK 雙向串流學習地圖
 
-1.  **核心定義與技術價值**：為什麼選擇 Bidi-streaming 而非傳統 API？
-2.  **架構組件解構**：理解 `LiveRequestQueue`、`Runner` 與事件模型。
-3.  **四階段生命週期**：從初始化到優雅終止的實戰流程。
-4.  **模型架構差異**：原生音訊模型 vs. 半串聯模型。
-5.  **RunConfig 深度配置**：掌握會話恢復與上下文視窗壓縮。
-
----
-
-### 一、 為什麼我們需要雙向串流？
-在開發「生產級」應用時，低延遲與類人互動是成功的關鍵。雙向串流不僅僅是資料的傳遞，它實現了以下三大核心特性：
-
-*   **雙向通訊 (Bidirectional)**：人類和 AI 可以同時說話、聆聽和回應，資料交換不需等待完整回應。
-*   **響應式中斷 (Responsive Interruption)**：這是提升用戶體驗最重要的功能。如果 AI 正在長篇大論，使用者可以隨時插嘴糾正，AI 會立即停止並解決新問題。
-*   **原生多模態 (Native Multimodal)**：不再需要經過 STT (語音轉文字) 或 TTS (文字轉語音) 的繁瑣中間層，Gemini 原生音訊模型能直接理解與生成語音，實現極低延遲。
-
-#### 💡 場景驅動教學：購物管家
-**問：** 「如果我在電商 App 中展示一張我的客廳照片，AI 能做什麼？」
-**解析：** 根據來源資料中的 *Shopper's Concierge 2* 展示，具備 Bidi 功能的代理程式能透過**環境感知 (Visual Awareness)**，「看見」你的桌子與筆電，主動詢問是否需要推薦螢幕架或檯燈。這種從「被動等待指令」轉向「主動觀察環境」的轉變，正是 Bidi-streaming 的魅力所在。
+1.  **核心哲學與模式對比**：理解雙向串流與 SSE、Token 級別串流的本質差異。
+2.  **ADK 架構四階段生命週期**：掌握從應用程式初始化到對話終止的完整流程。
+3.  **場景驅動教學**：透過中斷處理、多模態感知與穩定性維護三大實戰場景深入解析。
+4.  **技術實作細節**：解析 `LiveRequestQueue`（上行）與 `run_live()`（下行）的協作。
+5.  **性能與生產化建議**：如何優化二進位傳輸與管理工作階段恢復。
 
 ---
 
-### 二、 ADK  vs. 原始 Live API：為何不直接調用？
-許多開發者會問：「為什麼不直接用原始的 Google GenAI SDK？」關鍵在於 ADK 將數個月的基礎設施開發簡化為**宣告式配置**。
+### 一、 邏輯具象化：串流技術模式對比
 
-| 功能分類 | 原始 Live API (Raw) | ADK 雙向串流 |
-| :--- | :--- | :--- |
-| **工具執行** | 需手動處理 Function Call 回應 | **自動化執行**工具並回傳結果 |
-| **連線管理** | 需自行實作重連與恢復邏輯 | **自動重連**與會話恢復 (Session Resumption) |
-| **狀態持久化** | 需手動實作資料庫儲存 | 內建支援 SQL、Vertex AI 等**工作階段持久化** |
-| **非同步框架** | 需手動協調雙向資料流 | 提供統一的 `LiveRequestQueue` 介面 |
+為了讓大家一眼看清雙向串流的獨特價值，我們根據來源資料整理了這份對照表：
+
+| 串流類型               | 通訊方向                   | 互動性                     | 使用場景                     |
+| :--------------------- | :------------------------- | :------------------------- | :--------------------------- |
+| **伺服器端串流 (SSE)** | 單向（伺服器 → 客戶端）    | 無法即時互動，僅接收資料   | 直播影片、儀表板更新         |
+| **Token 級別串流**     | 單向（文字逐字生成）       | 不可中斷，需等待回應完成   | 傳統聊天機器人（打字機效果） |
+| **雙向串流 (Bidi)**    | **雙向（同步發送與接收）** | **具備中斷支援，即時反應** | 自然對話式 AI、語音代理      |
 
 ---
 
-### 三、 核心實戰：四階段生命週期與代碼分析
-我們開發 ADK Bidi 應用程式時，必須遵循這四個階段：
+### 二、 場景驅動教學：將抽象架構轉化為實戰體驗
 
-#### 階段 1：應用程式初始化
-我們需要建立 Agent、SessionService 與 Runner。這些組件在啟動時建立一次，並在所有會話中共享。
+#### 💡 場景一：實現「人類般」的自然中斷處理
+**問：** 「導師，如果 AI 正在長篇大論解釋量子物理，而使用者突然想問『等等，電子是什麼？』，系統該如何反應？」
+**解析：** 這是雙向串流中最關鍵的 **「回應式中斷 (Responsive Interruption)」** 功能。
+*   **這代表什麼？** 在雙向串流中，AI 不需要等到話說完才接收新輸入。
+*   **關鍵在於：** 系統內建的 **語音活動偵測 (VAD)** 能自動判斷使用者何時開始說話，並產生 `interrupted=True` 事件。
+*   **解決方案：** 當下游接收到中斷標記時，UI 應立即停止呈現過時內容並清空音訊緩衝區。
 
-#### 階段 2：工作階段初始化
-為每個使用者建立 `RunConfig` 與 `LiveRequestQueue`。
+#### 💡 場景二：賦予 AI 「眼睛」的多模態購物導購 (Shopper's Concierge)
+**問：** 「在電子商務中，AI 如何主動根據我目前的環境推薦產品？」
+**解析：** 這展示了 ADK 的 **視覺感知 (Vision Capabilities)** 能力。
+*   **實作細節：** 系統能以每秒處理一張圖像（1 FPS）的頻率分析影像序列。
+*   **場景模擬：** AI 透過攝像頭看到使用者的書桌上有筆電，會「主動」詢問是否需要螢幕架或檯燈，而非僅僅被動等待文字指令。
 
-#### 階段 3：`run_live()` 事件迴圈
-這是實戰的核心。我們必須在**非同步上下文**中運行，並採取「上游/下游任務」並行執行的模式。
+#### 💡 場景三：應對「10 分鐘限制」的生產級穩定性
+**問：** 「我聽說 Live API 的 WebSocket 有連線持續時間限制（約 10 分鐘），這會導致對話中斷嗎？」
+**解析：** 這就是為什麼我們需要 **工作階段恢復 (Session Resumption)**。
+*   **技術真相：** 單個連線雖然會自動終止，但 **會話 (Session)** 是可以跨越連線存在的。
+*   **ADK 的價值：** ADK 透過 `RunConfig` 自動化了恢復過程。它會自動快取恢復句柄，在連線斷開時「透明地」重新連線，使用者完全不會察覺。
 
-#### ⚡ 代碼即真理：FastAPI WebSocket 實作註解
-以下是來源資料中具備技術權威感的實作範例：
+---
+
+### 三、 代碼即真理：解構核心串流邏輯
+
+在 ADK 中，雙向串流的靈魂在於 **「並行任務」** 的設計：上行（發送）與下行（接收）必須同時運作。
+
+#### 1. 下行任務：使用 `run_live()` 處理事件
+這是從模型接收 Event 物件的動脈。
 
 ```python
-# [導師點評]：這是 Phase 3 的核心。我們啟動兩個任務：
-# upstream_task 負責將 WebSocket 訊息推入 ADK 佇列
-# downstream_task 負責從 ADK 獲取 Event 並推回 WebSocket
-
-async def upstream_task() -> None:
-    """接收來自 WebSocket 的訊息並發送到 LiveRequestQueue。"""
-    while True:
-        message = await websocket.receive()
-        if "bytes" in message:
-            # 處理音訊二進位流 (16-bit PCM, 16kHz)
-            audio_blob = types.Blob(mime_type="audio/pcm;rate=16000", data=message["bytes"])
-            live_request_queue.send_realtime(audio_blob) # 這是非阻塞的
-        elif "text" in message:
-            # 處理文字請求
-            json_message = json.loads(message["text"])
-            if json_message.get("type") == "text":
-                content = types.Content(parts=[types.Part(text=json_message["text"])])
-                live_request_queue.send_content(content) # 發送離散的對話輪次
+# [導師點評]：run_live() 是一個非同步產生器，它讓「事件」成為通訊的最小單位。
+# 我們不需要手動處理 WebSocket 協定，ADK 會將其封裝為 Event 對象。
 
 async def downstream_task() -> None:
-    """接收來自 run_live() 的 Event 並發送到 WebSocket。"""
-    # [關鍵在於]：run_live 是非同步產生器，它會即時產生 Event 物件
+    logger.debug("下行任務啟動，呼叫 runner.run_live()")
     async for event in runner.run_live(
         user_id=user_id,
         session_id=session_id,
-        live_request_queue=live_request_queue,
-        run_config=run_config,
+        live_request_queue=live_request_queue, # 上行隊列
+        run_config=run_config,                 # 配置參數
     ):
-        # 序列化事件為 JSON 並排除 None 欄位以節省頻寬
+        # [關鍵在此]：將事件序列化為 JSON 透過 WebSocket 傳送給用戶端
+        # model_dump_json 會自動處理 Pydantic 模型的轉換
         event_json = event.model_dump_json(exclude_none=True, by_alias=True)
         await websocket.send_text(event_json)
-
-# 使用 gather 同時運行上游與下游，實現真正的雙向通訊
-try:
-    await asyncio.gather(upstream_task(), downstream_task())
-finally:
-    # 階段 4：終止。務必關閉佇列，否則會產生「殭屍會話」消耗配額
-    live_request_queue.close()
 ```
+*(參考來源：)*
+
+#### 2. 用戶端處理：解析中斷與內容
+當用戶端接收到事件後，必須正確回應標記。
+
+```javascript
+// [導師點評]：這是處理「插嘴」的標準動作。
+// 當接收到 interrupted 標記時，我們必須立即停止音訊播放並清除 UI 狀態。
+
+if (adkEvent.interrupted === true) {
+    // [關鍵在此]：立即停止音訊播放器的運作
+    if (audioPlayerNode) {
+        audioPlayerNode.port.postMessage({ command: "endOfAudio" });
+    }
+    // 標記氣泡為「已中斷」，提供視覺反饋
+    if (currentBubbleElement) {
+        currentBubbleElement.classList.add("interrupted");
+    }
+    // ... 重設狀態以建立新的氣泡
+}
+```
+*(參考來源：)*
 
 ---
 
-### 四、 關鍵配置：深度掌握 RunConfig
-`RunConfig` 是你控制串流行為的控制台。
+### 四、 性能優化建議：音訊傳輸的關鍵
 
-#### 1. 會話恢復 (Session Resumption)
-**這代表什麼？** 原生 Live API 的單個連線通常限制在 10 分鐘內。透過啟用 `session_resumption`，ADK 會自動快取「恢復句柄」，在連線中斷時透明地重新連線，使用者完全不會察覺。
+在處理音訊時，我們需要注意 **Base64 編碼的開銷**。將二進位資料放入 JSON 傳輸會增加約 133% 的開銷。
 
-#### 2. 上下文視窗壓縮 (Context Window Compression)
-對於長達數小時的對話，Token 限制與時間上限是開發者的噩夢。當 Token 達到 `trigger_tokens` 閾值時，ADK 會自動進行摘要壓縮，這能將會話持續時間延長至**無限時間**。
-
-#### 3. 原生音訊 vs. 半串聯模型
-我們在選擇模型時必須非常小心其架構差異：
-
-| 特性 | 原生音訊模型 (Native Audio) | 半串聯模型 (Half-Cascade) |
-| :--- | :--- | :--- |
-| **處理方式** | 端到端直接處理音訊 | 語音轉文字後再處理 |
-| **回應形式** | 僅限 AUDIO (預設) | 支援 TEXT 與 AUDIO |
-| **進階功能** | 支援**情感對話**與**主動式音訊** | 不支援主動性功能 |
+*   **優化方案：** 對於音訊密集型應用，建議在用戶端使用 Web Audio API，並透過 **WebSocket 二進位框架 (Binary Frames)** 直接傳送 16kHz PCM 資料。
+*   **規格提醒：**
+    *   **輸入音訊：** 16kHz 單聲道 PCM。
+    *   **輸出音訊：** 24kHz 單聲道 PCM（原生音訊模型）。
 
 ---
 
-### 五、 知識收斂與實戰總結
-雙向串流 (Bidi-streaming) 不僅僅是一項功能，它是 AI 代理程式朝向**實體化 (Embodiment)** 與**主動化**邁進的重要一步。
+### 🏁 知識收斂與實戰總結
 
-**關鍵總結：**
-*   **非同步是必須的**：所有的 Bidi 應用必須在非同步上下文中運行。
-*   **優雅終止**：永遠記得呼叫 `live_request_queue.close()`，避免耗盡並行會話配額。
-*   **多代理整合**：使用 `SequentialAgent` 時，ADK 會自動管理代理程式間的透明切換與背景傳遞。
+ADK 的雙向串流功能透過封裝複雜的 WebSocket 連線管理、自動工具執行與 VAD 偵測，將原本需要數月開發的基礎設施工作簡化為「宣告式配置」。
 
-想要更進一步，我建議你安裝並執行 `bidi-demo` 範例，親自體驗亞秒級延遲的震撼。
+**核心資源歸納：**
+*   **開發入口：** 使用 `RunConfig` 設定 `StreamingMode.BIDI` 以開啟低延遲模式。
+*   **穩定性保證：** 必須啟用 `SessionResumptionConfig` 以應對網絡不穩定。
+*   **多模態處理：** 使用 `LiveRequestQueue.send_realtime()` 發送音訊塊或 JPEG 影格（建議 1 FPS, 768x768）。
 
-#GoogleADK #GeminiLive #BidiStreaming #MultimodalAI #AgentDevelopmentKit
+**導師的話：** 「雙向串流的魅力在於它的『不確定性』——人類可以在任何時刻介入，這才是真正的對話。作為開發者，你的任務是利用 ADK 提供的標記（如 `partial`、`interrupted`），構建一個能優雅應對這些互動的響應式介面。」
+
+#BidiStreaming #GeminiLiveAPI #AIAgent #NativeMultimodal #RealTimeAI
+
