@@ -12,6 +12,7 @@ specification:
   - https://a2a-protocol.org/latest/specification/
 sdk:
   - https://a2a-protocol.org/latest/sdk/
+  - https://a2a-protocol.org/latest/sdk/python/
 topics:
   - https://a2a-protocol.org/latest/topics/a2a-and-mcp/
   - https://a2a-protocol.org/latest/topics/agent-discovery/
