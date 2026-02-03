@@ -1,29 +1,60 @@
-# ADK 雙向串流演示 (ADK Bidi-streaming Demo)
+# Pack Bidi-streaming - ADK 雙向串流演示
 
-這是使用 Google Agent Development Kit (ADK) 實現即時雙向串流 (Bidirectional Streaming) 的完整演示。此 FastAPI 應用程式展示了與 Gemini 模型進行基於 WebSocket 的通訊，支持多模態請求（文本、音訊和圖像/影片輸入）以及靈活的響應（文本或音訊輸出）。
+> 基於 Google Agent Development Kit (ADK) 的即時雙向串流代理演示專案
+
+這是一個使用 Google Agent Development Kit (ADK) 實現即時雙向串流 (Bidirectional Streaming) 的完整生產級專案。透過 FastAPI 和 WebSocket 技術，展示與 Gemini Live 模型進行多模態互動，支援文字、語音、圖像輸入及靈活的文字/音訊輸出。
 
 ![bidi-demo-screen](assets/bidi-demo-screen.png)
 
-## 概覽 (Overview)
+## 📋 目錄
 
-本演示實現了完整的 ADK 雙向串流生命週期：
+- [概覽](#概覽)
+- [核心特性](#核心特性)
+- [系統架構](#系統架構)
+- [前置作業](#前置作業)
+- [快速開始](#快速開始)
+- [完整使用流程](#完整使用流程)
+- [開發指南](#開發指南)
+- [部署指南](#部署指南)
+- [測試](#測試)
+- [專案結構](#專案結構)
+- [配置說明](#配置說明)
+- [常見問題](#常見問題)
+- [參考資源](#參考資源)
 
-1.  **應用程式初始化**：啟動時建立 `Agent`（代理）、`SessionService`（對話服務）和 `Runner`（執行器）。
-2.  **會話初始化**：為每個連線建立 `Session`（會話）、`RunConfig`（執行配置）和 `LiveRequestQueue`（即時請求隊列）。
-3.  **雙向串流**：並行執行上游（客戶端 → 隊列）和下游（事件 → 客戶端）任務。
-4.  **優雅終止**：妥善清理 `LiveRequestQueue` 和 WebSocket 連線。
+## 概覽
 
-## 功能特性 (Features)
+本專案實現了完整的 ADK 雙向串流生命週期：
 
-*   **WebSocket 通訊**：透過 `/ws/{user_id}/{session_id}` 進行即時雙向串流。
-*   **多模態請求**：支持文本、音訊和圖像/影片輸入，具備自動音訊轉錄功能。
-*   **靈活響應**：支持文本或音訊輸出，根據模型架構自動判定。
-*   **對話恢復**：透過 `RunConfig` 配置連線恢復支援。
-*   **並發任務**：獨立的異步上游/下游任務，優化效能。
-*   **互動式 UI**：具備事件控制台的網頁介面，用於監控即時 API 事件。
-*   **Google 搜尋整合**：代理配備 `google_search` 工具。
+1.  **應用程式初始化**：啟動時建立 `Agent`（代理）、`SessionService`（會話服務）和 `Runner`（執行器）
+2.  **會話初始化**：為每個 WebSocket 連線建立 `Session`（會話）、`RunConfig`（執行配置）和 `LiveRequestQueue`（即時請求隊列）
+3.  **雙向串流**：並行執行上游（客戶端 → 隊列）和下游（事件 → 客戶端）任務
+4.  **優雅終止**：妥善清理 `LiveRequestQueue` 和 WebSocket 連線
 
-## 架構 (Architecture)
+### 代理能力
+
+本專案包含一個 `root_agent`，配備以下工具：
+
+- **get_weather**: 模擬取得城市天氣資訊
+- **get_current_time**: 取得指定城市的當前時間
+- **google_search**: 整合 Google 搜尋進行網路查詢
+
+## 核心特性
+
+### 通訊與互動
+- ✅ **WebSocket 即時通訊**：透過 `/ws/{user_id}/{session_id}` 進行雙向串流
+- ✅ **多模態輸入**：支援文字、語音、圖像/影片輸入，具備自動音訊轉錄
+- ✅ **靈活輸出**：根據模型架構自動選擇文字或音訊輸出
+- ✅ **會話恢復**：透過 `RunConfig` 支援斷線重連
+
+### 開發與部署
+- ✅ **並發任務處理**：獨立的非同步上游/下游任務，優化效能
+- ✅ **互動式 UI**：具備事件控制台的網頁介面，監控即時 API 事件
+- ✅ **多環境支援**：支援本地開發、Cloud Run 部署
+- ✅ **完整測試套件**：單元測試、整合測試、E2E 測試
+- ✅ **CI/CD 整合**：使用 Cloud Build 自動化部署流程
+
+## 系統架構
 
 應用程式遵循 ADK 推薦的並發任務模式：
 
@@ -33,31 +64,44 @@ graph LR
     WS_Client[WebSocket 客戶端]
   end
 
-  subgraph Server_Side [伺服器端]
-    Queue[LiveRequestQueue 請求隊列]
-    RunLive[run_live 執行]
+  subgraph Server_Side [伺服器端 - FastAPI]
+    Queue[LiveRequestQueue<br/>即時請求隊列]
+    RunLive[run_live 執行器<br/>處理事件串流]
+    Agent[Root Agent<br/>weather/time/search]
   end
 
   subgraph External [外部服務]
-    LiveAPI[Live API 會話]
+    LiveAPI[Gemini Live API<br/>Vertex AI]
   end
 
-  WS_Client -- "上游任務 (Upstream)" --> Queue
+  WS_Client -- "上游任務 (文字/音訊/圖像)" --> Queue
   Queue --> LiveAPI
-  LiveAPI -- "下游任務 (Downstream)" --> RunLive
-  RunLive --> WS_Client
+  LiveAPI -- "事件串流" --> RunLive
+  RunLive -- "呼叫工具" --> Agent
+  Agent -- "工具結果" --> RunLive
+  RunLive -- "下游任務 (回應)" --> WS_Client
 ```
 
-*   **上游任務 (Upstream Task)**：接收 WebSocket 訊息並轉發至 `LiveRequestQueue`。
-*   **下游任務 (Downstream Task)**：處理 `run_live()` 事件並傳送回 WebSocket 客戶端。
+### 核心元件
 
-## 前置作業 (Prerequisites)
+- **上游任務 (Upstream Task)**：接收 WebSocket 訊息並轉發至 `LiveRequestQueue`
+- **下游任務 (Downstream Task)**：處理 `run_live()` 事件並傳送回 WebSocket 客戶端
+- **Runner**：協調代理執行與會話管理
+- **SessionService**：支援 InMemory、Database 或 VertexAI 三種會話儲存模式
 
-*   Python 3.10 或更高版本
-*   [uv](https://docs.astral.sh/uv/)（推薦）或 pip
-*   Google API 金鑰（用於 Gemini Live API）或 Google Cloud 專案（用於 Vertex AI Live API）
+## 前置作業
 
-**安裝 uv（如果尚未安裝）：**
+### 系統需求
+
+- **Python**: 3.10 - 3.13
+- **套件管理器**: [uv](https://docs.astral.sh/uv/)（推薦）或 pip
+- **Google Cloud 憑證**：
+  - Vertex AI Live API：需要 Google Cloud 專案與認證
+  - Gemini Live API：需要 API 金鑰（可選）
+
+### 安裝 uv
+
+uv 是一個高效能的 Python 套件管理器，安裝方式：
 
 ```bash
 # macOS/Linux
@@ -67,171 +111,315 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-## 安裝步驟 (Installation)
+### 設定 Google Cloud 認證
 
-### 1. 切換至演示目錄
+本專案預設使用 Vertex AI，需要 Application Default Credentials (ADC)：
 
 ```bash
-cd src/bidi-demo
+# 設定預設專案
+gcloud config set project YOUR_PROJECT_ID
+
+# 建立 ADC 憑證
+gcloud auth application-default login
 ```
 
-### 2. 安裝依賴項目
+## 快速開始
 
-**使用 uv（推薦）：**
+### 1. 安裝依賴
+
+在專案根目錄執行：
 
 ```bash
-uv sync
+make install
 ```
 
-這會自動建立虛擬環境、安裝所有依賴，並生成用於可重現構建的鎖定檔案。
+此指令會：
+- 自動檢查並安裝 uv（如未安裝）
+- 使用 `uv sync` 建立虛擬環境
+- 安裝所有專案依賴
 
-**使用 pip（替代方案）：**
+### 2. 配置環境變數
+
+複製範例環境檔案並編輯：
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -e .
+cp .env.example .env
 ```
 
-### 3. 配置環境變數
-
-建立或編輯 `app/.env` 並填入您的憑證：
+編輯 `.env` 檔案：
 
 ```bash
-# 選擇您的 Live API 平台
-GOOGLE_GENAI_USE_VERTEXAI=FALSE
+# 會話儲存模式（開發建議使用 true）
+USE_IN_MEMORY_SESSION=true
 
-# 用於 Gemini Live API (當 GOOGLE_GENAI_USE_VERTEXAI=FALSE)
-GOOGLE_API_KEY=your_api_key_here
+# Agent Engine 名稱
+AGENT_ENGINE_SESSION_NAME=pack-bidi-streaming
 
-# 用於 Vertex AI Live API (當 GOOGLE_GENAI_USE_VERTEXAI=TRUE)
-# GOOGLE_CLOUD_PROJECT=your_project_id
+# 使用 Vertex AI
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+
+# 模型選擇
+DEMO_AGENT_MODEL=gemini-live-2.5-flash
+
+# Google Cloud 設定（自動從 gcloud 讀取）
+# GOOGLE_CLOUD_PROJECT=your-project-id
 # GOOGLE_CLOUD_LOCATION=us-central1
-
-# 模型選擇 (選填，預設使用原生音訊模型)
-# 可用的模型名稱請參見下方的「支援模型」章節
-DEMO_AGENT_MODEL=gemini-2.5-flash-native-audio-preview-12-2025
 ```
 
-#### 獲取 API 憑證
+### 3. 啟動應用程式
 
-**Gemini Live API:**
-1. 訪問 [Google AI Studio](https://aistudio.google.com/apikey)
-2. 建立 API 金鑰
-3. 在 `.env` 中設定 `GOOGLE_API_KEY`
-
-**Vertex AI Live API:**
-1. 在 [Google Cloud Console](https://console.cloud.google.com) 啟用 Vertex AI API
-2. 使用 `gcloud auth application-default login` 設定認證
-3. 在 `.env` 中設定 `GOOGLE_CLOUD_PROJECT` 和 `GOOGLE_CLOUD_LOCATION`
-4. 設定 `GOOGLE_GENAI_USE_VERTEXAI=TRUE`
-
-### 4. 設定 SSL 憑證路徑
-
-為安全連線設定 SSL 憑證檔案路徑：
+#### 方式一：ADK Playground（推薦入門）
 
 ```bash
-# 如果使用 uv
-export SSL_CERT_FILE=$(uv run python -m certifi)
-
-# 如果使用已啟動虛擬環境的 pip
-export SSL_CERT_FILE=$(python -m certifi)
+make playground
 ```
 
-## 執行演示 (Running the Demo)
+- 自動開啟瀏覽器至 `http://localhost:8501`
+- 提供互動式代理測試介面
+- 支援熱重載（修改代碼自動更新）
+- 選擇 `bidi_demo` 資料夾進行互動
 
-### 啟動伺服器
-
-在 `src/bidi-demo` 目錄下，先切換到 `app` 子目錄：
+#### 方式二：FastAPI 本地後端
 
 ```bash
-cd app
+make local-backend
 ```
 
-> **注意：** 您必須在 `app` 目錄內執行，Python 才能找到 `google_search_agent` 模組。從父目錄執行會導致 `ModuleNotFoundError: No module named 'google_search_agent'` 錯誤。
+- 啟動 FastAPI 伺服器於 `http://localhost:8000`
+- 支援 `--reload` 熱重載
+- 適合前端開發與 WebSocket 測試
 
-**使用 uv（推薦）：**
+### 4. 開始使用
+
+開啟瀏覽器訪問應用程式後：
+
+**文字互動**：
+1. 在輸入欄位輸入問題（例如：「舊金山的天氣如何？」）
+2. 點擊 "Send" 或按 Enter
+3. 觀察事件控制台的即時 API 事件
+4. 接收串流回應
+
+**語音互動**：
+1. 點擊 "Start Audio" 開始語音對話
+2. 對麥克風說話
+3. 即時接收音訊回應與轉錄
+4. 點擊 "Stop Audio" 結束對話
+
+## 完整使用流程
+
+本節詳細說明基於 Makefile 的所有開發與部署指令。
+
+### 開發環境設定
+
+#### 1. 安裝與初始化
 
 ```bash
-uv run --project .. uvicorn main:app --reload --host 0.0.0.0 --port 8000
+# 安裝依賴（自動安裝 uv）
+make install
 ```
 
-**使用 pip（已啟動虛擬環境）：**
+**執行內容**：
+- 檢查 uv 是否已安裝，未安裝則自動安裝
+- 執行 `uv sync` 建立虛擬環境
+- 安裝 `pyproject.toml` 中定義的所有依賴
+
+#### 2. 啟動本地開發
+
+**方式 A：ADK Playground（互動式測試）**
 
 ```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
+make playground
 ```
 
-`--reload` 參數可在開發過程中自動重新啟動伺服器。
+**功能說明**：
+- 啟動 ADK Web UI（預設埠口：8501）
+- 支援代理熱重載 (`--reload_agents`)
+- 提供視覺化的代理互動介面
+- 需選擇 `bidi_demo` 資料夾進行互動
 
-#### 背景模式（測試/生產）
-
-在背景執行並輸出日誌：
+**方式 B：FastAPI 後端（WebSocket 開發）**
 
 ```bash
-# 使用 uv (在 app 目錄下)
-uv run --project .. uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
-
-# 使用 pip (在 app 目錄下)
-uvicorn main:app --host 0.0.0.0 --port 8000 > server.log 2>&1 &
+make local-backend
 ```
 
-檢查伺服器日誌：
+**功能說明**：
+- 啟動 FastAPI 伺服器於 `http://localhost:8000`
+- 支援程式碼熱重載 (`--reload`)
+- 適合前端開發與 WebSocket 除錯
+
+### 程式碼品質檢查
+
+#### 執行測試
 
 ```bash
-tail -f server.log  # 即時查看日誌
+# 執行所有測試（單元測試 + 整合測試）
+make test
 ```
 
-停止背景伺服器：
+**測試範圍**：
+- `tests/unit/`: 單元測試（代理邏輯、模型、工具）
+- `tests/integration/`: 整合測試（E2E 場景、WebSocket 通訊）
+
+#### 程式碼檢查
 
 ```bash
-kill $(lsof -ti:8000)
+# 執行 linting 與格式化檢查
+make lint
 ```
 
-### 訪問應用程式
+**檢查項目**：
+- `codespell`: 拼字檢查
+- `ruff check`: 程式碼風格檢查
+- `ruff format --check`: 格式化檢查
+- `ty check`: 型別檢查（Astral Rust 型別檢查器）
 
-開啟瀏覽器並導覽至：
+### 雲端部署
 
+#### 部署到 Cloud Run
+
+**基本部署**：
+
+```bash
+make deploy
 ```
-http://localhost:8000
+
+**自訂部署設定**：
+
+```bash
+# 啟用 IAP (Identity-Aware Proxy)
+make deploy IAP=true
+
+# 指定埠口
+make deploy PORT=8080
+
+# 組合使用
+make deploy IAP=true PORT=8080
 ```
 
-## 使用說明 (Usage)
+**部署參數說明**：
+- `--source .`: 從當前目錄建構容器
+- `--memory "4Gi"`: 配置 4GB 記憶體
+- `--no-cpu-throttling`: 停用 CPU 節流
+- `--no-allow-unauthenticated`: 需要身份驗證
+- `--update-build-env-vars`: 從 `pyproject.toml` 讀取版本號
 
-### 文字模式
+**部署前置作業**：
+1. 確保已設定 Google Cloud 專案：`gcloud config set project YOUR_PROJECT_ID`
+2. 確保已啟用 Cloud Run API
+3. 確保有足夠的 IAM 權限
 
-1. 在輸入欄位輸入訊息。
-2. 點擊 "Send" 或按 Enter。
-3. 觀察事件控制台以獲取 Live API 事件。
-4. 即時接收串流回應。
+#### 設定開發環境基礎設施
 
-### 音訊模式
+```bash
+make setup-dev-env
+```
 
-1. 點擊 "Start Audio" 開始語音互動。
-2. 對著麥克風說話。
-3. 接收帶有即時轉錄的音訊回應。
-4. 點擊 "Stop Audio" 結束音訊對話。
+**執行內容**：
+- 使用 Terraform 初始化並建立開發環境
+- 建立必要的 Google Cloud 資源：
+  - Cloud Storage buckets
+  - IAM 服務帳號與權限
+  - Telemetry 配置
+  - Cloud Run 服務
 
-## WebSocket API
+**Terraform 配置位置**：`deployment/terraform/dev/`
 
-### 端點 (Endpoint)
+### 清理與維護
+
+#### 清理專案檔案
+
+```bash
+make clean
+```
+
+**清理項目**：
+- Python 快取：`__pycache__/`, `*.pyc`, `*.pyo`, `*.pyd`
+- 測試檔案：`.pytest_cache/`, `.coverage`, `htmlcov/`, `.tox/`
+- 程式碼檢查快取：`.ruff_cache/`, `.mypy_cache/`
+- 建置檔案：`*.egg-info/`, `dist/`, `build/`
+- Terraform 狀態：`.terraform/`, `terraform.tfstate*`, `.terraform.lock.hcl`
+
+**注意事項**：
+- 此指令**不會**刪除虛擬環境 (`.venv`)
+- 如需完整清理，手動執行：`rm -rf .venv`
+
+### 常用開發工作流程
+
+#### 日常開發循環
+
+```bash
+# 1. 安裝依賴
+make install
+
+# 2. 啟動本地開發伺服器
+make playground  # 或 make local-backend
+
+# 3. 修改程式碼後執行測試
+make test
+
+# 4. 檢查程式碼品質
+make lint
+
+# 5. 清理快取（可選）
+make clean
+```
+
+#### 部署前檢查清單
+
+```bash
+# 1. 執行所有測試
+make test
+
+# 2. 確保程式碼品質
+make lint
+
+# 3. 清理舊檔案
+make clean
+
+# 4. 部署到 Cloud Run
+make deploy
+```
+
+### Makefile 指令速查表
+
+| 指令                 | 用途           | 適用場景           |
+| -------------------- | -------------- | ------------------ |
+| `make install`       | 安裝依賴       | 初次設定、更新套件 |
+| `make playground`    | ADK Playground | 互動測試代理       |
+| `make local-backend` | FastAPI 伺服器 | WebSocket 開發     |
+| `make test`          | 執行測試       | CI/開發驗證        |
+| `make lint`          | 程式碼檢查     | 提交前檢查         |
+| `make deploy`        | 部署 Cloud Run | 生產部署           |
+| `make setup-dev-env` | 建立基礎設施   | 初次雲端設定       |
+| `make clean`         | 清理檔案       | 維護、除錯         |
+
+## 開發指南
+
+### WebSocket API 規格
+
+#### 端點 (Endpoint)
 
 ```
 ws://localhost:8000/ws/{user_id}/{session_id}
 ```
 
 **路徑參數：**
-*   `user_id`：使用者的唯一識別碼。
-*   `session_id`：對話的唯一識別碼。
+*   `user_id`：使用者的唯一識別碼
+*   `session_id`：對話的唯一識別碼
+
+**查詢參數（選填）：**
+*   `proactivity`：啟用主動音訊（僅限原生音訊模型）
+*   `affective_dialog`：啟用情感對話（僅限原生音訊模型）
 
 **回應模態 (Modality)：**
-*   根據模型架構自動判定。
-*   原生音訊 (Native audio) 模型使用 AUDIO 回應模態。
-*   半級聯 (Half-cascade) 模型使用 TEXT 回應模態。
+*   根據模型架構自動判定
+*   原生音訊 (Native audio) 模型使用 AUDIO 回應模態
+*   半級聯 (Half-cascade) 模型使用 TEXT 回應模態
 
-### 訊息格式
+#### 訊息格式
 
-**客戶端 → 伺服器 (文字)：**
+**客戶端 → 伺服器（文字）：**
 ```json
 {
   "type": "text",
@@ -239,7 +427,7 @@ ws://localhost:8000/ws/{user_id}/{session_id}
 }
 ```
 
-**客戶端 → 伺服器 (圖像)：**
+**客戶端 → 伺服器（圖像）：**
 ```json
 {
   "type": "image",
@@ -248,82 +436,566 @@ ws://localhost:8000/ws/{user_id}/{session_id}
 }
 ```
 
-**客戶端 → 伺服器 (音訊)：**
-*   傳送原始二進位影格（PCM 音訊, 16kHz, 16-bit）。
+**客戶端 → 伺服器（音訊）：**
+*   傳送原始二進位影格（PCM 音訊, 16kHz, 16-bit）
 
 **伺服器 → 客戶端：**
-*   JSON 編碼的 ADK `Event` 物件。
-*   請參閱 [ADK 事件文件](https://google.github.io/adk-docs/) 獲取事件綱要。
+*   JSON 編碼的 ADK `Event` 物件
+*   請參閱 [ADK 事件文件](https://google.github.io/adk-docs/) 獲取事件綱要
 
-## 專案結構 (Project Structure)
+### 程式碼架構說明
+
+#### 代理定義 (bidi_demo/agent.py)
+
+```python
+root_agent = Agent(
+    name="root_agent",
+    model=os.getenv("DEMO_AGENT_MODEL", "gemini-live-2.5-flash"),
+    instruction="你是一個可以搜尋網路的得力助手...",
+    tools=[get_weather, get_current_time, google_search]
+)
+```
+
+**工具實作範例**：
+
+```python
+def get_weather(query: str) -> str:
+    """模擬網路搜尋以獲取天氣資訊"""
+    if "sf" in query.lower() or "san francisco" in query.lower():
+        return "舊金山氣溫 60 度，有霧。"
+    return "天氣晴朗，氣溫 90 度。"
+```
+
+#### FastAPI 應用程式初始化 (bidi_demo/fast_api_app.py)
+
+```python
+# 初始化 SessionService
+session_service = VertexAiSessionService(
+    project=project_id,
+    location=os.environ.get("GOOGLE_CLOUD_LOCATION", "global"),
+    agent_engine_id=agent_engine_id
+)
+
+# 建立 Runner
+runner = Runner(
+    app_name="bidi-demo",
+    agent=agent,
+    session_service=session_service
+)
+```
+
+#### WebSocket 處理器關鍵邏輯
+
+**1. 模態自動檢測**：
+
+```python
+model_name = agent.model
+is_native_audio = "native-audio" in model_name.lower()
+
+if is_native_audio:
+    response_modalities = ["AUDIO"]
+    run_config = RunConfig(
+        streaming_mode=StreamingMode.BIDI,
+        response_modalities=response_modalities,
+        input_audio_transcription=types.AudioTranscriptionConfig(),
+        output_audio_transcription=types.AudioTranscriptionConfig()
+    )
+else:
+    response_modalities = ["TEXT"]
+    run_config = RunConfig(
+        streaming_mode=StreamingMode.BIDI,
+        response_modalities=response_modalities
+    )
+```
+
+**2. 並發任務處理**：
+
+```python
+# 建立請求隊列
+queue = LiveRequestQueue()
+
+# 啟動並發任務
+await asyncio.gather(
+    upstream_task(websocket, queue),  # 接收客戶端訊息
+    downstream_task(websocket, runner, queue, run_config)  # 處理代理回應
+)
+```
+
+### 本地開發最佳實踐
+
+#### 環境變數管理
+
+建議使用不同的 `.env` 檔案管理多環境配置：
+
+```bash
+# 開發環境
+.env.development
+
+# 測試環境
+.env.test
+
+# 生產環境
+.env.production
+```
+
+載入特定環境：
+
+```python
+from dotenv import load_dotenv
+
+env = os.getenv("ENV", "development")
+load_dotenv(f".env.{env}")
+```
+
+#### 除錯技巧
+
+**啟用詳細日誌**：
+
+```python
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+```
+
+**WebSocket 除錯**：
+
+使用瀏覽器開發者工具的 Network → WS 分頁監控 WebSocket 流量。
+
+#### 熱重載注意事項
+
+- ADK Playground：修改 `bidi_demo/agent.py` 會自動重載
+- FastAPI：修改 `bidi_demo/fast_api_app.py` 會自動重啟伺服器
+- 靜態檔案（HTML/CSS/JS）：需手動重新整理瀏覽器
+
+## 部署指南
+
+### Cloud Run 部署
+
+#### 基本部署流程
+
+```bash
+# 1. 設定 Google Cloud 專案
+gcloud config set project YOUR_PROJECT_ID
+
+# 2. 部署到 Cloud Run
+make deploy
+```
+
+#### 進階部署選項
+
+**啟用 Identity-Aware Proxy (IAP)**：
+
+```bash
+make deploy IAP=true
+```
+
+**自訂埠口**：
+
+```bash
+make deploy PORT=8080
+```
+
+**組合使用**：
+
+```bash
+make deploy IAP=true PORT=8080
+```
+
+#### 部署配置說明
+
+部署時的關鍵參數（定義於 Makefile）：
+
+- `--memory "4Gi"`：配置 4GB 記憶體
+- `--no-cpu-throttling`：停用 CPU 節流，確保即時效能
+- `--no-allow-unauthenticated`：需要身份驗證
+- `--labels "created-by=adk"`：標記資源來源
+- `--update-build-env-vars "AGENT_VERSION=..."`：從 `pyproject.toml` 讀取版本
+
+### Terraform 基礎設施
+
+#### 建立開發環境
+
+```bash
+make setup-dev-env
+```
+
+此指令會使用 Terraform 建立以下資源：
+
+- **Cloud Storage Buckets**：儲存日誌與資料
+- **IAM 服務帳號**：管理權限
+- **Cloud Run 服務**：部署應用程式
+- **Telemetry 配置**：監控與日誌
+
+#### 手動 Terraform 操作
+
+```bash
+cd deployment/terraform/dev
+
+# 初始化
+terraform init
+
+# 檢視計畫
+terraform plan --var-file vars/env.tfvars
+
+# 套用變更
+terraform apply --var-file vars/env.tfvars
+
+# 銷毀資源
+terraform destroy --var-file vars/env.tfvars
+```
+
+### CI/CD 整合
+
+專案包含 Cloud Build 配置檔案（位於 `.cloudbuild/`）：
+
+- **pr_checks.yaml**：Pull Request 時執行測試與檢查
+- **staging.yaml**：部署到 Staging 環境
+- **deploy-to-prod.yaml**：部署到 Production 環境
+
+#### 設定 CI/CD Triggers
+
+```bash
+# 使用 Terraform 自動建立 Triggers
+cd deployment/terraform
+terraform apply
+
+# 或手動在 Google Cloud Console 設定
+```
+
+## 測試
+
+### 執行測試
+
+```bash
+# 執行所有測試
+make test
+
+# 僅執行單元測試
+uv run pytest tests/unit
+
+# 僅執行整合測試
+uv run pytest tests/integration
+```
+
+### 測試結構
+
+- **tests/unit/**：單元測試
+  - `test_agent.py`：代理邏輯測試
+  - `test_models.py`：資料模型測試
+  - `test_telemetry.py`：遙測功能測試
+- **tests/integration/**：整合測試
+  - `test_server_e2e.py`：端到端伺服器測試
+  - `test_agent.py`：代理整合測試
+
+### 測試覆蓋率
+
+```bash
+# 執行測試並產生覆蓋率報告
+uv run pytest --cov=bidi_demo --cov-report=html
+
+# 開啟報告
+open htmlcov/index.html
+```
+
+## 專案結構
 
 ```
-bidi-demo/
-├── app/
-│   ├── google_search_agent/      # 代理定義模組
-│   │   ├── __init__.py           # 套件導出
-│   │   └── agent.py              # 代理配置
-│   ├── main.py                   # FastAPI 應用程式與 WebSocket 端點
-│   ├── .env                      # 環境配置 (不包含在 git 中)
+pack-bidi-streaming/
+├── bidi_demo/                    # 核心應用程式模組
+│   ├── __init__.py
+│   ├── agent.py                  # 代理定義（root_agent + 工具）
+│   ├── fast_api_app.py           # FastAPI 應用程式與 WebSocket 端點
+│   ├── app_utils/                # 工具函式
+│   │   ├── telemetry.py          # OpenTelemetry 遙測設定
+│   │   └── typing.py             # 型別定義
 │   └── static/                   # 前端檔案
 │       ├── index.html            # 主要 UI
 │       ├── css/
 │       │   └── style.css         # 樣式
 │       └── js/
-│           ├── app.js                    # 主要應用邏輯
-│           ├── audio-player.js           # 音訊播放
-│           ├── audio-recorder.js         # 音訊錄製
-│           ├── pcm-player-processor.js   # 音訊處理
-│           └── pcm-recorder-processor.js # 音訊處理
-├── tests/                        # E2E 測試與測試日誌
-├── pyproject.toml               # Python 專案配置
-└── README.md                    # 本檔案
+│           ├── app.js            # 主應用邏輯
+│           ├── audio-player.js   # 音訊播放
+│           ├── audio-recorder.js # 音訊錄製
+│           ├── pcm-player-processor.js
+│           └── pcm-recorder-processor.js
+├── deployment/                   # 部署配置
+│   ├── terraform/                # Terraform IaC
+│   │   ├── dev/                  # 開發環境
+│   │   │   ├── vars/
+│   │   │   │   └── env.tfvars
+│   │   │   ├── apis.tf
+│   │   │   ├── iam.tf
+│   │   │   ├── service.tf
+│   │   │   └── ...
+│   │   ├── vars/
+│   │   │   └── env.tfvars
+│   │   ├── apis.tf
+│   │   ├── build_triggers.tf     # Cloud Build CI/CD
+│   │   ├── service.tf            # Cloud Run 服務
+│   │   └── ...
+│   └── README.md
+├── .cloudbuild/                  # Cloud Build 配置
+│   ├── pr_checks.yaml            # PR 檢查
+│   ├── staging.yaml              # Staging 部署
+│   └── deploy-to-prod.yaml       # Production 部署
+├── tests/                        # 測試套件
+│   ├── unit/                     # 單元測試
+│   │   ├── test_agent.py
+│   │   ├── test_models.py
+│   │   └── test_telemetry.py
+│   ├── integration/              # 整合測試
+│   │   ├── test_agent.py
+│   │   └── test_server_e2e.py
+│   ├── load_test/                # 負載測試
+│   │   ├── load_test.py
+│   │   └── README.md
+│   └── conftest.py               # Pytest 配置
+├── notebooks/                    # Jupyter Notebooks
+│   ├── adk_app_testing.ipynb     # 應用程式測試
+│   └── evaluating_adk_agent.ipynb # 代理評估
+├── assets/                       # 靜態資源
+│   └── bidi-demo-screen.png
+├── pyproject.toml                # Python 專案配置
+├── Makefile                      # Make 指令定義
+├── Dockerfile                    # 容器化配置
+├── .env.example                  # 環境變數範例
+├── .gitignore
+├── ARCHITECTURE.md               # 架構說明
+├── GEMINI.md                     # Gemini 模型說明
+└── README.md                     # 本檔案
 ```
 
-## 程式碼概覽 (Code Overview)
+### 核心檔案說明
 
-### 代理定義 (app/google_search_agent/agent.py)
+| 檔案                                                   | 用途         | 關鍵內容                    |
+| ------------------------------------------------------ | ------------ | --------------------------- |
+| [bidi_demo/agent.py](bidi_demo/agent.py)               | 代理定義     | `root_agent`、工具註冊      |
+| [bidi_demo/fast_api_app.py](bidi_demo/fast_api_app.py) | FastAPI 應用 | WebSocket 端點、並發任務    |
+| [Makefile](Makefile)                                   | 開發指令     | install, playground, deploy |
+| [pyproject.toml](pyproject.toml)                       | 專案配置     | 依賴、版本、工具設定        |
+| [Dockerfile](Dockerfile)                               | 容器化       | Cloud Run 部署映像          |
+| [.env.example](.env.example)                           | 環境變數     | 配置範例                    |
 
-代理在獨立模組中定義，遵循 ADK 最佳實踐：
+## 配置說明
 
+### 支援模型
+
+演示支援任何與 Live API 相容的 Gemini 模型：
+
+**Vertex AI Live API 模型**（推薦）：
+*   `gemini-live-2.5-flash`：快速回應，適合即時對話
+*   `gemini-live-2.0-flash-exp`：實驗版本
+
+**Gemini Live API 模型**（需 API 金鑰）：
+*   `gemini-2.5-flash-native-audio-preview-12-2025`
+
+透過 `.env` 中的 `DEMO_AGENT_MODEL` 設定模型，或修改 `bidi_demo/agent.py`。
+
+獲取最新模型資訊：
+*   **Vertex AI**: [官方 Vertex AI 模型文件](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models)
+*   **Gemini API**: [官方 Gemini API 模型文件](https://ai.google.dev/gemini-api/docs/models)
+
+### RunConfig 選項
+
+演示會根據模型架構自動配置雙向串流（[fast_api_app.py](bidi_demo/fast_api_app.py#L190-L220)）：
+
+**原生音訊模型**（模型名稱包含 "native-audio"）：
 ```python
-agent = Agent(
-    name="google_search_agent",
-    model=os.getenv("DEMO_AGENT_MODEL", "gemini-2.5-flash-native-audio-preview-12-2025"),
-    tools=[google_search],
-    instruction="You are a helpful assistant that can search the web."
+run_config = RunConfig(
+    streaming_mode=StreamingMode.BIDI,
+    response_modalities=["AUDIO"],
+    input_audio_transcription=types.AudioTranscriptionConfig(),
+    output_audio_transcription=types.AudioTranscriptionConfig(),
+    session_resumption=types.SessionResumptionConfig()
 )
 ```
 
-### 應用程式初始化 (app/main.py:37-50)
-
+**半級聯模型**（其他模型）：
 ```python
-from google_search_agent.agent import agent
-
-app = FastAPI()
-session_service = InMemorySessionService()
-runner = Runner(app_name="bidi-demo", agent=agent, session_service=session_service)
+run_config = RunConfig(
+    streaming_mode=StreamingMode.BIDI,
+    response_modalities=["TEXT"],
+    input_audio_transcription=None,
+    output_audio_transcription=None,
+    session_resumption=types.SessionResumptionConfig()
+)
 ```
 
-### WebSocket 處理器 (app/main.py:65-209)
+### 環境變數參考
 
-WebSocket 端點實現了完整的雙向串流模式：
+| 變數                        | 預設值                  | 說明                     |
+| --------------------------- | ----------------------- | ------------------------ |
+| `USE_IN_MEMORY_SESSION`     | `true`                  | 使用記憶體會話（開發用） |
+| `AGENT_ENGINE_SESSION_NAME` | `pack-bidi-streaming`   | Agent Engine 名稱        |
+| `DEMO_AGENT_MODEL`          | `gemini-live-2.5-flash` | 使用的模型名稱           |
+| `GOOGLE_GENAI_USE_VERTEXAI` | `TRUE`                  | 使用 Vertex AI           |
+| `GOOGLE_CLOUD_PROJECT`      | -                       | Google Cloud 專案 ID     |
+| `GOOGLE_CLOUD_LOCATION`     | `us-central1`           | Google Cloud 區域        |
+| `ALLOW_ORIGINS`             | `http://localhost:8000` | CORS 允許來源            |
+| `LOGS_BUCKET_NAME`          | -                       | GCS 日誌 bucket          |
 
-1.  **接受連線**：建立 WebSocket 連線。
-2.  **配置對話**：使用自動模態檢測建立 `RunConfig`。
-3.  **初始化隊列**：建立用於訊息傳遞的 `LiveRequestQueue`。
-4.  **啟動並發任務**：發啟上游和下游任務。
-5.  **處理清理**：在 `finally` 區塊中關閉隊列。
+## 常見問題
 
-### 並發任務
+### 連線與認證問題
 
-**上游任務 (Upstream Task)** (app/main.py:125-172):
-*   接收 WebSocket 訊息（文字、圖像或音訊二進位）。
-*   轉換為 ADK 格式 (`Content` 或 `Blob`)。
-*   透過 `send_content()` 或 `send_realtime()` 傳送到 `LiveRequestQueue`。
+**Q: WebSocket 連線失敗**
 
-**下游任務 (Downstream Task)** (app/main.py:174-187):
-*   使用隊列和配置呼叫 `runner.run_live()`。
+A: 檢查以下項目：
+1. 驗證 `.env` 中的憑證設定
+2. 確認 FastAPI 伺服器正在執行：`lsof -i:8000`
+3. 檢查瀏覽器控制台錯誤訊息
+4. 確認防火牆未封鎖 WebSocket 連線
+
+**Q: Vertex AI 認證錯誤**
+
+A: 執行以下步驟：
+```bash
+# 重新建立 ADC
+gcloud auth application-default login
+
+# 確認專案設定
+gcloud config get-value project
+
+# 檢查憑證檔案
+echo $GOOGLE_APPLICATION_CREDENTIALS
+```
+
+### 音訊問題
+
+**Q: 音訊輸入/輸出無法運作**
+
+A: 排查清單：
+1. 在瀏覽器中授予麥克風權限
+2. 驗證瀏覽器支援 Web Audio API（Chrome/Edge 推薦）
+3. 檢查模型是否支援音訊（需原生音訊模型）
+4. 查看瀏覽器控制台的 JavaScript 錯誤
+5. 測試麥克風是否正常：`navigator.mediaDevices.getUserMedia({ audio: true })`
+
+**Q: 音訊延遲過高**
+
+A: 優化方案：
+- 使用原生音訊模型（`gemini-live-2.5-flash`）
+- 確認 Cloud Run 部署時未啟用 CPU 節流
+- 檢查網路連線品質
+- 考慮調整音訊緩衝區大小（`pcm-recorder-processor.js`）
+
+### 模型與配額
+
+**Q: 找不到模型或配額錯誤**
+
+A: 解決步驟：
+1. 驗證模型名稱與平台匹配（Vertex AI vs Gemini API）
+2. 在 Google Cloud Console 檢查 API 配額限制
+3. 確保已啟用 Vertex AI API
+4. 確保專案已啟用計費（對於 Vertex AI）
+5. 檢視配額使用量：`gcloud alpha billing quotas list`
+
+**Q: 如何切換模型？**
+
+A: 修改 `.env` 檔案：
+```bash
+# 使用 Vertex AI 模型
+DEMO_AGENT_MODEL=gemini-live-2.5-flash
+GOOGLE_GENAI_USE_VERTEXAI=TRUE
+
+# 或使用 Gemini API 模型
+DEMO_AGENT_MODEL=gemini-2.5-flash-native-audio-preview-12-2025
+GOOGLE_GENAI_USE_VERTEXAI=FALSE
+GOOGLE_API_KEY=your_api_key
+```
+
+### 部署問題
+
+**Q: Cloud Run 部署失敗**
+
+A: 常見原因：
+1. 未設定 Google Cloud 專案：`gcloud config set project YOUR_PROJECT_ID`
+2. 未啟用必要的 API（Cloud Run, Container Registry）
+3. IAM 權限不足：需要 `roles/run.admin` 和 `roles/iam.serviceAccountUser`
+4. 記憶體配置不足：確認 Makefile 中 `--memory "4Gi"`
+
+**Q: 部署後無法訪問服務**
+
+A: 檢查項目：
+1. 確認服務已部署：`gcloud run services list`
+2. 檢查 IAM 權限：部署時使用 `--no-allow-unauthenticated`，需要身份驗證
+3. 取得服務 URL：`gcloud run services describe pack-bidi-streaming --format='value(status.url)'`
+4. 測試端點：`curl -H "Authorization: Bearer $(gcloud auth print-identity-token)" SERVICE_URL`
+
+### 開發問題
+
+**Q: `make install` 失敗**
+
+A: 可能的解決方案：
+```bash
+# 手動安裝 uv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# 清理並重新安裝
+rm -rf .venv
+make install
+
+# 或使用 pip 作為備選
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+**Q: 測試失敗**
+
+A: 除錯步驟：
+```bash
+# 執行特定測試並顯示詳細輸出
+uv run pytest tests/unit/test_agent.py -v
+
+# 啟用日誌輸出
+uv run pytest --log-cli-level=DEBUG
+
+# 檢查依賴是否完整
+uv sync --dev
+```
+
+**Q: Lint 檢查失敗**
+
+A: 自動修復：
+```bash
+# 自動格式化程式碼
+uv run ruff format .
+
+# 自動修復可修復的問題
+uv run ruff check . --fix
+
+# 修正拼字錯誤
+uv run codespell --write-changes
+```
+
+### 效能優化
+
+**Q: 如何提升回應速度？**
+
+A: 優化建議：
+1. 使用 `gemini-live-2.5-flash` 快速模型
+2. 部署時停用 CPU 節流（已在 Makefile 中設定）
+3. 選擇離使用者較近的 Google Cloud 區域
+4. 使用 `VertexAiSessionService` 而非 `InMemorySessionService`（生產環境）
+5. 實作請求快取機制（針對重複查詢）
+
+**Q: 如何處理高併發？**
+
+A: 擴展策略：
+```bash
+# 調整 Cloud Run 並發設定
+gcloud run services update pack-bidi-streaming \
+  --max-instances=10 \
+  --concurrency=80 \
+  --cpu=2 \
+  --memory=4Gi
+```
+
+## 參考資源
 *   從 Live API 接收 `Event` 串流。
 *   將事件序列化為 JSON 並傳送到 WebSocket。
 
@@ -375,57 +1047,80 @@ run_config = RunConfig(
 
 ### 連線問題
 
-**問題**：WebSocket 連線失敗
-**解決方案**：
-*   驗證 `app/.env` 中的 API 憑證。
-*   檢查控制台錯誤訊息。
-*   確保 uvicorn 正在正確的埠口執行。
+## 參考資源
 
-### 音訊失效
+### 官方文件
 
-**問題**：音訊輸入/輸出無法運作
-**解決方案**：
-*   在瀏覽器中授予麥克風權限。
-*   驗證瀏覽器支援 Web Audio API。
-*   檢查音訊模型配置（需要原生音訊模型）。
-*   查看瀏覽器控制台錯誤。
+- **ADK 文件**: https://google.github.io/adk-docs/
+  - [雙向串流指南](https://google.github.io/adk-docs/bidi-streaming-live/)
+  - [代理開發指南](https://google.github.io/adk-docs/agents/)
+  - [事件參考](https://google.github.io/adk-docs/events/)
+- **Gemini Live API**: https://ai.google.dev/gemini-api/docs/live
+- **Vertex AI Live API**: https://cloud.google.com/vertex-ai/generative-ai/docs/live-api
+- **ADK GitHub 儲存庫**: https://github.com/google/adk-python
 
-### 模型錯誤
+### 相關專案
 
-**問題**：找不到模型或配額錯誤
-**解決方案**：
-*   驗證模型名稱與您的平台匹配（Gemini vs Vertex AI）。
-*   在控制台中檢查 API 配額限制。
-*   確保已啟用計費（對於 Vertex AI）。
+- **Agent Starter Pack**: ADK 官方起始範本
+- **ADK Samples**: https://github.com/google/adk-samples
 
-## 開發 (Development)
+### 技術文件
 
-### 程式碼格式化
+- **FastAPI 文件**: https://fastapi.tiangolo.com/
+- **WebSocket 協定**: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+- **Web Audio API**: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
+- **uv 文件**: https://docs.astral.sh/uv/
+- **Terraform Google Provider**: https://registry.terraform.io/providers/hashicorp/google/latest/docs
 
-專案使用 black、isort 和 flake8 進行程式碼格式化與檢查。配置繼承自儲存庫根目錄。
+### 學習資源
 
-**使用 uv：**
-```bash
-uv run black .
-uv run isort .
-uv run flake8 .
-```
+- [ARCHITECTURE.md](ARCHITECTURE.md)：專案架構與設計流程
+- [GEMINI.md](GEMINI.md)：Gemini 模型說明
+- [tests/](tests/)：測試範例與文件
 
-**使用 pip（已啟動虛擬環境）：**
-```bash
-black .
-isort .
-flake8 .
-```
+## 授權
 
-## 其他資源
+Apache 2.0 - 詳情請參閱儲存庫 LICENSE 檔案。
 
-*   **ADK 文件**: https://google.github.io/adk-docs/
-*   **Gemini Live API**: https://ai.google.dev/gemini-api/docs/live
-*   **Vertex AI Live API**: https://cloud.google.com/vertex-ai/generative-ai/docs/live-api
-*   **ADK GitHub 儲存庫**: https://github.com/google/adk-python
+---
 
-## 授權 (License)
+## 📚 重點摘要
+
+### 核心概念
+展示如何使用 Google ADK 建立基於 WebSocket 的即時雙向多模態串流應用程式。
+
+### 關鍵技術
+- **Google ADK**: 代理開發框架
+- **FastAPI**: Web 伺服器與 WebSocket 端點
+- **Gemini Live API / Vertex AI**: 即時對話模型後端
+- **多模態處理**: 支援文字、語音、圖像輸入與自動轉錄
+- **Terraform**: 基礎設施即代碼
+- **Cloud Build**: CI/CD 自動化
+
+### 重要結論
+ADK 透過 `LiveRequestQueue` 和並發處理模式，簡化了複雜的即時雙向串流開發，能有效處理語音對話與多模態互動。
+
+### 快速開始步驟
+1. 安裝依賴：`make install`
+2. 配置環境變數：`cp .env.example .env`
+3. 啟動應用：`make playground` 或 `make local-backend`
+4. 開始互動：開啟瀏覽器至 `http://localhost:8000`
+
+### 主要 Make 指令
+- `make install`：安裝依賴
+- `make playground`：啟動 ADK Playground
+- `make local-backend`：啟動 FastAPI 伺服器
+- `make test`：執行測試
+- `make lint`：程式碼檢查
+- `make deploy`：部署到 Cloud Run
+- `make clean`：清理專案檔案
+
+### 適用場景
+- 即時語音助理
+- 多模態對話系統
+- 客戶服務機器人
+- 教育互動平台
+- 遊戲 NPC 對話系統
 
 Apache 2.0 - 詳情請參閱儲存庫 LICENSE 檔案。
 

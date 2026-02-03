@@ -29,8 +29,8 @@ from google.adk.agents.live_request_queue import LiveRequestQueue
 from google.adk.agents.run_config import RunConfig, StreamingMode
 from google.adk.runners import Runner
 from google.adk.sessions import (
-    InMemorySessionService,
     DatabaseSessionService,
+    InMemorySessionService,
     VertexAiSessionService,
 )
 from google.cloud import logging as google_cloud_logging
@@ -41,6 +41,9 @@ from bidi_demo.agent import root_agent as agent
 from bidi_demo.app_utils.telemetry import setup_telemetry
 from bidi_demo.app_utils.typing import Feedback
 
+# 在導入 agent 之前，先從 .env 檔案載入環境變數
+load_dotenv(Path(__file__).parent / ".env")
+
 # Configure logging
 logging.basicConfig(
     level=logging.DEBUG,
@@ -48,16 +51,13 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# 在導入 agent 之前，先從 .env 檔案載入環境變數
-load_dotenv(Path(__file__).parent / ".env")
-
 # 設定遙測功能
 setup_telemetry()
 
 # 獲取預設憑證與專案 ID
 _, project_id = google.auth.default()
 logging_client = google_cloud_logging.Client()
-logger = logging_client.logger(__name__)
+gcloud_logger = logging_client.logger(__name__)
 
 # 抑制 Pydantic 序列化警告
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
@@ -108,13 +108,11 @@ else:
 
     if session_service_uri_str.startswith("agentengine://"):
         # Extract the resource name (e.g., projects/123/locations/us-central1/reasoningEngines/my-engine)
-        agent_engine_resource_name = session_service_uri_str[
-            len("agentengine://") :
-        ]
+        agent_engine_resource_name = session_service_uri_str[len("agentengine://") :]
         session_service = VertexAiSessionService(
             project=project_id,
             location=os.environ.get("GOOGLE_CLOUD_LOCATION", "global"),
-            reasoning_engine_id=agent_engine_resource_name.split("/")[-1],
+            agent_engine_id=agent_engine_resource_name.split("/")[-1],
         )
     else:
         # Assuming a database URI for other cases
@@ -147,7 +145,7 @@ def collect_feedback(feedback: Feedback) -> dict[str, str]:
     傳回值:
         成功訊息
     """
-    logger.log_struct(feedback.model_dump(), severity="INFO")
+    gcloud_logger.log_struct(feedback.model_dump(), severity="INFO")
     return {"status": "success"}
 
 
@@ -205,13 +203,9 @@ async def websocket_endpoint(
             output_audio_transcription=types.AudioTranscriptionConfig(),
             session_resumption=types.SessionResumptionConfig(),
             proactivity=(
-                types.ProactivityConfig(proactive_audio=True)
-                if proactivity
-                else None
+                types.ProactivityConfig(proactive_audio=True) if proactivity else None
             ),
-            enable_affective_dialog=affective_dialog
-            if affective_dialog
-            else None,
+            enable_affective_dialog=affective_dialog if affective_dialog else None,
         )
         logger.debug(
             f"檢測到原生音訊模型: {model_name}, "
@@ -228,10 +222,7 @@ async def websocket_endpoint(
             output_audio_transcription=None,
             session_resumption=types.SessionResumptionConfig(),
         )
-        logger.debug(
-            f"檢測到半串聯模型: {model_name}, "
-            "使用 TEXT 回應模態"
-        )
+        logger.debug(f"檢測到半串聯模型: {model_name}, 使用 TEXT 回應模態")
         # 如果用戶嘗試啟用僅限原生音訊的功能，發出警告
         if proactivity or affective_dialog:
             logger.warning(
@@ -265,9 +256,7 @@ async def websocket_endpoint(
             # 處理二進位影格 (音訊數據)
             if "bytes" in message:
                 audio_data = message["bytes"]
-                logger.debug(
-                    f"收到二進位音訊區塊: {len(audio_data)} 位元組"
-                )
+                logger.debug(f"收到二進位音訊區塊: {len(audio_data)} 位元組")
 
                 audio_blob = types.Blob(
                     mime_type="audio/pcm;rate=16000", data=audio_data
@@ -283,9 +272,7 @@ async def websocket_endpoint(
 
                 # 從 JSON 提取文字並傳送到 LiveRequestQueue
                 if json_message.get("type") == "text":
-                    logger.debug(
-                        f"傳送文字內容: {json_message['text']}"
-                    )
+                    logger.debug(f"傳送文字內容: {json_message['text']}")
                     content = types.Content(
                         parts=[types.Part(text=json_message["text"])]
                     )
@@ -300,22 +287,17 @@ async def websocket_endpoint(
                     mime_type = json_message.get("mimeType", "image/jpeg")
 
                     logger.debug(
-                        f"傳送圖像: {len(image_data)} 位元組, "
-                        f"類型: {mime_type}"
+                        f"傳送圖像: {len(image_data)} 位元組, 類型: {mime_type}"
                     )
 
                     # 將圖像作為 blob 傳送
-                    image_blob = types.Blob(
-                        mime_type=mime_type, data=image_data
-                    )
+                    image_blob = types.Blob(mime_type=mime_type, data=image_data)
                     live_request_queue.send_realtime(image_blob)
 
     async def downstream_task() -> None:
         """從 run_live() 接收事件並傳送到 WebSocket。"""
         logger.debug("downstream_task 已啟動，呼叫 runner.run_live()")
-        logger.debug(
-            f"開始 run_live，user_id={user_id}, session_id={session_id}"
-        )
+        logger.debug(f"開始 run_live，user_id={user_id}, session_id={session_id}")
         async for event in runner.run_live(
             user_id=user_id,
             session_id=session_id,
@@ -330,9 +312,7 @@ async def websocket_endpoint(
     # 並行執行兩個任務
     # 任何一個任務的異常都會傳播並取消另一個任務
     try:
-        logger.debug(
-            "啟動 asyncio.gather 以執行上游和下游任務"
-        )
+        logger.debug("啟動 asyncio.gather 以執行上游和下游任務")
         await asyncio.gather(upstream_task(), downstream_task())
         logger.debug("asyncio.gather 正常完成")
     except WebSocketDisconnect:

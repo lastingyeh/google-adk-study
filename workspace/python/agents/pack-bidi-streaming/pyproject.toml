@@ -78,8 +78,8 @@ python-version = "3.10"
 
 
 [tool.ty.src]
-# 排除虛擬環境
-exclude = [".venv/**"]
+# 排除虛擬環境與 notebooks
+exclude = [".venv/**", "notebooks/**"]
 
 
 [tool.ty.rules]

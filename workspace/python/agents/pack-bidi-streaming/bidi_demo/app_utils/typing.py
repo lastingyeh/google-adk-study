@@ -1,4 +1,4 @@
-﻿# 版權所有 2026 Google LLC
+# 版權所有 2026 Google LLC
 #
 # 根據 Apache License, Version 2.0（以下簡稱「授權」）授權。
 # 除非遵守授權，否則您不得使用此檔案。
@@ -22,7 +22,6 @@ from pydantic import (
 )
 
 
-
 # 聊天請求的輸入資料模型，包含可選的設定。
 class Request(BaseModel):
     """
@@ -38,7 +37,6 @@ class Request(BaseModel):
     model_config = {"extra": "allow"}  # 允許額外欄位
 
 
-
 # 對話回饋資料模型。
 class Feedback(BaseModel):
     """
@@ -50,6 +48,8 @@ class Feedback(BaseModel):
     score: int | float  # 回饋分數，可為整數或浮點數
     text: str | None = ""  # 回饋文字，可為空字串
     log_type: Literal["feedback"] = "feedback"  # 日誌類型，固定為 'feedback'
-    service_name: Literal["pack-bidi-streaming"] = "pack-bidi-streaming"  # 服務名稱，固定為 'pack-bidi-streaming'
+    service_name: Literal["pack-bidi-streaming"] = (
+        "pack-bidi-streaming"  # 服務名稱，固定為 'pack-bidi-streaming'
+    )
     user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))  # 使用者唯一識別碼
     session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))  # 會話唯一識別碼

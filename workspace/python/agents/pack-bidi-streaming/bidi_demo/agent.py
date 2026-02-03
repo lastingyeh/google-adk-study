@@ -67,11 +67,13 @@ def get_current_time(query: str) -> str:
 # 定義根代理 (Root Agent)
 root_agent = Agent(
     name="root_agent",
-    model=os.getenv(
-        "DEMO_AGENT_MODEL", "gemini-2.5-flash-native-audio-preview-12-2025"
-    ),
+    model=os.getenv("DEMO_AGENT_MODEL", "gemini-live-2.5-flash"),
     instruction="你是一個可以搜尋網路的得力助手，旨在提供準確且有用的資訊。",
-    tools=[get_weather, get_current_time, google_search], # 註冊天氣、時間與 Google 搜尋查詢工具
+    tools=[
+        get_weather,
+        get_current_time,
+        google_search,
+    ],  # 註冊天氣、時間與 Google 搜尋查詢工具
 )
 
 # 建立應用程式實例

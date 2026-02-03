@@ -1,14 +1,14 @@
-# Test prompt for Claude Code
 
-## Test procedure
+# Claude Code 測試提示
 
-1. Kill all processes running on port 8000
-2. Create a working directory under `/tmp/test_<timestamp>`
-3. Prompt user for `.env` variable values if absent
-4. Copy `src/bidi-demo/**` to the working directory
-5. Follow `README.md` to set up the server. Prompt user for the .env variables. Then start the server in the background mode and ask user to type `ctrl+b`
-6. Once the server is ready, let the user testing it with browser for text and voice
-7. Check the server log to see if the text and voice messages are handled correctly. If needed, fix the code in the working directory
-8. After confirming the expected behavior, apply the fixes on the code to the `src/bidi-demo` too.
-9. Write a `test_log_<timestamp>.md` to `src/bidi-demo/tests` directory with the actual procedures, outcomes, errors or frictions, or possible improvement points for the entire process.
-ure
+## 測試流程
+
+1. 終止所有在 8000 埠運行的進程
+2. 在 `/tmp/test_<timestamp>` 下建立工作目錄
+3. 若缺少 `.env` 變數值，提示使用者輸入
+4. 將 `src/bidi-demo/**` 複製到工作目錄
+5. 依照 `README.md` 設定伺服器，提示使用者輸入 .env 變數。然後以背景模式啟動伺服器，並請使用者按下 `ctrl+b`
+6. 伺服器就緒後，讓使用者用瀏覽器測試文字與語音功能
+7. 檢查伺服器日誌，確認文字與語音訊息是否正確處理。如有需要，修正工作目錄中的程式碼
+8. 確認行為符合預期後，將修正套用回 `src/bidi-demo`
+9. 將實際操作流程、結果、錯誤或困難點、以及可能的改進建議，寫入 `src/bidi-demo/tests` 目錄下的 `test_log_<timestamp>.md`

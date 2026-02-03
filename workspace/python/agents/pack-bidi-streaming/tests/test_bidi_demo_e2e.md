@@ -1,65 +1,73 @@
-# End-to-end test procedures for ADK Bidi-streaming demo app
+# ADK 雙向串流 (Bidi-streaming) 範例應用程式端到端 (E2E) 測試程序
 
-This document provides step-by-step instructions for testing the ADK bidirectional streaming demo app using Chrome DevTools MCP server.
+本文件提供使用 Chrome DevTools MCP 伺服器測試 ADK 雙向串流範例應用程式的逐步說明。
 
-**Note:** All test artifacts (server logs, screenshots, test reports) are preserved in a timestamped directory for later review and analysis.
+**注意：** 所有測試產出物（伺服器日誌、螢幕截圖、測試報告）都會保存在帶有時間戳記的目錄中，以便後續審查與分析。
 
-## 1. Environment setup
+> **重點註解：**
+> 1. 本測試主要針對「雙向串流」特性，這意味著客戶端與伺服器端可以同時發送與接收數據。
+> 2. 使用 Chrome DevTools MCP 可以自動化模擬用戶在瀏覽器上的操作。
 
-### Copy the demo code to a temporary directory
+## 1. 環境設定
 
-For testing purposes, we will copy the demo code to a timestamped temporary directory and run the demo in it.
+### 將範例代碼複製到臨時目錄
+
+為了測試目的，我們將範例代碼複製到一個帶有時間戳記的臨時目錄，並在其中運行。
 
 ```bash
-# Create a unique timestamped directory
+# 建立唯一的帶時間戳記目錄
 export TEST_DIR="/tmp/demo-$(date +%Y%m%d-%H%M%S)"
 mkdir -p $TEST_DIR
 cp -r src/demo/* $TEST_DIR
 cd $TEST_DIR
 ```
 
-### Run the demo app
+### 運行範例應用程式
 
-- Follow the instructions in $TEST_DIR/README.md to run the app
-- Monitor $TEST_DIR/app/server.log to confirm that the server is successfully started.
+- 按照 `$TEST_DIR/README.md` 中的說明運行應用程式。
+- 監控 `$TEST_DIR/app/server.log` 以確認伺服器已成功啟動。
 
-## 2. End-to-End UI Testing with Chrome DevTools MCP
+> **重點註解：** 在啟動後務必確認 `server.log` 中沒有出現 `Error` 或 `Address already in use` 等錯誤訊息。
 
-### Step 1: Navigate to the application
+## 2. 使用 Chrome DevTools MCP 進行端到端 UI 測試
+
+### 步驟 1：導航至應用程式
 
 ```yaml
 mcp__chrome-devtools__navigate_page
 url: http://localhost:8000
 ```
 
-**Expected:** Page loads successfully
+**預期結果：** 頁面成功加載。
 
-### Step 2: Take a snapshot to verify UI
+### 步驟 2：獲取快照以驗證 UI
 
 ```yaml
 mcp__chrome-devtools__take_snapshot
 ```
 
-**Expected elements:**
+**預期元素：**
 
-- Status indicator (should show "● Disconnected")
-- Messages and Events counters (should show "Messages: 0 | Events: 0")
-- API Backend radio buttons (Gemini API / Vertex AI)
-- Credential input fields
-- Model dropdown
-- WebSocket URL field (pre-filled with `ws://localhost:8000/ws`)
-- SSE URL field (pre-filled with `http://localhost:8000/sse`)
-- Message input field
-- Connect/Disconnect buttons
-- Send/Close buttons (initially disabled)
-- RunConfig checkboxes
-- Log area
+- 狀態指示器（應顯示 "● Disconnected"）
+- 訊息與事件計數器（應顯示 "Messages: 0 | Events: 0"）
+- API 後端單選按鈕 (Gemini API / Vertex AI)
+- 憑證輸入欄位
+- 模型下拉選單
+- WebSocket URL 欄位（預填為 `ws://localhost:8000/ws`）
+- SSE URL 欄位（預填為 `http://localhost:8000/sse`）
+- 訊息輸入欄位
+- 連接/斷開按鈕 (Connect/Disconnect)
+- 發送/關閉按鈕 (Send/Close)（初始狀態應為禁用）
+- 執行設定 (RunConfig) 核取方塊
+- 日誌區域
 
-### Step 3: Configure credentials in the UI
+> **重點註解：** 此步驟是為了確保所有 UI 組件都已正確渲染，避免後續操作因找不到元素而失敗。
 
-Use tests/e2e/.env to copy appropriate values to the UI
+### 步驟 3：在 UI 中配置憑證
 
-**For Gemini API:**
+從 `tests/e2e/.env` 複製適當的值到 UI。
+
+**Gemini API 設定：**
 
 ```yaml
 mcp__chrome-devtools__fill
@@ -67,7 +75,7 @@ uid: <api-key-field-uid>
 value: your_api_key_here
 ```
 
-**For Vertex AI:**
+**Vertex AI 設定：**
 
 ```yaml
 mcp__chrome-devtools__click
@@ -82,20 +90,20 @@ uid: <gcp-location-field-uid>
 value: us-central1
 ```
 
-### Step 4: Connect WebSocket
+### 步驟 4：連接 WebSocket
 
 ```yaml
 mcp__chrome-devtools__click
 uid: <connect-button-uid>
 ```
 
-**Expected:**
+**預期結果：**
 
-- Status changes to "● Connected (WebSocket)"
-- Log shows: `[INFO] WebSocket connection established`
-- Both "send_content()" and "close()" buttons become enabled
+- 狀態變更為 "● Connected (WebSocket)"
+- 日誌顯示：`[INFO] WebSocket connection established`
+- "send_content()" 與 "close()" 按鈕變為可用狀態。
 
-### Step 5: Send a test message
+### 步驟 5：發送測試訊息
 
 ```yaml
 mcp__chrome-devtools__fill
@@ -106,142 +114,140 @@ mcp__chrome-devtools__click
 uid: <send-button-uid>
 ```
 
-**Expected in log:**
+**日誌預期輸出：**
 
 1. `[SENT] Hello! Can you explain what ADK streaming is?`
-2. Messages counter increases to 1
-3. **Tool execution events** (JSON objects):
-   - `executableCode` object showing Google Search invocation with query
-   - `codeExecutionResult` object with outcome "OUTCOME_OK"
-4. Multiple `[PARTIAL]` events showing streaming text chunks in real-time
-5. Events counter increases (typically 10-15+ events for a complete response)
-6. `[COMPLETE]` event with full response
-7. `[TURN COMPLETE]` event marking end of response
+2. 訊息計數器 (Messages counter) 增加至 1。
+3. **工具執行事件** (JSON 對象)：
+   - `executableCode` 對象顯示呼叫 Google Search 及其查詢內容。
+   - `codeExecutionResult` 對象顯示結果為 "OUTCOME_OK"。
+4. 多個 `[PARTIAL]` 事件，即時顯示串流文本片段。
+5. 事件計數器 (Events counter) 增加（完整回應通常包含 10-15+ 個事件）。
+6. `[COMPLETE]` 事件，包含完整回應。
+7. `[TURN COMPLETE]` 事件，標記回應結束。
 
-**Note:** Wait 2-3 seconds for the streaming response to complete before proceeding to screenshot
+> **重點註解：**
+> 1. 串流測試的關鍵在於觀察 `[PARTIAL]` 事件是否持續產生，這代表數據是分段即時傳輸的。
+> 2. 在進行下一階段（截圖）前，請等待 2-3 秒以確保串流回應完全結束。
 
-### Step 6: Take screenshot of results
+### 步驟 6：拍攝結果截圖
 
 ```yaml
 mcp__chrome-devtools__take_screenshot
 filePath: $TEST_DIR/streaming_results.png
 ```
 
-**Expected:** Screenshot showing streaming conversation with partial and complete events
+**預期結果：** 截圖應顯示包含 partial 和 complete 事件的串流對話內容。
 
-Screenshot will be saved to `$TEST_DIR/streaming_results.png`
+截圖將保存於 `$TEST_DIR/streaming_results.png`。
 
-### Step 7: Test graceful close
+### 步驟 7：測試正常關閉 (Graceful close)
 
 ```yaml
 mcp__chrome-devtools__click
 uid: <close-button-uid>
 ```
 
-**Expected:**
+**預期結果：**
 
-- Log shows: `[INFO] Sending graceful close signal via WebSocket`
-- Connection closes cleanly
-- Note: Connection status may remain "Connected" in UI; check server logs to confirm clean closure
+- 日誌顯示：`[INFO] Sending graceful close signal via WebSocket`
+- 連線正常關閉。
+- 注意：UI 中的連線狀態可能仍顯示 "Connected"；請檢查伺服器日誌以確認連線已完全斷開。
 
-### Step 8: Check console for errors
+### 步驟 8：檢查主控台 (Console) 錯誤
 
 ```yaml
 mcp__chrome-devtools__list_console_messages
 ```
 
-**Expected:** No critical JavaScript errors
+**預期結果：** 沒有嚴重的 JavaScript 錯誤。
 
-- Acceptable warnings: password field warnings, 404 errors for favicon
-- Any errors related to application logic should be investigated
+- 可接受的警告：密碼欄位警告、favicon 的 404 錯誤。
+- 任何與應用程式邏輯相關的錯誤都應進行調查。
 
-### Step 9: Check server logs for errors
+### 步驟 9：檢查伺服器日誌錯誤
 
 ```bash
 cat $TEST_DIR/app/server.log | grep -i error
 ```
 
-**Expected:** No output (grep returns nothing when no errors are found)
+**預期結果：** 無輸出（若無錯誤，grep 應不回傳任何內容）。
 
-- If errors appear, review them to ensure they are non-critical (e.g., deprecation warnings)
+- 若出現錯誤，請審查其是否為非關鍵錯誤（例如棄用警告）。
 
-## 3. Test Completion
+## 3. 測試完成
 
-### 3.1 Stop the Server
+### 3.1 停止伺服器
 
 ```bash
-# Find and kill the server process
+# 尋找並終止伺服器進程
 pkill -f "uvicorn app.main"
 ```
 
-**Expected output from run.sh cleanup:**
+**預期輸出 (來自 run.sh 清理腳本)：**
 
 ```text
 Stopping server (PID: <process-id>)...
 Server stopped
 ```
 
-### 3.2 Save Test Report
+### 3.2 保存測試報告
 
-After completing all test steps, generate a comprehensive test report documenting the results.
+完成所有測試步驟後，生成一份記錄結果的詳細測試報告。
 
-The test report will be saved to: `$TEST_DIR/test_report.md`
+測試報告將保存於：`$TEST_DIR/test_report.md`
 
-**Test artifacts preserved** in `$TEST_DIR`:
+**保存在 `$TEST_DIR` 中的測試產出物：**
 
-- `app/server.log` - Server logs from the test run
-- `test_report.md` - Comprehensive test report
-- Screenshots (if saved to this directory)
-- Any other test-related files
+- `app/server.log` - 測試運行的伺服器日誌
+- `test_report.md` - 詳細測試報告
+- 螢幕截圖（如果保存至此目錄）
+- 其他測試相關文件
 
-### 3.3 Troubleshooting
+### 3.3 故障排除
 
-#### Server doesn't start
+#### 伺服器無法啟動
+- 檢查連接埠 8000 是否已被佔用：`lsof -i :8000`
+- 查看 server.log 中的啟動錯誤：`cat $TEST_DIR/app/server.log`
+- 確保虛擬環境已正確設定。
 
-- Check if port 8000 is already in use: `lsof -i :8000`
-- Review server.log for startup errors: `cat $TEST_DIR/app/server.log`
-- Ensure virtual environment is properly set up
+#### WebSocket 連線失敗
+- 驗證伺服器是否正在運行：`curl http://localhost:8000/healthz`
+- 檢查瀏覽器主控台是否有連線錯誤。
+- 確保憑證已正確配置。
+- 查看伺服器日誌：`tail -f $TEST_DIR/app/server.log`
 
-#### WebSocket connection fails
+#### 未出現串流事件
+- 驗證 API 金鑰是否有效。
+- 檢查 server.log 中的 API 錯誤：`cat $TEST_DIR/app/server.log | grep -i error`
+- 確保選取的模型支援 Live API（名稱中包含 "live" 的模型）。
 
-- Verify server is running: `curl http://localhost:8000/healthz`
-- Check browser console for connection errors
-- Ensure credentials are properly configured
-- Review server logs: `tail -f $TEST_DIR/app/server.log`
+#### 瀏覽器頁面意外關閉
+- 使用 `mcp__chrome-devtools__new_page` 開啟新頁面。
+- 重新導航至 `http://localhost:8000`。
+- 從適當的步驟繼續測試。
 
-#### No streaming events appear
+## 4. 測試報告內容
 
-- Verify API key is valid
-- Check server.log for API errors: `cat $TEST_DIR/app/server.log | grep -i error`
-- Ensure the model selected supports Live API (models with "live" in the name)
+生成一份綜合測試報告並保存至 `$TEST_DIR/test_report.md`。
 
-#### Browser page closed unexpectedly
+測試報告應包含：
 
-- Use `mcp__chrome-devtools__new_page` to open a new page
-- Navigate to `http://localhost:8000` again
-- Continue testing from the appropriate step
+- **測試摘要**：總體狀態（通過/失敗）、日期、持續時間。
+- **環境詳情**：測試目錄位置、伺服器配置。
+- **逐步結果**：每個測試步驟的實際結果與預期結果對比。
+- **串流指標**：發送的訊息數、接收的事件數、工具調用情況。
+- **錯誤分析**：主控台錯誤、伺服器日誌錯誤（如有）。
+- **螢幕截圖**：所擷取截圖的參考路徑。
+- **觀察結果**：值得注意的行為、工具執行情況、串流效能。
+- **結論**：總體評估及發現的任何問題。
 
-## 4. Test Report
+**測試產出物位置**：所有產出物都保存在 `$TEST_DIR` 中供未來參考。
 
-Generate a comprehensive test report and save it to `$TEST_DIR/test_report.md`.
-
-The test report should include:
-
-- **Test Summary**: Overall status (PASSED/FAILED), date, duration
-- **Environment Details**: Test directory location, server configuration
-- **Step-by-step Results**: Each test step with actual vs expected outcomes
-- **Streaming Metrics**: Messages sent, events received, tool invocations
-- **Error Analysis**: Console errors, server log errors (if any)
-- **Screenshots**: Reference to captured screenshots
-- **Observations**: Notable behaviors, tool executions, streaming performance
-- **Conclusion**: Overall assessment and any issues found
-
-**Test Artifacts Location**: All test artifacts (server logs, screenshots, test report) are preserved in `$TEST_DIR` for future reference.
-
-**Example command to view test results:**
+**查看測試結果的範例命令：**
 
 ```bash
-echo "Test directory: $TEST_DIR"
+echo "測試目錄: $TEST_DIR"
 ls -lh $TEST_DIR/test_report.md
 cat $TEST_DIR/test_report.md
 ```

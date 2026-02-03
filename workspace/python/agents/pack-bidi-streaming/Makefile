@@ -82,3 +82,41 @@ lint:
 	uv run ruff check . --diff
 	uv run ruff format . --check --diff
 	uv run ty check .
+
+# ==============================================================================
+# 清理目標 (Clean Targets)
+# ==============================================================================
+
+# 清除所有 make 指令執行產生的檔案與快取
+# 流程說明：
+# 1. 移除 Python 快取檔案 (__pycache__, *.pyc, *.pyo)
+# 2. 移除測試相關檔案 (.pytest_cache, .coverage, htmlcov)
+# 3. 移除程式碼檢查快取 (.ruff_cache, .mypy_cache)
+# 4. 移除建置檔案 (*.egg-info, dist, build)
+# 5. 移除 Terraform 狀態檔與快取
+# 注意：此指令不會刪除虛擬環境 (.venv)，如需清除請手動執行 rm -rf .venv
+clean:
+	@echo "🧹 正在清理專案檔案..."
+	@echo "移除 Python 快取檔案..."
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	@find . -type f -name "*.pyc" -delete 2>/dev/null || true
+	@find . -type f -name "*.pyo" -delete 2>/dev/null || true
+	@find . -type f -name "*.pyd" -delete 2>/dev/null || true
+	@echo "移除測試相關檔案..."
+	@rm -rf .pytest_cache 2>/dev/null || true
+	@rm -rf .coverage 2>/dev/null || true
+	@rm -rf htmlcov 2>/dev/null || true
+	@rm -rf .tox 2>/dev/null || true
+	@echo "移除程式碼檢查快取..."
+	@rm -rf .ruff_cache 2>/dev/null || true
+	@rm -rf .mypy_cache 2>/dev/null || true
+	@echo "移除建置檔案..."
+	@find . -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true
+	@rm -rf dist 2>/dev/null || true
+	@rm -rf build 2>/dev/null || true
+	@echo "移除 Terraform 狀態檔..."
+	@find deployment/terraform -type d -name ".terraform" -exec rm -rf {} + 2>/dev/null || true
+	@find deployment/terraform -type f -name "terraform.tfstate*" -delete 2>/dev/null || true
+	@find deployment/terraform -type f -name ".terraform.lock.hcl" -delete 2>/dev/null || true
+	@echo "✅ 清理完成！"
+	@echo "💡 提示：虛擬環境 (.venv) 未被刪除。如需清除請執行：rm -rf .venv"

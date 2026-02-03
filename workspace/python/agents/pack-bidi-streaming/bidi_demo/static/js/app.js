@@ -1,5 +1,6 @@
 /**
- * app.js: ADK 雙向串流演示應用的 JS 程式碼。
+ * app.js: ADK（Agent Development Kit，代理開發套件）雙向串流演示應用的 JS 程式碼。
+ * 本檔案負責處理 WebSocket 連線、使用者介面更新、音訊/影像擷取及與伺服器的互動。
  */
 
 /**
@@ -7,14 +8,14 @@
  */
 
 // 使用 WebSocket 連線伺服器
-const userId = "demo-user";
-const sessionId = "demo-session-" + Math.random().toString(36).substring(7);
+const userId = "demo-user"; // 預設使用者 ID
+const sessionId = "demo-session-" + Math.random().toString(36).substring(7); // 隨機產生會話 ID
 let websocket = null;
 let is_audio = false;
 
-// 獲取 RunConfig 選項的核取方塊元素
-const enableProactivityCheckbox = document.getElementById("enableProactivity");
-const enableAffectiveDialogCheckbox = document.getElementById("enableAffectiveDialog");
+// 獲取 RunConfig（執行配置）選項的核取方塊元素
+const enableProactivityCheckbox = document.getElementById("enableProactivity"); // 主動性開關
+const enableAffectiveDialogCheckbox = document.getElementById("enableAffectiveDialog"); // 情感對話開關
 
 // 當 RunConfig 選項變更時重新連線 WebSocket
 function handleRunConfigChange() {
@@ -24,7 +25,7 @@ function handleRunConfigChange() {
       proactivity: enableProactivityCheckbox.checked,
       affective_dialog: enableAffectiveDialogCheckbox.checked
     }, '🔄', 'system');
-    websocket.close();
+    websocket.close(); // 關閉目前連線，觸發 onclose 進行重新連線
     // connectWebsocket() 將由延遲後的 onclose 處理程序呼叫
   }
 }
@@ -55,21 +56,23 @@ function getWebSocketUrl() {
 }
 
 // 獲取 DOM 元素
-const messageForm = document.getElementById("messageForm");
-const messageInput = document.getElementById("message");
-const messagesDiv = document.getElementById("messages");
-const statusIndicator = document.getElementById("statusIndicator");
-const statusText = document.getElementById("statusText");
-const consoleContent = document.getElementById("consoleContent");
-const clearConsoleBtn = document.getElementById("clearConsole");
-const showAudioEventsCheckbox = document.getElementById("showAudioEvents");
+const messageForm = document.getElementById("messageForm"); // 訊息表單
+const messageInput = document.getElementById("message"); // 訊息輸入框
+const messagesDiv = document.getElementById("messages"); // 訊息顯示區域
+const statusIndicator = document.getElementById("statusIndicator"); // 狀態指示燈
+const statusText = document.getElementById("statusText"); // 狀態文字
+const consoleContent = document.getElementById("consoleContent"); // 控制台內容
+const clearConsoleBtn = document.getElementById("clearConsole"); // 清除控制台按鈕
+const showAudioEventsCheckbox = document.getElementById("showAudioEvents"); // 顯示音訊事件開關
+
+// 狀態追蹤變數
 let currentMessageId = null;
 let currentBubbleElement = null;
 let currentInputTranscriptionId = null;
 let currentInputTranscriptionElement = null;
 let currentOutputTranscriptionId = null;
 let currentOutputTranscriptionElement = null;
-let inputTranscriptionFinished = false; // 追蹤此輪輸入轉錄是否完成
+let inputTranscriptionFinished = false; // 追蹤此輪輸入轉錄 (Transcription) 是否完成
 
 // 清理中日韓 (CJK) 字元之間空格的輔助函數
 // 移除日語/中文/韓語字元之間的空格，同時保留拉丁文字周圍的空格
@@ -98,6 +101,15 @@ function formatTimestamp() {
   return now.toLocaleTimeString('zh-TW', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit', fractionalSecondDigits: 3 });
 }
 
+/**
+ * 在介面控制台中添加一條記錄
+ * @param {string} type - 類型 ('outgoing', 'incoming', 'error')
+ * @param {string} content - 顯示內容
+ * @param {object} data - 詳細 JSON 數據
+ * @param {string} emoji - 圖示
+ * @param {string} author - 來源 ('user', 'agent', 'system')
+ * @param {boolean} isAudio - 是否為音訊事件
+ */
 function addConsoleEntry(type, content, data = null, emoji = null, author = null, isAudio = false) {
   // 如果未勾選核取方塊，則跳過音訊事件
   if (isAudio && !showAudioEventsCheckbox.checked) {
@@ -348,6 +360,7 @@ function connectWebsocket() {
     let eventEmoji = '📨'; // 預設表情符號
     const author = adkEvent.author || 'system';
 
+    // 根據事件類型更新摘要和圖示
     if (adkEvent.turnComplete) {
       eventSummary = '對話輪結束 (Turn Complete)';
       eventEmoji = '✅';
@@ -765,8 +778,11 @@ function sendMessage(message) {
   }
 }
 
-// 將 Base64 數據解碼為 Array
-// 處理標準 base64 和 base64url 編碼
+/**
+ * 將 Base64 數據解碼為 Array
+ * 處理標準 base64 和 base64url 編碼
+ * @param {string} base64 - 編碼字串
+ */
 function base64ToArray(base64) {
   // 將 base64url 轉換為標準 base64
   // 替換 URL 安全字元：- 換成 +，_ 換成 /
@@ -790,12 +806,12 @@ function base64ToArray(base64) {
  * 相機處理
  */
 
-const cameraButton = document.getElementById("cameraButton");
-const cameraModal = document.getElementById("cameraModal");
-const cameraPreview = document.getElementById("cameraPreview");
-const closeCameraModal = document.getElementById("closeCameraModal");
-const cancelCamera = document.getElementById("cancelCamera");
-const captureImageBtn = document.getElementById("captureImage");
+const cameraButton = document.getElementById("cameraButton"); // 相機按鈕
+const cameraModal = document.getElementById("cameraModal"); // 相機彈窗
+const cameraPreview = document.getElementById("cameraPreview"); // 相機預覽
+const closeCameraModal = document.getElementById("closeCameraModal"); // 關閉彈窗按鈕
+const cancelCamera = document.getElementById("cancelCamera"); // 取消按鈕
+const captureImageBtn = document.getElementById("captureImage"); // 擷取圖像按鈕
 
 let cameraStream = null;
 
@@ -938,18 +954,18 @@ let audioRecorderNode;
 let audioRecorderContext;
 let micStream;
 
-// 匯入音訊 worklets
+// 匯入音訊 worklets (音訊工作處理緒)
 import { startAudioPlayerWorklet } from "./audio-player.js";
 import { startAudioRecorderWorklet } from "./audio-recorder.js";
 
-// 開始音訊
+// 開始音訊功能
 function startAudio() {
-  // 開始音訊輸出
+  // 開始音訊輸出 (播放器)
   startAudioPlayerWorklet().then(([node, ctx]) => {
     audioPlayerNode = node;
     audioPlayerContext = ctx;
   });
-  // 開始音訊輸入
+  // 開始音訊輸入 (錄製器)
   startAudioRecorderWorklet(audioRecorderHandler).then(
     ([node, ctx, stream]) => {
       audioRecorderNode = node;
@@ -960,7 +976,7 @@ function startAudio() {
 }
 
 // 僅在使用者點擊按鈕時才開始音訊
-// (由於 Web Audio API 的手勢要求)
+// (由於 Web Audio API 的手勢要求，必須由使用者觸發才能啟動音訊上下文)
 const startAudioButton = document.getElementById("startAudioButton");
 startAudioButton.addEventListener("click", () => {
   startAudioButton.disabled = true;
@@ -975,7 +991,10 @@ startAudioButton.addEventListener("click", () => {
   }, '🎤', 'system');
 });
 
-// 音訊錄製器處理程序
+/**
+ * 音訊錄製器處理程序
+ * 將 PCM 數據發送到伺服器
+ */
 function audioRecorderHandler(pcmData) {
   if (websocket && websocket.readyState === WebSocket.OPEN && is_audio) {
     // 將音訊作為二進位 WebSocket 影格傳送 (比 base64 JSON 更有效率)
@@ -986,3 +1005,52 @@ function audioRecorderHandler(pcmData) {
     // addConsoleEntry('outgoing', `音訊區塊： ${pcmData.byteLength} 位元組`);
   }
 }
+
+/**
+ * 重點摘要
+ * - **核心概念**：本檔案是雙向串流演示應用的前端核心，負責管理 WebSocket 通訊與使用者介面。
+ * - **關鍵技術**：
+ *   - WebSocket：實現與伺服器的即時雙向通訊。
+ *   - Web Audio API & AudioWorklet：處理 PCM 音訊的串流輸入與輸出。
+ *   - MediaDevices API：存取使用者相機進行圖像擷取。
+ *   - Base64 編解碼：處理圖像與音訊數據的傳輸格式。
+ * - **重要結論**：系統透過異步事件驅動架構，支援文字、音訊與影像的多模態互動，並提供即時的轉錄顯示與中斷處理。
+ * - **行動項目**：
+ *   - 確保瀏覽器支援音訊工作處理緒 (AudioWorklet)。
+ *   - 部署時需使用 HTTPS 以確保相機與麥克風權限可正常獲取。
+ */
+
+/**
+ * 系統流程圖
+ * ```mermaid
+ * sequenceDiagram
+ *     participant U as 使用者 (User)
+ *     participant UI as 前端介面 (App.js)
+ *     participant WS as WebSocket 伺服器
+ *     participant A as AI 代理 (Agent)
+ *
+ *     U->>UI: 開啟網頁並點擊啟動音訊
+ *     UI->>WS: 建立連線 (包含 RunConfig 選項)
+ *     WS-->>UI: 確認連線成功
+ *
+ *     rect rgb(240, 240, 240)
+ *     Note over U, A: 文字互動流程
+ *     U->>UI: 輸入文字並送出
+ *     UI->>WS: 傳送 JSON 文字訊息
+ *     WS->>A: 轉發至 AI 代理
+ *     A-->>WS: 串流回傳文字/音訊
+ *     WS-->>UI: 傳送 ADK 事件 (Content/Transcription)
+ *     UI->>U: 更新對話泡泡與播放音訊
+ *     end
+ *
+ *     rect rgb(220, 240, 255)
+ *     Note over U, A: 音訊互動流程
+ *     U->>UI: 對麥克風說話
+ *     UI->>WS: 傳送 PCM 二進位數據
+ *     WS->>A: 進行即時轉錄與處理
+ *     A-->>WS: 即時語音與轉錄
+ *     WS-->>UI: 傳送轉錄事件 (Input/Output Transcription)
+ *     UI->>U: 顯示即時轉錄內容
+ *     end
+ * ```
+ */
