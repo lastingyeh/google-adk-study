@@ -120,5 +120,7 @@ ADK 的雙向串流功能透過封裝複雜的 WebSocket 連線管理、自動�
 
 **導師的話：** 「雙向串流的魅力在於它的『不確定性』——人類可以在任何時刻介入，這才是真正的對話。作為開發者，你的任務是利用 ADK 提供的標記（如 `partial`、`interrupted`），構建一個能優雅應對這些互動的響應式介面。」
 
-#BidiStreaming #GeminiLiveAPI #AIAgent #NativeMultimodal #RealTimeAI
+---
+### 🚀 讓我們一起進入這個課程，掌握雙向串流的奧秘，打造出前所未有的 AI 互動體驗吧！ GO! 🚀 →→ [課程開始](COURSE_PLAN.md)
 
+🏷️ `bidi-streaming`, `gemini-live-api`, `ai-agent`, `native-multimodal`, `real-time-ai`
