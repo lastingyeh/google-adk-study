@@ -2040,7 +2040,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/2] [BIDI Streaming Live] 搭配官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
+[整合 1/2] 以 [BIDI Streaming Live] 官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
 
 🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`, `affective`, `proactively`
 
@@ -2061,7 +2061,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 2/2] [BIDI Streaming Live] 搭配官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
+[整合 2/2] 以 [BIDI Streaming Live] 官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
 
 🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`, `affective`, `proactively`
 
