@@ -32,6 +32,28 @@ playground:
 local-backend:
 	uv run uvicorn bidi_demo.fast_api_app:app --host localhost --port 8000 --reload
 
+# 啟動具有 debug 模式的本地後端伺服器
+# 用法：make debug-backend [PORT=8000] - 以 debug 模式啟動後端，可指定埠號
+debug-backend:
+	@echo "==============================================================================="
+	@echo "| 🐛 啟動後端 Debug 模式...                                             |"
+	@echo "| 📍 伺服器位址：http://localhost:$(or $(PORT),8000)                           |"
+	@echo "| 🔍 Debugger 監聽：5678                                                   |"
+	@echo "| 🔄 熱重載：啟用                                                            |"
+	@echo "==============================================================================="
+	uv run --with debugpy python -m debugpy --listen 5678 --wait-for-client -m uvicorn bidi_demo.fast_api_app:app --host localhost --port $(or $(PORT),8000) --reload
+
+# 啟動 debug 模式的本地開發伺服器
+# 用法：make debug [PORT=8501] - 以 debug 模式啟動，可指定埠號
+debug-playground:
+	@echo "==============================================================================="
+	@echo "| 🐛 啟動 Debug 模式...                                                  |"
+	@echo "| 📍 伺服器位址：http://localhost:$(or $(PORT),8501)                           |"
+	@echo "| 🔍 日誌級別：DEBUG                                                        |"
+	@echo "| 🔄 熱重載：啟用                                                            |"
+	@echo "==============================================================================="
+	uv run --with debugpy python -m debugpy --listen 5678 --wait-for-client -m google.adk.cli web . --port $(or $(PORT),8501) --reload_agents
+
 # ==============================================================================
 # 後端部署目標
 # ==============================================================================

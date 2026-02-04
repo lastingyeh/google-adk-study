@@ -6,22 +6,6 @@
 
 ![bidi-demo-screen](assets/bidi-demo-screen.png)
 
-## 📋 目錄
-
-- [概覽](#概覽)
-- [核心特性](#核心特性)
-- [系統架構](#系統架構)
-- [前置作業](#前置作業)
-- [快速開始](#快速開始)
-- [完整使用流程](#完整使用流程)
-- [開發指南](#開發指南)
-- [部署指南](#部署指南)
-- [測試](#測試)
-- [專案結構](#專案結構)
-- [配置說明](#配置說明)
-- [常見問題](#常見問題)
-- [參考資源](#參考資源)
-
 ## 概覽
 
 本專案實現了完整的 ADK 雙向串流生命週期：
@@ -383,16 +367,19 @@ make deploy
 
 ### Makefile 指令速查表
 
-| 指令                 | 用途           | 適用場景           |
-| -------------------- | -------------- | ------------------ |
-| `make install`       | 安裝依賴       | 初次設定、更新套件 |
-| `make playground`    | ADK Playground | 互動測試代理       |
-| `make local-backend` | FastAPI 伺服器 | WebSocket 開發     |
-| `make test`          | 執行測試       | CI/開發驗證        |
-| `make lint`          | 程式碼檢查     | 提交前檢查         |
-| `make deploy`        | 部署 Cloud Run | 生產部署           |
-| `make setup-dev-env` | 建立基礎設施   | 初次雲端設定       |
-| `make clean`         | 清理檔案       | 維護、除錯         |
+| 指令                 | 用途                   | 適用場景               |
+| -------------------- | ---------------------- | ---------------------- |
+| `make install`       | 安裝/同步依賴          | 初次設定、依賴更新     |
+| `make playground`    | 啟動 ADK Playground    | 互動測試代理、UI 開發   |
+| `make local-backend` | 啟動 FastAPI 伺服器    | WebSocket/後端開發     |
+| `make debug-backend` | FastAPI 伺服器除錯模式 | 後端 Debug、API 除錯   |
+| `make debug-playground` | Playground 除錯模式 | 互動 UI Debug、熱重載  |
+| `make test`          | 執行單元/整合測試      | CI、開發驗證           |
+| `make lint`          | 程式碼/型別/拼字檢查   | 提交前檢查、品質控管   |
+| `make deploy`        | 部署至 Cloud Run       | 生產部署、雲端上線     |
+| `make backend`       | 部署（deploy 別名）    | 與 deploy 相同         |
+| `make setup-dev-env` | 建立開發雲端資源       | 初次雲端設定、IaC      |
+| `make clean`         | 清理快取/建置檔案      | 維護、除錯、重建環境   |
 
 ## 開發指南
 
@@ -415,7 +402,7 @@ ws://localhost:8000/ws/{user_id}/{session_id}
 **回應模態 (Modality)：**
 *   根據模型架構自動判定
 *   原生音訊 (Native audio) 模型使用 AUDIO 回應模態
-*   半級聯 (Half-cascade) 模型使用 TEXT 回應模態
+*   半串聯 (Half-cascade) 模型使用 TEXT 回應模態
 
 #### 訊息格式
 
@@ -704,68 +691,85 @@ open htmlcov/index.html
 
 ```
 pack-bidi-streaming/
-├── bidi_demo/                    # 核心應用程式模組
-│   ├── __init__.py
-│   ├── agent.py                  # 代理定義（root_agent + 工具）
-│   ├── fast_api_app.py           # FastAPI 應用程式與 WebSocket 端點
-│   ├── app_utils/                # 工具函式
-│   │   ├── telemetry.py          # OpenTelemetry 遙測設定
-│   │   └── typing.py             # 型別定義
-│   └── static/                   # 前端檔案
-│       ├── index.html            # 主要 UI
-│       ├── css/
-│       │   └── style.css         # 樣式
-│       └── js/
-│           ├── app.js            # 主應用邏輯
-│           ├── audio-player.js   # 音訊播放
-│           ├── audio-recorder.js # 音訊錄製
-│           ├── pcm-player-processor.js
-│           └── pcm-recorder-processor.js
-├── deployment/                   # 部署配置
-│   ├── terraform/                # Terraform IaC
-│   │   ├── dev/                  # 開發環境
-│   │   │   ├── vars/
-│   │   │   │   └── env.tfvars
-│   │   │   ├── apis.tf
-│   │   │   ├── iam.tf
-│   │   │   ├── service.tf
-│   │   │   └── ...
-│   │   ├── vars/
-│   │   │   └── env.tfvars
-│   │   ├── apis.tf
-│   │   ├── build_triggers.tf     # Cloud Build CI/CD
-│   │   ├── service.tf            # Cloud Run 服務
-│   │   └── ...
-│   └── README.md
-├── .cloudbuild/                  # Cloud Build 配置
-│   ├── pr_checks.yaml            # PR 檢查
-│   ├── staging.yaml              # Staging 部署
-│   └── deploy-to-prod.yaml       # Production 部署
-├── tests/                        # 測試套件
-│   ├── unit/                     # 單元測試
-│   │   ├── test_agent.py
-│   │   ├── test_models.py
-│   │   └── test_telemetry.py
-│   ├── integration/              # 整合測試
-│   │   ├── test_agent.py
-│   │   └── test_server_e2e.py
-│   ├── load_test/                # 負載測試
-│   │   ├── load_test.py
-│   │   └── README.md
-│   └── conftest.py               # Pytest 配置
-├── notebooks/                    # Jupyter Notebooks
-│   ├── adk_app_testing.ipynb     # 應用程式測試
-│   └── evaluating_adk_agent.ipynb # 代理評估
-├── assets/                       # 靜態資源
-│   └── bidi-demo-screen.png
-├── pyproject.toml                # Python 專案配置
-├── Makefile                      # Make 指令定義
-├── Dockerfile                    # 容器化配置
-├── .env.example                  # 環境變數範例
-├── .gitignore
-├── ARCHITECTURE.md               # 架構說明
-├── GEMINI.md                     # Gemini 模型說明
-└── README.md                     # 本檔案
+├── ARCHITECTURE.md                (架構說明文件)
+├── Dockerfile                     (容器化部署設定)
+├── GEMINI.md                      (Gemini 模型說明)
+├── Makefile                       (開發/部署指令)
+├── README.md                      (專案總覽文件)
+├── assets                         (靜態資源資料夾)
+│   └── bidi-demo-screen.png       (示意圖)
+├── bidi_demo                      (主要應用程式目錄)
+│   ├── README.md                  (子模組說明)
+│   ├── __init__.py                (套件初始化)
+│   ├── agent.py                   (代理定義與工具)
+│   ├── app_utils                  (工具/型別輔助模組)
+│   │   ├── telemetry.py           (遙測工具)
+│   │   └── typing.py              (型別定義)
+│   ├── fast_api_app.py            (FastAPI 主程式)
+│   └── static                     (前端靜態檔案)
+│       ├── css
+│       │   └── style.css          (樣式表)
+│       ├── index.html             (前端入口頁)
+│       └── js
+│           ├── app.js             (前端主程式)
+│           ├── audio-player.js    (音訊播放)
+│           ├── audio-recorder.js  (音訊錄製)
+│           ├── pcm-player-processor.js   (PCM 播放處理)
+│           └── pcm-recorder-processor.js (PCM 錄音處理)
+├── deployment                     (部署與基礎設施)
+│   ├── README.md                  (部署說明)
+│   └── terraform                  (Terraform IaC)
+│       ├── apis.tf                (API 啟用)
+│       ├── build_triggers.tf      (CI/CD 觸發器)
+│       ├── dev                    (開發環境 IaC)
+│       │   ├── apis.tf            (開發 API)
+│       │   ├── iam.tf             (IAM 權限)
+│       │   ├── providers.tf       (提供者設定)
+│       │   ├── service.tf         (服務設定)
+│       │   ├── storage.tf         (儲存資源)
+│       │   ├── telemetry.tf       (遙測設定)
+│       │   ├── variables.tf       (變數定義)
+│       │   └── vars
+│       │       └── env.tfvars     (變數值)
+│       ├── github.tf              (GitHub 整合)
+│       ├── iam.tf                 (IAM 權限)
+│       ├── locals.tf              (區域變數)
+│       ├── providers.tf           (提供者設定)
+│       ├── service.tf             (服務設定)
+│       ├── service_accounts.tf    (服務帳號)
+│       ├── sql
+│       │   └── completions.sql    (SQL 範例)
+│       ├── storage.tf             (儲存資源)
+│       ├── telemetry.tf           (遙測設定)
+│       ├── variables.tf           (變數定義)
+│       └── vars
+│           └── env.tfvars         (變數值)
+├── notebooks                      (筆記本/測試腳本)
+│   ├── adk_app_testing.ipynb      (ADK 測試)
+│   └── evaluating_adk_agent.ipynb (代理評估)
+├── pyproject.toml                 (Python 專案設定)
+├── tests                          (測試資料夾)
+│   ├── TEST_GENERATION_REPORT.md  (測試報告)
+│   ├── conftest.py                (測試初始化)
+│   ├── integration                (整合測試)
+│   │   ├── test_agent.py          (代理整合測試)
+│   │   └── test_server_e2e.py     (端到端測試)
+│   ├── load_test                  (壓力測試)
+│   │   ├── README.md              (壓測說明)
+│   │   └── load_test.py           (壓測腳本)
+│   ├── test_bidi_demo.md          (測試紀錄)
+│   ├── test_bidi_demo_e2e.md      (E2E 測試紀錄)
+│   ├── test_log_20251209_143549.md(測試日誌)
+│   └── unit                       (單元測試)
+│       ├── README.md              (單元測試說明)
+│       ├── __init__.py            (初始化)
+│       ├── test_agent.py          (代理單元測試)
+│       ├── test_dummy.py          (範例測試)
+│       ├── test_imports.py        (匯入測試)
+│       ├── test_models.py         (模型測試)
+│       ├── test_structure.py      (結構測試)
+│       └── test_telemetry.py      (遙測測試)
+└── uv.lock                        (依賴鎖定檔)
 ```
 
 ### 核心檔案說明
@@ -813,7 +817,7 @@ run_config = RunConfig(
 )
 ```
 
-**半級聯模型**（其他模型）：
+**半串聯模型**（其他模型）：
 ```python
 run_config = RunConfig(
     streaming_mode=StreamingMode.BIDI,
@@ -995,10 +999,6 @@ gcloud run services update pack-bidi-streaming \
   --memory=4Gi
 ```
 
-## 參考資源
-*   從 Live API 接收 `Event` 串流。
-*   將事件序列化為 JSON 並傳送到 WebSocket。
-
 ## 配置 (Configuration)
 
 ### 支援模型
@@ -1030,7 +1030,7 @@ run_config = RunConfig(
 )
 ```
 
-**半級聯模型**（其他模型）：
+**半串聯模型**（其他模型）：
 ```python
 run_config = RunConfig(
     streaming_mode=StreamingMode.BIDI,
@@ -1041,48 +1041,16 @@ run_config = RunConfig(
 )
 ```
 
-模態檢測會根據模型名稱自動執行。原生音訊模型使用 AUDIO 回應模態並啟用轉錄，而半級聯模型則使用 TEXT 回應模態以獲得更好的效能。
+模態檢測會根據模型名稱自動執行。原生音訊模型使用 AUDIO 回應模態並啟用轉錄，而半串聯模型則使用 TEXT 回應模態以獲得更好的效能。
 
 ## 常見問題排除 (Troubleshooting)
 
-### 連線問題
-
-## 參考資源
-
-### 官方文件
-
-- **ADK 文件**: https://google.github.io/adk-docs/
-  - [雙向串流指南](https://google.github.io/adk-docs/bidi-streaming-live/)
-  - [代理開發指南](https://google.github.io/adk-docs/agents/)
-  - [事件參考](https://google.github.io/adk-docs/events/)
-- **Gemini Live API**: https://ai.google.dev/gemini-api/docs/live
-- **Vertex AI Live API**: https://cloud.google.com/vertex-ai/generative-ai/docs/live-api
-- **ADK GitHub 儲存庫**: https://github.com/google/adk-python
-
-### 相關專案
-
-- **Agent Starter Pack**: ADK 官方起始範本
-- **ADK Samples**: https://github.com/google/adk-samples
-
-### 技術文件
-
-- **FastAPI 文件**: https://fastapi.tiangolo.com/
-- **WebSocket 協定**: https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
-- **Web Audio API**: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
-- **uv 文件**: https://docs.astral.sh/uv/
-- **Terraform Google Provider**: https://registry.terraform.io/providers/hashicorp/google/latest/docs
-
 ### 學習資源
 
+- [程式碼設計與架構說明](./bidi_demo/README.md)
 - [ARCHITECTURE.md](ARCHITECTURE.md)：專案架構與設計流程
 - [GEMINI.md](GEMINI.md)：Gemini 模型說明
 - [tests/](tests/)：測試範例與文件
-
-## 授權
-
-Apache 2.0 - 詳情請參閱儲存庫 LICENSE 檔案。
-
----
 
 ## 📚 重點摘要
 
@@ -1096,9 +1064,6 @@ Apache 2.0 - 詳情請參閱儲存庫 LICENSE 檔案。
 - **多模態處理**: 支援文字、語音、圖像輸入與自動轉錄
 - **Terraform**: 基礎設施即代碼
 - **Cloud Build**: CI/CD 自動化
-
-### 重要結論
-ADK 透過 `LiveRequestQueue` 和並發處理模式，簡化了複雜的即時雙向串流開發，能有效處理語音對話與多模態互動。
 
 ### 快速開始步驟
 1. 安裝依賴：`make install`
@@ -1122,19 +1087,11 @@ ADK 透過 `LiveRequestQueue` 和並發處理模式，簡化了複雜的即時�
 - 教育互動平台
 - 遊戲 NPC 對話系統
 
-Apache 2.0 - 詳情請參閱儲存庫 LICENSE 檔案。
+## 參考資源
+- [**[ADK Docs] [streaming] 官方文件**](https://google.github.io/adk-docs/streaming/)
+- [**[ADK Samples] [bidi-demo] GitHub 儲存庫**](https://github.com/google/adk-samples/tree/main/python/agents/bidi-demo)
+- [**Agent Starter Pack**](https://googlecloudplatform.github.io/agent-starter-pack/)
 
----
+## 📝 免責聲明
 
-## 重點摘要
-- **核心概念**：展示如何使用 Google ADK 建立基於 WebSocket 的即時雙向多模態串流應用程式。
-- **關鍵技術**：
-    - **Google ADK (Agent Development Kit)**: 用於開發代理的工具包。
-    - **FastAPI**: 用於建立 Web 伺服器和 WebSocket 端點。
-    - **Gemini Live API / Vertex AI Live API**: 提供即時對話能力的後端模型。
-    - **多模態處理**: 支援文本、音訊、圖像輸入與自動語音轉錄。
-- **重要結論**：ADK 透過 `LiveRequestQueue` 和並發處理模式，簡化了複雜的即時雙向串流開發，能有效處理語音對話與多模態互動。
-- **行動項目**：
-    1. 準備 Google API Key 或 Vertex AI 憑證。
-    2. 使用 `uv` 安裝依賴並配置 `.env` 環境變數。
-    3. 在 `app` 目錄下啟動伺服器並透過瀏覽器存取。
+本文件僅為個人學習與教育目的而創建。其內容主要是參考線上資源，並基於個人在學習 Google ADK 過程中的理解與整理，並非 Google 的官方觀點或文件。所有資訊請以 Google 官方發布為準。
