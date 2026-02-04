@@ -1,0 +1,140 @@
+
+[project]
+name = "pack-bidi-streaming"
+version = "0.1.0"
+description = ""
+# 作者資訊
+authors = [{ name = "lastingyeh", email = "lastingyeh@gmail.com" }]
+# 主要依賴套件
+dependencies = [
+    "google-adk>=1.15.0,<2.0.0",                                # Google ADK 套件
+    "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0", # OpenTelemetry for Google GenAI
+    "gcsfs>=2024.11.0",                                         # Google Cloud Storage 檔案系統
+    "google-cloud-logging>=3.12.0,<4.0.0",                      # Google Cloud Logging
+    "google-cloud-aiplatform[evaluation]==1.130.0",             # Google AI Platform (含 evaluation)
+    "fastapi~=0.115.8",                                         # FastAPI Web 框架
+    "uvicorn~=0.34.0",                                          # Uvicorn ASGI 伺服器
+    "asyncpg>=0.30.0,<1.0.0",                                   # PostgreSQL 非同步驅動
+]
+# Python 版本需求
+requires-python = ">=3.10,<3.14"
+
+
+[dependency-groups]
+# 開發用依賴
+dev = [
+    "pytest>=8.3.4,<9.0.0",          # 單元測試
+    "pytest-asyncio>=0.23.8,<1.0.0", # 非同步測試
+    "nest-asyncio>=1.6.0,<2.0.0",    # 巢狀 asyncio 支援
+]
+
+
+[project.optional-dependencies]
+# Jupyter 支援
+jupyter = ["jupyter>=1.0.0,<2.0.0"]
+# 程式碼檢查與格式化
+lint = [
+    "ruff>=0.4.6,<1.0.0",      # Python 程式碼靜態分析
+    "ty>=0.0.1a0",             # Astral Rust 型別檢查器
+    "codespell>=2.2.0,<3.0.0", # 拼字檢查
+]
+
+
+[tool.ruff]
+# ruff 設定
+line-length = 88         # 每行最大長度
+target-version = "py310" # 目標 Python 版本
+
+
+[tool.ruff.lint]
+# 選擇要啟用的 lint 規則
+select = [
+    "E",   # pycodestyle 規則
+    "F",   # pyflakes 規則
+    "W",   # pycodestyle 警告
+    "I",   # isort 排序
+    "C",   # flake8-comprehensions
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "RUF", # ruff 專屬規則
+]
+# 忽略規則：行太長、複雜度過高等
+ignore = ["E501", "C901", "B006"]
+
+
+[tool.ruff.lint.isort]
+# 專案內部模組
+known-first-party = ["bidi_demo", "frontend"]
+
+
+[tool.ty]
+# ty 是 Astral Rust 型別檢查器（與 ruff/uv 同團隊）
+# 文件：https://docs.astral.sh/ty/
+
+
+[tool.ty.environment]
+# 指定 Python 版本
+python-version = "3.10"
+
+
+[tool.ty.src]
+# 排除虛擬環境與 notebooks
+exclude = [".venv/**", "notebooks/**"]
+
+
+[tool.ty.rules]
+# 忽略第三方函式庫與動態程式碼常見問題
+unresolved-import = "ignore"
+unresolved-attribute = "ignore"
+invalid-argument-type = "ignore"
+invalid-assignment = "ignore"
+invalid-return-type = "ignore"
+possibly-missing-attribute = "ignore"
+not-subscriptable = "ignore"
+deprecated = "ignore"
+
+
+[tool.codespell]
+# 拼字檢查忽略清單
+ignore-words-list = "rouge"
+# 跳過檢查的路徑
+skip = "./locust_env/*,uv.lock,.venv,./frontend,**/*.ipynb"
+
+
+[build-system]
+# 建置系統設定
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[tool.pytest.ini_options]
+# pytest 設定
+pythonpath = "."
+asyncio_default_fixture_loop_scope = "function"
+
+
+[tool.hatch.build.targets.wheel]
+# 指定要包含的套件
+packages = ["bidi_demo", "frontend"]
+
+
+[tool.agent-starter-pack]
+# 產生專案的中繼資料，讓 CLI 能理解專案內容
+# 這些欄位讓產生的專案可作為遠端範本
+name = "pack-bidi-streaming"
+description = "ADK Bidi-streaming 範例應用程式"
+base_template = "remote_-8122468352941690026"
+agent_directory = "bidi_demo"
+
+# 產生專案時的上下文
+generated_at = "2026-02-03T04:43:51.404659+00:00"
+asp_version = "0.33.0"
+
+
+[tool.agent-starter-pack.create_params]
+# 專案建立時使用的參數
+deployment_target = "cloud_run"    # 部署目標
+session_type = "agent_engine"      # 工作階段型態
+cicd_runner = "google_cloud_build" # CI/CD 執行器
+include_data_ingestion = false     # 是否包含資料擷取
+datastore = "none"                 # 資料儲存類型

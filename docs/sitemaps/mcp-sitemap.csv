@@ -2,7 +2,9 @@ Category,Page Name,URL
 Clients,Clients,https://modelcontextprotocol.io/clients
 Antitrust,Antitrust,https://modelcontextprotocol.io/community/antitrust
 Communication,Communication,https://modelcontextprotocol.io/community/communication
+Contributing,Contributing,https://modelcontextprotocol.io/community/contributing
 Governance,Governance,https://modelcontextprotocol.io/community/governance
+Sdk-tiers,Sdk Tiers,https://modelcontextprotocol.io/community/sdk-tiers
 Sep-guidelines,Sep Guidelines,https://modelcontextprotocol.io/community/sep-guidelines
 Seps,1024 Mcp Client Security Requirements For Local Server ,https://modelcontextprotocol.io/community/seps/1024-mcp-client-security-requirements-for-local-server-
 Seps,1034  Support Default Values For All Primitive Types In,https://modelcontextprotocol.io/community/seps/1034--support-default-values-for-all-primitive-types-in
@@ -18,6 +20,7 @@ Seps,1686 Tasks,https://modelcontextprotocol.io/community/seps/1686-tasks
 Seps,1699 Support Sse Polling Via Server Side Disconnect,https://modelcontextprotocol.io/community/seps/1699-support-sse-polling-via-server-side-disconnect
 Seps,1730 Sdks Tiering System,https://modelcontextprotocol.io/community/seps/1730-sdks-tiering-system
 Seps,1850 Pr Based Sep Workflow,https://modelcontextprotocol.io/community/seps/1850-pr-based-sep-workflow
+Seps,1865 Mcp Apps Interactive User Interfaces For Mcp,https://modelcontextprotocol.io/community/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp
 Seps,2085 Governance Succession And Amendment,https://modelcontextprotocol.io/community/seps/2085-governance-succession-and-amendment
 Seps,2133 Extensions,https://modelcontextprotocol.io/community/seps/2133-extensions
 Seps,932 Model Context Protocol Governance,https://modelcontextprotocol.io/community/seps/932-model-context-protocol-governance

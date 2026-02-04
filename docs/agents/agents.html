@@ -4148,6 +4148,42 @@
             },
           ],
         },
+        {
+          name: 'Pack Bidi Streaming Demo',
+          description:
+            'ADK 雙向串流示範應用：透過 FastAPI WebSocket 與 ADK Runner 的 BIDI 串流，支援文字、音訊與影像的即時多模態互動。\n後端具備會話管理（Vertex AI Session Service 或 In-Memory），並依模型能力自動切換 AUDIO/TEXT 回應模態與轉錄設定。',
+          code_ref: 'workspace/python/agents/pack-bidi-streaming/',
+          type: 'App',
+          models: ['gemini-live-2.5-flash'],
+          tools: [
+            {
+              name: 'get_weather',
+              type: 'FunctionTool',
+              description: '模擬網路搜尋以獲取天氣資訊。',
+            },
+            {
+              name: 'get_current_time',
+              type: 'FunctionTool',
+              description: '透過時區處理獲取精確的地區時間。',
+            },
+            {
+              name: 'google_search',
+              type: 'GoogleSearchTool',
+              description: '執行 Google 搜尋以取得最新資訊。',
+            },
+          ],
+          'server-port': 8000,
+          tags: [
+            'bidi',
+            'streaming',
+            'websocket',
+            'fastapi',
+            'multimodal',
+            'audio',
+            'image',
+            'vertex-ai',
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';

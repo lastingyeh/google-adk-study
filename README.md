@@ -2022,7 +2022,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/2] [BIDI Streaming Live] Google ADK 支援 Gemini Live API，實現低延遲的雙向串流（Bidi-streaming）互動。開發者可透過 RunConfig 設定語音配置、自動 VAD 與逐字稿。核心組件如 LiveRequestQueue 負責傳送多模態輸入，run_live() 則處理包含中斷偵測與工具調用的即時事件，支援多代理程式協作與串流工具開發。
+[BIDI Streaming Live] Google ADK 支援 Gemini Live API，實現低延遲的雙向串流（Bidi-streaming）互動。開發者可透過 RunConfig 設定語音配置、自動 VAD 與逐字稿。核心組件如 LiveRequestQueue 負責傳送多模態輸入，run_live() 則處理包含中斷偵測與工具調用的即時事件，支援多代理程式協作與串流工具開發。
 
 🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`
 
@@ -2033,6 +2033,50 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 - **參考資源**
   - [[ADK-Docs] 官方文件 [Bidi-streaming (live)]](https://google.github.io/adk-docs/streaming/)
+
+</details>
+
+</details>
+
+#### 🕗 Day 99
+
+<details>
+<summary>
+[整合 1/2] [BIDI Streaming Live] 搭配官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
+
+🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`, `affective`, `proactively`
+
+</summary>
+
+- **詳細說明**
+  - [雙向串流 (Bidi-streaming) 深度實作指南](./workspace/articles/bidi-streaming/README.md)
+  - [Pack Bidi Streaming](./workspace/python/agents/pack-bidi-streaming/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Bidi-streaming (live)]](https://google.github.io/adk-docs/streaming/)
+  - [[ADK-Samples] bidi-demo](https://github.com/google/adk-samples/tree/main/python/agents/bidi-demo)
+  - [Agent Starter Pack](https://googlecloudplatform.github.io/agent-starter-pack/)
+
+</details>
+
+#### 🕗 Day 100
+
+<details>
+<summary>
+[整合 2/2] [BIDI Streaming Live] 搭配官方文件，透過 NotebookLM 工具整合知識庫深入解析 ADK 的雙向串流核心。我們將傳統的「請求-等待」模式革新為「即時對話」體驗，實現了可中斷、多模態的互動。藉由官方範例 (bidi-demo) 與 agent-starter-pack 的整合，我們不僅實作了視覺感知、語音情感等進階功能，更涵蓋了從開發、測試到 Cloud Run 部署的完整生產級流程，助您打造次世代 AI 應用。
+
+🏷️ `bidi-streaming`, `live-api`, `gemini-live-api`, `vertex-ai-live-api`, `liverequestqueue`, `runconfig`, `multimodal`, `native-audio`, `interruption-detection`, `vad`, `websockets`, `affective`, `proactively`
+
+</summary>
+
+- **詳細說明**
+  - [雙向串流 (Bidi-streaming) 深度實作指南](./workspace/articles/bidi-streaming/README.md)
+  - [Pack Bidi Streaming](./workspace/python/agents/pack-bidi-streaming/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Bidi-streaming (live)]](https://google.github.io/adk-docs/streaming/)
+  - [[ADK-Samples] bidi-demo](https://github.com/google/adk-samples/tree/main/python/agents/bidi-demo)
+  - [Agent Starter Pack](https://googlecloudplatform.github.io/agent-starter-pack/)
 
 </details>
 </details>

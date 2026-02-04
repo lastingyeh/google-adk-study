@@ -140,7 +140,7 @@ ADK allows you to define agents, tools, and even multi-agent workflows using a s
     # For Google AI Studio (simpler setup)
     GOOGLE_GENAI_USE_VERTEXAI=0
     GOOGLE_API_KEY=<your-Google-Gemini-API-key>
-    
+
     # For Google Cloud Vertex AI (production)
     GOOGLE_GENAI_USE_VERTEXAI=1
     GOOGLE_CLOUD_PROJECT=<your_gcp_project>
@@ -190,9 +190,9 @@ ADK allows you to define agents, tools, and even multi-agent workflows using a s
     description: Learning assistant that provides tutoring in code and math.
     instruction: |
       You are a learning assistant that helps students with coding and math questions.
-      
+
       You delegate coding questions to the code_tutor_agent and math questions to the math_tutor_agent.
-      
+
       Follow these steps:
       1. If the user asks about programming or coding, delegate to the code_tutor_agent.
       2. If the user asks about math concepts or problems, delegate to the math_tutor_agent.
@@ -397,7 +397,7 @@ The `instruction` is critical. It guides the LLM's behavior, persona, and tool u
 **Example 1: Constraining Tool Use and Output Format**
 ```python
 import datetime
-from google.adk.tools import google_search   
+from google.adk.tools import google_search
 
 
 plan_generator = LlmAgent(
@@ -909,7 +909,7 @@ Tools extend an agent's abilities beyond text generation.
             years (int): The number of years the money is invested.
             compounding_frequency (int): The number of times interest is compounded
                                          per year (e.g., 1 for annually, 12 for monthly).
-            
+
         Returns:
             dict: Contains the calculation result.
                   - 'status' (str): "success" or "error".
@@ -1056,17 +1056,17 @@ from google.genai import types
 config = RunConfig(
     # Safety limits
     max_llm_calls=100,  # Prevent infinite agent loops
-    
+
     # Streaming & Modality
     response_modalities=["AUDIO", "TEXT"], # Request specific output formats
-    
+
     # Voice configuration (for AUDIO modality)
     speech_config=types.SpeechConfig(
         voice_config=types.VoiceConfig(
             prebuilt_voice_config=types.PrebuiltVoiceConfig(voice_name="Kore")
         )
     ),
-    
+
     # Debugging
     save_input_blobs_as_artifacts=True # Save uploaded files to ArtifactService
 )
@@ -1286,10 +1286,10 @@ Fully managed, scalable service for ADK agents on Google Cloud.
 *   **Deployment**: Use `vertexai.agent_engines.create()`.
     ```python
     from vertexai.preview import reasoning_engines # or agent_engines directly in later versions
-    
+
     # Wrap your root_agent for deployment
     app_for_engine = reasoning_engines.AdkApp(agent=root_agent, enable_tracing=True)
-    
+
     # Deploy
     remote_app = agent_engines.create(
         agent_engine=app_for_engine,
@@ -1483,7 +1483,7 @@ from google.adk.agents.run_config import RunConfig
 async def start_streaming_session(runner, session, user_id):
     # 1. Configure modalities (e.g., AUDIO output for voice agents)
     run_config = RunConfig(response_modalities=["AUDIO"])
-    
+
     # 2. Create input queue for client data (audio chunks, text)
     live_queue = LiveRequestQueue()
 
@@ -1506,7 +1506,7 @@ async def start_streaming_session(runner, session, user_id):
                 elif part.text:
                      # Send text to client
                      await client.send_text(part.text)
-            
+
             # Handle turn signals
             if event.turn_complete:
                  pass # Signal client that agent finished speaking
@@ -1586,7 +1586,7 @@ import asyncio
 
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from auto_insurance_agent.agent import root_agent
+from bidi_demo.agent import root_agent
 from google.genai import types as genai_types
 
 
@@ -1594,17 +1594,17 @@ async def main():
     """Runs the agent with a sample query."""
     session_service = InMemorySessionService()
     await session_service.create_session(
-        app_name="auto_insurance_agent", user_id="test_user", session_id="test_session"
+        app_name="bidi_demo", user_id="test_user", session_id="test_session"
     )
     runner = Runner(
-        agent=root_agent, app_name="auto_insurance_agent", session_service=session_service
+        agent=root_agent, app_name="bidi_demo", session_service=session_service
     )
     query = "I want a recipe for pancakes"
     async for event in runner.run_async(
         user_id="test_user",
         session_id="test_session",
         new_message=genai_types.Content(
-            role="user", 
+            role="user",
             parts=[genai_types.Part.from_text(text=query)]
         ),
     ):
@@ -1631,7 +1631,10 @@ For detailed specifications of all classes, methods, and commands, refer to the 
 
 For further reading on ADK, see: https://google.github.io/adk-docs/llms.txt
 ---
-**llm.txt** documents the "Agent Starter Pack" repository, providing a source of truth on its purpose, features, and usage.
+# Starter Pack Guidance
+Guide for AI agents working with **generated projects** (projects created by Agent Starter Pack).
+
+> **Scope**: This document is for developing, testing, and deploying **generated agent projects**. For contributing to the **Agent Starter Pack repository itself** (the template generator), see [GEMINI.md](./GEMINI.md).
 ---
 
 ### Section 1: Project Overview
@@ -1759,17 +1762,92 @@ uvx agent-starter-pack enhance . \
 
 ---
 
+### `agent-starter-pack extract` Command
+
+Creates a minimal, shareable version of an agent by stripping deployment scaffolding while preserving core agent logic.
+
+**Usage:**
+```bash
+agent-starter-pack extract OUTPUT_PATH [OPTIONS]
+```
+
+**Key Options:**
+*   `OUTPUT_PATH`: Required destination directory for extracted agent
+*   `--source, -s`: Source project directory (default: `.`)
+*   `--dry-run`: Preview what would be extracted without making changes
+*   `--force, -f`: Overwrite output directory if it exists
+
+**What Gets Extracted:**
+- Agent directory (e.g., `app/`) with `agent.py` and custom modules
+- `pyproject.toml` (scaffolding dependencies removed)
+- Minimal `Makefile` and `README.md`
+
+**What Gets Removed:**
+- `deployment/`, `.github/`, `.cloudbuild/`, `frontend/`, `data_ingestion/`, `notebooks/`, `tests/`
+- Scaffolding files: `fast_api_app.py`, `agent_engine_app.py`, `app_utils/`
+
+**Example:**
+```bash
+# Extract current project to shareable form
+uvx agent-starter-pack extract ../my-agent-share
+
+# Preview changes first
+uvx agent-starter-pack extract ../my-agent-share --dry-run
+```
+
+**Workflow:** Use `extract` to share agents, then recipients use `enhance` to add their own deployment infrastructure.
+
+---
+
+### `agent-starter-pack upgrade` Command
+
+Upgrades projects to newer ASP versions using intelligent 3-way merge.
+
+**Usage:**
+```bash
+agent-starter-pack upgrade [PROJECT_PATH] [OPTIONS]
+```
+
+**Key Options:**
+*   `PROJECT_PATH`: Project to upgrade (default: `.`)
+*   `--dry-run`: Preview changes without applying them
+*   `--auto-approve, -y`: Auto-apply non-conflicting changes without prompts
+
+**3-Way Merge Logic:**
+- **You unchanged, ASP updated** → Auto-update the file
+- **You modified, ASP unchanged** → Preserve your version
+- **Both changed** → Prompt to resolve conflict
+- **New ASP file** → Prompt to add
+- **Removed in ASP** → Prompt to remove
+
+**Files Never Modified:**
+- Agent code (`app/agent.py`, custom modules)
+- Configuration files (`.env`, secrets)
+
+**Example:**
+```bash
+# Preview upgrade changes
+uvx agent-starter-pack upgrade --dry-run
+
+# Apply upgrade with auto-approve for non-conflicts
+uvx agent-starter-pack upgrade -y
+```
+
+**Requirements:** Requires `uvx` and project must have `asp_version` in `[tool.agent-starter-pack]` section of `pyproject.toml`.
+
+---
+
 ### Available Agent Templates
 
 Templates for the `create` command (via `-a` or `--agent`):
 
-| Agent Name             | Description                                  |
-| :--------------------- | :------------------------------------------- |
-| `adk`             | Base ReAct agent (ADK)                       |
-| `adk_gemini_fullstack` | Production-ready fullstack research agent    |
-| `agentic_rag`          | RAG agent for document retrieval & Q&A       |
-| `langgraph`       | Base ReAct agent (LangGraph)                 |
-| `adk_live`             | Real-time multimodal RAG agent               |
+| Agent Name             | Description                               |
+| :--------------------- | :---------------------------------------- |
+| `adk`                  | Base ReAct agent (ADK)                    |
+| `adk_gemini_fullstack` | Production-ready fullstack research agent |
+| `agentic_rag`          | RAG agent for document retrieval & Q&A    |
+| `langgraph`            | Base ReAct agent (LangGraph)              |
+| `adk_live`             | Real-time multimodal RAG agent            |
 
 ---
 
@@ -1883,7 +1961,7 @@ Automates the complete CI/CD infrastructure setup for GitHub-based deployments. 
 uvx agent-starter-pack setup-cicd [OPTIONS]
 ```
 
-**Prerequisites:** 
+**Prerequisites:**
 - Run from the project root (directory with `pyproject.toml`)
 - Required tools: `gh` CLI (authenticated), `gcloud` CLI (authenticated), `terraform`
 - `Owner` role on GCP projects
@@ -1992,4 +2070,3 @@ Before finalizing any `new_string` for a `replace` operation, meticulously verif
 *   **Further Reading & Troubleshooting:**
     *   For questions about specific frameworks (e.g., LangGraph) or Google Cloud products (e.g., Cloud Run), their official documentation and online resources are the best source of truth.
     *   **When encountering persistent errors or if you're unsure how to proceed after initial troubleshooting, a targeted Google Search is strongly recommended.** It is often the fastest way to find relevant documentation, community discussions, or direct solutions to your problem.
-

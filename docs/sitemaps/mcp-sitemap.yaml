@@ -4,8 +4,12 @@ antitrust:
   - https://modelcontextprotocol.io/community/antitrust
 communication:
   - https://modelcontextprotocol.io/community/communication
+contributing:
+  - https://modelcontextprotocol.io/community/contributing
 governance:
   - https://modelcontextprotocol.io/community/governance
+sdk-tiers:
+  - https://modelcontextprotocol.io/community/sdk-tiers
 sep-guidelines:
   - https://modelcontextprotocol.io/community/sep-guidelines
 seps:
@@ -23,6 +27,7 @@ seps:
   - https://modelcontextprotocol.io/community/seps/1699-support-sse-polling-via-server-side-disconnect
   - https://modelcontextprotocol.io/community/seps/1730-sdks-tiering-system
   - https://modelcontextprotocol.io/community/seps/1850-pr-based-sep-workflow
+  - https://modelcontextprotocol.io/community/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp
   - https://modelcontextprotocol.io/community/seps/2085-governance-succession-and-amendment
   - https://modelcontextprotocol.io/community/seps/2133-extensions
   - https://modelcontextprotocol.io/community/seps/932-model-context-protocol-governance

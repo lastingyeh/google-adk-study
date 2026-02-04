@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADK 雙向串流演示</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/app.js" type="module"></script>
+  </head>
+
+  <body>
+    <header>
+      <h1>ADK 雙向串流演示 (ADK Bidi-streaming Demo)</h1>
+      <div class="subtitle">使用 Google ADK 進行即時雙向串流</div>
+      <div class="header-options">
+        <label class="header-checkbox" title="讓模型能夠在沒有明確提示的情況下主動回應 (僅限原生音訊模型)">
+          <input type="checkbox" id="enableProactivity">
+          <span>主動性 (Proactivity)</span>
+        </label>
+        <label class="header-checkbox" title="讓模型能夠檢測並適應情緒線索 (僅限原生音訊模型)">
+          <input type="checkbox" id="enableAffectiveDialog">
+          <span>情感對話 (Affective Dialog)</span>
+        </label>
+      </div>
+      <div class="connection-status">
+        <span class="status-indicator" id="statusIndicator"></span>
+        <span id="statusText">正在連線...</span>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <div class="container">
+        <div id="messages"></div>
+
+        <div class="input-container">
+          <form id="messageForm">
+            <div class="input-wrapper">
+              <input
+                type="text"
+                id="message"
+                name="message"
+                placeholder="在此輸入您的訊息..."
+                autocomplete="off"
+              />
+              <button type="submit" id="sendButton" disabled>傳送</button>
+              <button type="button" id="startAudioButton">開始音訊</button>
+              <button type="button" id="cameraButton">📷 相機</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="console-panel">
+        <div class="console-header">
+          <h2>事件控制台 (Event Console)</h2>
+          <div class="console-controls">
+            <label class="console-checkbox">
+              <input type="checkbox" id="showAudioEvents">
+              <span>顯示音訊</span>
+            </label>
+            <button id="clearConsole" class="console-clear-btn">清除</button>
+          </div>
+        </div>
+        <div id="consoleContent" class="console-content"></div>
+      </div>
+    </div>
+
+    <!-- 相機預覽彈窗 -->
+    <div id="cameraModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>相機預覽</h3>
+          <button id="closeCameraModal" class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <video id="cameraPreview" autoplay playsinline></video>
+        </div>
+        <div class="modal-footer">
+          <button id="cancelCamera" class="btn-secondary">取消</button>
+          <button id="captureImage" class="btn-primary">📷 傳送圖像</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
