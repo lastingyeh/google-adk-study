@@ -2036,8 +2036,6 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 </details>
 
-</details>
-
 #### 🕗 Day 99
 
 <details>
@@ -2079,4 +2077,6 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [Agent Starter Pack](https://googlecloudplatform.github.io/agent-starter-pack/)
 
 </details>
+</details>
+
 </details>
