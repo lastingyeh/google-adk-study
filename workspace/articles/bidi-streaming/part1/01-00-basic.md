@@ -129,3 +129,7 @@ ADK 的雙向串流架構成功地將低階的 WebSocket 管理抽象化，讓�
 *   **關注音訊規格**：輸入 16kHz PCM，輸出 24kHz PCM（原生音訊模型）。
 
 🏷️ `google-adk`, `bidi-streaming`, `gemini-live-api`, `ai-agent-architecture`, `real-time-multimodal`
+
+---
+
+ [下一頁 →](./01-01-live-api.md) | [課程首頁 ↩](../COURSE_PLAN.md)

@@ -108,3 +108,7 @@ else:
 原生音訊架構是為了追求「極致自然」而生，適合具備高度同理心的互動場景；半串聯架構則是為了「生產穩定與效能」而存在，適合需要頻繁工具調用的文字與語音混合應用。在你的 `RunConfig` 中，請務必根據模型名稱進行環境變數配置，以確保在切換平台（Gemini vs. Vertex AI）時能獲得最佳體驗。
 
 🏷️ `native-audio`, `half-cascade`, `run-config`, `gemini-live-api`, `ai-agent-architecture`
+
+---
+
+[← 上一頁](./05-03-compaction.md) | [下一頁 →](./05-05-affective.md) | [課程首頁 ↩](../COURSE_PLAN.md)

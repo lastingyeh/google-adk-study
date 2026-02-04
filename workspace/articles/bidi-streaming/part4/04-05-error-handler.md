@@ -124,3 +124,7 @@ finally:
 **更多資源**：
 *   關於 `finish_reason` 的完整清單，請參考 Google AI for Developers 官方文件。
 *   關於配額增加流程，請至 Google Cloud 控制台的「配額」頁面搜尋 `Bidi generate content concurrent requests`。
+
+---
+
+[← 上一頁](./04-04-tool-event.md) | [下一頁 (Part 5) →](../part5/05-00-advance-runconfig.md) | [課程首頁 ↩](../COURSE_PLAN.md)

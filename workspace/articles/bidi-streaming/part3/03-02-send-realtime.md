@@ -131,3 +131,7 @@ elif json_message.get("type") == "image":
 🏷️ `send-realtime`, `multi-modal-streaming`, `16khz-pcm`, `computer-vision-ai`, `bidi-messaging`
 
 **下一課預告**：我們將探討「下游 (Downstream)」，學習如何從 `run_live()` 接收並處理 AI 傳回的多模態事件。
+
+---
+
+[← 上一頁](./03-01-send-content.md) | [下一頁 →](./03-03-vad.md) | [課程首頁 ↩](../COURSE_PLAN.md)

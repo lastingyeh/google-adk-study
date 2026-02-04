@@ -113,3 +113,7 @@ ADK 的 `Event` 類別是一個統一的容器，它將不同性質的資訊標�
 **更多資源**：
 *   關於 `Event` 類別的完整定義，請參閱《第 3 部分：Event 類別》。
 *   關於如何配置 RunConfig 以調整回應模態，請參閱《第 4 部分：理解 RunConfig》。
+
+---
+
+[← 上一頁 (Part 3)](../part3/03-04-close.md) | [下一頁 →](./04-01-text-event.md) | [課程首頁 ↩](../COURSE_PLAN.md)

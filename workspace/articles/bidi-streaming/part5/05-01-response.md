@@ -123,3 +123,7 @@ else:
 `RunConfig` 的回應模式是串流應用程式的基石。文字模式（TEXT）帶來效率與精準；音訊模式（AUDIO）則帶來情感與自然的類人體驗。根據您的產品定位選擇合適的模態，並善用逐字稿功能來彌補 AUDIO 模式下的文字缺失。
 
 🏷️ `response-modalities`, `run-config`, `native-audio`, `bidi-streaming`, `gemini-live-api`
+
+---
+
+[← 上一頁](./05-00-advance-runconfig.md) | [下一頁 →](./05-02-session-resumption.md) | [課程首頁 ↩](../COURSE_PLAN.md)

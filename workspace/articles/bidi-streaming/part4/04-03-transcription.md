@@ -123,3 +123,7 @@ if (adkEvent.outputTranscription && adkEvent.outputTranscription.text) {
 🏷️ `adk`, `transcription-events`, `bidi-streaming`, `gemini-live-api`, `real-time-ui`
 
 **延伸思考**：當 `interrupted=True` 發生時，正在進行中的逐字稿會如何？根據來源，模型音訊快取會排空，此時下游應停止更新對應的 `output_transcription` 並將其標記為中斷。
+
+---
+
+[← 上一頁](./04-02-audio-event.md) | [下一頁 →](./04-04-tool-event.md) | [課程首頁 ↩](../COURSE_PLAN.md)

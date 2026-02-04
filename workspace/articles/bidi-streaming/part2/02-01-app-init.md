@@ -104,3 +104,7 @@ runner = Runner(app_name=APP_NAME, agent=agent, session_service=session_service)
 🏷️ `google-adk`, `ai-agent`, `application-lifecycle`, `system-architecture`, `bidi-streaming`
 
 **延伸學習建議**：完成 Phase 1 後，請前往《第 2 部分：對話執行緒初始化》，學習如何使用這些組件為特定使用者建立 `LiveRequestQueue`。
+
+---
+
+[← 上一頁](./02-00-app-lifecycle.md) | [下一頁 →](./02-02-app-run.md) | [課程首頁 ↩](../COURSE_PLAN.md)

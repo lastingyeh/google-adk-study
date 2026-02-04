@@ -125,3 +125,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str, session_id: str
 🏷️ `session-management`, `run-config`, `live-request-queue`, `adk-architecture`, `bidi-streaming`
 
 **下一課預告**：我們將進入最精彩的「階段 3：事件迴圈」，學習如何並行處理上游訊息與下游事件。
+
+---
+
+[← 上一頁](./02-01-app-init.md) | [下一頁 →](./02-03-event-loop.md) | [課程首頁 ↩](../COURSE_PLAN.md)

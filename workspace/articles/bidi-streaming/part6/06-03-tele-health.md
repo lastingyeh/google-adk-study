@@ -101,3 +101,7 @@ elif json_message.get("type") == "image":
 遠距醫療分診是雙向串流技術最具人道價值的場景之一。開發者應優先考慮 **原生音訊模型** 以獲得情感共鳴，並結合 **1 FPS 的視覺串流** 來輔助臨床判斷。透過 ADK 的封裝，您可以將原本需要數月開發的基礎連線與事件處理工作，簡化為高效的醫療商業邏輯。
 
 🏷️ `telehealth`, `medical-triage`, `bidi-streaming`, `affective-dialogue`, `visual-perception`
+
+---
+
+[← 上一頁](./06-02-customer-service.md) | [下一頁 →](./06-04-finance.md) | [課程首頁 ↩](../COURSE_PLAN.md)

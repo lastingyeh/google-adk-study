@@ -98,3 +98,7 @@ finally:
 掌握了優雅關閉，你才真正掌握了 ADK 雙向串流的完整運作機制，確保你的代理程式應用能夠健康、長久地在雲端環境中運行。
 
 🏷️ `adk-streaming`, `graceful-termination`, `live-request-queue`, `quota-management`, `bidi-lifecycle`
+
+---
+
+[← 上一頁](./03-03-vad.md) | [下一頁 (Part 4) →](../part4/04-00-downstream.md) | [課程首頁 ↩](../COURSE_PLAN.md)

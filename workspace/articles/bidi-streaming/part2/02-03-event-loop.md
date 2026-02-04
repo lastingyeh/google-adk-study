@@ -113,3 +113,7 @@ except WebSocketDisconnect:
 🏷️ `adk-bidi-streaming`, `run-live-event-loop`, `asyncio-gather`, `live-request-queue`, `concurrent-ai`
 
 **延伸思考**：在 `SequentialAgent` 場景中，階段 3 會如何運作？它會在同一個 `run_live()` 迴圈中透明地切換代理程式，而不需要重新初始化會話。
+
+---
+
+[← 上一頁](./02-02-app-run.md) | [下一頁 →](./02-04-queue-close.md) | [課程首頁 ↩](../COURSE_PLAN.md)

@@ -98,3 +98,9 @@ async def downstream_task() -> None:
 金融服務不再是單向的「讀取報表」。透過 ADK 的 **多模態螢幕共享** 與 **串流工具**，你可以建構一個具備「眼睛」能看趨勢圖、具備「耳朵」能聽客戶焦慮、且能「主動執行」風險模擬的數位財富管家。
 
 🏷️ `financial-services`, `wealth-management`, `streaming-tools`, `bidi-streaming`, `gemini-live-api`
+
+
+### 🏁 課程完成 🏁
+---
+
+ | [← 上一頁](./06-03-tele-health.md) | [課程首頁 ↩](../COURSE_PLAN.md)

@@ -105,3 +105,7 @@ await asyncio.gather(upstream_task(), downstream_task())
 3.  **區分 Session**：ADK Session 是長期記憶，Live API Session 是短暫的對話快取。
 
 🏷️ `google-adk`, `bidi-streaming`, `software-lifecycle`, `ai-agents`, `fastapi`
+
+---
+
+[← 上一頁 (Part 1)](../part1/01-03-streaming-features.md) | [下一頁 →](./02-01-app-init.md) | [課程首頁 ↩](../COURSE_PLAN.md)

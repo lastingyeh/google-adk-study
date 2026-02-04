@@ -116,3 +116,7 @@ if (adkEvent.interrupted === true) {
 透過 ADK 雙向串流，我們正在將「客服中心」轉化為「智慧代理中心」，讓 AI 不僅是回答問題，更能透過眼睛與耳朵成為專家的數位夥伴。
 
 🏷️ `customer-service`, `technical-support`, `bidi-streaming`, `native-multimodal`, `real-time-ai`
+
+---
+
+[← 上一頁](./06-01-commerce.md) | [下一頁 →](./06-03-tele-health.md) | [課程首頁 ↩](../COURSE_PLAN.md)

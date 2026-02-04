@@ -104,3 +104,7 @@ run_config = RunConfig(
 掌握了這項配置，你就能建構出一個真正具備「長時記憶」且永不斷線的 AI 夥伴。
 
 🏷️ `context-compression`, `infinite-session`, `run-config`, `adk-streaming`, `token-management`
+
+---
+
+[← 上一頁](./05-02-session-resumption.md) | [下一頁 →](./05-04-audio-model.md) | [課程首頁 ↩](../COURSE_PLAN.md)

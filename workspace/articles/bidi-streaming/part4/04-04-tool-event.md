@@ -115,3 +115,7 @@ async def monitor_stock_price(symbol: str) -> AsyncGenerator[str, None]:
 🏷️ `tool-call-events`, `auto-tool-execution`, `streaming-tools`, `adk-downstream`, `invocation-context`
 
 **延伸思考**：在 `SequentialAgent` 工作流程中，工具執行如何跨代理程式保持連貫？由於 `InvocationContext` 跨越整個 `run_live()` 調用，工具執行的歷史紀錄會透過 `context.session.events` 完美保留。
+
+---
+
+[← 上一頁](./04-03-transcription.md) | [下一頁 →](./04-05-error-handler.md) | [課程首頁 ↩](../COURSE_PLAN.md)

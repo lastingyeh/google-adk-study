@@ -104,3 +104,7 @@ Shopper's Concierge 展現了雙向串流技術在商業應用中的極致潛力
 這就是未來的電商體驗：一個有眼睛、能對話、且具備專業研究能力的私人管家。
 
 🏷️ `shoppers-concierge`, `multi-modal-ai`, `visual-awareness`, `deep-research`, `e_commerce-agent`
+
+---
+
+[← 上一頁](./06-00-scenario.md) | [下一頁 →](./06-02-customer-service.md) | [課程首頁 ↩](../COURSE_PLAN.md)

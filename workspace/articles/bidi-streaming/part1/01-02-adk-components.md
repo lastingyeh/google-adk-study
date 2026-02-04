@@ -122,3 +122,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str, session_id: str
 🏷️ `adk-architecture`, `runner-component`, `live-request-queue`, `agent-framework`, `invocation-context`
 
 **延伸思考：** 在多代理程式的工作流中，`SequentialAgent` 如何利用這些組件實現透明的交接？答案在於同一個 `LiveRequestQueue` 會持續為序列中的所有代理程式服務。
+
+---
+
+[← 上一頁](./01-01-live-api.md) | [下一頁 →](./01-03-streaming-features.md) | [課程首頁 ↩](../COURSE_PLAN.md)

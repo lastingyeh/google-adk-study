@@ -113,3 +113,7 @@ async def upstream_task() -> None:
 🏷️ `upstream-messaging`, `live-request-queue`, `multi-modal-input`, `gemini-live-api`, `real-time-audio`
 
 **下一課預告**：我們將探討「下游 (Downstream)」，學習如何接收並處理模型產生的即時事件。
+
+---
+
+[← 上一頁 (part 2)](../part2/02-04-queue-close.md) | [下一頁 →](./03-01-send-content.md) | [課程首頁 ↩](../COURSE_PLAN.md)

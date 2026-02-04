@@ -98,3 +98,7 @@ async def downstream_task() -> None:
 掌握這三個標記，你就擁有了控制 AI 代理程式「社交節奏」的能力。`partial` 讓溝通變快，`interrupted` 讓溝通變自然，而 `turn_complete` 讓溝通有始有終。
 
 🏷️ `bidi-streaming`, `text-events`, `event-processing`, `gemini-live-api`, `real-time-interaction`
+
+---
+
+[← 上一頁](./04-00-downstream.md) | [下一頁 →](./04-02-audio-event.md) | [課程首頁 ↩](../COURSE_PLAN.md)

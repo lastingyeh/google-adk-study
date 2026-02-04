@@ -114,3 +114,7 @@ else:
 🏷️ `run-config`, `bidi-streaming`, `live-api`, `context-compression`, `affective-dialogue`
 
 **延伸閱讀**：若需深入瞭解 VAD (語音活動檢測) 的手動控制細節，請參閱《開發指南第 5 部分：語音活動檢測 (VAD)》。
+
+---
+
+[← 上一頁 (Part 4)](../part4/04-05-error-handler.md) | [下一頁 →](./05-01-response.md) | [課程首頁 ↩](../COURSE_PLAN.md)

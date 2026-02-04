@@ -110,3 +110,7 @@ async def upstream_task() -> None:
 **延伸資源：**
 *   若要了解具體的音訊規格與 VAD 配置，請參閱《開發指南第 5 部分：如何使用音訊、圖片與影片》。
 *   若要了解如何管理長對話會話，請參閱《第 4 部分：理解 RunConfig》之「上下文視窗壓縮」。
+
+---
+
+[← 上一頁 （Part 5)](../part5/05-05-affective.md) | [下一頁 →](./06-01-commerce.md) | [課程首頁 ↩](../COURSE_PLAN.md)
