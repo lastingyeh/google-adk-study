@@ -2077,6 +2077,24 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [Agent Starter Pack](https://googlecloudplatform.github.io/agent-starter-pack/)
 
 </details>
+
+#### 🕗 Day 101
+
+<details>
+<summary>
+[Grounding] Grounding 是將代理的回應建立並取得在外部資料服務的完整流程，用於降低幻覺、提高即時性，並讓答案可被來源驗證。本文件整理官方文件資料夾中與 Grounding 相關的主題與延伸資源。
+
+🏷️ `grounding`, `google-search-grounding`, `vertex-ai-search-grounding`, `user-query`, `tool-calling`, `rag`, `context-injection`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Grounding](./workspace/adk-docs/grounding/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Grounding]](https://google.github.io/adk-docs/grounding/)
+
+</details>
 </details>
 
 </details>

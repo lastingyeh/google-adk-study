@@ -669,7 +669,6 @@ ADK 開發者 UI 允許您直接在瀏覽器中與您的代理互動、管理工
 <details>
 <summary>API 測試 (curl)</summary>
 
-
 ### API 測試 (curl)
 
 您可以使用像 `curl` 這樣的工具與代理的 API 端點互動。這對於程式化互動或如果您在沒有 UI 的情況下部署非常有用。

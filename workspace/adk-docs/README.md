@@ -244,6 +244,15 @@ ADK 中的雙向 (Bidi) 串流 (Live) 為 AI 代理增加了 Gemini Live API 的
 | [開發指南：第 4 部分](./bidi-streaming-live/dev-guide/part4.md) | 詳解 RunConfig 配置，涵蓋回應型態、串流模式、會話恢復、上下文視窗壓縮與配額管理。 | [連結](./bidi-streaming-live/dev-guide/part4.md) |
 | [開發指南：第 5 部分](./bidi-streaming-live/dev-guide/part5.md) | 說明如何處理音訊、圖片與影片，包含 VAD、語音配置、音訊逐字稿與主動/情感對話功能。 | [連結](./bidi-streaming-live/dev-guide/part5.md) |
 
+### Grounding
+
+Grounding 是將代理的回應建立在外部權威資料之上的流程，用於降低幻覺、提高即時性，並讓答案可被來源驗證。以下整理本資料夾中與 Grounding 相關的主題與延伸資源。
+
+| 標頭 | 描述 | 連結 |
+| :--- | :--- | :--- |
+| [Grounding 總覽](./grounding/index.md) | 說明 Grounding 概念與 ADK 支援方式（Google 搜尋 / Vertex AI Search / Agentic RAG），並整理延伸資源。 | [連結](./grounding/index.md) |
+| [Google 搜尋 Grounding](./grounding/google_search_grounding.md) | 讓代理存取即時、權威的網路資訊；包含設定流程、資料流解釋與回應引用顯示。 | [連結](./grounding/google_search_grounding.md) |
+| [Vertex AI Search Grounding](./grounding/vertex_ai_search_grounding.md) | 連接企業文件與私人資料庫；包含資料儲存設定、回應 Grounding 與來源歸屬。 | [連結](./grounding/vertex_ai_search_grounding.md) |
 
 ## 參考資源
 
