@@ -554,3 +554,7 @@ uvx agent-starter-pack upgrade
 ## 📝 免責聲明
 
 本文件僅為個人學習與教育目的而創建。其內容主要是參考線上資源，並基於個人在學習 Google ADK 過程中的理解與整理，並非 Google 的官方觀點或文件。所有資訊請以 Google 官方發布為準。
+
+## 參考資源
+
+- [[ADK-Samples] RAG](https://github.com/google/adk-samples/tree/main/python/agents/RAG)
