@@ -1,0 +1,50 @@
+# 版權 2025 Google LLC
+#
+# 根據 Apache 許可證 2.0 版本授權
+# (詳見 http://www.apache.org/licenses/LICENSE-2.0)
+#
+# 除非適用法律要求或書面同意，
+# 否則本軟體按「現狀」提供，不附帶任何明示或暗示的擔保。
+
+steps:
+  # 步驟 1：安裝 uv 套件管理器並同步依賴項
+  # 重點：使用輕量級 Python 映像減少建置時間
+  - name: 'python:3.12-slim'
+    id: install-dependencies
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        pip install uv==0.8.13 --user && uv sync --locked
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+  # 步驟 2：執行單元測試 (使用 pytest)
+  # 重點：確保核心功能單獨運作正常
+  - name: 'python:3.12-slim'
+    id: unit-tests
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        uv run pytest tests/unit
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+  # 步驟 3：執行整合測試
+  # 重點：驗證各模組協作是否正常
+  - name: 'python:3.12-slim'
+    id: integration-tests
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        uv run pytest tests/integration
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+# 設定日誌儲存
+logsBucket: gs://${PROJECT_ID}-pack-rag-logs/build-logs
+options:
+  # 重點：使用區域化的使用者擁有儲存桶進行日誌管理
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

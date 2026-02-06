@@ -1,0 +1,32 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0（Apache 2.0 授權）
+# 詳見：http://www.apache.org/licenses/LICENSE-2.0
+#
+# 除非適用法律另有規定或書面同意，否則本軟體按「現狀」提供，
+# 不提供任何明示或暗示的保證。詳見授權條款。
+
+steps:
+  # 步驟 1：使用 gcloud 工具部署服務到 Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud-slim'
+    id: trigger-deployment
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'pack-rag' # 要部署的 Cloud Run 服務名稱
+      - '--image'
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME' # 容器映像位置
+      - '--region'
+      - '$_REGION' # 部署區域（預設：us-central1）
+      - '--project'
+      - $_PROD_PROJECT_ID # 目標生產環境專案 ID
+
+substitutions:
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID # 生產環境專案 ID（需替換為實際值）
+  _REGION: us-central1 # 部署區域
+
+logsBucket: gs://${PROJECT_ID}-pack-rag-logs/build-logs # 儲存建置日誌的位置
+options:
+  substitutionOption: ALLOW_LOOSE # 允許未定義的替換變數
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 使用區域使用者自有的儲存庫

@@ -2095,6 +2095,24 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Docs] 官方文件 [Grounding]](https://google.github.io/adk-docs/grounding/)
 
 </details>
+
+#### 🕗 Day 102
+
+<details>
+<summary>
+承接 Day 101 的 Grounding 主題，參考 ADK Samples 官方範例 (RAG) 搭配 Agent-starter-pack，實作具備 Grounding `Vertex AI Search Grounding`功能，展示如何將外部資料注入代理上下文，提升回應的準確性與可靠性，並涵蓋從開發、測試到 Cloud Run 部署的完整生產級流程。
+
+🏷️ `grounding`, `vertex-ai-search-grounding`, `rag`, `agent-starter-pack`, `fastapi`, `unvicorn`, `ask_vertex_retrieval`
+
+</summary>
+
+- **詳細說明**
+  - [Pack RAG](./workspace/python/agents/pack-rag/)
+
+- **參考資源**
+  - [[ADK-Samples] RAG]](https://github.com/google/adk-samples/tree/main/python/agents/RAG)
+
+</details>
 </details>
 
 </details>

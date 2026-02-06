@@ -1,0 +1,143 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (License);
+# 根據 License 條款使用本檔案。
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+
+# Cloud Build 分階段部署流程：構建 → 分階段部署 → 負載測試 → 生產部署
+
+steps:
+  # ========== 第一階段：構建並推送容器映像 ==========
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'build',
+        '-t',
+        '$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME',
+        '--build-arg',
+        'COMMIT_SHA=$COMMIT_SHA',
+        '.',
+      ]
+
+  # 推送映像至 Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        '$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME',
+      ]
+
+  # ========== 第二階段：部署至分階段環境 ==========
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: deploy-staging
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'pack-rag'
+      - '--image'
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME'
+      - '--region'
+      - '${_REGION}'
+      - '--project'
+      - '${_STAGING_PROJECT_ID}'
+
+  # ========== 第三階段：取得分階段服務 URL ==========
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: fetch-staging-url
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # 查詢 Cloud Run 服務 URL 並保存到檔案供後續步驟使用
+        echo $(gcloud run services describe pack-rag \
+        --region ${_REGION} --project ${_STAGING_PROJECT_ID} --format="value(status.url)") > staging_url.txt
+
+  # ========== 第四階段：取得身份驗證 Token ==========
+  - name: gcr.io/cloud-builders/gcloud
+    id: fetch-id-token
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # 生成身份驗證 Token 用於負載測試請求
+        echo $(gcloud auth print-identity-token -q) > id_token.txt
+
+  # ========== 第五階段：執行負載測試 ==========
+  - name: 'python:3.12-slim'
+    id: load_test
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # 使用 Locust 框架進行分階段環境的性能測試
+        export _ID_TOKEN=$(cat id_token.txt)
+        export _STAGING_URL=$(cat staging_url.txt)
+        pip install locust==2.31.1 --user
+        # 測試參數：30秒、10個並發用戶、0.5 req/s 的產生速率
+        locust -f tests/load_test/load_test.py \
+        --headless \
+        -H $$_STAGING_URL \
+        -t 30s -u 10 -r 0.5 \
+        --csv=tests/load_test/.results/results \
+        --html=tests/load_test/.results/report.html
+    env:
+      - 'PATH=/usr/local/bin:/usr/bin:~/.local/bin'
+
+  # ========== 第六階段：上傳測試結果至 GCS ==========
+  - name: gcr.io/cloud-builders/gcloud
+    id: export-results-to-gcs
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # 將負載測試結果備份至 Google Cloud Storage 供後續分析
+        export _TIMESTAMP=$(date +%Y%m%d-%H%M%S)
+        gsutil -m cp -r tests/load_test/.results gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}
+        echo "_________________________________________________________________________"
+        echo "負載測試結果已複製到："
+        echo "gs://${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "HTTP 連結：https://console.cloud.google.com/storage/browser/${_LOGS_BUCKET_NAME_STAGING}/load-test-results/results-$${_TIMESTAMP}"
+        echo "_________________________________________________________________________"
+
+  # ========== 第七階段：觸發生產部署 ==========
+  - name: gcr.io/cloud-builders/gcloud
+    id: trigger-prod-deployment
+    entrypoint: gcloud
+    args:
+      - 'beta'
+      - 'builds'
+      - 'triggers'
+      - 'run'
+      - 'deploy-pack-rag'
+      - '--region'
+      - '$LOCATION'
+      - '--project'
+      - '$PROJECT_ID'
+      - '--sha'
+      - $COMMIT_SHA
+
+  # ========== 最後階段：輸出生產部署連結 ==========
+  - name: gcr.io/cloud-builders/gcloud
+    id: echo-view-build-trigger-link
+    entrypoint: /bin/bash
+    args:
+      - '-c'
+      - |
+        # 提供 Cloud Build 主控台連結供使用者追蹤和批准生產部署
+        echo "_________________________________________________________________________"
+        echo "生產部署已觸發。請在 Cloud Build 主控台查看進度及批准："
+        echo "https://console.cloud.google.com/cloud-build/builds;region=$LOCATION"
+        echo "_________________________________________________________________________"
+
+# ========== 變數替換設定 ==========
+substitutions:
+  _STAGING_PROJECT_ID: YOUR_STAGING_PROJECT_ID # 分階段環境的 GCP 專案 ID
+  _REGION: us-central1 # 部署區域
+
+# ========== 日誌儲存設定 ==========
+logsBucket: gs://${PROJECT_ID}-pack-rag-logs/build-logs
+options:
+  substitutionOption: ALLOW_LOOSE # 允許未定義的變數替換
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET # 區域所有者日誌儲存

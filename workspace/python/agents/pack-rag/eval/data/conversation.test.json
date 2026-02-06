@@ -1,0 +1,252 @@
+[
+  {
+    "query": "你好，我對Alphabet 10-K報告有一些疑問。",
+    "expected_tool_use": [],
+    "reference": "你好！我可以幫助你。根據Alphabet截至2024年12月31日財政年度的10-K，你想了解什麼？"
+  },
+  {
+    "query": "根據MD&A，來自Google Cloud和設備等非廣告收入來源的收入比例增加可能如何影響Alphabet的整體營業利率，為什麼？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "非廣告收入的增長如何影響Alphabet的利率？"
+        }
+      }
+    ],
+    "reference": "報告指出來自雲端、消費者訂閱、平台和設備的收入正在增加。報告指出這些收入的利率差異很大，通常低於廣告利率。具體而言，設備銷售由於價格壓力和更高的銷售成本而對合併利率產生不利影響。因此，這一趨勢可能對整體營業利率造成下行壓力。[引用：基於Alphabet截至2024年12月31日的10-K，第7項]"
+  },
+  {
+    "query": "報告提到對AI的重大投資。該報告在這些AI投資與公司對未來資本支出預期之間建立了什麼具體的聯繫？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet的AI戰略與資本支出預測之間的關係"
+        }
+      }
+    ],
+    "reference": "報告明確指出預期資本支出將增加，包括預期支出和技術基礎設施投資增加，*特別是*為支持AI產品和服務。[引用：基於Alphabet截至2024年12月31日的10-K，第7項和前瞻性聲明說明]"
+  },
+  {
+    "query": "除了基本功能問題外，Alphabet在風險因素中確定了哪些具體的法律、倫理或社會挑戰可能由AI的開發和使用而產生？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet與人工智慧相關的倫理和法律風險有哪些？"
+        }
+      }
+    ],
+    "reference": "提到的風險包括有害內容、不準確、歧視、智慧財產權侵犯/盜用、違反肖像權、誹謗、資料隱私、網路安全問題，以及可能影響人權、隱私、就業或其他社會關切的意外後果或用途。[引用：基於Alphabet截至2024年12月31日的10-K，第1A項]"
+  },
+  {
+    "query": "報告詳細說明了多項正在進行的反壟斷調查和訴訟。綜合提供的信息，監管審查的主要焦點似乎是哪些共同主題或業務領域？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet的哪些業務領域面臨最多的反壟斷監管審查？"
+        }
+      }
+    ],
+    "reference": "監管審查的共同主題集中在搜尋和搜尋廣告分發/實踐、廣告技術（廣告技術堆棧）、Android操作系統分發協議和Google Play商店運營（計費、費用、商業模式）。[引用：基於Alphabet截至2024年12月31日的10-K，第1A項和第10附註]"
+  },
+  {
+    "query": "Alphabet如何計帳其對非可交易股票證券的投資，根據第1附註，什麼具體事件會觸發其帳面價值調整？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet非可交易股票證券的會計政策"
+        }
+      }
+    ],
+    "reference": "它們主要根據測量替代方案（成本、減損損失、加減調整）進行計帳。帳面價值調整由以下事項觸發：同一發行人相同或類似投資的有序交易中可觀察的價格變化，或在識別減損時。[引用：基於Alphabet截至2024年12月31日的10-K，第1附註和第3附註]"
+  },
+  {
+    "query": "雖然Google Cloud的營業收入在2024年轉為正值並大幅增長，但MD&A中提到哪些因素部分抵消了收入增長並緩和了獲利增長？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "限制Google Cloud 2024年獲利增長的因素"
+        }
+      }
+    ],
+    "reference": "營業收入增加被技術基礎設施使用成本增加以及員工薪酬費用增加部分抵消，主要由員工人數增長所推動。[引用：基於Alphabet截至2024年12月31日的10-K，第7項、部門獲利能力]"
+  },
+  {
+    "query": "解釋Alphabet的「其他收入（費用），淨額」從2023年的14億美元增加到2024年的74億美元的主要原因。",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "2024年Alphabet其他收入（費用），淨額變化的驅動因素"
+        }
+      }
+    ],
+    "reference": "增加主要由於股票證券淨利益增加（主要是由公允價值調整驅動的非可交易股票證券的未實現利益）和與前一年相比外匯交易淨損失減少。[引用：基於Alphabet截至2024年12月31日的10-K，第7項、其他收入（費用），淨額及第7附註]"
+  },
+  {
+    "query": "促使Alphabet有效稅率從2023年的13.9%增加到2024年的16.4%的關鍵因素有哪些？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "為什麼Alphabet的有效稅率在2024年增加？"
+        }
+      }
+    ],
+    "reference": "增加主要由於2023年關於美國國稅局稅法規則變化的一次性調整（與外稅抵免和研發資本化有關，降低了2023年的稅率），以及2024年美國聯邦外國衍生無形收入扣減減少。這部分被2024年更高的股票薪酬稅收優惠所抵消。[引用：基於Alphabet截至2024年12月31日的10-K，第7項、所得稅攤提及第14附註]"
+  },
+  {
+    "query": "關於針對搜尋的美國司法部反壟斷訴訟，法院在2024年8月做出了什麼裁定，報告中概述了哪些後續步驟？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "針對Google搜尋的美國司法部反壟斷案件的狀態和裁定"
+        }
+      }
+    ],
+    "reference": "哥倫比亞特區美國地方法院裁定Google在與搜尋和搜尋廣告相關的反壟斷法中違法。單獨的訴訟程序正在進行以確定補救措施。Alphabet打算在確定補救措施後提出上訴。[引用：基於Alphabet截至2024年12月31日的10-K，第1A項和第10附註]"
+  },
+  {
+    "query": "Alphabet在達成其雄心勃勃的2030年永續發展目標（淨零排放和24/7 CFE）方面面臨什麼潛在挑戰？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet預見在實現氣候目標方面存在什麼不確定性或困難？"
+        }
+      }
+    ],
+    "reference": "挑戰包括道路並不容易或線性、大規模基礎設施的長期交付時間、重大不確定性（例如，AI的未來環境影響）、對新技術開發的依賴（由Alphabet和能源部門），以及預期總溫室氣體排放在下降達到目標之前可能上升。[引用：基於Alphabet截至2024年12月31日的10-K，第1項]"
+  },
+  {
+    "query": "Alphabet的股票回購計畫（如風險因素中所提及）可能如何影響其創始人Larry Page和Sergey Brin持有的相對投票控制權？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet股票回購對創始人投票權的影響"
+        }
+      }
+    ],
+    "reference": "所有權集中的風險因素明確指出股票回購「可能也會影響Larry和Sergey的相對投票權」。通過回購低投票權的A級或無投票權的C級股票，他們高投票權B級股票相對於其他股級的比例投票權增加。[引用：基於Alphabet截至2024年12月31日的10-K，第1A項]"
+  },
+  {
+    "query": "Alphabet確定了哪些會計估計為「關鍵」，原因是不確定性的重大水平和對財務結果的潛在重大影響？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet確定的關鍵會計估計有哪些？"
+        }
+      }
+    ],
+    "reference": "確定的關鍵會計估計包括：非可交易股票證券的公允價值測量；財產和設備（有用生命評估）；所得稅（評估不確定稅收部位）；以及虧損或有事項（虧損的可能性和估計）。[引用：基於Alphabet截至2024年12月31日的10-K，第7項]"
+  },
+  {
+    "query": "描述Alphabet使用衍生性金融工具的策略，包括對沖風險的類型和應用的會計指定。",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "描述Alphabet的衍生性對沖策略和會計"
+        }
+      }
+    ],
+    "reference": "Alphabet使用衍生性工具（主要是外匯合約）來管理外匯風險。他們將合約指定為現金流量對沖（用於預期收入）、公允價值對沖（用於某些外幣可交易證券）以及淨投資對沖（用於外國子公司投資）。非指定衍生性工具用於其他風險敞口（如公司間交易）和投資目的。[引用：基於Alphabet截至2024年12月31日的10-K，第3附註和第7A項]"
+  },
+  {
+    "query": "截至2024年年末，Alphabet的932億美元收入待履行責任中大部分內容是什麼，預計在多長時間內認列這一金額的大約一半？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "關於Alphabet收入待履行責任的細節和確認期"
+        }
+      }
+    ],
+    "reference": "收入待履行責任主要與Google Cloud對尚未確認為收入的未來服務的承諾有關。預計這一待履行責任中大約一半將在未來24個月內確認為收入。[引用：基於Alphabet截至2024年12月31日的10-K，第2附註]"
+  },
+  {
+    "query": "分析Google Services營業收入從2023年到2024年的變化。主要的正面驅動因素是什麼，哪些成本部分抵消了增長？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Google Services 2024年營業收入變化分析"
+        }
+      }
+    ],
+    "reference": "Google Services營業收入增加254億美元。這主要由收入增加驅動。部分抵消這一增加的因素包括內容獲取成本和流量獲取成本（TAC）的增加。員工薪酬費用的減少也對收入增加做出了正面貢獻。[引用：基於Alphabet截至2024年12月31日的10-K，第7項、部門獲利能力]"
+  },
+  {
+    "query": "報告在其部門報告中提到「Alphabet層級活動」。這一類別中通常包括哪些類型的成本，而不是分配給主要部門？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet層級活動包括哪些成本？"
+        }
+      }
+    ],
+    "reference": "Alphabet層級活動中包括的成本主要包括某些以AI為重點的共享研發（如通用AI模型開發）、企業計畫（例如慈善事業）、企業共享成本（某些財務、人力資源、法律職能、某些罰款/和解）、與員工遣散和辦公空間優化相關的費用（在2023/2024年期間），以及與收入相關的對沖損益。[引用：基於Alphabet截至2024年12月31日的10-K，第15附註和第7項]"
+  },
+  {
+    "query": "對比2024年Google搜尋及其他的「付費點擊」與「每次點擊成本」的同比百分比變化。這對該領域的變現趨勢意味著什麼？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Google搜尋2024年的付費點擊和每次點擊成本增長比較"
+        }
+      }
+    ],
+    "reference": "對於Google搜尋及其他2024年對比2023年，付費點擊增加5%，而每次點擊成本增加7%。這表明在該年度期間，這些財產每次點擊產生的平均收入增長速度略快於點擊量。[引用：基於Alphabet截至2024年12月31日的10-K，第7項、變現指標]"
+  },
+  {
+    "query": "「測量替代方案」會計方法對某些非可交易股票證券的目的是什麼，它與純粹基於每個期間估計公允價值的市場價值標記有何不同？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "解釋股票證券的「測量替代方案」會計"
+        }
+      }
+    ],
+    "reference": "測量替代方案以成本減損損失加上或減去*僅來自*同一發行人相同或類似投資的有序交易中可觀察價格變化的調整來測量這些證券。這與基於估計公允價值每期市場價值標記不同（如公開股票），因為測量替代方案下的調整只在特定可觀察事件或減損時才發生，除非發生此類事件，否則減少期間對期間的波動。[引用：基於Alphabet截至2024年12月31日的10-K，第1附註和第3附註]"
+  },
+  {
+    "query": "根據關於競爭的討論，除了其他搜尋引擎，哪些類型的公司或服務代表對Google通用搜尋引擎的競爭威脅？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "除了其他搜尋引擎外，Google搜尋面臨什麼類型的競爭對手？"
+        }
+      }
+    ],
+    "reference": "提到的競爭威脅包括垂直搜尋引擎和電子商務提供商（用戶直接導航至此）、線上廣告平台和網絡（包括線上購物和串流服務）、社交網絡（用於產品/服務轉介）以及數位助手提供商。[引用：基於Alphabet截至2024年12月31日的10-K，第1項]"
+  },
+  {
+    "query": "Alphabet如何評估其長期資產（如財產、設備和營運租賃資產）的可收回性，如果資產被認定為減損，會發生什麼？",
+    "expected_tool_use": [
+      {
+        "tool_name": "retrieve_rag_documentation",
+        "tool_input": {
+          "query": "Alphabet測試長期資產減損的流程"
+        }
+      }
+    ],
+    "reference": "Alphabet在事件表明帳面價值可能無法收回時審查長期資產的減損。可收回性通過將帳面價值與該資產或資產組預計將產生的*來來未折現現金流*進行比較來評估。如果帳面價值無法收回，則確認減損損失，計量為帳面價值超過資產*公允價值*的金額。[引用：基於Alphabet截至2024年12月31日的10-K，第1附註]"
+  },
+  {
+    "query": "現在這些是我的全部疑問。謝謝！",
+    "expected_tool_use": [],
+    "reference": "不客氣！很高興我能幫到你。如果有任何其他疑問，歡迎隨時提問。"
+  }
+]
