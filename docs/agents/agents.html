@@ -4184,6 +4184,33 @@
             'vertex-ai',
           ],
         },
+        {
+          name: 'Pack RAG Document Retrieval',
+          description:
+            '文檔檢索代理（RAG）：以 Vertex AI RAG Engine 作為外部知識來源，透過 `VertexAiRagRetrieval` 從指定的 RAG Corpus 檢索相關文件區塊，並由 Gemini 彙整後輸出帶引用（URL）的回答。\n內建可觀測性：使用 OpenInference session 與 Arize 追蹤，方便在開發與部署時監控代理效能。',
+          code_ref: 'workspace/python/agents/pack-rag',
+          type: 'App',
+          models: ['gemini-2.0-flash-001'],
+          tools: [
+            {
+              name: 'retrieve_rag_documentation',
+              type: 'VertexAiRagRetrieval',
+              description:
+                '使用 VertexAiRagRetrieval 從 Vertex AI RAG Corpus 檢索與問題相關的文件與參考資料（需設定環境變數 `RAG_CORPUS`）。',
+            },
+          ],
+          'server-port': 8000,
+          tags: [
+            'rag',
+            'vertex-ai',
+            'vertex-ai-rag',
+            'retrieval',
+            'citations',
+            'observability',
+            'arize',
+            'fastapi',
+          ],
+        },
       ];
       const GITHUB_BASE =
         'https://github.com/lastingyeh/google-adk-study/tree/master/';
