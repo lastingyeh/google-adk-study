@@ -1481,7 +1481,7 @@ ADK 的 Sessions/State/Memory 框架，讓 AI Agent 能管理短期對話狀態�
 
 - **詳細說明**
 
-  - [[ADK-Docs] 學習文件-Session & Memory](./workspace/adk-docs/sessions&memory/sessions.md)
+  - [[ADK-Docs] 學習文件-Session & Memory](./workspace/adk-docs/sessions&memory/index.md)
 
 - **參考資源**
   - [[ADK-Docs] 官方文件-Sessions](https://google.github.io/adk-docs/sessions/)
