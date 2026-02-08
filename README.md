@@ -2102,7 +2102,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 <summary>
 承接 Day 101 的 Grounding 主題，參考 ADK Samples 官方範例 (RAG) 搭配 Agent-starter-pack，實作具備 Grounding `Vertex AI Search Grounding`功能，展示如何將外部資料注入代理上下文，提升回應的準確性與可靠性，並涵蓋從開發、測試到 Cloud Run 部署的完整生產級流程。
 
-🏷️ `grounding`, `vertex-ai-search-grounding`, `rag`, `agent-starter-pack`, `fastapi`, `unvicorn`, `ask_vertex_retrieval`
+🏷️ `grounding`, `vertex-ai-search-grounding`, `rag`, `agent-starter-pack`, `fastapi`, `uvicorn`, `ask_vertex_retrieval`
 
 </summary>
 
@@ -2113,6 +2113,25 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
   - [[ADK-Samples] RAG]](https://github.com/google/adk-samples/tree/main/python/agents/RAG)
 
 </details>
+
+#### 🕗 Day 103
+
+<details>
+<summary>
+[Build your Agent] 透過實踐指南系列，開始使用 ADK 構建各種類型的智慧代理。這些教學以循序漸進的方式設計，從基礎概念到進階的代理開發技術。
+
+🏷️ `agent-team`, `coding-with-ai`, `safety-guardrails-callbacks`, `tutorials`, `session-state-memory`, `multi-llm`, `mcp`, `ide`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Build your Agent](./workspace/adk-docs/build-your-agent/tutorials/index.md)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Build your Agent]](https://google.github.io/adk-docs/tutorials/)
+
+</details>
+
 </details>
 
 </details>

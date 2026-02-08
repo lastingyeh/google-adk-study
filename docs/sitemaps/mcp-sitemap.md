@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://modelcontextprotocol.io/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/02/03`
+**更新日期 (Data Updated)**: `2026/02/08`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 
@@ -49,7 +49,7 @@
 | 37 |  | Connect Local Servers | [https://modelcontextprotocol.io/docs/develop/connect-local-servers](https://modelcontextprotocol.io/docs/develop/connect-local-servers) |
 | 38 |  | Connect Remote Servers | [https://modelcontextprotocol.io/docs/develop/connect-remote-servers](https://modelcontextprotocol.io/docs/develop/connect-remote-servers) |
 | 39 | **Extensions** | Apps | [https://modelcontextprotocol.io/docs/extensions/apps](https://modelcontextprotocol.io/docs/extensions/apps) |
-| 40 |  | Extensions | [https://modelcontextprotocol.io/extensions](https://modelcontextprotocol.io/extensions) |
+| 40 |  | Overview | [https://modelcontextprotocol.io/docs/extensions/overview](https://modelcontextprotocol.io/docs/extensions/overview) |
 | 41 | **Getting-started** | Intro | [https://modelcontextprotocol.io/docs/getting-started/intro](https://modelcontextprotocol.io/docs/getting-started/intro) |
 | 42 | **Learn** | Architecture | [https://modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture) |
 | 43 |  | Client Concepts | [https://modelcontextprotocol.io/docs/learn/client-concepts](https://modelcontextprotocol.io/docs/learn/client-concepts) |
