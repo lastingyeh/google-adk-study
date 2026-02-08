@@ -58,21 +58,58 @@ Get-started,Typescript,https://google.github.io/adk-docs/get-started/typescript/
 Get-started,Streaming,https://google.github.io/adk-docs/get-started/streaming/
 Get-started,Quickstart Streaming Java,https://google.github.io/adk-docs/get-started/streaming/quickstart-streaming-java/
 Get-started,Quickstart Streaming,https://google.github.io/adk-docs/get-started/streaming/quickstart-streaming/
+Grounding,Grounding,https://google.github.io/adk-docs/grounding/
 Grounding,Google_search_grounding,https://google.github.io/adk-docs/grounding/google_search_grounding/
 Grounding,Vertex_ai_search_grounding,https://google.github.io/adk-docs/grounding/vertex_ai_search_grounding/
+Integrations,Integrations,https://google.github.io/adk-docs/integrations/
+Integrations,Ag Ui,https://google.github.io/adk-docs/integrations/ag-ui/
+Integrations,Agentops,https://google.github.io/adk-docs/integrations/agentops/
+Integrations,Api Registry,https://google.github.io/adk-docs/integrations/api-registry/
+Integrations,Apigee Api Hub,https://google.github.io/adk-docs/integrations/apigee-api-hub/
+Integrations,Application Integration,https://google.github.io/adk-docs/integrations/application-integration/
+Integrations,Arize Ax,https://google.github.io/adk-docs/integrations/arize-ax/
+Integrations,Asana,https://google.github.io/adk-docs/integrations/asana/
+Integrations,Atlassian,https://google.github.io/adk-docs/integrations/atlassian/
+Integrations,Bigquery Agent Analytics,https://google.github.io/adk-docs/integrations/bigquery-agent-analytics/
+Integrations,Bigquery,https://google.github.io/adk-docs/integrations/bigquery/
+Integrations,Bigtable,https://google.github.io/adk-docs/integrations/bigtable/
+Integrations,Cartesia,https://google.github.io/adk-docs/integrations/cartesia/
+Integrations,Chroma,https://google.github.io/adk-docs/integrations/chroma/
+Integrations,Cloud Trace,https://google.github.io/adk-docs/integrations/cloud-trace/
+Integrations,Code Exec Agent Engine,https://google.github.io/adk-docs/integrations/code-exec-agent-engine/
+Integrations,Code Execution,https://google.github.io/adk-docs/integrations/code-execution/
+Integrations,Computer Use,https://google.github.io/adk-docs/integrations/computer-use/
+Integrations,Data Agent,https://google.github.io/adk-docs/integrations/data-agent/
+Integrations,Daytona,https://google.github.io/adk-docs/integrations/daytona/
+Integrations,Elevenlabs,https://google.github.io/adk-docs/integrations/elevenlabs/
+Integrations,Express Mode,https://google.github.io/adk-docs/integrations/express-mode/
+Integrations,Freeplay,https://google.github.io/adk-docs/integrations/freeplay/
+Integrations,Github,https://google.github.io/adk-docs/integrations/github/
+Integrations,Gitlab,https://google.github.io/adk-docs/integrations/gitlab/
+Integrations,Gke Code Executor,https://google.github.io/adk-docs/integrations/gke-code-executor/
+Integrations,Google Search,https://google.github.io/adk-docs/integrations/google-search/
+Integrations,Hugging Face,https://google.github.io/adk-docs/integrations/hugging-face/
+Integrations,Linear,https://google.github.io/adk-docs/integrations/linear/
+Integrations,Mcp Toolbox For Databases,https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/
+Integrations,Mlflow,https://google.github.io/adk-docs/integrations/mlflow/
+Integrations,Mongodb,https://google.github.io/adk-docs/integrations/mongodb/
+Integrations,Monocle,https://google.github.io/adk-docs/integrations/monocle/
+Integrations,N8n,https://google.github.io/adk-docs/integrations/n8n/
+Integrations,Notion,https://google.github.io/adk-docs/integrations/notion/
+Integrations,Paypal,https://google.github.io/adk-docs/integrations/paypal/
+Integrations,Phoenix,https://google.github.io/adk-docs/integrations/phoenix/
+Integrations,Postman,https://google.github.io/adk-docs/integrations/postman/
+Integrations,Pubsub,https://google.github.io/adk-docs/integrations/pubsub/
+Integrations,Qdrant,https://google.github.io/adk-docs/integrations/qdrant/
+Integrations,Reflect And Retry,https://google.github.io/adk-docs/integrations/reflect-and-retry/
+Integrations,Spanner,https://google.github.io/adk-docs/integrations/spanner/
+Integrations,Stripe,https://google.github.io/adk-docs/integrations/stripe/
+Integrations,Vertex Ai Rag Engine,https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/
+Integrations,Vertex Ai Search,https://google.github.io/adk-docs/integrations/vertex-ai-search/
+Integrations,Weave,https://google.github.io/adk-docs/integrations/weave/
 Mcp,Mcp,https://google.github.io/adk-docs/mcp/
-Observability,Agentops,https://google.github.io/adk-docs/observability/agentops/
-Observability,Arize Ax,https://google.github.io/adk-docs/observability/arize-ax/
-Observability,Bigquery Agent Analytics,https://google.github.io/adk-docs/observability/bigquery-agent-analytics/
-Observability,Cloud Trace,https://google.github.io/adk-docs/observability/cloud-trace/
-Observability,Freeplay,https://google.github.io/adk-docs/observability/freeplay/
 Observability,Logging,https://google.github.io/adk-docs/observability/logging/
-Observability,Mlflow,https://google.github.io/adk-docs/observability/mlflow/
-Observability,Monocle,https://google.github.io/adk-docs/observability/monocle/
-Observability,Phoenix,https://google.github.io/adk-docs/observability/phoenix/
-Observability,Weave,https://google.github.io/adk-docs/observability/weave/
 Plugins,Plugins,https://google.github.io/adk-docs/plugins/
-Plugins,Reflect And Retry,https://google.github.io/adk-docs/plugins/reflect-and-retry/
 Runtime,Runtime,https://google.github.io/adk-docs/runtime/
 Runtime,Api Server,https://google.github.io/adk-docs/runtime/api-server/
 Runtime,Command Line,https://google.github.io/adk-docs/runtime/command-line/
@@ -95,46 +132,7 @@ Streaming,Part2,https://google.github.io/adk-docs/streaming/dev-guide/part2/
 Streaming,Part3,https://google.github.io/adk-docs/streaming/dev-guide/part3/
 Streaming,Part4,https://google.github.io/adk-docs/streaming/dev-guide/part4/
 Streaming,Part5,https://google.github.io/adk-docs/streaming/dev-guide/part5/
-Tools,Tools,https://google.github.io/adk-docs/tools/
 Tools,Limitations,https://google.github.io/adk-docs/tools/limitations/
-Tools,Gemini Api,https://google.github.io/adk-docs/tools/gemini-api/
-Tools,Code Execution,https://google.github.io/adk-docs/tools/gemini-api/code-execution/
-Tools,Computer Use,https://google.github.io/adk-docs/tools/gemini-api/computer-use/
-Tools,Google Search,https://google.github.io/adk-docs/tools/gemini-api/google-search/
-Tools,Google Cloud,https://google.github.io/adk-docs/tools/google-cloud/
-Tools,Api Registry,https://google.github.io/adk-docs/tools/google-cloud/api-registry/
-Tools,Apigee Api Hub,https://google.github.io/adk-docs/tools/google-cloud/apigee-api-hub/
-Tools,Application Integration,https://google.github.io/adk-docs/tools/google-cloud/application-integration/
-Tools,Bigquery,https://google.github.io/adk-docs/tools/google-cloud/bigquery/
-Tools,Bigtable,https://google.github.io/adk-docs/tools/google-cloud/bigtable/
-Tools,Code Exec Agent Engine,https://google.github.io/adk-docs/tools/google-cloud/code-exec-agent-engine/
-Tools,Data Agent,https://google.github.io/adk-docs/tools/google-cloud/data-agent/
-Tools,Express Mode,https://google.github.io/adk-docs/tools/google-cloud/express-mode/
-Tools,Gke Code Executor,https://google.github.io/adk-docs/tools/google-cloud/gke-code-executor/
-Tools,Mcp Toolbox For Databases,https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
-Tools,Pubsub,https://google.github.io/adk-docs/tools/google-cloud/pubsub/
-Tools,Spanner,https://google.github.io/adk-docs/tools/google-cloud/spanner/
-Tools,Vertex Ai Rag Engine,https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/
-Tools,Vertex Ai Search,https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/
-Tools,Third Party,https://google.github.io/adk-docs/tools/third-party/
-Tools,Ag Ui,https://google.github.io/adk-docs/tools/third-party/ag-ui/
-Tools,Asana,https://google.github.io/adk-docs/tools/third-party/asana/
-Tools,Atlassian,https://google.github.io/adk-docs/tools/third-party/atlassian/
-Tools,Cartesia,https://google.github.io/adk-docs/tools/third-party/cartesia/
-Tools,Chroma,https://google.github.io/adk-docs/tools/third-party/chroma/
-Tools,Daytona,https://google.github.io/adk-docs/tools/third-party/daytona/
-Tools,Elevenlabs,https://google.github.io/adk-docs/tools/third-party/elevenlabs/
-Tools,Github,https://google.github.io/adk-docs/tools/third-party/github/
-Tools,Gitlab,https://google.github.io/adk-docs/tools/third-party/gitlab/
-Tools,Hugging Face,https://google.github.io/adk-docs/tools/third-party/hugging-face/
-Tools,Linear,https://google.github.io/adk-docs/tools/third-party/linear/
-Tools,Mongodb,https://google.github.io/adk-docs/tools/third-party/mongodb/
-Tools,N8n,https://google.github.io/adk-docs/tools/third-party/n8n/
-Tools,Notion,https://google.github.io/adk-docs/tools/third-party/notion/
-Tools,Paypal,https://google.github.io/adk-docs/tools/third-party/paypal/
-Tools,Postman,https://google.github.io/adk-docs/tools/third-party/postman/
-Tools,Qdrant,https://google.github.io/adk-docs/tools/third-party/qdrant/
-Tools,Stripe,https://google.github.io/adk-docs/tools/third-party/stripe/
 Tools-custom,Tools Custom,https://google.github.io/adk-docs/tools-custom/
 Tools-custom,Authentication,https://google.github.io/adk-docs/tools-custom/authentication/
 Tools-custom,Confirmation,https://google.github.io/adk-docs/tools-custom/confirmation/

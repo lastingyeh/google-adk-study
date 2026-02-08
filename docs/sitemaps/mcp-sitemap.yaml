@@ -49,7 +49,7 @@ develop:
   - https://modelcontextprotocol.io/docs/develop/connect-remote-servers
 extensions:
   - https://modelcontextprotocol.io/docs/extensions/apps
-  - https://modelcontextprotocol.io/extensions
+  - https://modelcontextprotocol.io/docs/extensions/overview
 getting-started:
   - https://modelcontextprotocol.io/docs/getting-started/intro
 learn:
