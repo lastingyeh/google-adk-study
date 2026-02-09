@@ -2136,7 +2136,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 <details>
 <summary>
-[整合 1/6] 建立整合文章，主題為應用與整合 Python 非同步程式設計與生成式 AI 架構。其核心內容涵蓋了從底層的非同步 I/O 原理（如非阻塞 Socket、事件循環）到高階的 async/await 語法與協程、任務等核心概念。專案進一步探討了 FastAPI、Django 等現代 Web 框架的非同步應用，並列舉了如 RAG、思維鏈等生成式 AI 的設計模式。最後，內容擴展至數據工程、AI 代理、模型優化及系統安全等多個實戰領域，提供了一個從理論到部署的完整知識體系。
+[整合 1/5] 建立整合文章，主題為應用與整合 Python 非同步程式設計與生成式 AI 架構。其核心內容涵蓋了從底層的非同步 I/O 原理（如非阻塞 Socket、事件循環）到高階的 async/await 語法與協程、任務等核心概念。專案進一步探討了 FastAPI、Django 等現代 Web 框架的非同步應用，並列舉了如 RAG、思維鏈等生成式 AI 的設計模式。最後，內容擴展至數據工程、AI 代理、模型優化及系統安全等多個實戰領域，提供了一個從理論到部署的完整知識體系。
 
 🏷️ `asyncio`, `coroutine`, `task`, `future`, `awaitable`, `event loop`, `non-blocking` `io`, `concurrency`, `parallelism`, `gil`
 
