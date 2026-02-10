@@ -12,12 +12,8 @@
 
 | # | 類別 | 框架/工具 | 說明 |
 |---|------|---------|------|
-| 2.1 | Web 框架 | FastAPI | ASGI 架構 |
-| 2.2 | Web 框架 | Django 4.x | 非同步視圖支援 |
-| 2.3 | Web 框架 | Quart & Flask 3.x | 非同步 Web 開發 |
-| 2.4 | 非同步庫 | aiohttp | 非同步 HTTP 請求 |
-| 2.5 | 非同步庫 | asyncpg | 資料庫存取 |
-| 2.6 | 非同步庫 | Trio | 結構化並行 |
+| 2.1 | [Web 框架](./02-async_framework_design/framework_design_best_practices.md) | FastAPI、Django 4.x、Quart & Flask 3.x | 非同步 Web 框架開發 |
+| 2.2 | [非同步庫](./02-async_framework_design/async_libraries_architectural_perspective.md) | aiohttp、asyncpg、Trio | 非同步 HTTP、資料庫、生命週期管理 |
 
 ## 三、生成式 AI 設計模式
 
