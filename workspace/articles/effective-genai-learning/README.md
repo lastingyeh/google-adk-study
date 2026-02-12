@@ -184,6 +184,10 @@
     *   官方書籍連結：[manning.com/books/python-concurrency-with-asyncio](https://www.manning.com/books/python-concurrency-with-asyncio)
     *   官方程式碼：[GitHub - concurrency-in-python-with-asyncio](https://github.com/concurrency-in-python-with-asyncio)
 
+- **Agentic Architectural Patterns for Building Multi-Agent Systems (Packt)**
+    * 官方書籍連結：[oreil.ly/agentic-architectural-patterns](https://www.packtpub.com/en-tw/product/agentic-architectural-patterns-for-building-multi-agent-systems-9781806029563)
+    * 官方程式碼: [GitHub - Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems](https://github.com/PacktPublishing/Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems)
+
 ---
 ## 🪧【免責聲明與版權聲明】
 本文內容係基於個人學習筆記及多本技術書籍、官方文件與網路資源彙整而成。旨在分享技術經驗，不構成任何形式的專業建議。
