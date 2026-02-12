@@ -1,4 +1,4 @@
-# 有效學習生成式 AI 技術的關鍵主題 (Key Topics for Effective GenAI Learning)
+# ️ 有效學習生成式 AI 技術的關鍵主題 (Key Topics for Effective GenAI Learning)
 
 本學習路徑聚焦於將生成式 AI 轉化為生產力實體。學習者需先掌握代理人的 Sense-Reason-Plan-Act 基本解剖結構，並結合 RAG 解決數據新鮮度問題。技術實踐層面，強調透過 asyncio 非同步編程 與 FastAPI 解決 AI 推論中的 I/O 瓶頸，提升系統併發效能。最終目標是運用多代理人協作模式（MAS）拆解複雜任務，並落實 AgentOps 的監控與評估機制。透過循序漸進的成熟度模型，你將具備從簡單 Prompt 工程轉向建構可解釋、安全且具備自主學習能力的企業級 AI 架構之專業職能。
 
