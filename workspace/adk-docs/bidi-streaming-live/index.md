@@ -32,7 +32,7 @@ ADK 中的雙向 (Bidi) 串流 (Live) 為 AI 代理增加了 [Gemini Live API](h
 
     一個具備正式生產能力的參考實作，展示了具備多模態支援（文字、音訊、圖片）的 ADK 雙向串流。這個基於 FastAPI 的展示專案演示了即時 WebSocket 通訊、自動逐字稿、使用 Google 搜尋的工具調用，以及完整的串流生命週期管理。此範例在整個開發指南系列中被廣泛引用。
 
-    - [ADK 雙向串流展示 (ADK Bidi-streaming Demo)](https://github.com/google/adk-samples/tree/main/python/agents/bidi-demo)
+    - [ADK 雙向串流展示 (ADK Bidi-streaming Demo)](../../python/agents/pack-bidi-streaming/)
 
 - **部落格文章：ADK 雙向串流視覺指南**
 

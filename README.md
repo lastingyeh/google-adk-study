@@ -2176,6 +2176,29 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 </details>
 
+#### 🕗 Day 106
+
+<details>
+<summary>
+[整合 1/7] 本學習透過120個情境主題分成七大類型，整合學習路徑聚焦於將生成式 AI 轉化為生產力實體。學習者需先掌握代理人的 Sense-Reason-Plan-Act 基本解剖結構，並結合 RAG 解決數據新鮮度問題。技術實踐層面，強調透過 asyncio 非同步編程 與 FastAPI 解決 AI 推論中的 I/O 瓶頸，提升系統併發效能。最終目標是運用多代理人協作模式（MAS）拆解複雜任務，並落實 AgentOps 的監控與評估機制。透過循序漸進的成熟度模型，你將具備從簡單 Prompt 工程轉向建構可解釋、安全且具備自主學習能力的企業級 AI 架構之專業職能。
+
+
+🏷️ `articles-async-genai`,`fastapi`, `django-4.x`, `quart`, `flask-3.x`, `trio`, `asyncpg`, `aiohttp`, `web-framework`
+
+</summary>
+
+- **詳細說明**
+  - [[AI Articels for Learning] 有效學習生成式 AI 技術的關鍵主題 (Key Topics for Effective GenAI Learning)](./workspace/articles/effective-genai-learning/README.md)
+
+- **參考資源**
+  - [Asynchronous Programming in Python (Packt)](https://www.packtpub.com/en-tw/product/asynchronous-programming-in-python-9781836646600)
+  - [Generative AI Design Patterns (O'Reilly)](https://oreil.ly/genAI-design-patterns)
+  - [Building Generative AI Services with FastAPI (O'Reilly)](https://oreil.ly/building-gen-ai-fastAPI)
+  - [GenAI on Google Cloud (O'Reilly)](https://oreil.ly/GenAI_on_Google)
+  - [Python Concurrency with asyncio (Manning)](https://www.manning.com/books/python-concurrency-with-asyncio)
+
+</details>
+
 </details>
 
 </details>
