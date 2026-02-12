@@ -2147,6 +2147,7 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 - **參考資源**
   - [Asynchronous Programming in Python (Packt)](https://www.packtpub.com/en-tw/product/asynchronous-programming-in-python-9781836646600)
+  - [Agentic Architectural Patterns for Building Multi-Agent Systems (Packt)](https://www.packtpub.com/en-tw/product/agentic-architectural-patterns-for-building-multi-agent-systems-9781806029563)
   - [Generative AI Design Patterns (O'Reilly)](https://oreil.ly/genAI-design-patterns)
   - [Building Generative AI Services with FastAPI (O'Reilly)](https://oreil.ly/building-gen-ai-fastAPI)
   - [GenAI on Google Cloud (O'Reilly)](https://oreil.ly/GenAI_on_Google)
