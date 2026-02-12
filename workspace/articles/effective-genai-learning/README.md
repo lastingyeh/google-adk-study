@@ -1,6 +1,10 @@
-# ️ 有效學習生成式 AI 技術的關鍵主題 (Key Topics for Effective GenAI Learning)
+# 📝 ️有效學習生成式 AI 技術的關鍵主題 (Key Topics for Effective GenAI Learning)
 
-本學習路徑聚焦於將生成式 AI 轉化為生產力實體。學習者需先掌握代理人的 Sense-Reason-Plan-Act 基本解剖結構，並結合 RAG 解決數據新鮮度問題。技術實踐層面，強調透過 asyncio 非同步編程 與 FastAPI 解決 AI 推論中的 I/O 瓶頸，提升系統併發效能。最終目標是運用多代理人協作模式（MAS）拆解複雜任務，並落實 AgentOps 的監控與評估機制。透過循序漸進的成熟度模型，你將具備從簡單 Prompt 工程轉向建構可解釋、安全且具備自主學習能力的企業級 AI 架構之專業職能。
+本文章依循 Effective 系列學習框架精心設計，整合 NotebookLM 與[學習資源](#-參考資源)構建完整的學習路徑。課程主軸聚焦於將生成式 AI 技術轉化為實際生產力。
+
+學習者首先需掌握 Agent 的核心運作機制——感知、推理、規劃、行動（Sense-Reason-Plan-Act）的完整解剖，並結合 RAG 技術有效解決模型知識時效性問題。在技術實踐層面，課程著重於利用 asyncio 非同步編程與 FastAPI 框架，系統性地突破 AI 推論過程中的 I/O 瓶頸，顯著提升系統的併發處理能力。
+
+累進式課程設計引導學習者從單一代理逐步演進至多代理協作系統（MAS），運用分工與協調機制拆解複雜業務任務，並透過 AgentOps 工程化架構建立完善的監控與評估機制。從基礎的提示詞工程出發，循序推進至可解釋、安全且具備持續學習能力的企業級 AI 系統架構，使學習者具備構建生產環境系統的核心職能。
 
 ## ✏️ 主題 1：Python 非同步與並發基礎 (Python Concurrency & Async)
 
@@ -12,7 +16,7 @@
 | 4 | [Python 全域解釋器鎖 (GIL) 的限制與釋放機制](./01-python_concurrency_and_async/04-python_gil_internals.md) | 分析 GIL 對多執行緒效能的約束 |
 | 5 | [事件迴圈的核心工作原理](./01-python_concurrency_and_async/05-py_async_loop.md) | 解析 asyncio 調度與 I/O 監聽的核心 |
 | 6 | [async 和 await 定義與調用](./01-python_concurrency_and_async/06-py_coro_syntax.md) | 掌握非同步編程的核心語法 |
-| 7 | [asyncio.run() 作為應用程式的主入口點](./01-python_concurrency_and_async/07-py_async_run_entry.md)) | 介紹現代非同步程式碼啟動方法 |
+| 7 | [asyncio.run() 作為應用程式的主入口點](./01-python_concurrency_and_async/07-py_async_run_entry.md) | 介紹現代非同步程式碼啟動方法 |
 | 8 | [Task 的建立與併發執行 (asyncio.create_task)](./01-python_concurrency_and_async/08-async_task_scheduling.md) | 實現非阻塞的併發任務排程 |
 | 9 | [asyncio.gather() 同時運行多個 awaitable](./01-python_concurrency_and_async/09-async_gather_aggregation.md) | 整合多個任務並聚合結果 |
 | 10 | [協程超時控制 (asyncio.wait_for)](./01-python_concurrency_and_async/10-async_timeout_control.md) | 防止單一任務無限掛起系統 |
