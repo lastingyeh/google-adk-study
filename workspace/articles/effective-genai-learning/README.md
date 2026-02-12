@@ -164,8 +164,12 @@
 ---
 ## 🔗 參考資源
 - **Asynchronous Programming in Python (Packt)**
-    *   官方書籍連結：[www.packtpub.com](https://www.packtpub.com/en-tw/product/asynchronous-programming-in-python-9781836646600)
+    *   官方書籍連結：[www.packtpub.com/asynchronous-programming-in-python](https://www.packtpub.com/en-tw/product/asynchronous-programming-in-python-9781836646600)
     *   官方程式碼：[GitHub - PacktPublishing/Asynchronous-Programming-in-Python](https://github.com/PacktPublishing/Asynchronous-Programming-in-Python)
+
+- **Agentic Architectural Patterns for Building Multi-Agent Systems (Packt)**
+    * 官方書籍連結：[www.packtpub.com/agentic-architectural-patterns](https://www.packtpub.com/en-tw/product/agentic-architectural-patterns-for-building-multi-agent-systems-9781806029563)
+    * 官方程式碼: [GitHub - Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems](https://github.com/PacktPublishing/Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems)
 
 - **Generative AI Design Patterns (O'Reilly)**
     *   官方書籍連結：[oreil.ly/genAI-design-patterns](https://oreil.ly/genAI-design-patterns)
@@ -183,10 +187,6 @@
 - **Python Concurrency with asyncio (Manning)**
     *   官方書籍連結：[manning.com/books/python-concurrency-with-asyncio](https://www.manning.com/books/python-concurrency-with-asyncio)
     *   官方程式碼：[GitHub - concurrency-in-python-with-asyncio](https://github.com/concurrency-in-python-with-asyncio)
-
-- **Agentic Architectural Patterns for Building Multi-Agent Systems (Packt)**
-    * 官方書籍連結：[oreil.ly/agentic-architectural-patterns](https://www.packtpub.com/en-tw/product/agentic-architectural-patterns-for-building-multi-agent-systems-9781806029563)
-    * 官方程式碼: [GitHub - Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems](https://github.com/PacktPublishing/Agentic-Architectural-Patterns-for-Building-Multi-Agent-Systems)
 
 ---
 ## 🪧【免責聲明與版權聲明】
