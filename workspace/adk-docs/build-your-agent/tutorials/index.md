@@ -14,7 +14,7 @@
 
   建立一個使用多個工具的工作流。
 
-  [構建多工具代理](https://google.github.io/adk-docs/get-started/quickstart/index.md)
+  [構建多工具代理](../../get-started/index.md)
 
 - **代理團隊 (Agent team)**
 
@@ -22,7 +22,7 @@
 
   構建一個包含代理委派、會話管理和安全回呼 (safety callbacks) 的多代理工作流。
 
-  [構建代理團隊](https://google.github.io/adk-docs/tutorials/agent-team/index.md)
+  [構建代理團隊](./agent-team.md)
 
 - **串流代理 (Streaming agent)**
 
@@ -30,7 +30,7 @@
 
   建立一個用於處理串流內容的代理。
 
-  [構建串流代理](https://google.github.io/adk-docs/get-started/streaming/index.md)
+  [構建串流代理](../../get-started/streaming/quickstart-streaming.md)
 
 - **探索範例代理**
 
