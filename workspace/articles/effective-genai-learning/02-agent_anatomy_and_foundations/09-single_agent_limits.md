@@ -1,4 +1,4 @@
-# 單一代理架構的瓶頸 (single_agent_limits)
+# 單一代理系統 (Single-agent systems) 的限制
 
 在軟體工程中，我們常說「過早的優化是萬事之惡」，但在 AI Agent 的設計中，「過度的單體化（Monolithic）」則是隱形的殺手。單一代理系統（Single-agent systems）雖然是開發的起點（如成熟度模型中的 Level 5），但當面對複雜的企業級工作流時，它會迅速撞上認知與維護的邊界。
 
@@ -16,7 +16,7 @@
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：單體化設計，導致指令漂移與工具選擇困難**
+# ❌ Bad: 單體化設計，導致指令漂移與工具選擇困難
 from google.adk.agents import LlmAgent
 
 # 將所有領域邏輯塞在一起，導致模型在長對話中忘記合規約束
@@ -32,7 +32,7 @@ monolithic_agent = LlmAgent(
     tools=[doc_tool, credit_tool, risk_tool, compliance_tool, email_tool, db_tool, ...]
 )
 
-# // **Better：使用層級化架構實施「職責分離」**
+# ✅ Better: 使用層級化架構實施「職責分離」
 from google.adk.agents import LlmAgent
 from google.adk.tools.agent_tool import AgentTool
 

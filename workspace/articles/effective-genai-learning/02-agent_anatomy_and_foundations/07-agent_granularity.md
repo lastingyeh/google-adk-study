@@ -17,7 +17,7 @@
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：單體 Agent 負擔過重，指令衝突且難以維護**
+# ❌ Bad: 單體 Agent 負擔過重，指令衝突且難以維護
 # 一個 Agent 同時處理徵信、法律合規與風險計算，邏輯邊界模糊
 from google.adk.agents import LlmAgent
 
@@ -28,7 +28,7 @@ bad_monolith = LlmAgent(
     tools=[credit_tool, legal_tool, risk_tool, notification_tool, ...]
 )
 
-# // **Better：使用 ADK 的層級式架構，透過 AgentTool 實現權責解耦**
+# ✅ Better: 使用 ADK 的層級式架構，透過 AgentTool 實現權責解耦
 from google.adk.agents import LlmAgent
 from google.adk.tools.agent_tool import AgentTool
 

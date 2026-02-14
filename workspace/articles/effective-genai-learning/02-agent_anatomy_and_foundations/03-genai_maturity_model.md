@@ -11,10 +11,9 @@
 
 **程式碼範例 (Bad vs. Better)**
 ```python
-# *Bad*: 直接將未經處理的原始文件內容塞入 Prompt。
-# *Better*: 使用 Google ADK 或 BigQuery ML 預先進行清洗與結構化提取。
-
-# // Better: 使用結構化提取工具，確保數據一致性
+# ❌ Bad: 直接將未經處理的原始文件內容塞入 Prompt。
+# 這會導致模型無法理解數據結構，且容易被噪音干擾。
+# ✅ Better: 使用 Google ADK 或 BigQuery ML 預先進行清洗與結構化提取，使用結構化提取工具，確保數據一致性與可解釋性。
 from google.adk.agents import LlmAgent
 from pydantic import BaseModel
 
@@ -43,10 +42,10 @@ LLM 的知識是靜態且有截止日期的。Level 2 通過檢索增強生成�
 
 **程式碼範例 (Bad vs. Better)**
 ```python
-# *Bad*: 依賴模型權重記憶過時資訊。
-# *Better*: 使用 ADK 的檢索工具實作動態上下文注入。
+# ❌ Bad: 依賴模型權重記憶過時資訊。
+# 這會導致模型產生幻覺，且無法提供可靠的參考資料。
 
-# // Better: 實作 RAG 模式，以 Google Vertex AI RAG 為例
+# ✅ Better: 使用 ADK 的檢索工具實作動態上下文注入，實作 RAG 模式以 Google Vertex AI RAG 為例。
 # 可參考程式碼：https://github.com/lastingyeh/google-adk-study/blob/master/workspace/python/agents/pack-rag/rag/agent.py
 import os
 from google.adk import LlmAgent, ToolContext
@@ -88,8 +87,8 @@ RAG 的本質是**將記憶從參數空間轉移到外部存儲空間**。這樣
 當系統不再只是「問與答」，而是能自主規劃路徑並執行任務時，便進入了 Level 5。此階段的代理具備感知（Sense）、推理（Reason）、規劃（Plan）與行動（Act）的完整解剖構造。
 
 **程式碼範例 (Bad vs. Better)**
-*Bad*: 使用寫死的 If-Else 邏輯控制流程。
-*Better*: 使用 ADK `BuiltInPlanner` 讓 LLM 自主決定下一步。
+❌ Bad:  使用寫死的 If-Else 邏輯控制流程。
+✅ Better: 使用 ADK `BuiltInPlanner` 讓 LLM 自主決定下一步。
 
 ```python
 # // Better: 配置具備推理規劃能力的自主代理

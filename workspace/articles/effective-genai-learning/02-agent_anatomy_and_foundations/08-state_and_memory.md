@@ -16,7 +16,7 @@ Agent 與單純 LLM API 的核心差異在於 **Session（會話）**。ADK 透�
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：手動管理狀態，導致邏輯雜亂且難以持久化**
+# ❌ Bad: 手動管理狀態，導致邏輯雜亂且難以持久化
 # 開發者必須自己管理歷史記錄，容易發生 Context 溢出或數據洩漏
 chat_history = []
 
@@ -27,7 +27,7 @@ def call_llm(user_input):
     chat_history.append({"role": "assistant", "content": response})
     return response
 
-# // **Better：利用 ADK 內建的 Session 機制管理自動持久化狀態**
+# ✅ Better: 利用 ADK 內建的 Session 機制管理自動持久化狀態
 # 利用 Google ADK 的 LlmAgent，狀態由 Runner 與 SessionService 自動處理
 from google.adk.agents import LlmAgent
 from google.adk.runners import Runner
@@ -36,7 +36,7 @@ from google.genai.types import types
 
 agent = LlmAgent(name="SupportAgent", instructions="你是專業的技術支援...")
 # 內建 Session 管理，自動處理對話歷史掛載
-runner = Runner(root_agent=agent,session_service=InMemorySessionServic())
+runner = Runner(root_agent=agent,session_service=InMemorySessionService())
 
 async def main():
     # 呼叫時只需傳入 session_id，系統會自動恢復該會話的狀態

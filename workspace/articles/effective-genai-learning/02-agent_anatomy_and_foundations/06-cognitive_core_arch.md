@@ -16,12 +16,12 @@ Agent 與單純 LLM 呼叫的區別在於 **自主性 (Autonomy)** 與 **目標�
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：將 LLM 視為簡單的函數調用，缺乏計畫與自省機制**
+# ❌ Bad: 將 LLM 視為簡單的函數調用，缺乏計畫與自省機制
 # 這只是單純的 Prompt Engineering，不是 Agent 認知架構
 response = llm.generate("請幫我審核這筆貸款申請：ID-123")
 print(response) # 容易直接給出 Approved/Denied，缺乏推理鏈
 
-# // **Better：使用 Google ADK 構建具備「思考預算」與「計畫器」的認知核心**
+# ✅ Better: 使用 Google ADK 構建具備「思考預算」與「計畫器」的認知核心
 from google.adk.agents import LlmAgent
 from google.adk.planners import BuiltInPlanner
 from google.genai.types import ThinkingConfig

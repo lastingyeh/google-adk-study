@@ -169,20 +169,20 @@ async def run_scenario():
 
 ```go
 import (
-"context"
-"fmt"
-"log"
-"strings"
+    "context"
+    "fmt"
+    "log"
+    "strings"
 
-"google.golang.org/adk/agent"
-"google.golang.org/adk/agent/llmagent"
-"google.golang.org/adk/memory"
-"google.golang.org/adk/model/gemini"
-"google.golang.org/adk/runner"
-"google.golang.org/adk/session"
-"google.golang.org/adk/tool"
-"google.golang.org/adk/tool/functiontool"
-"google.golang.org/genai"
+    "google.golang.org/adk/agent"
+    "google.golang.org/adk/agent/llmagent"
+    "google.golang.org/adk/memory"
+    "google.golang.org/adk/model/gemini"
+    "google.golang.org/adk/runner"
+    "google.golang.org/adk/session"
+    "google.golang.org/adk/tool"
+    "google.golang.org/adk/tool/functiontool"
+    "google.golang.org/genai"
 )
 
 const (
@@ -204,10 +204,10 @@ type Result struct {
 
 // memorySearchToolFunc 是記憶搜尋工具的實現。
 // 此函數展示了如何透過 tool.Context 存取記憶。
-func memorySearchToolFunc(tctx tool.Context, args Args) (Result, error) {
+func memorySearchToolFunc(ctx tool.Context, args Args) (Result, error) {
     fmt.Printf("工具：正在搜尋記憶中的查詢：'%s'\n", args.Query)
     // SearchMemory 函數可在 context 中使用。
-    searchResults, err := tctx.SearchMemory(context.Background(), args.Query)
+    searchResults, err := ctx.SearchMemory(context.Background(), args.Query)
     if err != nil {
         log.Printf("搜尋記憶時發生錯誤：%v", err)
         return Result{}, fmt.Errorf("記憶搜尋失敗")
@@ -335,10 +335,10 @@ func main() {
 ```go
 // memorySearchToolFunc 是記憶搜尋工具的實現。
 // 此函數展示了如何透過 tool.Context 存取記憶。
-func memorySearchToolFunc(tctx tool.Context, args Args) (Result, error) {
+func memorySearchToolFunc(ctx tool.Context, args Args) (Result, error) {
     fmt.Printf("工具：正在搜尋記憶中的查詢：'%s'\n", args.Query)
     // SearchMemory 函數可在 context 中使用。
-    searchResults, err := tctx.SearchMemory(context.Background(), args.Query)
+    searchResults, err := ctx.SearchMemory(context.Background(), args.Query)
     if err != nil {
         log.Printf("搜尋記憶時發生錯誤：%v", err)
         return Result{}, fmt.Errorf("記憶搜尋失敗")

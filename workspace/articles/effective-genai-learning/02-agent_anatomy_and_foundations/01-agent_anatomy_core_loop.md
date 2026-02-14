@@ -15,7 +15,7 @@
 def get_user_context():
     return "User ID: 123, Order: XYZ" # 限制了 Agent 獲取即時環境資訊的能力
 
-# ✅ Better: 使用 Google ADK 的 FunctionTool 建立動態感知介面,
+# ✅ Better: 使用 Google ADK 的 FunctionTool 建立動態感知介面
 from google.adk import FunctionTool
 
 async def look_up_order(order_id: str) -> dict:

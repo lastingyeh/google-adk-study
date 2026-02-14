@@ -18,7 +18,7 @@ MCP 引入了 **Server-Client 架構**：
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：硬編碼工具定義，導致 Agent 邏輯與基礎設施高度耦合**
+# ❌ Bad: 硬編碼工具定義，導致 Agent 邏輯與基礎設施高度耦合
 # 開發者必須手動維護 Schema，且若資料庫改動，所有 Agent 都需更新
 from google.adk.agents import LlmAgent
 
@@ -31,7 +31,7 @@ agent = LlmAgent(
     tools=[legacy_db_tool]
 )
 
-# // **Better：使用 MCP 標準協議，實現動態發現與橫向擴展**
+# ✅ Better: 使用 MCP 標準協議，實現動態發現與橫向擴展
 from google.adk.agents import LlmAgent
 from google.adk.tools.toolbox_toolset import ToolboxToolset
 

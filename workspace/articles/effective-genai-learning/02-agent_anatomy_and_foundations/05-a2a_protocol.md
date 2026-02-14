@@ -16,7 +16,7 @@ A2A 專注於 **水平整合（Horizontal Integration）**，即代理人之間�
 #### 程式碼範例（Bad vs. Better）
 
 ```python
-# // **Bad：使用私有 HTTP 接口，缺乏標準化的意圖聲明與狀態管理**
+# ❌ Bad: 使用私有 HTTP 接口，缺乏標準化的意圖聲明與狀態管理
 # 必須手動處理序列化、狀態追蹤與錯誤路由
 import requests
 
@@ -25,7 +25,7 @@ def delegate_to_finance_service(query):
     response = requests.post("https://finance-team.com/api/v1/chat", json={"q": query})
     return response.json()
 
-# // **Better：使用 ADK 的 A2A 標準實現，透過 Agent Card 進行解耦委派**
+# ✅ Better: 使用 ADK 的 A2A 標準實現，透過 Agent Card 進行解耦委派
 # 使用 Google ADK 的 RemoteA2aAgent，自動遵循 A2A 協議規範
 from google.adk.agents import LlmAgent
 from google.adk.agents.remote_a2a_agent import RemoteA2aAgent

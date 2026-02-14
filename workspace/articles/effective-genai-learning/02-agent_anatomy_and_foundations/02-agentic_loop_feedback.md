@@ -12,7 +12,7 @@
 #### 程式碼範例（以 Google ADK 為例）
 
 ```python
-# // **Bad：單向觸發（線性思維）**
+# ❌ Bad: 單向觸發（線性思維
 # 直接執行順序代理，若中間出錯，系統將拋出異常或停在錯誤狀態。
 # 線性執行，缺乏根據結果修正的能力
 workflow = SequentialAgent(
@@ -20,7 +20,7 @@ workflow = SequentialAgent(
 )
 
 
-# // **Better：閉環反饋（Loop 模式）**
+# ✅ Better: 閉環反饋（Loop 模式）
 # 利用 `LoopAgent` 結合評估邏輯，直到達到「合格」標籤或觸發「升級（Escalate）」為止。
 from google.adk import LoopAgent, Event
 
@@ -50,14 +50,14 @@ Agentic Loop 的精髓在於 **內省（Reflection）**。當 Agent 執行某項
 #### 程式碼範例
 
 ```python
-# // **Bad：忽略反饋的簡單重試**
+# ❌ Bad: 忽略反饋的簡單重試
 只是重複嘗試，容易陷入死循環。
 # 只是不斷重複，LLM 依然會因為相同的 Prompt 產生相同的錯誤
 for _ in range(3):
     result = call_llm(prompt)
     if validate(result): break
 
-# // **Better：具備「變異能力」的自適應重試 (Adaptive Retry with Prompt Mutation)**
+# ✅ Better: 具備「變異能力」的自適應重試 (Adaptive Retry with Prompt Mutation)
 # 將失敗的錯誤訊息（Observation）作為新的 Context，要求 LLM 修正其思考邏輯。
 
 # 在 ADK 中，利用內省模式引導 LLM 自我檢測
