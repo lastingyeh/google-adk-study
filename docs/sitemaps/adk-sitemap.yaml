@@ -79,6 +79,7 @@ grounding:
 integrations:
   - https://google.github.io/adk-docs/integrations/
   - https://google.github.io/adk-docs/integrations/ag-ui/
+  - https://google.github.io/adk-docs/integrations/agentmail/
   - https://google.github.io/adk-docs/integrations/agentops/
   - https://google.github.io/adk-docs/integrations/api-registry/
   - https://google.github.io/adk-docs/integrations/apigee-api-hub/
@@ -103,9 +104,11 @@ integrations:
   - https://google.github.io/adk-docs/integrations/github/
   - https://google.github.io/adk-docs/integrations/gitlab/
   - https://google.github.io/adk-docs/integrations/gke-code-executor/
+  - https://google.github.io/adk-docs/integrations/goodmem/
   - https://google.github.io/adk-docs/integrations/google-search/
   - https://google.github.io/adk-docs/integrations/hugging-face/
   - https://google.github.io/adk-docs/integrations/linear/
+  - https://google.github.io/adk-docs/integrations/mailgun/
   - https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/
   - https://google.github.io/adk-docs/integrations/mlflow/
   - https://google.github.io/adk-docs/integrations/mongodb/
@@ -114,18 +117,23 @@ integrations:
   - https://google.github.io/adk-docs/integrations/notion/
   - https://google.github.io/adk-docs/integrations/paypal/
   - https://google.github.io/adk-docs/integrations/phoenix/
+  - https://google.github.io/adk-docs/integrations/pinecone/
   - https://google.github.io/adk-docs/integrations/postman/
   - https://google.github.io/adk-docs/integrations/pubsub/
   - https://google.github.io/adk-docs/integrations/qdrant/
   - https://google.github.io/adk-docs/integrations/reflect-and-retry/
+  - https://google.github.io/adk-docs/integrations/restate/
   - https://google.github.io/adk-docs/integrations/spanner/
+  - https://google.github.io/adk-docs/integrations/stackone/
   - https://google.github.io/adk-docs/integrations/stripe/
   - https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/
   - https://google.github.io/adk-docs/integrations/vertex-ai-search/
   - https://google.github.io/adk-docs/integrations/weave/
+  - https://google.github.io/adk-docs/integrations/windsor-ai/
 mcp:
   - https://google.github.io/adk-docs/mcp/
 observability:
+  - https://google.github.io/adk-docs/observability/
   - https://google.github.io/adk-docs/observability/logging/
 plugins:
   - https://google.github.io/adk-docs/plugins/
@@ -146,6 +154,8 @@ sessions:
   - https://google.github.io/adk-docs/sessions/session/
   - https://google.github.io/adk-docs/sessions/session/migrate/
   - https://google.github.io/adk-docs/sessions/session/rewind/
+skills:
+  - https://google.github.io/adk-docs/skills/
 streaming:
   - https://google.github.io/adk-docs/streaming/
   - https://google.github.io/adk-docs/streaming/configuration/

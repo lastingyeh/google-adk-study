@@ -62,6 +62,7 @@ tools:
   - https://modelcontextprotocol.io/docs/tools/inspector
 tutorials:
   - https://modelcontextprotocol.io/docs/tutorials/security/authorization
+  - https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices
 examples:
   - https://modelcontextprotocol.io/examples
 about:
@@ -131,7 +132,6 @@ versioning:
   - https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
   - https://modelcontextprotocol.io/specification/2025-06-18/basic
   - https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle
-  - https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices
   - https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
   - https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation
   - https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping
@@ -154,7 +154,6 @@ versioning:
   - https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization
   - https://modelcontextprotocol.io/specification/2025-11-25/basic
   - https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle
-  - https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices
   - https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
   - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation
   - https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping
@@ -178,7 +177,6 @@ draft:
   - https://modelcontextprotocol.io/specification/draft/basic/authorization
   - https://modelcontextprotocol.io/specification/draft/basic
   - https://modelcontextprotocol.io/specification/draft/basic/lifecycle
-  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
   - https://modelcontextprotocol.io/specification/draft/basic/transports
   - https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation
   - https://modelcontextprotocol.io/specification/draft/basic/utilities/ping

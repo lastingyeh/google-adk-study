@@ -46,6 +46,7 @@ Learn,Server Concepts,https://modelcontextprotocol.io/docs/learn/server-concepts
 Sdk,Sdk,https://modelcontextprotocol.io/docs/sdk
 Tools,Inspector,https://modelcontextprotocol.io/docs/tools/inspector
 Tutorials,Authorization,https://modelcontextprotocol.io/docs/tutorials/security/authorization
+Tutorials,Security_best_practices,https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices
 Examples,Examples,https://modelcontextprotocol.io/examples
 About,About,https://modelcontextprotocol.io/registry/about
 Authentication,Authentication,https://modelcontextprotocol.io/registry/authentication
@@ -100,7 +101,6 @@ Versioning,Versioning,https://modelcontextprotocol.io/specification/versioning
 2025-06-18,Authorization,https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization
 2025-06-18,Basic,https://modelcontextprotocol.io/specification/2025-06-18/basic
 2025-06-18,Lifecycle,https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle
-2025-06-18,Security_best_practices,https://modelcontextprotocol.io/specification/2025-06-18/basic/security_best_practices
 2025-06-18,Transports,https://modelcontextprotocol.io/specification/2025-06-18/basic/transports
 2025-06-18,Cancellation,https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation
 2025-06-18,Ping,https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping
@@ -122,7 +122,6 @@ Versioning,Versioning,https://modelcontextprotocol.io/specification/versioning
 2025-11-25,Authorization,https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization
 2025-11-25,Basic,https://modelcontextprotocol.io/specification/2025-11-25/basic
 2025-11-25,Lifecycle,https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle
-2025-11-25,Security_best_practices,https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices
 2025-11-25,Transports,https://modelcontextprotocol.io/specification/2025-11-25/basic/transports
 2025-11-25,Cancellation,https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation
 2025-11-25,Ping,https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping
@@ -145,7 +144,6 @@ Draft,Architecture,https://modelcontextprotocol.io/specification/draft/architect
 Draft,Authorization,https://modelcontextprotocol.io/specification/draft/basic/authorization
 Draft,Basic,https://modelcontextprotocol.io/specification/draft/basic
 Draft,Lifecycle,https://modelcontextprotocol.io/specification/draft/basic/lifecycle
-Draft,Security_best_practices,https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
 Draft,Transports,https://modelcontextprotocol.io/specification/draft/basic/transports
 Draft,Cancellation,https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation
 Draft,Ping,https://modelcontextprotocol.io/specification/draft/basic/utilities/ping

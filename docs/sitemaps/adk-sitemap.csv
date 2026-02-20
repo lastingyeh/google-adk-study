@@ -63,6 +63,7 @@ Grounding,Google_search_grounding,https://google.github.io/adk-docs/grounding/go
 Grounding,Vertex_ai_search_grounding,https://google.github.io/adk-docs/grounding/vertex_ai_search_grounding/
 Integrations,Integrations,https://google.github.io/adk-docs/integrations/
 Integrations,Ag Ui,https://google.github.io/adk-docs/integrations/ag-ui/
+Integrations,Agentmail,https://google.github.io/adk-docs/integrations/agentmail/
 Integrations,Agentops,https://google.github.io/adk-docs/integrations/agentops/
 Integrations,Api Registry,https://google.github.io/adk-docs/integrations/api-registry/
 Integrations,Apigee Api Hub,https://google.github.io/adk-docs/integrations/apigee-api-hub/
@@ -87,9 +88,11 @@ Integrations,Freeplay,https://google.github.io/adk-docs/integrations/freeplay/
 Integrations,Github,https://google.github.io/adk-docs/integrations/github/
 Integrations,Gitlab,https://google.github.io/adk-docs/integrations/gitlab/
 Integrations,Gke Code Executor,https://google.github.io/adk-docs/integrations/gke-code-executor/
+Integrations,Goodmem,https://google.github.io/adk-docs/integrations/goodmem/
 Integrations,Google Search,https://google.github.io/adk-docs/integrations/google-search/
 Integrations,Hugging Face,https://google.github.io/adk-docs/integrations/hugging-face/
 Integrations,Linear,https://google.github.io/adk-docs/integrations/linear/
+Integrations,Mailgun,https://google.github.io/adk-docs/integrations/mailgun/
 Integrations,Mcp Toolbox For Databases,https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/
 Integrations,Mlflow,https://google.github.io/adk-docs/integrations/mlflow/
 Integrations,Mongodb,https://google.github.io/adk-docs/integrations/mongodb/
@@ -98,16 +101,21 @@ Integrations,N8n,https://google.github.io/adk-docs/integrations/n8n/
 Integrations,Notion,https://google.github.io/adk-docs/integrations/notion/
 Integrations,Paypal,https://google.github.io/adk-docs/integrations/paypal/
 Integrations,Phoenix,https://google.github.io/adk-docs/integrations/phoenix/
+Integrations,Pinecone,https://google.github.io/adk-docs/integrations/pinecone/
 Integrations,Postman,https://google.github.io/adk-docs/integrations/postman/
 Integrations,Pubsub,https://google.github.io/adk-docs/integrations/pubsub/
 Integrations,Qdrant,https://google.github.io/adk-docs/integrations/qdrant/
 Integrations,Reflect And Retry,https://google.github.io/adk-docs/integrations/reflect-and-retry/
+Integrations,Restate,https://google.github.io/adk-docs/integrations/restate/
 Integrations,Spanner,https://google.github.io/adk-docs/integrations/spanner/
+Integrations,Stackone,https://google.github.io/adk-docs/integrations/stackone/
 Integrations,Stripe,https://google.github.io/adk-docs/integrations/stripe/
 Integrations,Vertex Ai Rag Engine,https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/
 Integrations,Vertex Ai Search,https://google.github.io/adk-docs/integrations/vertex-ai-search/
 Integrations,Weave,https://google.github.io/adk-docs/integrations/weave/
+Integrations,Windsor Ai,https://google.github.io/adk-docs/integrations/windsor-ai/
 Mcp,Mcp,https://google.github.io/adk-docs/mcp/
+Observability,Observability,https://google.github.io/adk-docs/observability/
 Observability,Logging,https://google.github.io/adk-docs/observability/logging/
 Plugins,Plugins,https://google.github.io/adk-docs/plugins/
 Runtime,Runtime,https://google.github.io/adk-docs/runtime/
@@ -124,6 +132,7 @@ Sessions,State,https://google.github.io/adk-docs/sessions/state/
 Sessions,Session,https://google.github.io/adk-docs/sessions/session/
 Sessions,Migrate,https://google.github.io/adk-docs/sessions/session/migrate/
 Sessions,Rewind,https://google.github.io/adk-docs/sessions/session/rewind/
+Skills,Skills,https://google.github.io/adk-docs/skills/
 Streaming,Streaming,https://google.github.io/adk-docs/streaming/
 Streaming,Configuration,https://google.github.io/adk-docs/streaming/configuration/
 Streaming,Streaming Tools,https://google.github.io/adk-docs/streaming/streaming-tools/

@@ -51,30 +51,16 @@
 | 14   | [Agent 與自動化工作流的區別](./02-agent_anatomy_and_foundations/14-agent_vs_workflow.md)                        | 釐清主動決策與被動執行之差異             |
 | 15   | [角色扮演與背景故事的作用](./02-agent_anatomy_and_foundations/15-role_playing_instruction.md)                   | 精準控制 Agent 的語氣與行為              |
 
+
 ## ✏️ 主題 3：多代理人協作架構 (Multi-Agent Architectures)
 
-| 編號 | 名稱                                     | 說明                               |
-| ---- | ---------------------------------------- | ---------------------------------- |
-| 1    | 任務委派框架：Supervisor vs. Swarm       | 對比中心化與去中心化協作模式       |
-| 2    | Supervisor Architecture：中央協調模式    | 由中央協調器管理任務分配           |
-| 3    | Swarm Architecture：點對點協作模式       | 任務自發傳遞的湧現式結構           |
-| 4    | Agent Router 模式：基於意圖的流量分發    | 根據需求路由至最適合的代理         |
-| 5    | Blackboard Knowledge Hub 模式            | 多代理人透過共享「黑板」庫協同解題 |
-| 6    | Contract-Net Marketplace：競標式任務分配 | 利用經濟模型優化任務指派           |
-| 7    | 多代理規劃的並行執行                     | 最大化多代理運作效能               |
-| 8    | 知識共享與共享向量數據庫                 | 確保代理人間資訊一致               |
-| 9    | 共識模式：迭代辯論機制                   | 透過討論減少幻覺並提高準確性       |
-| 10   | 談判模式：處理資源競爭                   | 應用博弈論協調目標衝突             |
-| 11   | 衝突解決策略                             | 建立自動化調解機制處理死鎖         |
-| 12   | Formation Control：代理人組織拓樸        | 探討長期任務的組織結構方式         |
-| 13   | 階層式架構的優勢                         | 降低大型系統維護複雜度             |
-| 14   | SequentialAgent：順序執行邏輯            | 處理嚴格相依的流水線任務           |
-| 15   | ParallelAgent：併發代理執行              | 同時啟動多個任務並彙整結果         |
-| 16   | LoopAgent：持續迭代優化                  | 在達成目標前進行反覆修正           |
-| 17   | 分散式協作                               | 探討跨伺服器或網路的遠端協同       |
-| 18   | Agent 委派代理與適配器模式               | 當代理無法處理時，透過適配器轉發   |
-| 19   | 市場化架構中的效用最大化決策             | 模擬經濟行為優化資源利用           |
-| 20   | Agent 團隊中的角色專業化                 | 討論通才與專才代理的協作權衡       |
+| 編號 | 名稱                                                                                                | 說明                             |
+| ---- | --------------------------------------------------------------------------------------------------- | -------------------------------- |
+| 1    | [基礎架構與拓撲設計](./03-multi-agent-architecture/01-foundational_architectures_and_topologies.md) | 多代理系統的基本結構與組織方式   |
+| 2    | [工作流協調與調度](./03-multi-agent-architecture/02-workflow_orchestration.md)                      | 任務分配、協作與流程自動化       |
+| 3    | [協作與通訊模式](./03-multi-agent-architecture/03-collaboration_and_communication_patterns.md)      | 代理間的協作協議與訊息傳遞       |
+| 4    | [資源分派與經濟模型](./03-multi-agent-architecture/04-resource_dispatch_and_economic_models.md)     | 任務競標、資源分配與效用最大化   |
+| 5    | [進階整合與系統擴展](./03-multi-agent-architecture/05-advanced_integration_and_scaling.md)          | 跨系統整合、彈性擴展與大規模協作 |
 
 ## ✏️ 主題 4：RAG 與外部知識整合模式 (RAG & Knowledge Patterns)
 
