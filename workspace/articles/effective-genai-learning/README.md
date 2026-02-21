@@ -64,23 +64,22 @@
 
 ## ✏️ 主題 4：RAG 與外部知識整合模式 (RAG & Knowledge Patterns)
 
-| 編號 | 名稱                               | 說明                             |
-| ---- | ---------------------------------- | -------------------------------- |
-| 1    | 基礎 RAG：檢索增強生成             | 減少 LLM 知識斷層的核心流程      |
-| 2    | 語義索引：多模態向量化             | 捕捉數據的深層含義               |
-| 3    | 規模化索引管理                     | 處理巨量資料下的矛盾與版本控制   |
-| 4    | 檢索感知優化：HyDE 與查詢擴張      | 透過預測性生成提升命中率         |
-| 5    | 節點後處理：Reranking 與上下文壓縮 | 精煉檢索結果以節省 Token         |
-| 6    | 深度搜索與多跳推理                 | 處理需要跨多份文件的複雜資訊     |
-| 7    | GraphRAG：結合知識圖譜的檢索       | 檢索實體間語義關係而非純文件     |
-| 8    | 糾錯 RAG (Corrective RAG, CRAG)    | 質量不足時自動觸發外部搜尋       |
-| 9    | Self-RAG：生成過程的自我反思       | 模型在生成時評估引用內容準確性   |
-| 10   | 分層切片技術                       | 優化檢索精度並兼顧上下文         |
-| 11   | 多模態 RAG 佈局解析                | 精準提取文件中的圖表資訊         |
-| 12   | 向量數據庫選擇：DIY vs. 託管服務   | 評估基礎設施建置的優劣           |
-| 13   | 語義層的應用                       | 定義語義以解讀結構化數據         |
-| 14   | Agentic RAG：自主協調檢索          | 代理主動選擇數據來源進行複雜推理 |
-| 15   | 知識圖譜增強                       | 補足純向量搜尋的不足             |
+| 編號 | 名稱                                                                                        | 說明                             |
+| ---- | ------------------------------------------------------------------------------------------- | -------------------------------- |
+| 1    | [基礎 RAG：檢索增強生成](./04-rag_knowledge_patterns/01-basic_rag.md)                       | 減少 LLM 知識斷層的核心流程      |
+| 2    | [語義索引：多模態向量化](./04-rag_knowledge_patterns/02-semantic_indexing.md)               | 捕捉數據的深層含義               |
+| 3    | [規模化索引管理](./04-rag_knowledge_patterns/03-indexing_at_scale.md)                       | 處理巨量資料下的矛盾與版本控制   |
+| 4    | [檢索感知優化：HyDE 與查詢擴張](./04-rag_knowledge_patterns/04-index_aware_retrieval.md)    | 透過預測性生成提升命中率         |
+| 5    | [節點後處理：Reranking 與上下文壓縮](./04-rag_knowledge_patterns/05-node_postprocessing.md) | 精煉檢索結果以節省 Token         |
+| 6    | [深度搜索與多跳推理](./04-rag_knowledge_patterns/06-deep_search_and_multihop.md)            | 處理需要跨多份文件的複雜資訊     |
+| 7    | [GraphRAG：結合知識圖譜的檢索](./04-rag_knowledge_patterns/07-graph_rag.md)                 | 檢索實體間語義關係而非純文件     |
+| 8    | [糾錯 RAG (Corrective RAG, CRAG)](./04-rag_knowledge_patterns/08-corrective_rag.md)         | 質量不足時自動觸發外部搜尋       |
+| 9    | [Self-RAG：生成過程的自我反思](./04-rag_knowledge_patterns/09-self_rag.md)                  | 模型在生成時評估引用內容準確性   |
+| 10   | [分層切片技術](./04-rag_knowledge_patterns/10-hierarchical_chunking.md)                     | 優化檢索精度並兼顧上下文         |
+| 11   | [多模態 RAG 佈局解析](./04-rag_knowledge_patterns/11-layout_aware_parsing.md)               | 精準提取文件中的圖表資訊         |
+| 12   | [向量數據庫選擇：DIY vs. 託管服務](./04-rag_knowledge_patterns/12-vector_db_selection.md)   | 評估基礎設施建置的優劣           |
+| 13   | [語義層的應用](./04-rag_knowledge_patterns/13-semantic_layer_app.md)                        | 定義語義以解讀結構化數據         |
+| 14   | [Agentic RAG：自主協調檢索](./04-rag_knowledge_patterns/14-agentic_rag.md)                  | 代理主動選擇數據來源進行複雜推理 |
 
 ## ✏️ 主題 5：推理優化與生成控制 (Reasoning & Design Patterns)
 
