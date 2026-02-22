@@ -2224,6 +2224,29 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 </details>
 
+#### 🕗 Day 108
+
+<details>
+<summary>
+[整合 5/7] 本學習透過 104 (根據內容整合調整) 個情境主題分成七大類型，整合學習路徑聚焦於將生成式 AI 轉化為生產力實體。學習者需先掌握代理人的 Sense-Reason-Plan-Act 基本解剖結構，並結合 RAG 解決數據新鮮度問題。技術實踐層面，強調透過 asyncio 非同步編程 與 FastAPI 解決 AI 推論中的 I/O 瓶頸，提升系統併發效能。最終目標是運用多代理人協作模式（MAS）拆解複雜任務，並落實 AgentOps 的監控與評估機制。透過循序漸進的成熟度模型，你將具備從簡單 Prompt 工程轉向建構可解釋、安全且具備自主學習能力的企業級 AI 架構之專業職能。
+
+🏷️ `generative-ai`, `ai-agent`, `asyncio`, `fastapi`, `rag`, `ml-ops`, `design-pattern`, `effective-style`, `multi-agent`, `mcp`, `a2a`
+
+</summary>
+
+- **詳細說明**
+  - [[文章 Part 5] 推理優化與生成控制 (Reasoning & Design Patterns)](./workspace/articles/effective-genai-learning/README.md#️-主題-5推理優化與生成控制-reasoning--design-patterns)
+
+- **參考資源**
+  - [Asynchronous Programming in Python (Packt)](https://www.packtpub.com/en-tw/product/asynchronous-programming-in-python-9781836646600)
+  - [Agentic Architectural Patterns for Building Multi-Agent Systems (Packt)](https://www.packtpub.com/en-tw/product/agentic-architectural-patterns-for-building-multi-agent-systems-9781806029563)
+  - [Generative AI Design Patterns (O'Reilly)](https://oreil.ly/genAI-design-patterns)
+  - [Building Generative AI Services with FastAPI (O'Reilly)](https://oreil.ly/building-gen-ai-fastAPI)
+  - [GenAI on Google Cloud (O'Reilly)](https://oreil.ly/GenAI_on_Google)
+  - [Python Concurrency with asyncio (Manning)](https://www.manning.com/books/python-concurrency-with-asyncio)
+
+</details>
+
 </details>
 
 </details>

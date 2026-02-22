@@ -83,23 +83,23 @@
 
 ## ✏️ 主題 5：推理優化與生成控制 (Reasoning & Design Patterns)
 
-| 編號 | 名稱                               | 說明                                 |
-| ---- | ---------------------------------- | ------------------------------------ |
-| 1    | 思維鏈 (Chain of Thought, CoT)     | 引導模型輸出思考過程以提升準確度     |
-| 2    | 思維樹 (Tree of Thoughts, ToT)     | 在決策樹中探索多條路徑並擇優         |
-| 3    | 適配器微調 (Adapter Tuning)        | 利用 LoRA 等技術教導特定領域任務     |
-| 4    | Evol-Instruct 數據演化             | 自動化生成高質量的微調數據集         |
-| 5    | Logits Masking：輸出機率控制       | 攔截機率層級以強制遵守風格規則       |
-| 6    | 語法控制生成 (Grammar)             | 強制 LLM 產出正確的 JSON 或 SQL 格式 |
-| 7    | 風格轉移應用                       | 改變內容語氣以適應不同受眾           |
-| 8    | 內容優化與 DPO 偏好學習            | 使模型輸出與人類偏好對齊             |
-| 9    | LLM-as-Judge：自動化評估           | 使用高性能模型作為產出質量裁判       |
-| 10   | 反思模式 (Reflection)              | 建立內部工作流讓模型自我修正錯誤     |
-| 11   | 分形思維鏈 (Fractal CoT)           | 遞迴式自我修正思維鏈的每個節點       |
-| 12   | 提示詞優化 (Prompt Optimization)   | 系統化更新以應對模型升級             |
-| 13   | 少樣本學習工程 (Few-Shot Learning) | 透過範例引導模型輸出邏輯             |
-| 14   | 自校準：置信度評估                 | 讓模型評估自身生成準確性             |
-| 15   | ReAct 模式：推理與行動結合         | 交替執行邏輯推理與工具調用的範式     |
+| 編號 | 名稱                                                                                             | 說明                                 |
+| ---- | ------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| 1    | [思維鏈 (Chain of Thought, CoT)](./05-reasoning_and_design_patterns/01-chain_of_thought.md)      | 引導模型輸出思考過程以提升準確度     |
+| 2    | [思維樹 (Tree of Thoughts, ToT)](./05-reasoning_and_design_patterns/02-tree_of_thoughts.md)      | 在決策樹中探索多條路徑並擇優         |
+| 3    | [適配器微調 (Adapter Tuning)](./05-reasoning_and_design_patterns/03-adapter_tuning.md)           | 利用 LoRA 等技術教導特定領域任務     |
+| 4    | [Evol-Instruct 數據演化](./05-reasoning_and_design_patterns/04-evol_instruct.md)                 | 自動化生成高質量的微調數據集         |
+| 5    | [Logits Masking：輸出機率控制](./05-reasoning_and_design_patterns/05-logits_masking.md)          | 攔截機率層級以強制遵守風格規則       |
+| 6    | [語法控制生成 (Grammar)](./05-reasoning_and_design_patterns/06-grammar.md)                       | 強制 LLM 產出正確的 JSON 或 SQL 格式 |
+| 7    | [風格轉移應用](./05-reasoning_and_design_patterns/07-style_transfer.md)                          | 改變內容語氣以適應不同受眾           |
+| 8    | [內容優化與 DPO 偏好學習](./05-reasoning_and_design_patterns/08-content_optimization_dpo.md)     | 使模型輸出與人類偏好對齊             |
+| 9    | [LLM-as-Judge：自動化評估](./05-reasoning_and_design_patterns/09-llm_as_judge.md)                | 使用高性能模型作為產出質量裁判       |
+| 10   | [反思模式 (Reflection)](./05-reasoning_and_design_patterns/10-reflection_pattern.md)             | 建立內部工作流讓模型自我修正錯誤     |
+| 11   | [分形思維鏈 (Fractal CoT)](./05-reasoning_and_design_patterns/11-fractal_cot.md)                 | 遞迴式自我修正思維鏈的每個節點       |
+| 12   | [提示詞優化 (Prompt Optimization)](./05-reasoning_and_design_patterns/12-prompt_optimization.md) | 系統化更新以應對模型升級             |
+| 13   | [少樣本學習工程 (Few-Shot Learning)](./05-reasoning_and_design_patterns/13-few_shot_learning.md) | 透過範例引導模型輸出邏輯             |
+| 14   | [自校準：置信度評估](./05-reasoning_and_design_patterns/14-self_calibration.md)                  | 讓模型評估自身生成準確性             |
+| 15   | [ReAct 模式：推理與行動結合](./05-reasoning_and_design_patterns/15-react_pattern.md)             | 交替執行邏輯推理與工具調用的範式     |
 
 ## ✏️ 主題 6：服務架構、部署與 MLOps (Service Architecture & Ops)
 
