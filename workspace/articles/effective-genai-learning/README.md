@@ -103,28 +103,28 @@
 
 ## ✏️ 主題 6：服務架構、部署與 MLOps (Service Architecture & Ops)
 
-| 編號 | 名稱                                    | 說明                              |
-| ---- | --------------------------------------- | --------------------------------- |
-| 1    | ASGI 標準與 FastAPI 的角色              | 支撐高併發請求的 Web 框架效能關鍵 |
-| 2    | FastAPI 依賴注入 (Dependency Injection) | 實踐解耦的模型加載與驗證          |
-| 3    | Lifespan 事件管理                       | 處理 AI 模型預先載入與優雅卸載    |
-| 4    | 洋蔥架構 (Onion Design Pattern)         | 隔離業務邏輯與模型技術實現        |
-| 5    | 外部化模型服務與解耦 (如 vLLM)          | 分離網路層與推論層提升穩定性      |
-| 6    | FastAPI 背景任務 (Background Tasks)     | 非同步處理耗時的推理任務          |
-| 7    | 伺服器發送事件 (SSE) 流式回應           | 實現實時 Token 輸出優化體驗       |
-| 8    | WebSocket (WS) 雙向通訊                 | 構建低延遲全雙工通訊通道          |
-| 9    | 資料庫連線池與併發優化                  | 防止高併發下耗盡資料庫連線        |
-| 10   | 小語言模型 (SLM) 部署優勢               | 分析邊緣設備部署的必要性          |
-| 11   | 模型量化技術 (Quantization)             | 權衡精度與效能，減少內存占用      |
-| 12   | 推論分佈測試與退化監控                  | 監控品質隨時間下滑或偏離的情形    |
-| 13   | 提示詞緩存 (Prompt Caching)             | 重複利用上下文前綴節省成本        |
-| 14   | 連續批處理 (Continuous Batching)        | 最大化 GPU 吞吐量與利用率         |
-| 15   | 分段注意力機制 (PagedAttention)         | 優化長上下文處理的內存使用        |
-| 16   | 投機解碼加速 (Speculative Decoding)     | 利用小模型草擬、大模型驗證以加速  |
-| 17   | 自改進飛輪 (Self-Improvement Flywheel)  | 建立持續優化的閉環                |
-| 18   | AgentOps 與生命週期管理                 | 系統化管理 Agent 運維的支柱流程   |
-| 19   | 分散式追蹤 (Distributed Tracing)        | 紀錄跨代理請求鏈路以利診斷        |
-| 20   | FinOps 與 Token 成本歸因                | 精確分析預算分配，優化資源實踐    |
+| 編號 | 名稱                                                                                                  | 說明                              |
+| ---- | ----------------------------------------------------------------------------------------------------- | --------------------------------- |
+| 1    | [ASGI 標準與 FastAPI 的角色](./06-enterprise_agent_ops/01-asgi_fastapi_performance.md)                | 支撐高併發請求的 Web 框架效能關鍵 |
+| 2    | [FastAPI 依賴注入 (Dependency Injection)](./06-enterprise_agent_ops/02-di_basic_implementation.md)    | 實踐解耦的模型加載與驗證          |
+| 3    | [Lifespan 事件管理](./06-enterprise_agent_ops/03-fastapi_lifespan_management.md)                      | 處理 AI 模型預先載入與優雅卸載    |
+| 4    | [洋蔥架構 (Onion Design Pattern)](./06-enterprise_agent_ops/04-onion_architecture_genai.md)           | 隔離業務邏輯與模型技術實現        |
+| 5    | [外部化模型服務與解耦 (如 vLLM)](./06-enterprise_agent_ops/05-external_model_inference_decoupling.md) | 分離網路層與推論層提升穩定性      |
+| 6    | [FastAPI 背景任務 (Background Tasks)](./06-enterprise_agent_ops/06-fastapi_background_tasks.md)       | 非同步處理耗時的推理任務          |
+| 7    | [伺服器發送事件 (SSE) 流式回應](./06-enterprise_agent_ops/07-sse_streaming.md)                        | 實現實時 Token 輸出優化體驗       |
+| 8    | [WebSocket (WS) 雙向通訊](./06-enterprise_agent_ops/08-ws_bidirectional.md)                           | 構建低延遲全雙工通訊通道          |
+| 9    | [資料庫連線池與併發優化](./06-enterprise_agent_ops/09-db_concurrency_opt.md)                          | 防止高併發下耗盡資料庫連線        |
+| 10   | [小語言模型 (SLM) 部署優勢](./06-enterprise_agent_ops/10-slm_edge_deployment.md)                      | 分析邊緣設備部署的必要性          |
+| 11   | [模型量化技術 (Quantization)](./06-enterprise_agent_ops/11-model_quantization.md)                     | 權衡精度與效能，減少內存占用      |
+| 12   | [推論分佈測試與退化監控](./06-enterprise_agent_ops/12-inference_degradation_monitoring.md)            | 監控品質隨時間下滑或偏離的情形    |
+| 13   | [提示詞緩存 (Prompt Caching)](./06-enterprise_agent_ops/13-prompt_caching.md)                         | 重複利用上下文前綴節省成本        |
+| 14   | [連續批處理 (Continuous Batching)](./06-enterprise_agent_ops/14-continuous_batching.md)               | 最大化 GPU 吞吐量與利用率         |
+| 15   | [分段注意力機制 (PagedAttention)](./06-enterprise_agent_ops/15-paged_attention.md)                    | 優化長上下文處理的內存使用        |
+| 16   | [投機解碼加速 (Speculative Decoding)](./06-enterprise_agent_ops/16-speculative_decoding.md)           | 利用小模型草擬、大模型驗證以加速  |
+| 17   | [自改進飛輪 (Self-Improvement Flywheel)](./06-enterprise_agent_ops/17-self_improvement_flywheel.md)   | 建立持續優化的閉環                |
+| 18   | [AgentOps 與生命週期管理](./06-enterprise_agent_ops/18-agentops_lifecycle.md)                         | 系統化管理 Agent 運維的支柱流程   |
+| 19   | [分散式追蹤 (Distributed Tracing)](./06-enterprise_agent_ops/19-distributed_tracing.md)               | 紀錄跨代理請求鏈路以利診斷        |
+| 20   | [FinOps 與 Token 成本歸因](./06-enterprise_agent_ops/20-finops_token_attribution.md)                  | 精確分析預算分配，優化資源實踐    |
 
 ## ✏️ 主題 7：系統可靠性、安全與合規 (Reliability & Safety)
 
