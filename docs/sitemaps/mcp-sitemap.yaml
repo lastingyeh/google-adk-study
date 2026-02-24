@@ -47,9 +47,6 @@ develop:
   - https://modelcontextprotocol.io/docs/develop/build-server
   - https://modelcontextprotocol.io/docs/develop/connect-local-servers
   - https://modelcontextprotocol.io/docs/develop/connect-remote-servers
-extensions:
-  - https://modelcontextprotocol.io/docs/extensions/apps
-  - https://modelcontextprotocol.io/docs/extensions/overview
 getting-started:
   - https://modelcontextprotocol.io/docs/getting-started/intro
 learn:
@@ -65,6 +62,17 @@ tutorials:
   - https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices
 examples:
   - https://modelcontextprotocol.io/examples
+apps:
+  - https://modelcontextprotocol.io/extensions/apps/build
+  - https://modelcontextprotocol.io/extensions/apps/overview
+auth:
+  - https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization
+  - https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials
+  - https://modelcontextprotocol.io/extensions/auth/overview
+client-matrix:
+  - https://modelcontextprotocol.io/extensions/client-matrix
+overview:
+  - https://modelcontextprotocol.io/extensions/overview
 about:
   - https://modelcontextprotocol.io/registry/about
 authentication:

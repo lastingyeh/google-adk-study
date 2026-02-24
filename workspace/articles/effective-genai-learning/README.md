@@ -130,21 +130,21 @@
 
 | 編號 | 名稱                                           | 說明                              |
 | ---- | ---------------------------------------------- | --------------------------------- |
-| 1    | 指令保真度審核 (Instruction Fidelity Auditing) | 定期檢查 Agent 是否遵守提示詞     |
-| 2    | 持久化指令錨定 (Instruction Anchoring)         | 對抗長對話中的上下文遺忘          |
-| 3    | 共享認識記憶 (Shared Epistemic Memory)         | 確保代理人間對事實有一致共識      |
-| 4    | 並行執行共識 (Parallel Execution Consensus)    | 透過多路運算驗證決策可靠性        |
-| 5    | 延遲升級策略 (Delayed Escalation)              | 當不確定時暫停並尋求人工介入      |
-| 6    | 看門狗超時主管 (Watchdog Supervisor)           | 強制回收長時間無回應的任務        |
-| 7    | 具提示變異的自適應重試                         | 動態微調提示詞而非盲目重試指令    |
-| 8    | 自癒代理復甦機制 (Auto-Healing)                | 自動偵測崩潰並恢復執行狀態        |
-| 9    | 增量檢查點 (Incremental Checkpointing)         | 保存長工作流進度避免前功盡棄      |
-| 10   | 大多數表決 (Majority Voting)                   | 透過多代理投票降低單一偏見        |
-| 11   | 因果依賴圖 (Causal Dependency Graph)           | 提供完整的決策審計與合規軌跡      |
-| 12   | Agent 自我防禦與網格防禦 (Mesh Defense)        | 防止惡意指令或連鎖失敗            |
-| 13   | 執行環境隔離 (Sandboxing)                      | 在隔離環境執行 Agent 產生的程式碼 |
-| 14   | 安全護欄 (Guardrails)：實時行為過濾            | 攔截有害輸出或不合規行動          |
-| 15   | 紅隊演練壓力測試 (Red Teaming)                 | 模擬攻擊找出安全性極限            |
+| 1    | [指令保真度審核 (Instruction Fidelity Auditing)](./07-reliability-and-safety/01-instruction_fidelity_auditing.md) | 定期檢查 Agent 是否遵守提示詞     |
+| 2    | [持久化指令錨定 (Instruction Anchoring)](./07-reliability-and-safety/02-instruction_anchoring.md)         | 對抗長對話中的上下文遺忘          |
+| 3    | [共享認識記憶 (Shared Epistemic Memory)](./07-reliability-and-safety/03-shared_epistemic_memory.md)         | 確保代理人間對事實有一致共識      |
+| 4    | [並行執行共識 (Parallel Execution Consensus)](./07-reliability-and-safety/04-parallel_execution_consensus.md)    | 透過多路運算驗證決策可靠性        |
+| 5    | [延遲升級策略 (Delayed Escalation)](./07-reliability-and-safety/05-delayed_escalation_strategy.md)              | 當不確定時暫停並尋求人工介入      |
+| 6    | [看門狗超時主管 (Watchdog Supervisor)](./07-reliability-and-safety/06-watchdog_supervisor.md)           | 強制回收長時間無回應的任務        |
+| 7    | [具提示變異的自適應重試](./07-reliability-and-safety/07-adaptive_prompt_mutation.md)                         | 動態微調提示詞而非盲目重試指令    |
+| 8    | [自癒代理復甦機制 (Auto-Healing)](./07-reliability-and-safety/08-auto_healing_agent_resuscitation.md)                | 自動偵測崩潰並恢復執行狀態        |
+| 9    | [增量檢查點 (Incremental Checkpointing)](./07-reliability-and-safety/09-incremental_checkpointing.md)         | 保存長工作流進度避免前功盡棄      |
+| 10   | [大多數表決 (Majority Voting)](./07-reliability-and-safety/10-majority_voting.md)                   | 透過多代理投票降低單一偏見        |
+| 11   | [因果依賴圖 (Causal Dependency Graph)](./07-reliability-and-safety/11-causal_dependency_graph.md)           | 提供完整的決策審計與合規軌跡      |
+| 12   | [Agent 自我防禦與網格防禦 (Mesh Defense)](./07-reliability-and-safety/12-agent_defense_architecture.md)        | 防止惡意指令或連鎖失敗            |
+| 13   | [執行環境隔離 (Sandboxing)](./07-reliability-and-safety/13-execution_environment_isolation.md)                      | 在隔離環境執行 Agent 產生的程式碼 |
+| 14   | [安全護欄 (Guardrails)：實時行為過濾](./07-reliability-and-safety/14-guardrails.md)            | 攔截有害輸出或不合規行動          |
+| 15   | [紅隊演練壓力測試 (Red Teaming)](./07-reliability-and-safety/15-red_teaming_stress_test.md)                 | 模擬攻擊找出安全性極限            |
 
 ---
 ## 🔗 參考資源

@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://modelcontextprotocol.io/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/02/20`
+**更新日期 (Data Updated)**: `2026/02/24`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 
@@ -48,133 +48,138 @@
 | 36 |  | Build Server | [https://modelcontextprotocol.io/docs/develop/build-server](https://modelcontextprotocol.io/docs/develop/build-server) |
 | 37 |  | Connect Local Servers | [https://modelcontextprotocol.io/docs/develop/connect-local-servers](https://modelcontextprotocol.io/docs/develop/connect-local-servers) |
 | 38 |  | Connect Remote Servers | [https://modelcontextprotocol.io/docs/develop/connect-remote-servers](https://modelcontextprotocol.io/docs/develop/connect-remote-servers) |
-| 39 | **Extensions** | Apps | [https://modelcontextprotocol.io/docs/extensions/apps](https://modelcontextprotocol.io/docs/extensions/apps) |
-| 40 |  | Overview | [https://modelcontextprotocol.io/docs/extensions/overview](https://modelcontextprotocol.io/docs/extensions/overview) |
-| 41 | **Getting-started** | Intro | [https://modelcontextprotocol.io/docs/getting-started/intro](https://modelcontextprotocol.io/docs/getting-started/intro) |
-| 42 | **Learn** | Architecture | [https://modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture) |
-| 43 |  | Client Concepts | [https://modelcontextprotocol.io/docs/learn/client-concepts](https://modelcontextprotocol.io/docs/learn/client-concepts) |
-| 44 |  | Server Concepts | [https://modelcontextprotocol.io/docs/learn/server-concepts](https://modelcontextprotocol.io/docs/learn/server-concepts) |
-| 45 | **Sdk** | Sdk | [https://modelcontextprotocol.io/docs/sdk](https://modelcontextprotocol.io/docs/sdk) |
-| 46 | **Tools** | Inspector | [https://modelcontextprotocol.io/docs/tools/inspector](https://modelcontextprotocol.io/docs/tools/inspector) |
-| 47 | **Tutorials** | Authorization | [https://modelcontextprotocol.io/docs/tutorials/security/authorization](https://modelcontextprotocol.io/docs/tutorials/security/authorization) |
-| 48 |  | Security_best_practices | [https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices) |
-| 49 | **Examples** | Examples | [https://modelcontextprotocol.io/examples](https://modelcontextprotocol.io/examples) |
-| 50 | **About** | About | [https://modelcontextprotocol.io/registry/about](https://modelcontextprotocol.io/registry/about) |
-| 51 | **Authentication** | Authentication | [https://modelcontextprotocol.io/registry/authentication](https://modelcontextprotocol.io/registry/authentication) |
-| 52 | **Faq** | Faq | [https://modelcontextprotocol.io/registry/faq](https://modelcontextprotocol.io/registry/faq) |
-| 53 | **Github-actions** | Github Actions | [https://modelcontextprotocol.io/registry/github-actions](https://modelcontextprotocol.io/registry/github-actions) |
-| 54 | **Moderation-policy** | Moderation Policy | [https://modelcontextprotocol.io/registry/moderation-policy](https://modelcontextprotocol.io/registry/moderation-policy) |
-| 55 | **Package-types** | Package Types | [https://modelcontextprotocol.io/registry/package-types](https://modelcontextprotocol.io/registry/package-types) |
-| 56 | **Quickstart** | Quickstart | [https://modelcontextprotocol.io/registry/quickstart](https://modelcontextprotocol.io/registry/quickstart) |
-| 57 | **Registry-aggregators** | Registry Aggregators | [https://modelcontextprotocol.io/registry/registry-aggregators](https://modelcontextprotocol.io/registry/registry-aggregators) |
-| 58 | **Remote-servers** | Remote Servers | [https://modelcontextprotocol.io/registry/remote-servers](https://modelcontextprotocol.io/registry/remote-servers) |
-| 59 | **Terms-of-service** | Terms Of Service | [https://modelcontextprotocol.io/registry/terms-of-service](https://modelcontextprotocol.io/registry/terms-of-service) |
-| 60 | **Versioning** | Versioning | [https://modelcontextprotocol.io/registry/versioning](https://modelcontextprotocol.io/registry/versioning) |
-| 61 |  | Versioning | [https://modelcontextprotocol.io/specification/versioning](https://modelcontextprotocol.io/specification/versioning) |
-| 62 | **2024-11-05** | Architecture | [https://modelcontextprotocol.io/specification/2024-11-05/architecture](https://modelcontextprotocol.io/specification/2024-11-05/architecture) |
-| 63 |  | Basic | [https://modelcontextprotocol.io/specification/2024-11-05/basic](https://modelcontextprotocol.io/specification/2024-11-05/basic) |
-| 64 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle](https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle) |
-| 65 |  | Messages | [https://modelcontextprotocol.io/specification/2024-11-05/basic/messages](https://modelcontextprotocol.io/specification/2024-11-05/basic/messages) |
-| 66 |  | Transports | [https://modelcontextprotocol.io/specification/2024-11-05/basic/transports](https://modelcontextprotocol.io/specification/2024-11-05/basic/transports) |
-| 67 |  | Cancellation | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation) |
-| 68 |  | Ping | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping) |
-| 69 |  | Progress | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress) |
-| 70 |  | Roots | [https://modelcontextprotocol.io/specification/2024-11-05/client/roots](https://modelcontextprotocol.io/specification/2024-11-05/client/roots) |
-| 71 |  | Sampling | [https://modelcontextprotocol.io/specification/2024-11-05/client/sampling](https://modelcontextprotocol.io/specification/2024-11-05/client/sampling) |
-| 72 |  | 2024 11 05 | [https://modelcontextprotocol.io/specification/2024-11-05](https://modelcontextprotocol.io/specification/2024-11-05) |
-| 73 |  | Server | [https://modelcontextprotocol.io/specification/2024-11-05/server](https://modelcontextprotocol.io/specification/2024-11-05/server) |
-| 74 |  | Prompts | [https://modelcontextprotocol.io/specification/2024-11-05/server/prompts](https://modelcontextprotocol.io/specification/2024-11-05/server/prompts) |
-| 75 |  | Resources | [https://modelcontextprotocol.io/specification/2024-11-05/server/resources](https://modelcontextprotocol.io/specification/2024-11-05/server/resources) |
-| 76 |  | Tools | [https://modelcontextprotocol.io/specification/2024-11-05/server/tools](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) |
-| 77 |  | Completion | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion) |
-| 78 |  | Logging | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging) |
-| 79 |  | Pagination | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination) |
-| 80 | **2025-03-26** | Architecture | [https://modelcontextprotocol.io/specification/2025-03-26/architecture](https://modelcontextprotocol.io/specification/2025-03-26/architecture) |
-| 81 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) |
-| 82 |  | Basic | [https://modelcontextprotocol.io/specification/2025-03-26/basic](https://modelcontextprotocol.io/specification/2025-03-26/basic) |
-| 83 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle) |
-| 84 |  | Transports | [https://modelcontextprotocol.io/specification/2025-03-26/basic/transports](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports) |
-| 85 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation) |
-| 86 |  | Ping | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) |
-| 87 |  | Progress | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress) |
-| 88 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-03-26/changelog](https://modelcontextprotocol.io/specification/2025-03-26/changelog) |
-| 89 |  | Roots | [https://modelcontextprotocol.io/specification/2025-03-26/client/roots](https://modelcontextprotocol.io/specification/2025-03-26/client/roots) |
-| 90 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-03-26/client/sampling](https://modelcontextprotocol.io/specification/2025-03-26/client/sampling) |
-| 91 |  | 2025 03 26 | [https://modelcontextprotocol.io/specification/2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26) |
-| 92 |  | Server | [https://modelcontextprotocol.io/specification/2025-03-26/server](https://modelcontextprotocol.io/specification/2025-03-26/server) |
-| 93 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-03-26/server/prompts](https://modelcontextprotocol.io/specification/2025-03-26/server/prompts) |
-| 94 |  | Resources | [https://modelcontextprotocol.io/specification/2025-03-26/server/resources](https://modelcontextprotocol.io/specification/2025-03-26/server/resources) |
-| 95 |  | Tools | [https://modelcontextprotocol.io/specification/2025-03-26/server/tools](https://modelcontextprotocol.io/specification/2025-03-26/server/tools) |
-| 96 |  | Completion | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion) |
-| 97 |  | Logging | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging) |
-| 98 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination) |
-| 99 | **2025-06-18** | Architecture | [https://modelcontextprotocol.io/specification/2025-06-18/architecture](https://modelcontextprotocol.io/specification/2025-06-18/architecture) |
-| 100 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) |
-| 101 |  | Basic | [https://modelcontextprotocol.io/specification/2025-06-18/basic](https://modelcontextprotocol.io/specification/2025-06-18/basic) |
-| 102 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle) |
-| 103 |  | Transports | [https://modelcontextprotocol.io/specification/2025-06-18/basic/transports](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) |
-| 104 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation) |
-| 105 |  | Ping | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping) |
-| 106 |  | Progress | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress) |
-| 107 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-06-18/changelog](https://modelcontextprotocol.io/specification/2025-06-18/changelog) |
-| 108 |  | Elicitation | [https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation) |
-| 109 |  | Roots | [https://modelcontextprotocol.io/specification/2025-06-18/client/roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) |
-| 110 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-06-18/client/sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) |
-| 111 |  | 2025 06 18 | [https://modelcontextprotocol.io/specification/2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18) |
-| 112 |  | Schema | [https://modelcontextprotocol.io/specification/2025-06-18/schema](https://modelcontextprotocol.io/specification/2025-06-18/schema) |
-| 113 |  | Server | [https://modelcontextprotocol.io/specification/2025-06-18/server](https://modelcontextprotocol.io/specification/2025-06-18/server) |
-| 114 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-06-18/server/prompts](https://modelcontextprotocol.io/specification/2025-06-18/server/prompts) |
-| 115 |  | Resources | [https://modelcontextprotocol.io/specification/2025-06-18/server/resources](https://modelcontextprotocol.io/specification/2025-06-18/server/resources) |
-| 116 |  | Tools | [https://modelcontextprotocol.io/specification/2025-06-18/server/tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) |
-| 117 |  | Completion | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion) |
-| 118 |  | Logging | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging) |
-| 119 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination) |
-| 120 | **2025-11-25** | Architecture | [https://modelcontextprotocol.io/specification/2025-11-25/architecture](https://modelcontextprotocol.io/specification/2025-11-25/architecture) |
-| 121 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) |
-| 122 |  | Basic | [https://modelcontextprotocol.io/specification/2025-11-25/basic](https://modelcontextprotocol.io/specification/2025-11-25/basic) |
-| 123 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle) |
-| 124 |  | Transports | [https://modelcontextprotocol.io/specification/2025-11-25/basic/transports](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports) |
-| 125 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation) |
-| 126 |  | Ping | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping) |
-| 127 |  | Progress | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress) |
-| 128 |  | Tasks | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks) |
-| 129 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-11-25/changelog](https://modelcontextprotocol.io/specification/2025-11-25/changelog) |
-| 130 |  | Elicitation | [https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation) |
-| 131 |  | Roots | [https://modelcontextprotocol.io/specification/2025-11-25/client/roots](https://modelcontextprotocol.io/specification/2025-11-25/client/roots) |
-| 132 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-11-25/client/sampling](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling) |
-| 133 |  | 2025 11 25 | [https://modelcontextprotocol.io/specification/2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25) |
-| 134 |  | Schema | [https://modelcontextprotocol.io/specification/2025-11-25/schema](https://modelcontextprotocol.io/specification/2025-11-25/schema) |
-| 135 |  | Server | [https://modelcontextprotocol.io/specification/2025-11-25/server](https://modelcontextprotocol.io/specification/2025-11-25/server) |
-| 136 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-11-25/server/prompts](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts) |
-| 137 |  | Resources | [https://modelcontextprotocol.io/specification/2025-11-25/server/resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) |
-| 138 |  | Tools | [https://modelcontextprotocol.io/specification/2025-11-25/server/tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) |
-| 139 |  | Completion | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion) |
-| 140 |  | Logging | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging) |
-| 141 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination) |
-| 142 | **Draft** | Architecture | [https://modelcontextprotocol.io/specification/draft/architecture](https://modelcontextprotocol.io/specification/draft/architecture) |
-| 143 |  | Authorization | [https://modelcontextprotocol.io/specification/draft/basic/authorization](https://modelcontextprotocol.io/specification/draft/basic/authorization) |
-| 144 |  | Basic | [https://modelcontextprotocol.io/specification/draft/basic](https://modelcontextprotocol.io/specification/draft/basic) |
-| 145 |  | Lifecycle | [https://modelcontextprotocol.io/specification/draft/basic/lifecycle](https://modelcontextprotocol.io/specification/draft/basic/lifecycle) |
-| 146 |  | Transports | [https://modelcontextprotocol.io/specification/draft/basic/transports](https://modelcontextprotocol.io/specification/draft/basic/transports) |
-| 147 |  | Cancellation | [https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation) |
-| 148 |  | Ping | [https://modelcontextprotocol.io/specification/draft/basic/utilities/ping](https://modelcontextprotocol.io/specification/draft/basic/utilities/ping) |
-| 149 |  | Progress | [https://modelcontextprotocol.io/specification/draft/basic/utilities/progress](https://modelcontextprotocol.io/specification/draft/basic/utilities/progress) |
-| 150 |  | Tasks | [https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks](https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks) |
-| 151 |  | Changelog | [https://modelcontextprotocol.io/specification/draft/changelog](https://modelcontextprotocol.io/specification/draft/changelog) |
-| 152 |  | Elicitation | [https://modelcontextprotocol.io/specification/draft/client/elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) |
-| 153 |  | Roots | [https://modelcontextprotocol.io/specification/draft/client/roots](https://modelcontextprotocol.io/specification/draft/client/roots) |
-| 154 |  | Sampling | [https://modelcontextprotocol.io/specification/draft/client/sampling](https://modelcontextprotocol.io/specification/draft/client/sampling) |
-| 155 |  | Draft | [https://modelcontextprotocol.io/specification/draft](https://modelcontextprotocol.io/specification/draft) |
-| 156 |  | Schema | [https://modelcontextprotocol.io/specification/draft/schema](https://modelcontextprotocol.io/specification/draft/schema) |
-| 157 |  | Server | [https://modelcontextprotocol.io/specification/draft/server](https://modelcontextprotocol.io/specification/draft/server) |
-| 158 |  | Prompts | [https://modelcontextprotocol.io/specification/draft/server/prompts](https://modelcontextprotocol.io/specification/draft/server/prompts) |
-| 159 |  | Resources | [https://modelcontextprotocol.io/specification/draft/server/resources](https://modelcontextprotocol.io/specification/draft/server/resources) |
-| 160 |  | Tools | [https://modelcontextprotocol.io/specification/draft/server/tools](https://modelcontextprotocol.io/specification/draft/server/tools) |
-| 161 |  | Completion | [https://modelcontextprotocol.io/specification/draft/server/utilities/completion](https://modelcontextprotocol.io/specification/draft/server/utilities/completion) |
-| 162 |  | Logging | [https://modelcontextprotocol.io/specification/draft/server/utilities/logging](https://modelcontextprotocol.io/specification/draft/server/utilities/logging) |
-| 163 |  | Pagination | [https://modelcontextprotocol.io/specification/draft/server/utilities/pagination](https://modelcontextprotocol.io/specification/draft/server/utilities/pagination) |
+| 39 | **Getting-started** | Intro | [https://modelcontextprotocol.io/docs/getting-started/intro](https://modelcontextprotocol.io/docs/getting-started/intro) |
+| 40 | **Learn** | Architecture | [https://modelcontextprotocol.io/docs/learn/architecture](https://modelcontextprotocol.io/docs/learn/architecture) |
+| 41 |  | Client Concepts | [https://modelcontextprotocol.io/docs/learn/client-concepts](https://modelcontextprotocol.io/docs/learn/client-concepts) |
+| 42 |  | Server Concepts | [https://modelcontextprotocol.io/docs/learn/server-concepts](https://modelcontextprotocol.io/docs/learn/server-concepts) |
+| 43 | **Sdk** | Sdk | [https://modelcontextprotocol.io/docs/sdk](https://modelcontextprotocol.io/docs/sdk) |
+| 44 | **Tools** | Inspector | [https://modelcontextprotocol.io/docs/tools/inspector](https://modelcontextprotocol.io/docs/tools/inspector) |
+| 45 | **Tutorials** | Authorization | [https://modelcontextprotocol.io/docs/tutorials/security/authorization](https://modelcontextprotocol.io/docs/tutorials/security/authorization) |
+| 46 |  | Security_best_practices | [https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices) |
+| 47 | **Examples** | Examples | [https://modelcontextprotocol.io/examples](https://modelcontextprotocol.io/examples) |
+| 48 | **Apps** | Build | [https://modelcontextprotocol.io/extensions/apps/build](https://modelcontextprotocol.io/extensions/apps/build) |
+| 49 |  | Overview | [https://modelcontextprotocol.io/extensions/apps/overview](https://modelcontextprotocol.io/extensions/apps/overview) |
+| 50 | **Auth** | Enterprise Managed Authorization | [https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization](https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization) |
+| 51 |  | Oauth Client Credentials | [https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials](https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials) |
+| 52 |  | Overview | [https://modelcontextprotocol.io/extensions/auth/overview](https://modelcontextprotocol.io/extensions/auth/overview) |
+| 53 | **Client-matrix** | Client Matrix | [https://modelcontextprotocol.io/extensions/client-matrix](https://modelcontextprotocol.io/extensions/client-matrix) |
+| 54 | **Overview** | Overview | [https://modelcontextprotocol.io/extensions/overview](https://modelcontextprotocol.io/extensions/overview) |
+| 55 | **About** | About | [https://modelcontextprotocol.io/registry/about](https://modelcontextprotocol.io/registry/about) |
+| 56 | **Authentication** | Authentication | [https://modelcontextprotocol.io/registry/authentication](https://modelcontextprotocol.io/registry/authentication) |
+| 57 | **Faq** | Faq | [https://modelcontextprotocol.io/registry/faq](https://modelcontextprotocol.io/registry/faq) |
+| 58 | **Github-actions** | Github Actions | [https://modelcontextprotocol.io/registry/github-actions](https://modelcontextprotocol.io/registry/github-actions) |
+| 59 | **Moderation-policy** | Moderation Policy | [https://modelcontextprotocol.io/registry/moderation-policy](https://modelcontextprotocol.io/registry/moderation-policy) |
+| 60 | **Package-types** | Package Types | [https://modelcontextprotocol.io/registry/package-types](https://modelcontextprotocol.io/registry/package-types) |
+| 61 | **Quickstart** | Quickstart | [https://modelcontextprotocol.io/registry/quickstart](https://modelcontextprotocol.io/registry/quickstart) |
+| 62 | **Registry-aggregators** | Registry Aggregators | [https://modelcontextprotocol.io/registry/registry-aggregators](https://modelcontextprotocol.io/registry/registry-aggregators) |
+| 63 | **Remote-servers** | Remote Servers | [https://modelcontextprotocol.io/registry/remote-servers](https://modelcontextprotocol.io/registry/remote-servers) |
+| 64 | **Terms-of-service** | Terms Of Service | [https://modelcontextprotocol.io/registry/terms-of-service](https://modelcontextprotocol.io/registry/terms-of-service) |
+| 65 | **Versioning** | Versioning | [https://modelcontextprotocol.io/registry/versioning](https://modelcontextprotocol.io/registry/versioning) |
+| 66 |  | Versioning | [https://modelcontextprotocol.io/specification/versioning](https://modelcontextprotocol.io/specification/versioning) |
+| 67 | **2024-11-05** | Architecture | [https://modelcontextprotocol.io/specification/2024-11-05/architecture](https://modelcontextprotocol.io/specification/2024-11-05/architecture) |
+| 68 |  | Basic | [https://modelcontextprotocol.io/specification/2024-11-05/basic](https://modelcontextprotocol.io/specification/2024-11-05/basic) |
+| 69 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle](https://modelcontextprotocol.io/specification/2024-11-05/basic/lifecycle) |
+| 70 |  | Messages | [https://modelcontextprotocol.io/specification/2024-11-05/basic/messages](https://modelcontextprotocol.io/specification/2024-11-05/basic/messages) |
+| 71 |  | Transports | [https://modelcontextprotocol.io/specification/2024-11-05/basic/transports](https://modelcontextprotocol.io/specification/2024-11-05/basic/transports) |
+| 72 |  | Cancellation | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/cancellation) |
+| 73 |  | Ping | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/ping) |
+| 74 |  | Progress | [https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress](https://modelcontextprotocol.io/specification/2024-11-05/basic/utilities/progress) |
+| 75 |  | Roots | [https://modelcontextprotocol.io/specification/2024-11-05/client/roots](https://modelcontextprotocol.io/specification/2024-11-05/client/roots) |
+| 76 |  | Sampling | [https://modelcontextprotocol.io/specification/2024-11-05/client/sampling](https://modelcontextprotocol.io/specification/2024-11-05/client/sampling) |
+| 77 |  | 2024 11 05 | [https://modelcontextprotocol.io/specification/2024-11-05](https://modelcontextprotocol.io/specification/2024-11-05) |
+| 78 |  | Server | [https://modelcontextprotocol.io/specification/2024-11-05/server](https://modelcontextprotocol.io/specification/2024-11-05/server) |
+| 79 |  | Prompts | [https://modelcontextprotocol.io/specification/2024-11-05/server/prompts](https://modelcontextprotocol.io/specification/2024-11-05/server/prompts) |
+| 80 |  | Resources | [https://modelcontextprotocol.io/specification/2024-11-05/server/resources](https://modelcontextprotocol.io/specification/2024-11-05/server/resources) |
+| 81 |  | Tools | [https://modelcontextprotocol.io/specification/2024-11-05/server/tools](https://modelcontextprotocol.io/specification/2024-11-05/server/tools) |
+| 82 |  | Completion | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/completion) |
+| 83 |  | Logging | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/logging) |
+| 84 |  | Pagination | [https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination](https://modelcontextprotocol.io/specification/2024-11-05/server/utilities/pagination) |
+| 85 | **2025-03-26** | Architecture | [https://modelcontextprotocol.io/specification/2025-03-26/architecture](https://modelcontextprotocol.io/specification/2025-03-26/architecture) |
+| 86 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization) |
+| 87 |  | Basic | [https://modelcontextprotocol.io/specification/2025-03-26/basic](https://modelcontextprotocol.io/specification/2025-03-26/basic) |
+| 88 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-03-26/basic/lifecycle) |
+| 89 |  | Transports | [https://modelcontextprotocol.io/specification/2025-03-26/basic/transports](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports) |
+| 90 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/cancellation) |
+| 91 |  | Ping | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/ping) |
+| 92 |  | Progress | [https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-03-26/basic/utilities/progress) |
+| 93 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-03-26/changelog](https://modelcontextprotocol.io/specification/2025-03-26/changelog) |
+| 94 |  | Roots | [https://modelcontextprotocol.io/specification/2025-03-26/client/roots](https://modelcontextprotocol.io/specification/2025-03-26/client/roots) |
+| 95 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-03-26/client/sampling](https://modelcontextprotocol.io/specification/2025-03-26/client/sampling) |
+| 96 |  | 2025 03 26 | [https://modelcontextprotocol.io/specification/2025-03-26](https://modelcontextprotocol.io/specification/2025-03-26) |
+| 97 |  | Server | [https://modelcontextprotocol.io/specification/2025-03-26/server](https://modelcontextprotocol.io/specification/2025-03-26/server) |
+| 98 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-03-26/server/prompts](https://modelcontextprotocol.io/specification/2025-03-26/server/prompts) |
+| 99 |  | Resources | [https://modelcontextprotocol.io/specification/2025-03-26/server/resources](https://modelcontextprotocol.io/specification/2025-03-26/server/resources) |
+| 100 |  | Tools | [https://modelcontextprotocol.io/specification/2025-03-26/server/tools](https://modelcontextprotocol.io/specification/2025-03-26/server/tools) |
+| 101 |  | Completion | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/completion) |
+| 102 |  | Logging | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/logging) |
+| 103 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-03-26/server/utilities/pagination) |
+| 104 | **2025-06-18** | Architecture | [https://modelcontextprotocol.io/specification/2025-06-18/architecture](https://modelcontextprotocol.io/specification/2025-06-18/architecture) |
+| 105 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization](https://modelcontextprotocol.io/specification/2025-06-18/basic/authorization) |
+| 106 |  | Basic | [https://modelcontextprotocol.io/specification/2025-06-18/basic](https://modelcontextprotocol.io/specification/2025-06-18/basic) |
+| 107 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-06-18/basic/lifecycle) |
+| 108 |  | Transports | [https://modelcontextprotocol.io/specification/2025-06-18/basic/transports](https://modelcontextprotocol.io/specification/2025-06-18/basic/transports) |
+| 109 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/cancellation) |
+| 110 |  | Ping | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/ping) |
+| 111 |  | Progress | [https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-06-18/basic/utilities/progress) |
+| 112 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-06-18/changelog](https://modelcontextprotocol.io/specification/2025-06-18/changelog) |
+| 113 |  | Elicitation | [https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation](https://modelcontextprotocol.io/specification/2025-06-18/client/elicitation) |
+| 114 |  | Roots | [https://modelcontextprotocol.io/specification/2025-06-18/client/roots](https://modelcontextprotocol.io/specification/2025-06-18/client/roots) |
+| 115 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-06-18/client/sampling](https://modelcontextprotocol.io/specification/2025-06-18/client/sampling) |
+| 116 |  | 2025 06 18 | [https://modelcontextprotocol.io/specification/2025-06-18](https://modelcontextprotocol.io/specification/2025-06-18) |
+| 117 |  | Schema | [https://modelcontextprotocol.io/specification/2025-06-18/schema](https://modelcontextprotocol.io/specification/2025-06-18/schema) |
+| 118 |  | Server | [https://modelcontextprotocol.io/specification/2025-06-18/server](https://modelcontextprotocol.io/specification/2025-06-18/server) |
+| 119 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-06-18/server/prompts](https://modelcontextprotocol.io/specification/2025-06-18/server/prompts) |
+| 120 |  | Resources | [https://modelcontextprotocol.io/specification/2025-06-18/server/resources](https://modelcontextprotocol.io/specification/2025-06-18/server/resources) |
+| 121 |  | Tools | [https://modelcontextprotocol.io/specification/2025-06-18/server/tools](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) |
+| 122 |  | Completion | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/completion) |
+| 123 |  | Logging | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/logging) |
+| 124 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-06-18/server/utilities/pagination) |
+| 125 | **2025-11-25** | Architecture | [https://modelcontextprotocol.io/specification/2025-11-25/architecture](https://modelcontextprotocol.io/specification/2025-11-25/architecture) |
+| 126 |  | Authorization | [https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization](https://modelcontextprotocol.io/specification/2025-11-25/basic/authorization) |
+| 127 |  | Basic | [https://modelcontextprotocol.io/specification/2025-11-25/basic](https://modelcontextprotocol.io/specification/2025-11-25/basic) |
+| 128 |  | Lifecycle | [https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle) |
+| 129 |  | Transports | [https://modelcontextprotocol.io/specification/2025-11-25/basic/transports](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports) |
+| 130 |  | Cancellation | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/cancellation) |
+| 131 |  | Ping | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/ping) |
+| 132 |  | Progress | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/progress) |
+| 133 |  | Tasks | [https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks](https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks) |
+| 134 |  | Changelog | [https://modelcontextprotocol.io/specification/2025-11-25/changelog](https://modelcontextprotocol.io/specification/2025-11-25/changelog) |
+| 135 |  | Elicitation | [https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation](https://modelcontextprotocol.io/specification/2025-11-25/client/elicitation) |
+| 136 |  | Roots | [https://modelcontextprotocol.io/specification/2025-11-25/client/roots](https://modelcontextprotocol.io/specification/2025-11-25/client/roots) |
+| 137 |  | Sampling | [https://modelcontextprotocol.io/specification/2025-11-25/client/sampling](https://modelcontextprotocol.io/specification/2025-11-25/client/sampling) |
+| 138 |  | 2025 11 25 | [https://modelcontextprotocol.io/specification/2025-11-25](https://modelcontextprotocol.io/specification/2025-11-25) |
+| 139 |  | Schema | [https://modelcontextprotocol.io/specification/2025-11-25/schema](https://modelcontextprotocol.io/specification/2025-11-25/schema) |
+| 140 |  | Server | [https://modelcontextprotocol.io/specification/2025-11-25/server](https://modelcontextprotocol.io/specification/2025-11-25/server) |
+| 141 |  | Prompts | [https://modelcontextprotocol.io/specification/2025-11-25/server/prompts](https://modelcontextprotocol.io/specification/2025-11-25/server/prompts) |
+| 142 |  | Resources | [https://modelcontextprotocol.io/specification/2025-11-25/server/resources](https://modelcontextprotocol.io/specification/2025-11-25/server/resources) |
+| 143 |  | Tools | [https://modelcontextprotocol.io/specification/2025-11-25/server/tools](https://modelcontextprotocol.io/specification/2025-11-25/server/tools) |
+| 144 |  | Completion | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/completion) |
+| 145 |  | Logging | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/logging) |
+| 146 |  | Pagination | [https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination](https://modelcontextprotocol.io/specification/2025-11-25/server/utilities/pagination) |
+| 147 | **Draft** | Architecture | [https://modelcontextprotocol.io/specification/draft/architecture](https://modelcontextprotocol.io/specification/draft/architecture) |
+| 148 |  | Authorization | [https://modelcontextprotocol.io/specification/draft/basic/authorization](https://modelcontextprotocol.io/specification/draft/basic/authorization) |
+| 149 |  | Basic | [https://modelcontextprotocol.io/specification/draft/basic](https://modelcontextprotocol.io/specification/draft/basic) |
+| 150 |  | Lifecycle | [https://modelcontextprotocol.io/specification/draft/basic/lifecycle](https://modelcontextprotocol.io/specification/draft/basic/lifecycle) |
+| 151 |  | Transports | [https://modelcontextprotocol.io/specification/draft/basic/transports](https://modelcontextprotocol.io/specification/draft/basic/transports) |
+| 152 |  | Cancellation | [https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation](https://modelcontextprotocol.io/specification/draft/basic/utilities/cancellation) |
+| 153 |  | Ping | [https://modelcontextprotocol.io/specification/draft/basic/utilities/ping](https://modelcontextprotocol.io/specification/draft/basic/utilities/ping) |
+| 154 |  | Progress | [https://modelcontextprotocol.io/specification/draft/basic/utilities/progress](https://modelcontextprotocol.io/specification/draft/basic/utilities/progress) |
+| 155 |  | Tasks | [https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks](https://modelcontextprotocol.io/specification/draft/basic/utilities/tasks) |
+| 156 |  | Changelog | [https://modelcontextprotocol.io/specification/draft/changelog](https://modelcontextprotocol.io/specification/draft/changelog) |
+| 157 |  | Elicitation | [https://modelcontextprotocol.io/specification/draft/client/elicitation](https://modelcontextprotocol.io/specification/draft/client/elicitation) |
+| 158 |  | Roots | [https://modelcontextprotocol.io/specification/draft/client/roots](https://modelcontextprotocol.io/specification/draft/client/roots) |
+| 159 |  | Sampling | [https://modelcontextprotocol.io/specification/draft/client/sampling](https://modelcontextprotocol.io/specification/draft/client/sampling) |
+| 160 |  | Draft | [https://modelcontextprotocol.io/specification/draft](https://modelcontextprotocol.io/specification/draft) |
+| 161 |  | Schema | [https://modelcontextprotocol.io/specification/draft/schema](https://modelcontextprotocol.io/specification/draft/schema) |
+| 162 |  | Server | [https://modelcontextprotocol.io/specification/draft/server](https://modelcontextprotocol.io/specification/draft/server) |
+| 163 |  | Prompts | [https://modelcontextprotocol.io/specification/draft/server/prompts](https://modelcontextprotocol.io/specification/draft/server/prompts) |
+| 164 |  | Resources | [https://modelcontextprotocol.io/specification/draft/server/resources](https://modelcontextprotocol.io/specification/draft/server/resources) |
+| 165 |  | Tools | [https://modelcontextprotocol.io/specification/draft/server/tools](https://modelcontextprotocol.io/specification/draft/server/tools) |
+| 166 |  | Completion | [https://modelcontextprotocol.io/specification/draft/server/utilities/completion](https://modelcontextprotocol.io/specification/draft/server/utilities/completion) |
+| 167 |  | Logging | [https://modelcontextprotocol.io/specification/draft/server/utilities/logging](https://modelcontextprotocol.io/specification/draft/server/utilities/logging) |
+| 168 |  | Pagination | [https://modelcontextprotocol.io/specification/draft/server/utilities/pagination](https://modelcontextprotocol.io/specification/draft/server/utilities/pagination) |
 
 ## 總結說明 (Summary) 
 
-- **總頁面數 (Total Pages)**: `163`
-- **總分類數 (Categories)**: `34`
+- **總頁面數 (Total Pages)**: `168`
+- **總分類數 (Categories)**: `37`

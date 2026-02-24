@@ -37,8 +37,6 @@ Develop,Build Client,https://modelcontextprotocol.io/docs/develop/build-client
 Develop,Build Server,https://modelcontextprotocol.io/docs/develop/build-server
 Develop,Connect Local Servers,https://modelcontextprotocol.io/docs/develop/connect-local-servers
 Develop,Connect Remote Servers,https://modelcontextprotocol.io/docs/develop/connect-remote-servers
-Extensions,Apps,https://modelcontextprotocol.io/docs/extensions/apps
-Extensions,Overview,https://modelcontextprotocol.io/docs/extensions/overview
 Getting-started,Intro,https://modelcontextprotocol.io/docs/getting-started/intro
 Learn,Architecture,https://modelcontextprotocol.io/docs/learn/architecture
 Learn,Client Concepts,https://modelcontextprotocol.io/docs/learn/client-concepts
@@ -48,6 +46,13 @@ Tools,Inspector,https://modelcontextprotocol.io/docs/tools/inspector
 Tutorials,Authorization,https://modelcontextprotocol.io/docs/tutorials/security/authorization
 Tutorials,Security_best_practices,https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices
 Examples,Examples,https://modelcontextprotocol.io/examples
+Apps,Build,https://modelcontextprotocol.io/extensions/apps/build
+Apps,Overview,https://modelcontextprotocol.io/extensions/apps/overview
+Auth,Enterprise Managed Authorization,https://modelcontextprotocol.io/extensions/auth/enterprise-managed-authorization
+Auth,Oauth Client Credentials,https://modelcontextprotocol.io/extensions/auth/oauth-client-credentials
+Auth,Overview,https://modelcontextprotocol.io/extensions/auth/overview
+Client-matrix,Client Matrix,https://modelcontextprotocol.io/extensions/client-matrix
+Overview,Overview,https://modelcontextprotocol.io/extensions/overview
 About,About,https://modelcontextprotocol.io/registry/about
 Authentication,Authentication,https://modelcontextprotocol.io/registry/authentication
 Faq,Faq,https://modelcontextprotocol.io/registry/faq
