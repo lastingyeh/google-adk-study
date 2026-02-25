@@ -2832,3 +2832,25 @@ agents:
       - observability
       - arize
       - fastapi
+
+  - name: Skills Agent
+    description: 一個可以使用專業技能 (Specialized skills) 的代理人。
+    code_ref: workspace/python/agents/skills-agent/skills_agent
+    type: Agent
+    models:
+      - gemini-2.5-flash
+    tools:
+      - name: my_skill_toolset
+        type: SkillToolset
+        description: |
+          包含專業技能的工具集，提供問候與天氣查詢功能。
+          技能列表：
+          - greeting-skill: 讀取參考資料並生成友善的問候語
+          - weather-skill: 從參考資料中提取並提供天氣資訊
+    tags:
+      - skills
+      - toolset
+      - greeting
+      - weather
+      - modular
+      - skill-management

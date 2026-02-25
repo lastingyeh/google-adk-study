@@ -3084,6 +3084,29 @@
           ],
         },
         {
+          name: 'Skills Agent',
+          description: '一個可以使用專業技能 (Specialized skills) 的代理人。',
+          code_ref: 'workspace/python/agents/skills-agent/skills_agent',
+          type: 'Agent',
+          models: ['gemini-2.5-flash'],
+          tools: [
+            {
+              name: 'my_skill_toolset',
+              type: 'SkillToolset',
+              description:
+                '包含專業技能的工具集，提供問候與天氣查詢功能。技能列表：1. greeting-skill: 讀取參考資料並生成友善的問候語; 2.weather-skill: 從參考資料中提取並提供天氣資訊',
+            },
+          ],
+          tags: [
+            'skills',
+            'toolset',
+            'greeting',
+            'weather',
+            'modular',
+            'skill-management',
+          ],
+        },
+        {
           name: 'Support Agent',
           description:
             '客戶支援代理 - 可測試的模式示範。提供知識庫搜尋、建立支援工單、查詢工單狀態等功能，展示清晰的工具使用、結構化回應與確定性行為。',
