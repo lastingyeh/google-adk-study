@@ -2293,6 +2293,26 @@ ADK 提供靈活機制整合多樣 LLM，支援 Gemini、Claude 等模型。可�
 
 </details>
 
+#### 🕗 Day 111
+
+<details>
+<summary>
+本文件詳細介紹如何在 Google ADK 框架下建立與運用「技能代理人（Skills Agent）」。內容涵蓋技能（Skill）的核心概念、優勢、設計原則與命名慣例，並說明如何以 Python 3.11+ 實作內嵌技能與目錄型技能，並透過 SkillToolset 組合多項技能。文件提供從安裝、環境設定、技能開發、測試到常見問題的完整流程，強調技能的模組化、可重複使用、易維護與團隊協作特性。最後，附上進階應用、最佳實務與資源連結，協助開發者快速上手並擴展技能系統。
+
+🏷️ `skills`, `skill-toolset`, `inline-skills`, `markdown`, `libraries`, `experimental`
+
+</summary>
+
+- **詳細說明**
+  - [[ADK-Docs] 學習文件-Skills for ADK agents](./workspace/adk-docs/skills-for-agents/index.md)
+  - [Skills Agent](./workspace/python/agents/skills-agent/)
+
+- **參考資源**
+  - [[ADK-Docs] 官方文件 [Skills for ADK agents]](https://google.github.io/adk-docs/skills/)
+  - [[ADK-Samples] skills_agent](https://github.com/google/adk-python/tree/main/contributing/samples/skills_agent)
+
+</details>
+
 </details>
 
 </details>
