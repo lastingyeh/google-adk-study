@@ -1,8 +1,8 @@
 # 使用 AgentOps 進行 Agent 可觀測性
 
-> 🔔 `更新日期：2026-01-29`
+> 🔔 `更新日期：2026-03-04`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/observability/agentops/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/agentops/
 
 **只需兩行程式碼**，[AgentOps](https://www.agentops.ai) 即可為 Agent 提供會話重播、指標和監控。
 
@@ -81,9 +81,9 @@ Google ADK 包含其自身基於 OpenTelemetry 的追蹤系統，主要旨在為
 
 **這就是捕捉 ADK Agent 所有遙測數據所需的一切**
 
-## AgentOps 如何對 ADK 進行儀器化
+## AgentOps 如何植入 ADK
 
-AgentOps 採用精密的策略來提供無縫的可觀測性，同時不與 ADK 的原生遙測產生衝突：
+AgentOps 採用細緻的策略來提供無縫的可觀測性，同時不與 ADK 的原生遙測產生衝突：
 
 1.  **中和 ADK 的原生遙測：**
     AgentOps 會偵測 ADK 並智慧地修補 (Patch) ADK 的內部 OpenTelemetry 追蹤器（通常是 `trace.get_tracer('gcp.vertex.agent')`）。它將其替換為 `NoOpTracer`，確保 ADK 自身建立遙測 Span 的嘗試被有效地沉默。這可以防止重複追蹤，並允許 AgentOps 成為可觀測性數據的權威來源。

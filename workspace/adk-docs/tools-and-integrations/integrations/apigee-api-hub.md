@@ -1,8 +1,8 @@
 # ADK 的 Apigee API Hub 工具
 
-> 🔔 `更新日期：2026-01-25`
+> 🔔 `更新日期：2026-03-04`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/apigee-api-hub/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/apigee-api-hub/
 
 [`ADK 支援`: `Python v0.1.0`]
 

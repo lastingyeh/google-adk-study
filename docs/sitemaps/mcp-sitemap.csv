@@ -3,6 +3,7 @@ Clients,Clients,https://modelcontextprotocol.io/clients
 Antitrust,Antitrust,https://modelcontextprotocol.io/community/antitrust
 Communication,Communication,https://modelcontextprotocol.io/community/communication
 Contributing,Contributing,https://modelcontextprotocol.io/community/contributing
+Design-principles,Design Principles,https://modelcontextprotocol.io/community/design-principles
 Governance,Governance,https://modelcontextprotocol.io/community/governance
 Sdk-tiers,Sdk Tiers,https://modelcontextprotocol.io/community/sdk-tiers
 Sep-guidelines,Sep Guidelines,https://modelcontextprotocol.io/community/sep-guidelines
@@ -23,6 +24,7 @@ Seps,1850 Pr Based Sep Workflow,https://modelcontextprotocol.io/community/seps/1
 Seps,1865 Mcp Apps Interactive User Interfaces For Mcp,https://modelcontextprotocol.io/community/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp
 Seps,2085 Governance Succession And Amendment,https://modelcontextprotocol.io/community/seps/2085-governance-succession-and-amendment
 Seps,2133 Extensions,https://modelcontextprotocol.io/community/seps/2133-extensions
+Seps,414 Request Meta,https://modelcontextprotocol.io/community/seps/414-request-meta
 Seps,932 Model Context Protocol Governance,https://modelcontextprotocol.io/community/seps/932-model-context-protocol-governance
 Seps,973 Expose Additional Metadata For Implementations Res,https://modelcontextprotocol.io/community/seps/973-expose-additional-metadata-for-implementations-res
 Seps,985 Align Oauth 20 Protected Resource Metadata With Rf,https://modelcontextprotocol.io/community/seps/985-align-oauth-20-protected-resource-metadata-with-rf

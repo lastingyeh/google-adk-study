@@ -126,6 +126,7 @@ integrations:
   - https://google.github.io/adk-docs/integrations/spanner/
   - https://google.github.io/adk-docs/integrations/stackone/
   - https://google.github.io/adk-docs/integrations/stripe/
+  - https://google.github.io/adk-docs/integrations/supermetrics/
   - https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/
   - https://google.github.io/adk-docs/integrations/vertex-ai-search/
   - https://google.github.io/adk-docs/integrations/weave/

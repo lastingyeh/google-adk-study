@@ -1,8 +1,8 @@
 # ADK 的應用程式整合工具 (Application Integration Tools)
 
-> 🔔 `更新日期：2026-01-25`
+> 🔔 `更新日期：2026-03-04`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/application-integration/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/application-integration/
 
 [`ADK 支援`: `Python v0.1.0` | `Java v0.3.0`]
 

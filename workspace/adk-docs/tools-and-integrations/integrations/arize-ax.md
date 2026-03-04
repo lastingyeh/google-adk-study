@@ -1,8 +1,8 @@
 # 使用 Arize AX 實現 Agent 可觀測性
 
-> 🔔 `更新日期：2026-01-29`
+> 🔔 `更新日期：2026-03-04`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/observability/arize-ax/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/arize-ax/
 
 [Arize AX](https://arize.com/docs/ax) 是一個企業級的可觀測性平台，用於大規模監控、偵錯和改進 LLM 應用程式與 AI Agent。它為您的 Google ADK 應用程式提供全面的追蹤（Tracing）、評估（Evaluation）和監控能力。若要開始使用，請註冊一個[免費帳號](https://app.arize.com/auth/join)。
 

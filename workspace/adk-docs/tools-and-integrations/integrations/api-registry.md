@@ -1,8 +1,8 @@
 # 從 Cloud API 登錄中心連接 MCP 工具
 
-> 🔔 `更新日期：2026-01-25`
+> 🔔 `更新日期：2026-03-04`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/api-registry/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/api-registry/
 
 [`ADK 支援`: `Python v1.20.0` | `預覽版`]
 
@@ -69,13 +69,13 @@ root_agent = LlmAgent(
     model="gemini-1.5-flash", # 或您偏好的模型
     name="bigquery_assistant",
     instruction="""
-幫助使用者透過可用工具存取其 BigQuery 資料。
+    幫助使用者透過可用工具存取其 BigQuery 資料。
     """,
     tools=[registry_tools],
 )
 ```
 
-有關此範例的完整程式碼，請參閱 [api_registry_agent](https://github.com/google/adk-python/tree/main/contributing/samples/api_registry_agent/) 範例。有關配置選項的資訊，請參閱 [配置](#配置)。有關此工具驗證的資訊，請參閱 [驗證與存取](#驗證與存取)。
+有關此範例的完整程式碼，請參閱 [api_registry_agent](../../../python/agents/api-registry-agent/) 範例。有關配置選項的資訊，請參閱 [配置](#配置)。有關此工具驗證的資訊，請參閱 [驗證與存取](#驗證與存取)。
 
 ## 驗證與存取
 
@@ -121,4 +121,4 @@ root_agent = LlmAgent(
 
 ### 實作範例
 
--   [`BigQuery API Registry Agent`](../../python/agents/api-registry-agent/): 展示如何使用 API 登錄中心連接器工具來存取 BigQuery 服務的完整代理範例。
+-   [`BigQuery API Registry Agent`](../../../python/agents/api-registry-agent/): 展示如何使用 API 登錄中心連接器工具來存取 BigQuery 服務的完整代理範例。

@@ -6,6 +6,8 @@ communication:
   - https://modelcontextprotocol.io/community/communication
 contributing:
   - https://modelcontextprotocol.io/community/contributing
+design-principles:
+  - https://modelcontextprotocol.io/community/design-principles
 governance:
   - https://modelcontextprotocol.io/community/governance
 sdk-tiers:
@@ -30,6 +32,7 @@ seps:
   - https://modelcontextprotocol.io/community/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp
   - https://modelcontextprotocol.io/community/seps/2085-governance-succession-and-amendment
   - https://modelcontextprotocol.io/community/seps/2133-extensions
+  - https://modelcontextprotocol.io/community/seps/414-request-meta
   - https://modelcontextprotocol.io/community/seps/932-model-context-protocol-governance
   - https://modelcontextprotocol.io/community/seps/973-expose-additional-metadata-for-implementations-res
   - https://modelcontextprotocol.io/community/seps/985-align-oauth-20-protected-resource-metadata-with-rf

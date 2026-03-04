@@ -4,7 +4,7 @@
 
 **資源 (Web Sitemap Resource)**: `https://google.github.io/adk-docs/sitemap.xml`
 
-**更新日期 (Data Updated)**: `2026/02/24`
+**更新日期 (Data Updated)**: `2026/03/04`
 
 ## 網站地圖導航 (Web-Sitemap Roadmap)
 
@@ -121,51 +121,52 @@
 | 109 |  | Spanner | [https://google.github.io/adk-docs/integrations/spanner/](https://google.github.io/adk-docs/integrations/spanner/) |
 | 110 |  | Stackone | [https://google.github.io/adk-docs/integrations/stackone/](https://google.github.io/adk-docs/integrations/stackone/) |
 | 111 |  | Stripe | [https://google.github.io/adk-docs/integrations/stripe/](https://google.github.io/adk-docs/integrations/stripe/) |
-| 112 |  | Vertex Ai Rag Engine | [https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/) |
-| 113 |  | Vertex Ai Search | [https://google.github.io/adk-docs/integrations/vertex-ai-search/](https://google.github.io/adk-docs/integrations/vertex-ai-search/) |
-| 114 |  | Weave | [https://google.github.io/adk-docs/integrations/weave/](https://google.github.io/adk-docs/integrations/weave/) |
-| 115 |  | Windsor Ai | [https://google.github.io/adk-docs/integrations/windsor-ai/](https://google.github.io/adk-docs/integrations/windsor-ai/) |
-| 116 | **Mcp** | Mcp | [https://google.github.io/adk-docs/mcp/](https://google.github.io/adk-docs/mcp/) |
-| 117 | **Observability** | Observability | [https://google.github.io/adk-docs/observability/](https://google.github.io/adk-docs/observability/) |
-| 118 |  | Logging | [https://google.github.io/adk-docs/observability/logging/](https://google.github.io/adk-docs/observability/logging/) |
-| 119 | **Plugins** | Plugins | [https://google.github.io/adk-docs/plugins/](https://google.github.io/adk-docs/plugins/) |
-| 120 | **Runtime** | Runtime | [https://google.github.io/adk-docs/runtime/](https://google.github.io/adk-docs/runtime/) |
-| 121 |  | Api Server | [https://google.github.io/adk-docs/runtime/api-server/](https://google.github.io/adk-docs/runtime/api-server/) |
-| 122 |  | Command Line | [https://google.github.io/adk-docs/runtime/command-line/](https://google.github.io/adk-docs/runtime/command-line/) |
-| 123 |  | Event Loop | [https://google.github.io/adk-docs/runtime/event-loop/](https://google.github.io/adk-docs/runtime/event-loop/) |
-| 124 |  | Resume | [https://google.github.io/adk-docs/runtime/resume/](https://google.github.io/adk-docs/runtime/resume/) |
-| 125 |  | Runconfig | [https://google.github.io/adk-docs/runtime/runconfig/](https://google.github.io/adk-docs/runtime/runconfig/) |
-| 126 |  | Web Interface | [https://google.github.io/adk-docs/runtime/web-interface/](https://google.github.io/adk-docs/runtime/web-interface/) |
-| 127 | **Safety** | Safety | [https://google.github.io/adk-docs/safety/](https://google.github.io/adk-docs/safety/) |
-| 128 | **Sessions** | Sessions | [https://google.github.io/adk-docs/sessions/](https://google.github.io/adk-docs/sessions/) |
-| 129 |  | Memory | [https://google.github.io/adk-docs/sessions/memory/](https://google.github.io/adk-docs/sessions/memory/) |
-| 130 |  | State | [https://google.github.io/adk-docs/sessions/state/](https://google.github.io/adk-docs/sessions/state/) |
-| 131 |  | Session | [https://google.github.io/adk-docs/sessions/session/](https://google.github.io/adk-docs/sessions/session/) |
-| 132 |  | Migrate | [https://google.github.io/adk-docs/sessions/session/migrate/](https://google.github.io/adk-docs/sessions/session/migrate/) |
-| 133 |  | Rewind | [https://google.github.io/adk-docs/sessions/session/rewind/](https://google.github.io/adk-docs/sessions/session/rewind/) |
-| 134 | **Skills** | Skills | [https://google.github.io/adk-docs/skills/](https://google.github.io/adk-docs/skills/) |
-| 135 | **Streaming** | Streaming | [https://google.github.io/adk-docs/streaming/](https://google.github.io/adk-docs/streaming/) |
-| 136 |  | Configuration | [https://google.github.io/adk-docs/streaming/configuration/](https://google.github.io/adk-docs/streaming/configuration/) |
-| 137 |  | Streaming Tools | [https://google.github.io/adk-docs/streaming/streaming-tools/](https://google.github.io/adk-docs/streaming/streaming-tools/) |
-| 138 |  | Part1 | [https://google.github.io/adk-docs/streaming/dev-guide/part1/](https://google.github.io/adk-docs/streaming/dev-guide/part1/) |
-| 139 |  | Part2 | [https://google.github.io/adk-docs/streaming/dev-guide/part2/](https://google.github.io/adk-docs/streaming/dev-guide/part2/) |
-| 140 |  | Part3 | [https://google.github.io/adk-docs/streaming/dev-guide/part3/](https://google.github.io/adk-docs/streaming/dev-guide/part3/) |
-| 141 |  | Part4 | [https://google.github.io/adk-docs/streaming/dev-guide/part4/](https://google.github.io/adk-docs/streaming/dev-guide/part4/) |
-| 142 |  | Part5 | [https://google.github.io/adk-docs/streaming/dev-guide/part5/](https://google.github.io/adk-docs/streaming/dev-guide/part5/) |
-| 143 | **Tools** | Limitations | [https://google.github.io/adk-docs/tools/limitations/](https://google.github.io/adk-docs/tools/limitations/) |
-| 144 | **Tools-custom** | Tools Custom | [https://google.github.io/adk-docs/tools-custom/](https://google.github.io/adk-docs/tools-custom/) |
-| 145 |  | Authentication | [https://google.github.io/adk-docs/tools-custom/authentication/](https://google.github.io/adk-docs/tools-custom/authentication/) |
-| 146 |  | Confirmation | [https://google.github.io/adk-docs/tools-custom/confirmation/](https://google.github.io/adk-docs/tools-custom/confirmation/) |
-| 147 |  | Function Tools | [https://google.github.io/adk-docs/tools-custom/function-tools/](https://google.github.io/adk-docs/tools-custom/function-tools/) |
-| 148 |  | Mcp Tools | [https://google.github.io/adk-docs/tools-custom/mcp-tools/](https://google.github.io/adk-docs/tools-custom/mcp-tools/) |
-| 149 |  | Openapi Tools | [https://google.github.io/adk-docs/tools-custom/openapi-tools/](https://google.github.io/adk-docs/tools-custom/openapi-tools/) |
-| 150 |  | Performance | [https://google.github.io/adk-docs/tools-custom/performance/](https://google.github.io/adk-docs/tools-custom/performance/) |
-| 151 | **Tutorials** | Tutorials | [https://google.github.io/adk-docs/tutorials/](https://google.github.io/adk-docs/tutorials/) |
-| 152 |  | Agent Team | [https://google.github.io/adk-docs/tutorials/agent-team/](https://google.github.io/adk-docs/tutorials/agent-team/) |
-| 153 |  | Coding With Ai | [https://google.github.io/adk-docs/tutorials/coding-with-ai/](https://google.github.io/adk-docs/tutorials/coding-with-ai/) |
-| 154 | **Visual-builder** | Visual Builder | [https://google.github.io/adk-docs/visual-builder/](https://google.github.io/adk-docs/visual-builder/) |
+| 112 |  | Supermetrics | [https://google.github.io/adk-docs/integrations/supermetrics/](https://google.github.io/adk-docs/integrations/supermetrics/) |
+| 113 |  | Vertex Ai Rag Engine | [https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/) |
+| 114 |  | Vertex Ai Search | [https://google.github.io/adk-docs/integrations/vertex-ai-search/](https://google.github.io/adk-docs/integrations/vertex-ai-search/) |
+| 115 |  | Weave | [https://google.github.io/adk-docs/integrations/weave/](https://google.github.io/adk-docs/integrations/weave/) |
+| 116 |  | Windsor Ai | [https://google.github.io/adk-docs/integrations/windsor-ai/](https://google.github.io/adk-docs/integrations/windsor-ai/) |
+| 117 | **Mcp** | Mcp | [https://google.github.io/adk-docs/mcp/](https://google.github.io/adk-docs/mcp/) |
+| 118 | **Observability** | Observability | [https://google.github.io/adk-docs/observability/](https://google.github.io/adk-docs/observability/) |
+| 119 |  | Logging | [https://google.github.io/adk-docs/observability/logging/](https://google.github.io/adk-docs/observability/logging/) |
+| 120 | **Plugins** | Plugins | [https://google.github.io/adk-docs/plugins/](https://google.github.io/adk-docs/plugins/) |
+| 121 | **Runtime** | Runtime | [https://google.github.io/adk-docs/runtime/](https://google.github.io/adk-docs/runtime/) |
+| 122 |  | Api Server | [https://google.github.io/adk-docs/runtime/api-server/](https://google.github.io/adk-docs/runtime/api-server/) |
+| 123 |  | Command Line | [https://google.github.io/adk-docs/runtime/command-line/](https://google.github.io/adk-docs/runtime/command-line/) |
+| 124 |  | Event Loop | [https://google.github.io/adk-docs/runtime/event-loop/](https://google.github.io/adk-docs/runtime/event-loop/) |
+| 125 |  | Resume | [https://google.github.io/adk-docs/runtime/resume/](https://google.github.io/adk-docs/runtime/resume/) |
+| 126 |  | Runconfig | [https://google.github.io/adk-docs/runtime/runconfig/](https://google.github.io/adk-docs/runtime/runconfig/) |
+| 127 |  | Web Interface | [https://google.github.io/adk-docs/runtime/web-interface/](https://google.github.io/adk-docs/runtime/web-interface/) |
+| 128 | **Safety** | Safety | [https://google.github.io/adk-docs/safety/](https://google.github.io/adk-docs/safety/) |
+| 129 | **Sessions** | Sessions | [https://google.github.io/adk-docs/sessions/](https://google.github.io/adk-docs/sessions/) |
+| 130 |  | Memory | [https://google.github.io/adk-docs/sessions/memory/](https://google.github.io/adk-docs/sessions/memory/) |
+| 131 |  | State | [https://google.github.io/adk-docs/sessions/state/](https://google.github.io/adk-docs/sessions/state/) |
+| 132 |  | Session | [https://google.github.io/adk-docs/sessions/session/](https://google.github.io/adk-docs/sessions/session/) |
+| 133 |  | Migrate | [https://google.github.io/adk-docs/sessions/session/migrate/](https://google.github.io/adk-docs/sessions/session/migrate/) |
+| 134 |  | Rewind | [https://google.github.io/adk-docs/sessions/session/rewind/](https://google.github.io/adk-docs/sessions/session/rewind/) |
+| 135 | **Skills** | Skills | [https://google.github.io/adk-docs/skills/](https://google.github.io/adk-docs/skills/) |
+| 136 | **Streaming** | Streaming | [https://google.github.io/adk-docs/streaming/](https://google.github.io/adk-docs/streaming/) |
+| 137 |  | Configuration | [https://google.github.io/adk-docs/streaming/configuration/](https://google.github.io/adk-docs/streaming/configuration/) |
+| 138 |  | Streaming Tools | [https://google.github.io/adk-docs/streaming/streaming-tools/](https://google.github.io/adk-docs/streaming/streaming-tools/) |
+| 139 |  | Part1 | [https://google.github.io/adk-docs/streaming/dev-guide/part1/](https://google.github.io/adk-docs/streaming/dev-guide/part1/) |
+| 140 |  | Part2 | [https://google.github.io/adk-docs/streaming/dev-guide/part2/](https://google.github.io/adk-docs/streaming/dev-guide/part2/) |
+| 141 |  | Part3 | [https://google.github.io/adk-docs/streaming/dev-guide/part3/](https://google.github.io/adk-docs/streaming/dev-guide/part3/) |
+| 142 |  | Part4 | [https://google.github.io/adk-docs/streaming/dev-guide/part4/](https://google.github.io/adk-docs/streaming/dev-guide/part4/) |
+| 143 |  | Part5 | [https://google.github.io/adk-docs/streaming/dev-guide/part5/](https://google.github.io/adk-docs/streaming/dev-guide/part5/) |
+| 144 | **Tools** | Limitations | [https://google.github.io/adk-docs/tools/limitations/](https://google.github.io/adk-docs/tools/limitations/) |
+| 145 | **Tools-custom** | Tools Custom | [https://google.github.io/adk-docs/tools-custom/](https://google.github.io/adk-docs/tools-custom/) |
+| 146 |  | Authentication | [https://google.github.io/adk-docs/tools-custom/authentication/](https://google.github.io/adk-docs/tools-custom/authentication/) |
+| 147 |  | Confirmation | [https://google.github.io/adk-docs/tools-custom/confirmation/](https://google.github.io/adk-docs/tools-custom/confirmation/) |
+| 148 |  | Function Tools | [https://google.github.io/adk-docs/tools-custom/function-tools/](https://google.github.io/adk-docs/tools-custom/function-tools/) |
+| 149 |  | Mcp Tools | [https://google.github.io/adk-docs/tools-custom/mcp-tools/](https://google.github.io/adk-docs/tools-custom/mcp-tools/) |
+| 150 |  | Openapi Tools | [https://google.github.io/adk-docs/tools-custom/openapi-tools/](https://google.github.io/adk-docs/tools-custom/openapi-tools/) |
+| 151 |  | Performance | [https://google.github.io/adk-docs/tools-custom/performance/](https://google.github.io/adk-docs/tools-custom/performance/) |
+| 152 | **Tutorials** | Tutorials | [https://google.github.io/adk-docs/tutorials/](https://google.github.io/adk-docs/tutorials/) |
+| 153 |  | Agent Team | [https://google.github.io/adk-docs/tutorials/agent-team/](https://google.github.io/adk-docs/tutorials/agent-team/) |
+| 154 |  | Coding With Ai | [https://google.github.io/adk-docs/tutorials/coding-with-ai/](https://google.github.io/adk-docs/tutorials/coding-with-ai/) |
+| 155 | **Visual-builder** | Visual Builder | [https://google.github.io/adk-docs/visual-builder/](https://google.github.io/adk-docs/visual-builder/) |
 
 ## 總結說明 (Summary) 
 
-- **總頁面數 (Total Pages)**: `154`
+- **總頁面數 (Total Pages)**: `155`
 - **總分類數 (Categories)**: `29`
