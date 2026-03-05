@@ -1,8 +1,8 @@
 # ADK 的 BigQuery 工具
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/bigquery/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/bigquery/
 
 [`ADK 支援`: `Python v1.1.0`]
 

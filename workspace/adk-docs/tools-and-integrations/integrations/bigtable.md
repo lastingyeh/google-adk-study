@@ -1,8 +1,8 @@
 # ADK 的 Bigtable 資料庫工具
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/bigtable/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/bigtable/
 
 [`ADK 支援`: `Python v1.12.0`]
 

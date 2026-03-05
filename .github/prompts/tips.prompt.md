@@ -23,3 +23,15 @@
 1. 50個字內容摘要
 2. 英文重點標籤 格式如 `adk`, `a2a`, `example`
 3. 20個字簡單標題內容
+
+## 更新工具整合
+分析 #file:integrations 檔案內容
+將取得內容進行 #file:index.md 所有表格 `工具名稱` 欄位ˋ進行比對
+1. 若對應成功，將欄位內容修改為對應檔案連結
+2. 失敗，則保持內容不變
+---
+
+## 更新工具整合
+根據 #file:tools-and-integrations 目錄檔案
+依照 #file:index.md 表格格式
+進行 #sym:### 代理工具與整合 (Tools and Integrations for Agents) 內容新增

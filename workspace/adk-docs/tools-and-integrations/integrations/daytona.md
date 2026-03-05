@@ -1,8 +1,8 @@
 # Daytona
 
-> 🔔 `更新日期：2026-01-27`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/third-party/daytona/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/daytona/
 
 [Daytona ADK 外掛程式](https://github.com/daytonaio/daytona-adk-plugin) 將您的 ADK 代理程式連線至 [Daytona](https://www.daytona.io/) 沙箱。此整合賦予您的代理程式在隔離環境中執行程式碼、執行 shell 命令以及管理檔案的能力，從而實現 AI 生成程式碼的安全執行。
 

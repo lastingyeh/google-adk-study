@@ -1,8 +1,8 @@
 # Cartesia
 
-> 🔔 `更新日期：2026-01-27`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/third-party/cartesia/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/cartesia/
 
 [Cartesia MCP 伺服器](https://github.com/cartesia-ai/cartesia-mcp) 將您的 ADK 代理程式連接到 [Cartesia](https://cartesia.ai/) AI 音訊平台。此整合讓您的代理程式具備生成語音、跨語言在地化聲音，以及使用自然語言建立音訊內容的能力。
 
@@ -23,37 +23,74 @@
 
 ## 與代理程式搭配使用
 
-    ```python
-    from google.adk.agents import Agent
-    from google.adk.tools.mcp_tool import McpToolset
-    from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
-    from mcp import StdioServerParameters
+<details>
+<summary>範例說明</summary>
 
-    # 您的 Cartesia API 金鑰
-    CARTESIA_API_KEY = "YOUR_CARTESIA_API_KEY"
+> Python
 
-    # 定義根代理程式
-    root_agent = Agent(
-        model="gemini-2.5-pro",
-        name="cartesia_agent",
-        instruction="幫助使用者生成語音並處理音訊內容",
-        tools=[
-            McpToolset(
-                connection_params=StdioConnectionParams(
-                    server_params=StdioServerParameters(
-                        command="uvx",
-                        args=["cartesia-mcp"],
-                        env={
-                            "CARTESIA_API_KEY": CARTESIA_API_KEY,
-                            # "OUTPUT_DIRECTORY": "/path/to/output",  # 選填：輸出目錄
-                        }
-                    ),
-                    timeout=30, # 逾時設定（秒）
+**Local MCP Server**
+```python
+from google.adk.agents import Agent
+from google.adk.tools.mcp_tool import McpToolset
+from google.adk.tools.mcp_tool.mcp_session_manager import StdioConnectionParams
+from mcp import StdioServerParameters
+
+# 您的 Cartesia API 金鑰
+CARTESIA_API_KEY = "YOUR_CARTESIA_API_KEY"
+
+# 定義根代理程式
+root_agent = Agent(
+    model="gemini-2.5-pro",
+    name="cartesia_agent",
+    instruction="幫助使用者生成語音並處理音訊內容",
+    tools=[
+        McpToolset(
+            connection_params=StdioConnectionParams(
+                server_params=StdioServerParameters(
+                    command="uvx",
+                    args=["cartesia-mcp"],
+                    env={
+                        "CARTESIA_API_KEY": CARTESIA_API_KEY,
+                        # "OUTPUT_DIRECTORY": "/path/to/output",  # 選填：輸出目錄
+                    }
                 ),
-            )
-        ],
-    )
-    ```
+                timeout=30, # 逾時設定（秒）
+            ),
+        )
+    ],
+)
+```
+
+> TypeScript
+
+**Local MCP Server**
+```ts
+import { LlmAgent, MCPToolset } from "@google/adk";
+
+const CARTESIA_API_KEY = "YOUR_CARTESIA_API_KEY";
+
+const rootAgent = new LlmAgent({
+    model: "gemini-2.5-pro",
+    name: "cartesia_agent",
+    instruction: "幫助使用者生成語音並處理音訊內容",
+    tools: [
+        new MCPToolset({
+            type: "StdioConnectionParams",
+            serverParams: {
+                command: "uvx",
+                args: ["cartesia-mcp"],
+                env: {
+                    CARTESIA_API_KEY: CARTESIA_API_KEY,
+                    // OUTPUT_DIRECTORY: "/path/to/output",  // 選填：輸出目錄
+                },
+            },
+        }),
+    ],
+});
+
+export { rootAgent };
+```
+</details>
 
 ## 可用工具
 

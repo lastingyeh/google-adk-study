@@ -1,10 +1,10 @@
 # 使用 Cloud Trace 實現 Agent 的可觀測性
 
-> 🔔 `更新日期：2026-01-28`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/observability/cloud-trace/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/cloud-trace/
 
-透過 ADK，您已經可以利用 [這裡](../evaluation/index.md#使用追蹤檢視-trace-view-進行除錯) 討論過的強大 Web 開發 UI 在本地檢查並觀察您的 Agent 互動。然而，如果我們的目標是雲端部署，我們將需要一個集中式的儀表板來觀察實際流量。
+透過 ADK，您已經可以利用 [這裡](../../evaluation/index.md#使用追蹤檢視-trace-view-進行除錯) 討論過的強大 Web 開發 UI 在本地檢查並觀察您的 Agent 互動。然而，如果我們的目標是雲端部署，我們將需要一個集中式的儀表板來觀察實際流量。
 
 Cloud Trace 是 Google Cloud Observability 的一個組件。它是一個強大的工具，專門透過追蹤功能來監控、偵錯並改善應用程式的效能。對於 Agent 開發套件 (ADK) 應用程式，Cloud Trace 實現了全面的追蹤，協助您了解請求如何流經您的 Agent 互動，並識別 AI Agent 內的效能瓶頸或錯誤。
 
@@ -272,8 +272,21 @@ if __name__ == "__main__":
 
 ### 實作範例
 
--   [`Short Movie Agents`](../../python/agents/short-movie-agents/): 展示透過實現`CloudTraceSpanExporter`使用 Cloud Trace 來監控和偵錯生成式 AI 代理的完整範例。
+-   [`Short Movie Agents`](../../../python/agents/short-movie-agents/): 展示透過實現`CloudTraceSpanExporter`使用 Cloud Trace 來監控和偵錯生成式 AI 代理的完整範例。
 
 ## 資源
 
 - [Google Cloud Trace 文件](https://cloud.google.com/trace)
+
+## 整理說明
+下表整理了各種 Cloud Trace 設定方式及其適用情境：
+
+| 設定方式 | 適用場景 | 啟用追蹤方式 | 主要用途/說明 |
+|---|---|---|---|
+| Agent Engine 部署（ADK CLI） | 使用 ADK CLI 部署 Agent Engine | `adk deploy agent_engine --trace_to_cloud` | 直接於部署時啟用雲端追蹤，適合標準部署流程 |
+| Agent Engine 部署（Python SDK） | 以 Python SDK 程式化部署 Agent Engine | `AdkApp(enable_tracing=True)` | 於程式碼層級啟用追蹤，彈性高，適合自動化或自訂部署 |
+| Cloud Run 部署（ADK CLI） | 使用 ADK CLI 部署至 Cloud Run | `adk deploy cloud_run --trace_to_cloud` | 於雲端服務部署時直接啟用追蹤，適合標準雲端部署 |
+| Cloud Run 自定義服務 | Cloud Run 上自定義 FastAPI/服務 | `get_fast_api_app(trace_to_cloud=True)` | 適合需自訂 API 服務的場景，於應用程式層啟用追蹤 |
+| 完全自定義 Agent Runner | 需高度自訂執行流程 | `CloudTraceSpanExporter` + OpenTelemetry | 最高彈性，適合特殊需求或進階可觀測性整合 |
+
+> 各設定方式皆可將追蹤資料自動上傳至 Google Cloud Trace，方便於 Trace Explorer 進行視覺化分析與效能診斷。

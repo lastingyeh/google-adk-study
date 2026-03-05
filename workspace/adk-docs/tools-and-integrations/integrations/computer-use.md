@@ -1,8 +1,8 @@
 # 使用 Gemini API 的電腦使用工具集 (Computer Use Toolset)
 
-> 🔔 更新日期：2026-01-23
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 資料來源：https://google.github.io/adk-docs/tools/gemini-api/computer-use/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/computer-use/
 
 [`ADK 支援`: `Python v1.17.0` | `Preview`]
 
@@ -17,36 +17,35 @@
 
 您必須安裝 Playwright 及其依賴項（包括 Chromium），才能使用電腦使用工具集。
 
-> [!TIP] 建議：建立並啟用 Python 虛擬環境
-
-建立 Python 虛擬環境：
-
-```shell
-# 建立名為 .venv 的虛擬環境
-python -m venv .venv
-```
-
-啟用 Python 虛擬環境：
-
-> Windows CMD
-
-```console
-# 在 Windows 命令提示字元中啟用虛擬環境
-.venv\Scripts\activate.bat
-```
-
-> Windows Powershell
-
-```console
-# 在 Windows Powershell 中啟用虛擬環境
-.venv\Scripts\Activate.ps1
-```
-
-> MacOS / Linux
-```bash
-# 在 MacOS 或 Linux 中啟用虛擬環境
-source .venv/bin/activate
-```
+> [!IMPORTANT] 建議：建立並啟用 Python 虛擬環境
+> 建立 Python 虛擬環境：
+>
+> ```shell
+> # 建立名為 .venv 的虛擬環境
+> python -m venv .venv
+> ```
+>
+> 啟用 Python 虛擬環境：
+>
+> - Windows CMD
+>
+>  ```
+> # 在 Windows 命令提示字元中啟用虛擬環境
+> .venv\Scripts\activate.bat
+> ```
+>
+> - Windows Powershell
+>
+>```
+># 在 Windows Powershell 中啟用虛擬環境
+>.venv\Scripts\Activate.ps1
+>```
+>
+> - MacOS / Linux
+>```bash
+># 在 MacOS 或 Linux 中啟用虛擬環境
+>source .venv/bin/activate
+>```
 
 要為電腦使用工具集設定所需的軟體程式庫：
 
@@ -69,11 +68,6 @@ source .venv/bin/activate
 ## 使用工具
 
 透過將電腦使用工具集作為工具新增到您的代理來使用它。當您設定工具時，必須提供 `BaseComputer` 類別的實作，該類別定義了代理使用電腦的介面。在以下範例中，為此目的定義了 `PlaywrightComputer` 類別。您可以在 [computer_use](https://github.com/google/adk-python/blob/main/contributing/samples/computer_use/playwright.py) 代理範例專案的 `playwright.py` 檔案中找到此實作的程式碼。
-
-<details>
-<summary>範例說明</summary>
-
-> Python
 
 ```python
 from google.adk import Agent
@@ -99,8 +93,6 @@ root_agent = Agent(
     ],
 )
 ```
-
-</details>
 
 有關完整的程式碼範例，請參閱 [computer_use](https://github.com/google/adk-python/tree/main/contributing/samples/computer_use) 代理範例專案。
 

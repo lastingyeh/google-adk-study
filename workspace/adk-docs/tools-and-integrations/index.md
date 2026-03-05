@@ -18,16 +18,16 @@
 | [Asana](integrations/asana.md) | 管理專案、工作及目標以進行團隊協作 |
 | [Atlassian](integrations/atlassian.md) | 管理問題、搜尋頁面並更新團隊內容 |
 | [BigQuery Agent Analytics Plugin](integrations/bigquery-agent-analytics.md) | 針對行為分析和記錄的深入 agent 分析 |
-| [BigQuery Tools](https://google.github.io/adk-docs/integrations/bigquery/) | 連接 BigQuery 以擷取資料並執行分析 |
-| [Bigtable Tools](https://google.github.io/adk-docs/integrations/bigtable/) | 與 Bigtable 互動以擷取資料並執行 SQL |
-| [Cartesia](https://google.github.io/adk-docs/integrations/cartesia/) | 產生語音、本地化語音並建立音訊內容 |
-| [Chroma](https://google.github.io/adk-docs/integrations/chroma/) | 使用語義向量搜尋儲存和擷取資訊 |
-| [Google Cloud Trace](https://google.github.io/adk-docs/integrations/cloud-trace/) | 監控、偵錯及追蹤 ADK agent 互動 |
-| [Code Execution Tool with Agent Engine](https://google.github.io/adk-docs/integrations/code-exec-agent-engine/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
-| [Code Execution](https://google.github.io/adk-docs/integrations/code-execution/) | 使用 Gemini 模型執行程式碼並進行偵錯 |
-| [Computer Use](https://google.github.io/adk-docs/integrations/computer-use/) | 使用 Gemini 模型操作電腦使用者介面 |
-| [Data Agents](https://google.github.io/adk-docs/integrations/data-agent/) | 使用 AI 驅動的 agents 進行資料分析 |
-| [Daytona](https://google.github.io/adk-docs/integrations/daytona/) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
+| [BigQuery Tools](integrations/bigquery.md) | 連接 BigQuery 以擷取資料並執行分析 |
+| [Bigtable Tools](integrations/bigtable.md) | 與 Bigtable 互動以擷取資料並執行 SQL |
+| [Cartesia](integrations/cartesia.md) | 產生語音、本地化語音並建立音訊內容 |
+| [Chroma](integrations/chroma.md) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Google Cloud Trace](integrations/cloud-trace.md) | 監控、偵錯及追蹤 ADK agent 互動 |
+| [Code Execution Tool with Agent Engine](integrations/code-exec-agent-engine.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [Code Execution](integrations/code-execution.md) | 使用 Gemini 模型執行程式碼並進行偵錯 |
+| [Computer Use](integrations/computer-use.md) | 使用 Gemini 模型操作電腦使用者介面 |
+| [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
+| [Daytona](integrations/daytona.md) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
 | [ElevenLabs](https://google.github.io/adk-docs/integrations/elevenlabs/) | 產生語音、複製語音、轉錄音訊並建立音效 |
 | [Vertex AI express mode](https://google.github.io/adk-docs/integrations/express-mode/) | 以零成本試用 Vertex AI 服務開發 |
 | [Freeplay](https://google.github.io/adk-docs/integrations/freeplay/) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
@@ -68,9 +68,9 @@
 
 | 工具名稱 | 說明 |
 |---------|------|
-| [Code Execution Tool with Agent Engine](https://google.github.io/adk-docs/integrations/code-exec-agent-engine/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
-| [Code Execution](https://google.github.io/adk-docs/integrations/code-execution/) | 使用 Gemini 模型執行程式碼並進行偵錯 |
-| [Daytona](https://google.github.io/adk-docs/integrations/daytona/) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
+| [Code Execution Tool with Agent Engine](integrations/code-exec-agent-engine.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [Code Execution](integrations/code-execution.md) | 使用 Gemini 模型執行程式碼並進行偵錯 |
+| [Daytona](integrations/daytona.md) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
 | [GitHub](https://google.github.io/adk-docs/integrations/github/) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
 | [GitLab](https://google.github.io/adk-docs/integrations/gitlab/) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
 | [GKE Code Executor](https://google.github.io/adk-docs/integrations/gke-code-executor/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
@@ -89,10 +89,10 @@
 
 | 工具名稱 | 說明 |
 |---------|------|
-| [BigQuery Tools](https://google.github.io/adk-docs/integrations/bigquery/) | 連接 BigQuery 以擷取資料並執行分析 |
-| [Bigtable Tools](https://google.github.io/adk-docs/integrations/bigtable/) | 與 Bigtable 互動以擷取資料並執行 SQL |
-| [Chroma](https://google.github.io/adk-docs/integrations/chroma/) | 使用語義向量搜尋儲存和擷取資訊 |
-| [Data Agents](https://google.github.io/adk-docs/integrations/data-agent/) | 使用 AI 驅動的 agents 進行資料分析 |
+| [BigQuery Tools](integrations/bigquery.md) | 連接 BigQuery 以擷取資料並執行分析 |
+| [Bigtable Tools](integrations/bigtable.md) | 與 Bigtable 互動以擷取資料並執行 SQL |
+| [Chroma](integrations/chroma.md) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
 | [GoodMem](https://google.github.io/adk-docs/integrations/goodmem/) | 在對話間為 agents 新增持久的語義記憶 |
 | [MCP Toolbox for Databases](https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [MongoDB](https://google.github.io/adk-docs/integrations/mongodb/) | 查詢集合、管理資料庫及分析結構描述 |
@@ -111,13 +111,13 @@
 | [Apigee API Hub](integrations/apigee-api-hub.md) | 將 Apigee API Hub 中任何已記錄的 API 轉換為工具 |
 | [Application Integration](integrations/application-integration.md) | 使用整合連接器將 agents 連結至企業應用程式 |
 | [BigQuery Agent Analytics Plugin](integrations/bigquery-agent-analytics.md) | 針對行為分析和記錄的深入 agent 分析 |
-| [BigQuery Tools](https://google.github.io/adk-docs/integrations/bigquery/) | 連接 BigQuery 以擷取資料並執行分析 |
-| [Bigtable Tools](https://google.github.io/adk-docs/integrations/bigtable/) | 與 Bigtable 互動以擷取資料並執行 SQL |
-| [Google Cloud Trace](https://google.github.io/adk-docs/integrations/cloud-trace/) | 監控、偵錯及追蹤 ADK agent 互動 |
-| [Code Execution Tool with Agent Engine](https://google.github.io/adk-docs/integrations/code-exec-agent-engine/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
-| [Code Execution](https://google.github.io/adk-docs/integrations/code-execution/) | 使用 Gemini 模型執行程式碼並進行偵錯 |
-| [Computer Use](https://google.github.io/adk-docs/integrations/computer-use/) | 使用 Gemini 模型操作電腦使用者介面 |
-| [Data Agents](https://google.github.io/adk-docs/integrations/data-agent/) | 使用 AI 驅動的 agents 進行資料分析 |
+| [BigQuery Tools](integrations/bigquery.md) | 連接 BigQuery 以擷取資料並執行分析 |
+| [Bigtable Tools](integrations/bigtable.md) | 與 Bigtable 互動以擷取資料並執行 SQL |
+| [Google Cloud Trace](integrations/cloud-trace.md) | 監控、偵錯及追蹤 ADK agent 互動 |
+| [Code Execution Tool with Agent Engine](integrations/code-exec-agent-engine.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [Code Execution](integrations/code-execution.md) | 使用 Gemini 模型執行程式碼並進行偵錯 |
+| [Computer Use](integrations/computer-use.md) | 使用 Gemini 模型操作電腦使用者介面 |
+| [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
 | [Vertex AI express mode](https://google.github.io/adk-docs/integrations/express-mode/) | 以零成本試用 Vertex AI 服務開發 |
 | [GKE Code Executor](https://google.github.io/adk-docs/integrations/gke-code-executor/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
 | [Google Search](https://google.github.io/adk-docs/integrations/google-search/) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
@@ -136,8 +136,8 @@
 | [Google Cloud API Registry](integrations/api-registry.md) | 以 MCP 工具形式連接 Google Cloud 服務 |
 | [Asana](integrations/asana.md) | 管理專案、工作及目標以進行團隊協作 |
 | [Atlassian](integrations/atlassian.md) | 管理問題、搜尋頁面並更新團隊內容 |
-| [Cartesia](https://google.github.io/adk-docs/integrations/cartesia/) | 產生語音、本地化語音並建立音訊內容 |
-| [Chroma](https://google.github.io/adk-docs/integrations/chroma/) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Cartesia](integrations/cartesia.md) | 產生語音、本地化語音並建立音訊內容 |
+| [Chroma](integrations/chroma.md) | 使用語義向量搜尋儲存和擷取資訊 |
 | [ElevenLabs](https://google.github.io/adk-docs/integrations/elevenlabs/) | 產生語音、複製語音、轉錄音訊並建立音效 |
 | [GitHub](https://google.github.io/adk-docs/integrations/github/) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
 | [GitLab](https://google.github.io/adk-docs/integrations/gitlab/) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
@@ -163,7 +163,7 @@
 | [AgentOps](integrations/agentops.md) | ADK agents 的工作階段重播、指標及監控 |
 | [Arize AX](integrations/arize-ax.md) | LLM 應用程式的生產級可觀測性、偵錯及改進 |
 | [BigQuery Agent Analytics Plugin](integrations/bigquery-agent-analytics.md) | 針對行為分析和記錄的深入 agent 分析 |
-| [Google Cloud Trace](https://google.github.io/adk-docs/integrations/cloud-trace/) | 監控、偵錯及追蹤 ADK agent 互動 |
+| [Google Cloud Trace](integrations/cloud-trace.md) | 監控、偵錯及追蹤 ADK agent 互動 |
 | [Freeplay](https://google.github.io/adk-docs/integrations/freeplay/) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
 | [MLflow](https://google.github.io/adk-docs/integrations/mlflow/) | 擷取 agent 執行、工具呼叫及模型要求的 OpenTelemetry 追蹤 |
 | [Monocle](https://google.github.io/adk-docs/integrations/monocle/) | LLM 應用程式的開源可觀測性、追蹤及偵錯 |

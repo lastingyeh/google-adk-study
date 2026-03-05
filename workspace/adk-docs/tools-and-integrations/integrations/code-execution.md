@@ -1,8 +1,8 @@
 # 使用 Gemini API 執行程式碼
 
-> 🔔 `更新日期：2026-01-23`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/gemini-api/code-execution/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/code-execution/
 
 [`ADK 支援`: `Python v0.1.0` | `Java v0.2.0`]
 
@@ -11,7 +11,7 @@
 > [!WARNING] 警告：每個代理程式僅限單一工具
 此工具在代理程式實例中只能***單獨使用***。
 如需更多關於此限制及解決辦法的資訊，請參閱
-[ADK 工具的限制](../limitations.md#adk-工具限制)。
+[ADK 工具的限制](https://google.github.io/adk-docs/tools/limitations/#one-tool-one-agent)。
 
 <details>
 <summary>範例說明</summary>

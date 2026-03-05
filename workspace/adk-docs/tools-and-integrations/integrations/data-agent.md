@@ -1,8 +1,8 @@
 # ADK 的數據代理工具 (Data Agents tools)
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-05`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/data-agent/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/data-agent/
 
 [`ADK 支援`: `Python v1.23.0`]
 
