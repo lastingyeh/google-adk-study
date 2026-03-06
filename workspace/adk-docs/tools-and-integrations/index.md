@@ -28,16 +28,16 @@
 | [Computer Use](integrations/computer-use.md) | 使用 Gemini 模型操作電腦使用者介面 |
 | [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
 | [Daytona](integrations/daytona.md) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
-| [ElevenLabs](https://google.github.io/adk-docs/integrations/elevenlabs/) | 產生語音、複製語音、轉錄音訊並建立音效 |
-| [Vertex AI express mode](https://google.github.io/adk-docs/integrations/express-mode/) | 以零成本試用 Vertex AI 服務開發 |
-| [Freeplay](https://google.github.io/adk-docs/integrations/freeplay/) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
-| [GitHub](https://google.github.io/adk-docs/integrations/github/) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
-| [GitLab](https://google.github.io/adk-docs/integrations/gitlab/) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
-| [GKE Code Executor](https://google.github.io/adk-docs/integrations/gke-code-executor/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
-| [GoodMem](https://google.github.io/adk-docs/integrations/goodmem/) | 在對話間為 agents 新增持久的語義記憶 |
-| [Google Search](https://google.github.io/adk-docs/integrations/google-search/) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
-| [Hugging Face](https://google.github.io/adk-docs/integrations/hugging-face/) | 存取模型、資料集、研究論文及 AI 工具 |
-| [Linear](https://google.github.io/adk-docs/integrations/linear/) | 管理問題、追蹤專案並簡化開發 |
+| [ElevenLabs](integrations/elevenlabs.md) | 產生語音、複製語音、轉錄音訊並建立音效 |
+| [Vertex AI express mode](integrations/express-mode.md) | 以零成本試用 Vertex AI 服務開發 |
+| [Freeplay](integrations/freeplay.md) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
+| [GitHub](integrations/github.md) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
+| [GitLab](integrations/gitlab.md) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
+| [GKE Code Executor](integrations/gke-code-executor.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [GoodMem](integrations/goodmem.md) | 在對話間為 agents 新增持久的語義記憶 |
+| [Google Search](integrations/google-search.md) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
+| [Hugging Face](integrations/hugging-face.md) | 存取模型、資料集、研究論文及 AI 工具 |
+| [Linear](integrations/linear.md) | 管理問題、追蹤專案並簡化開發 |
 | [Mailgun](https://google.github.io/adk-docs/integrations/mailgun/) | 傳送電子郵件、追蹤傳遞指標並管理郵寄清單 |
 | [MCP Toolbox for Databases](https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [MLflow](https://google.github.io/adk-docs/integrations/mlflow/) | 擷取 agent 執行、工具呼叫及模型要求的 OpenTelemetry 追蹤 |
@@ -71,9 +71,9 @@
 | [Code Execution Tool with Agent Engine](integrations/code-exec-agent-engine.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
 | [Code Execution](integrations/code-execution.md) | 使用 Gemini 模型執行程式碼並進行偵錯 |
 | [Daytona](integrations/daytona.md) | 在安全沙箱中執行程式碼、執行 Shell 指令和管理檔案 |
-| [GitHub](https://google.github.io/adk-docs/integrations/github/) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
-| [GitLab](https://google.github.io/adk-docs/integrations/gitlab/) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
-| [GKE Code Executor](https://google.github.io/adk-docs/integrations/gke-code-executor/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [GitHub](integrations/github.md) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
+| [GitLab](integrations/gitlab.md) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
+| [GKE Code Executor](integrations/gke-code-executor.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
 
 ### 連接器
 
@@ -93,7 +93,7 @@
 | [Bigtable Tools](integrations/bigtable.md) | 與 Bigtable 互動以擷取資料並執行 SQL |
 | [Chroma](integrations/chroma.md) | 使用語義向量搜尋儲存和擷取資訊 |
 | [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
-| [GoodMem](https://google.github.io/adk-docs/integrations/goodmem/) | 在對話間為 agents 新增持久的語義記憶 |
+| [GoodMem](integrations/goodmem.md) | 在對話間為 agents 新增持久的語義記憶 |
 | [MCP Toolbox for Databases](https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [MongoDB](https://google.github.io/adk-docs/integrations/mongodb/) | 查詢集合、管理資料庫及分析結構描述 |
 | [Pinecone](https://google.github.io/adk-docs/integrations/pinecone/) | 儲存資料、執行語義搜尋及重新排名結果 |
@@ -118,15 +118,15 @@
 | [Code Execution](integrations/code-execution.md) | 使用 Gemini 模型執行程式碼並進行偵錯 |
 | [Computer Use](integrations/computer-use.md) | 使用 Gemini 模型操作電腦使用者介面 |
 | [Data Agents](integrations/data-agent.md) | 使用 AI 驅動的 agents 進行資料分析 |
-| [Vertex AI express mode](https://google.github.io/adk-docs/integrations/express-mode/) | 以零成本試用 Vertex AI 服務開發 |
-| [GKE Code Executor](https://google.github.io/adk-docs/integrations/gke-code-executor/) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
-| [Google Search](https://google.github.io/adk-docs/integrations/google-search/) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
+| [Vertex AI express mode](integrations/express-mode.md) | 以零成本試用 Vertex AI 服務開發 |
+| [GKE Code Executor](integrations/gke-code-executor.md) | 在安全且可擴展的 GKE 環境中執行 AI 生成的程式碼 |
+| [Google Search](integrations/google-search.md) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
 | [MCP Toolbox for Databases](https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [Pub/Sub Tools](https://google.github.io/adk-docs/integrations/pubsub/) | 發佈、提取及確認來自 Google Cloud Pub/Sub 的訊息 |
 | [Reflect and Retry Plugin](https://google.github.io/adk-docs/integrations/reflect-and-retry/) | 自動重試失敗的工具呼叫 |
 | [Spanner Tools](https://google.github.io/adk-docs/integrations/spanner/) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
-| [Vertex AI RAG Engine](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
-| [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
+| [Vertex AI RAG Engine](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/)) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
+| [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/)) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
 
 ### MCP
 
@@ -138,11 +138,11 @@
 | [Atlassian](integrations/atlassian.md) | 管理問題、搜尋頁面並更新團隊內容 |
 | [Cartesia](integrations/cartesia.md) | 產生語音、本地化語音並建立音訊內容 |
 | [Chroma](integrations/chroma.md) | 使用語義向量搜尋儲存和擷取資訊 |
-| [ElevenLabs](https://google.github.io/adk-docs/integrations/elevenlabs/) | 產生語音、複製語音、轉錄音訊並建立音效 |
-| [GitHub](https://google.github.io/adk-docs/integrations/github/) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
-| [GitLab](https://google.github.io/adk-docs/integrations/gitlab/) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
-| [Hugging Face](https://google.github.io/adk-docs/integrations/hugging-face/) | 存取模型、資料集、研究論文及 AI 工具 |
-| [Linear](https://google.github.io/adk-docs/integrations/linear/) | 管理問題、追蹤專案並簡化開發 |
+| [ElevenLabs](integrations/elevenlabs.md) | 產生語音、複製語音、轉錄音訊並建立音效 |
+| [GitHub](integrations/github.md) | 分析程式碼、管理問題和 PR，以及自動化工作流程 |
+| [GitLab](integrations/gitlab.md) | 執行語義程式碼搜尋、檢查管道、管理合併請求 |
+| [Hugging Face](integrations/hugging-face.md) | 存取模型、資料集、研究論文及 AI 工具 |
+| [Linear](integrations/linear.md) | 管理問題、追蹤專案並簡化開發 |
 | [Mailgun](https://google.github.io/adk-docs/integrations/mailgun/) | 傳送電子郵件、追蹤傳遞指標並管理郵寄清單 |
 | [MCP Toolbox for Databases](https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [MongoDB](https://google.github.io/adk-docs/integrations/mongodb/) | 查詢集合、管理資料庫及分析結構描述 |
@@ -164,7 +164,7 @@
 | [Arize AX](integrations/arize-ax.md) | LLM 應用程式的生產級可觀測性、偵錯及改進 |
 | [BigQuery Agent Analytics Plugin](integrations/bigquery-agent-analytics.md) | 針對行為分析和記錄的深入 agent 分析 |
 | [Google Cloud Trace](integrations/cloud-trace.md) | 監控、偵錯及追蹤 ADK agent 互動 |
-| [Freeplay](https://google.github.io/adk-docs/integrations/freeplay/) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
+| [Freeplay](integrations/freeplay.md) | 使用 Freeplay 透過端對端可觀測性建置、最佳化及評估 AI agents |
 | [MLflow](https://google.github.io/adk-docs/integrations/mlflow/) | 擷取 agent 執行、工具呼叫及模型要求的 OpenTelemetry 追蹤 |
 | [Monocle](https://google.github.io/adk-docs/integrations/monocle/) | LLM 應用程式的開源可觀測性、追蹤及偵錯 |
 | [Phoenix](https://google.github.io/adk-docs/integrations/phoenix/) | LLM 應用程式的開源、自我託管的可觀測性、追蹤及評估 |
@@ -174,5 +174,5 @@
 
 | 工具名稱 | 說明 |
 |---------|------|
-| [Google Search](https://google.github.io/adk-docs/integrations/google-search/) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
+| [Google Search](integrations/google-search.md) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
 | [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |

@@ -1,8 +1,8 @@
 # 使用 Freeplay 進行 Agent 觀測與評估
 
-> 🔔 `更新日期：2026-01-29`
+> 🔔 `更新日期：2026-03-06`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/observability/freeplay/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/freeplay/
 
 [Freeplay](https://freeplay.ai/) 為建構和優化 AI agent 提供了一套端對端的流程，並可與 ADK 整合。透過 Freeplay，您的整個團隊可以輕鬆協作，迭代 agent 指令 (prompts)、實驗並比較不同的模型與 agent 變更、執行離線和在線評估以衡量品質、監控生產環境，以及手動審閱數據。
 
