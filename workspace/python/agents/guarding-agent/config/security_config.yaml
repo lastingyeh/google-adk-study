@@ -1,0 +1,199 @@
+// filepath: security_config.yaml
+# AI 代理防護系統配置檔案
+# Security Configuration for Guarding Agent System
+
+# ============================================================================
+# 階段一：靜態過濾配置
+# ============================================================================
+
+content_filter:
+  enabled: true
+
+  # 關鍵字黑名單（支援正則表達式）
+  blocked_patterns:
+    # 暴力和攻擊相關
+    - '\b(attack|hack|exploit|crack|破解|攻擊|入侵|駭客)\b'
+    - '\b(ddos|dos attack|flood)\b'
+
+    # 惡意軟體相關
+    - '\b(malware|virus|trojan|ransomware|spyware)\b'
+    - '\b(惡意軟體|病毒|木馬|勒索軟體|間諜軟體)\b'
+
+    # 危險數據庫操作
+    - '\b(delete\s+(from\s+)?database|drop\s+table|truncate\s+table)\b'
+    - '\b(刪除\s*資料庫|刪除\s*數據庫|清空\s*表)\b'
+
+    # 系統破壞相關
+    - '\b(rm\s+-rf|format\s+c:|del\s+/f|destroy\s+system)\b'
+
+    # 不當內容（根據實際場景調整）
+    - '\b(hate\s+speech|offensive\s+term|discriminat(e|ion))\b'
+    - '\b(仇恨言論|歧視性?言論|侮辱性?言論)\b'
+
+  # 多語言支援配置（階段二擴展）
+  multilang:
+    enabled: false
+    languages:
+      - en
+      # 未來擴展：zh（需要 jieba 分詞）、ja（需要 MeCab 分詞）
+    unicode_normalize: true
+    traditional_to_simplified: false
+
+# ============================================================================
+# PII 偵測和處理配置
+# ============================================================================
+
+pii_detection:
+  enabled: true
+  check_input: true
+  check_output: true
+
+  # 各種 PII 類型的處理策略
+  # 選項：redact（完全遮蔽）、mask（部分掩碼）、hash（雜湊）、block（攔截）
+  strategies:
+    email: mask
+    phone_us: mask
+    phone_intl: mask
+    ssn: redact
+    credit_card: redact
+    api_key: redact
+
+  # 場景特定策略（優先級高於通用策略）
+  scenarios:
+    customer_service:
+      email: mask
+      phone_us: mask
+      ssn: mask
+      credit_card: mask
+
+    logging:
+      email: redact
+      phone_us: redact
+      ssn: redact
+      credit_card: redact
+
+    internal_tool:
+      email: hash
+      phone_us: hash
+      ssn: hash
+      credit_card: hash
+
+# ============================================================================
+# 階段二：風險工具配置（預留）
+# ============================================================================
+
+risk_tools:
+  enabled: false
+
+  # 風險等級定義
+  levels:
+    CRITICAL:
+      tools:
+        - delete_database
+        - send_email_blast
+        - execute_payment
+      require_confirmation: true
+
+    HIGH:
+      tools:
+        - update_user_data
+        - create_resource
+        - modify_permissions
+      require_confirmation: conditional
+
+    MEDIUM:
+      tools:
+        - read_sensitive_data
+        - export_data
+      require_confirmation: false
+
+    LOW:
+      tools:
+        - read_public_data
+        - search
+      require_confirmation: false
+
+  # 條件確認配置
+  conditional_confirmation:
+    update_user_data:
+      condition: "affected_users > 1"
+    execute_payment:
+      condition: "amount > 1000"
+
+# ============================================================================
+# 階段三：智能審核配置（預留）
+# ============================================================================
+
+intelligent_review:
+  enabled: false
+
+  reviewer_agent:
+    model: gemini-2.0-flash-lite
+    temperature: 0.1
+
+  criteria:
+    - hidden_malicious_instructions
+    - policy_violations
+    - prompt_injection_attempts
+    - data_exfiltration_attempts
+
+  safety_threshold: 0.8
+
+  cache_enabled: true
+  cache_ttl_seconds: 3600
+
+# ============================================================================
+# 階段四：監控配置（預留）
+# ============================================================================
+
+monitoring:
+  enabled: false
+
+  metrics:
+    collect_performance: true
+    collect_security: true
+    collect_cost: true
+
+  alerts:
+    block_rate_spike:
+      enabled: true
+      threshold: 3.0
+      window_minutes: 5
+
+    error_rate_high:
+      enabled: true
+      threshold: 0.05
+      window_minutes: 10
+
+  observability:
+    bigquery:
+      enabled: false
+      project_id: ""
+      dataset: adk_security
+      table: agent_logs
+
+    cloud_monitoring:
+      enabled: false
+      project_id: ""
+
+# ============================================================================
+# 全域設定
+# ============================================================================
+
+global:
+  performance_targets:
+    static_filter_latency: 10
+    intelligent_review_latency: 500
+    total_latency: 600
+
+  accuracy_targets:
+    false_positive_rate: 0.05
+    false_negative_rate: 0.01
+
+  log_level: INFO
+
+  audit_log:
+    enabled: true
+    retention_days: 90
+    include_pii_hash: true
+    include_full_content: false
