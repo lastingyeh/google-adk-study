@@ -1,8 +1,8 @@
 # Reflect and Retry 工具外掛程式
 
-> 🔔 `更新日期：2026-01-30`
+> 🔔 `更新日期：2026-03-09`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/plugins/reflect-and-retry/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/reflect-and-retry/
 
 [`ADK 支援`: `Python v1.16.0`]
 
@@ -65,5 +65,5 @@ error_handling_plugin = CustomRetryPlugin(max_retries=5)
 
 有關使用 Reflect and Retry 外掛程式的完整程式碼範例，請參閱以下內容：
 
-*   [基礎](https://github.com/google/adk-python/tree/main/contributing/samples/plugin_reflect_tool_retry/basic) 程式碼範例
-*   [虛假函式名稱 (Hallucinating function name)](https://github.com/google/adk-python/tree/main/contributing/samples/plugin_reflect_tool_retry/hallucinating_func_name) 程式碼範例
+*   [Basic](https://github.com/google/adk-python/tree/main/contributing/samples/plugin_reflect_tool_retry/basic) 程式碼範例
+*   [Hallucinating function name)](https://github.com/google/adk-python/tree/main/contributing/samples/plugin_reflect_tool_retry/hallucinating_func_name) 程式碼範例

@@ -11,7 +11,7 @@
 > [!WARNING] 警告：每個代理程式僅限單一工具
 此工具在代理程式實例中只能***單獨使用***。
 如需更多關於此限制及解決辦法的資訊，請參閱
-[ADK 工具的限制](https://google.github.io/adk-docs/tools/limitations/#one-tool-one-agent)。
+[ADK 工具的限制](../../custom-tools/limitations.md#每個代理一個工具的限制)。
 
 <details>
 <summary>範例說明</summary>

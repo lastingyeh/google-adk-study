@@ -6,7 +6,7 @@
 >
 > 🔗 `資料來源`：https://google.github.io/adk-docs/grounding/google_search_grounding/
 
-[Google 搜尋基礎工具](../tools-for-agents/gemini-api/google-search.md) 是代理程式開發套件 (ADK) 中的一項強大功能，它使 AI 代理程式能夠從網路上存取即時且權威的資訊。透過將您的代理程式連接到 Google 搜尋，您可以為使用者提供由可靠來源支持的最新答案。
+[Google 搜尋基礎工具](../tools-and-integrations/integrations/google-search.md) 是代理程式開發套件 (ADK) 中的一項強大功能，它使 AI 代理程式能夠從網路上存取即時且權威的資訊。透過將您的代理程式連接到 Google 搜尋，您可以為使用者提供由可靠來源支持的最新答案。
 
 此功能對於需要當前資訊（如天氣更新、新聞事件、股票價格或自模型訓練數據截止日期以來可能發生變化的任何事實）的查詢特別有價值。當您的代理程式確定需要外部資訊時，它會自動執行網路搜尋，並將結果併入其回應中，並附上適當的引用。
 

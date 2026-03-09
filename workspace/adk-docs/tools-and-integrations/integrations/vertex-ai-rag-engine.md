@@ -1,8 +1,8 @@
 # ADK 的 Vertex AI RAG Engine 工具
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-09`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-rag-engine/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/
 
 [`ADK 支援`: `Python v0.1.0` | `Java v0.2.0`]
 
@@ -13,7 +13,7 @@
 
 > [!WARNING] 警告：每個代理執行個體僅限單一工具
 此工具只能在代理執行個體中***單獨使用***。
-如需更多關於此限制及解決辦法的資訊，請參閱 [ADK 工具的限制](../limitations.md)。
+如需更多關於此限制及解決辦法的資訊，請參閱 [ADK 工具的限制](../../custom-tools/limitations.md)。
 
 ```py
 import os
