@@ -17,8 +17,8 @@ ADK 支援多種 Grounding 方法：
 ### 學習資源
 |名稱 | 說明 | 相關連結 |
 |---|---|---|
-| **Google 搜尋 Grounding** | 讓代理存取即時、權威的網路資訊。設置流程、數據流解釋、回應引用顯示。 | [理解 Google 搜尋 Grounding](google_search_grounding.md) |
-| **Vertex AI 搜尋 Grounding** | 連接企業文件和私人數據庫，配置數據存儲、回應 Grounding、來源歸屬。 | [理解 Vertex AI 搜尋 Grounding](vertex_ai_search_grounding.md) |
+| **Google 搜尋 Grounding** | 讓代理存取即時、權威的網路資訊。設置流程、數據流解釋、回應引用顯示。 | [理解 Google 搜尋 Grounding](grounding/google_search_grounding.md) |
+| **Vertex AI 搜尋 Grounding** | 連接企業文件和私人數據庫，配置數據存儲、回應 Grounding、來源歸屬。 | [理解 Vertex AI 搜尋 Grounding](grounding/vertex_ai_search_grounding.md) |
 | **部落格文章：代理式 RAG 實作** | 介紹如何用 Vector Search 2.0 和 ADK 建立能解析意圖、構建過濾器的旅遊代理。 | [部落格文章](https://medium.com/google-cloud/10-minute-agentic-rag-with-the-new-vector-search-2-0-and-adk-655fff0bacac) |
 | **Vector Search 2.0 旅遊代理筆記本** | Jupyter 筆記本範例，使用真實 Airbnb 數據、混合搜尋與 ADK 工具整合。 | [旅遊代理筆記本](https://github.com/google/adk-samples/blob/main/python/notebooks/grounding/vectorsearch2_travel_agent.ipynb) |
 | **深度搜尋代理 (Deep Search Agent)** | 生產就緒的研究代理，兩階段工作流、多代理架構，生成帶引用的報告。 | [深度搜尋代理](../../python/agents/pack-deep-search/) |

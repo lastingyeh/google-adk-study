@@ -1,8 +1,8 @@
 # ADK 的 Spanner 資料庫工具
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-09`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/spanner/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/spanner/
 
 [`ADK 支援`: `Python v1.11.0`]
 

@@ -1,8 +1,8 @@
 # MCP 資料庫工具箱 (MCP Toolbox for Databases)
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-08`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/mcp-toolbox-for-databases/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/mcp-toolbox-for-databases/
 
 [`ADK 支援`: `Python` | `Typescript` | `Go`]
 
@@ -10,7 +10,7 @@
 
 Google 的 Agent 開發套件 (ADK) 內建支援 Toolbox。有關 [開始使用](https://googleapis.github.io/genai-toolbox/getting-started/) 或 [配置](https://googleapis.github.io/genai-toolbox/getting-started/configure/) Toolbox 的更多資訊，請參閱 [說明文件](https://googleapis.github.io/genai-toolbox/getting-started/introduction/)。
 
-![GenAI 工具箱](https://google.github.io/adk-docs/assets/mcp_db_toolbox.png)
+![GenAI 工具箱](https://google.github.io/adk-docs/integrations/assets/mcp-db-toolbox.png)
 
 ## 支援的資料來源
 
@@ -20,10 +20,10 @@ MCP Toolbox 為以下資料庫和資料平台提供開箱即用的工具集：
 
 *   [BigQuery](https://googleapis.github.io/genai-toolbox/resources/sources/bigquery/)（包括 SQL 執行、架構探索和 AI 驅動的時間序列預測工具）
 *   [AlloyDB](https://googleapis.github.io/genai-toolbox/resources/sources/alloydb-pg/)（相容於 PostgreSQL，提供標準查詢和自然語言查詢工具）
-*   [AlloyDB 管理](https://googleapis.github.io/genai-toolbox/resources/sources/alloydb-admin/)
+*   [AlloyDB Admin](https://googleapis.github.io/genai-toolbox/resources/sources/alloydb-admin/)
 *   [Spanner](https://googleapis.github.io/genai-toolbox/resources/sources/spanner/)（支援 GoogleSQL 和 PostgreSQL 方言）
 *   Cloud SQL（專門支援 [Cloud SQL for PostgreSQL](https://googleapis.github.io/genai-toolbox/resources/sources/cloud-sql-pg/)、[Cloud SQL for MySQL](https://googleapis.github.io/genai-toolbox/resources/sources/cloud-sql-mysql/) 和 [Cloud SQL for SQL Server](https://googleapis.github.io/genai-toolbox/resources/sources/cloud-sql-mssql/)）
-*   [Cloud SQL 管理](https://googleapis.github.io/genai-toolbox/resources/sources/cloud-sql-admin/)
+*   [Cloud SQL Admin](https://googleapis.github.io/genai-toolbox/resources/sources/cloud-sql-admin/)
 *   [Firestore](https://googleapis.github.io/genai-toolbox/resources/sources/firestore/)
 *   [Bigtable](https://googleapis.github.io/genai-toolbox/resources/sources/bigtable/)
 *   [Dataplex](https://googleapis.github.io/genai-toolbox/resources/sources/dataplex/)（用於資料探索和元數據搜尋）

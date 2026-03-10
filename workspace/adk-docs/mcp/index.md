@@ -80,7 +80,7 @@ MCP 工具箱為以下資料庫和資料平台提供現成的工具集：
 
 ### 文件
 
-請參考 [用於資料庫的 MCP 工具箱](../tools-for-agents/google-cloud/mcp-toolbox-for-databases.md) 文件，瞭解如何將 ADK 與用於資料庫的 MCP 工具箱結合使用。若要開始使用用於資料庫的 MCP 工具箱，也可以參考部落格文章 [教學：用於資料庫的 MCP 工具箱 - 公開 Big Query 資料集](https://medium.com/google-cloud/tutorial-mcp-toolbox-for-databases-exposing-big-query-datasets-9321f0064f4e) 和 Codelab [用於資料庫的 MCP 工具箱：讓 BigQuery 資料集可供 MCP 用戶端使用](https://codelabs.developers.google.com/mcp-toolbox-bigquery-dataset?hl=en#0)。
+請參考 [用於資料庫的 MCP 工具箱](../tools-and-integrations/integrations/mcp-toolbox-for-databases.md) 文件，瞭解如何將 ADK 與用於資料庫的 MCP 工具箱結合使用。若要開始使用用於資料庫的 MCP 工具箱，也可以參考部落格文章 [教學：用於資料庫的 MCP 工具箱 - 公開 Big Query 資料集](https://medium.com/google-cloud/tutorial-mcp-toolbox-for-databases-exposing-big-query-datasets-9321f0064f4e) 和 Codelab [用於資料庫的 MCP 工具箱：讓 BigQuery 資料集可供 MCP 用戶端使用](https://codelabs.developers.google.com/mcp-toolbox-bigquery-dataset?hl=en#0)。
 
 ![GenAI 工具箱](https://google.github.io/adk-docs/assets/mcp_db_toolbox.png)
 
