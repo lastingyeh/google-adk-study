@@ -1,0 +1,23 @@
+# Kubernetes 水平 Pod 自動擴縮設定 (Horizontal Pod Autoscaler, HPA)
+# 根據資源使用情況自動調整 Pod 數量
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: guarding-agent # HPA 名稱
+  namespace: guarding-agent # 命名空間
+  labels:
+    app: guarding-agent
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: guarding-agent # 目標部署對象
+  minReplicas: 2 # 最小副本數
+  maxReplicas: 10 # 最大副本數
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu # 監控 CPU 使用率
+        target:
+          type: Utilization
+          averageUtilization: 70 # 當 CPU 平均使用率超過 70% 時觸發擴容

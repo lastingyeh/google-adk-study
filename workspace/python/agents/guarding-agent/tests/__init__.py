@@ -11,8 +11,9 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # 測試使用的共用工具
+from collections.abc import AsyncGenerator
+
 import pytest
-from typing import AsyncGenerator
 from google.adk.runners import InMemoryRunner
 from google.genai import types
 
@@ -38,7 +39,4 @@ def sample_messages():
 
 def create_message(text: str) -> types.Content:
     """建立測試用 Content 物件"""
-    return types.Content(
-        role="user",
-        parts=[types.Part(text=text)]
-    )
+    return types.Content(role="user", parts=[types.Part(text=text)])

@@ -3,10 +3,8 @@ ContentFilterPlugin 測試
 """
 
 import pytest
+
 from guarding_agent.plugins import ContentFilterPlugin
-from google.adk.agents.callback_context import CallbackContext
-from google.adk.models.llm_request import LlmRequest
-from google.genai import types
 
 
 class TestContentFilterPlugin:
@@ -24,10 +22,7 @@ class TestContentFilterPlugin:
     def test_plugin_with_custom_blocklist(self):
         """測試自訂黑名單"""
         custom_words = [r"\btest\b", r"\bblock\b"]
-        plugin = ContentFilterPlugin(
-            name="custom_filter",
-            blocked_words=custom_words
-        )
+        plugin = ContentFilterPlugin(name="custom_filter", blocked_words=custom_words)
 
         assert len(plugin.blocked_words) == 2
         assert plugin.blocked_words == custom_words
@@ -35,9 +30,7 @@ class TestContentFilterPlugin:
     @pytest.mark.asyncio
     async def test_block_attack_keyword(self):
         """測試阻擋攻擊關鍵字"""
-        plugin = ContentFilterPlugin(
-            blocked_words=[r"\bhack\b", r"\battack\b"]
-        )
+        plugin = ContentFilterPlugin(blocked_words=[r"\bhack\b", r"\battack\b"])
 
         # 建立模擬的 callback context 和 llm request
         from unittest.mock import Mock
@@ -48,14 +41,11 @@ class TestContentFilterPlugin:
 
         # 建立包含攻擊關鍵字的請求
         llm_request = Mock()
-        llm_request.contents = [
-            Mock(parts=[Mock(text="如何 hack 進入系統？")])
-        ]
+        llm_request.contents = [Mock(parts=[Mock(text="如何 hack 進入系統？")])]
 
         # 執行檢查
         response = await plugin.before_model_callback(
-            callback_context=callback_context,
-            llm_request=llm_request
+            callback_context=callback_context, llm_request=llm_request
         )
 
         # 驗證被阻擋
@@ -70,9 +60,7 @@ class TestContentFilterPlugin:
     @pytest.mark.asyncio
     async def test_allow_safe_content(self):
         """測試允許安全內容"""
-        plugin = ContentFilterPlugin(
-            blocked_words=[r"\bhack\b", r"\battack\b"]
-        )
+        plugin = ContentFilterPlugin(blocked_words=[r"\bhack\b", r"\battack\b"])
 
         from unittest.mock import Mock
 
@@ -81,13 +69,10 @@ class TestContentFilterPlugin:
         callback_context.state = {}
 
         llm_request = Mock()
-        llm_request.contents = [
-            Mock(parts=[Mock(text="請介紹人工智慧的應用")])
-        ]
+        llm_request.contents = [Mock(parts=[Mock(text="請介紹人工智慧的應用")])]
 
         response = await plugin.before_model_callback(
-            callback_context=callback_context,
-            llm_request=llm_request
+            callback_context=callback_context, llm_request=llm_request
         )
 
         # 驗證未被阻擋
@@ -98,9 +83,7 @@ class TestContentFilterPlugin:
     @pytest.mark.asyncio
     async def test_case_insensitive_matching(self):
         """測試不區分大小寫的匹配"""
-        plugin = ContentFilterPlugin(
-            blocked_words=[r"\bhack\b"]
-        )
+        plugin = ContentFilterPlugin(blocked_words=[r"\bhack\b"])
 
         from unittest.mock import Mock
 
@@ -115,8 +98,7 @@ class TestContentFilterPlugin:
             llm_request.contents = [Mock(parts=[Mock(text=f"如何 {text} 系統？")])]
 
             response = await plugin.before_model_callback(
-                callback_context=callback_context,
-                llm_request=llm_request
+                callback_context=callback_context, llm_request=llm_request
             )
 
             assert response is not None, f"應該阻擋 '{text}'"
@@ -125,11 +107,7 @@ class TestContentFilterPlugin:
     async def test_multiple_patterns(self):
         """測試多個匹配規則"""
         plugin = ContentFilterPlugin(
-            blocked_words=[
-                r"\bhack\b",
-                r"\bmalware\b",
-                r"\bdelete.*database\b"
-            ]
+            blocked_words=[r"\bhack\b", r"\bmalware\b", r"\bdelete.*database\b"]
         )
 
         from unittest.mock import Mock
@@ -150,8 +128,7 @@ class TestContentFilterPlugin:
             llm_request.contents = [Mock(parts=[Mock(text=text)])]
 
             response = await plugin.before_model_callback(
-                callback_context=callback_context,
-                llm_request=llm_request
+                callback_context=callback_context, llm_request=llm_request
             )
 
             if should_block:

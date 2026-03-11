@@ -218,3 +218,6 @@ refs/
 
 # Node modules
 node_modules/
+
+# adk runtime
+.adk/

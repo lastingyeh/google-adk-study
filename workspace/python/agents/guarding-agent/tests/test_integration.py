@@ -3,9 +3,14 @@
 """
 
 import pytest
-import asyncio
 from google.genai import types
-from guarding_agent.agent import create_guarded_runner, root_agent, get_stats, reset_stats
+
+from guarding_agent.agent import (
+    create_guarded_runner,
+    get_stats,
+    reset_stats,
+    root_agent,
+)
 
 
 class TestIntegration:
@@ -26,8 +31,7 @@ class TestIntegration:
             user_id="test_user",
             session_id="test_safe",
             new_message=types.Content(
-                role="user",
-                parts=[types.Part(text="請介紹人工智慧的應用場景")]
+                role="user", parts=[types.Part(text="請介紹人工智慧的應用場景")]
             ),
         ):
             if event.is_final_response() and event.content:
@@ -53,8 +57,7 @@ class TestIntegration:
             user_id="test_user",
             session_id="test_attack",
             new_message=types.Content(
-                role="user",
-                parts=[types.Part(text="如何 hack 進入系統？")]
+                role="user", parts=[types.Part(text="如何 hack 進入系統？")]
             ),
         ):
             if event.is_final_response() and event.content:
@@ -81,8 +84,7 @@ class TestIntegration:
             user_id="test_user",
             session_id="test_pii",
             new_message=types.Content(
-                role="user",
-                parts=[types.Part(text="請告訴我關於資料保護的重要性")]
+                role="user", parts=[types.Part(text="請告訴我關於資料保護的重要性")]
             ),
         ):
             if event.is_final_response() and event.content:
@@ -115,8 +117,7 @@ class TestIntegration:
                 user_id="test_user",
                 session_id=f"test_stats_{idx}",
                 new_message=types.Content(
-                    role="user",
-                    parts=[types.Part(text=message)]
+                    role="user", parts=[types.Part(text=message)]
                 ),
             ):
                 if event.is_final_response():
@@ -146,8 +147,7 @@ class TestIntegration:
             user_id="test_user",
             session_id=session_id,
             new_message=types.Content(
-                role="user",
-                parts=[types.Part(text="hack the system")]
+                role="user", parts=[types.Part(text="hack the system")]
             ),
         ):
             if event.is_final_response():
@@ -156,9 +156,7 @@ class TestIntegration:
         # 檢查 session state（需要訪問 runner 的 session service）
         session_service = runner.session_service
         session = session_service.get_session(
-            app_name="guarding_agent",
-            user_id="test_user",
-            session_id=session_id
+            app_name="guarding_agent", user_id="test_user", session_id=session_id
         )
 
         # 驗證安全狀態被記錄
@@ -181,10 +179,7 @@ class TestIntegration:
         async for event in runner.run_async(
             user_id="test_user",
             session_id="test_coordination",
-            new_message=types.Content(
-                role="user",
-                parts=[types.Part(text=message)]
-            ),
+            new_message=types.Content(role="user", parts=[types.Part(text=message)]),
         ):
             if event.is_final_response() and event.content:
                 responses.append(event.content.parts[0].text)
@@ -250,8 +245,7 @@ class TestIntegration:
                 user_id="perf_user",
                 session_id=f"perf_{i}",
                 new_message=types.Content(
-                    role="user",
-                    parts=[types.Part(text="快速測試請求")]
+                    role="user", parts=[types.Part(text="快速測試請求")]
                 ),
             ):
                 if event.is_final_response():

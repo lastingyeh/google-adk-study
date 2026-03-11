@@ -1,0 +1,14 @@
+# Kubernetes Pod 中斷預算設定 (Pod Disruption Budget, PDB)
+# 確保在自願性中斷（如節點維護）期間，服務仍有最小數量的可用 Pod
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: guarding-agent # PDB 名稱
+  namespace: guarding-agent # 命名空間
+  labels:
+    app: guarding-agent
+spec:
+  minAvailable: 1 # 確保至少有一個 Pod 處於可用狀態
+  selector:
+    matchLabels:
+      app: guarding-agent # 選取受保護的 Pod

@@ -3,9 +3,10 @@ PIIDetectionPlugin 測試
 """
 
 import pytest
+from google.genai import types
+
 from guarding_agent.plugins import PIIDetectionPlugin
 from guarding_agent.plugins.pii_detection_plugin import PIIHandlingStrategy
-from google.genai import types
 
 
 class TestPIIDetectionPlugin:
@@ -62,9 +63,7 @@ class TestPIIDetectionPlugin:
 
     def test_handle_pii_redact(self):
         """測試 REDACT 策略（完全遮蔽）"""
-        plugin = PIIDetectionPlugin(
-            default_strategy=PIIHandlingStrategy.REDACT
-        )
+        plugin = PIIDetectionPlugin(default_strategy=PIIHandlingStrategy.REDACT)
 
         text = "聯絡我：john@example.com"
         detections = plugin._detect_pii(text)
@@ -75,9 +74,7 @@ class TestPIIDetectionPlugin:
 
     def test_handle_pii_mask(self):
         """測試 MASK 策略（部分掩碼）"""
-        plugin = PIIDetectionPlugin(
-            default_strategy=PIIHandlingStrategy.MASK
-        )
+        plugin = PIIDetectionPlugin(default_strategy=PIIHandlingStrategy.MASK)
         plugin.pii_strategies["email"] = PIIHandlingStrategy.MASK
 
         text = "聯絡我：john@example.com"
@@ -89,9 +86,7 @@ class TestPIIDetectionPlugin:
 
     def test_handle_pii_hash(self):
         """測試 HASH 策略（雜湊）"""
-        plugin = PIIDetectionPlugin(
-            default_strategy=PIIHandlingStrategy.HASH
-        )
+        plugin = PIIDetectionPlugin(default_strategy=PIIHandlingStrategy.HASH)
         plugin.pii_strategies["email"] = PIIHandlingStrategy.HASH
 
         text = "聯絡我：john@example.com"
@@ -126,8 +121,7 @@ class TestPIIDetectionPlugin:
     async def test_after_model_callback_with_pii(self):
         """測試 after_model_callback 偵測和過濾 PII"""
         plugin = PIIDetectionPlugin(
-            default_strategy=PIIHandlingStrategy.REDACT,
-            check_output=True
+            default_strategy=PIIHandlingStrategy.REDACT, check_output=True
         )
 
         from unittest.mock import Mock
@@ -141,10 +135,10 @@ class TestPIIDetectionPlugin:
             candidates=[
                 types.Candidate(
                     content=types.Content(
-                        parts=[types.Part(
-                            text="您好！請聯絡我們：support@company.com"
-                        )],
-                        role="model"
+                        parts=[
+                            types.Part(text="您好！請聯絡我們：support@company.com")
+                        ],
+                        role="model",
                     )
                 )
             ]
@@ -152,8 +146,7 @@ class TestPIIDetectionPlugin:
 
         # 執行過濾
         filtered_response = await plugin.after_model_callback(
-            callback_context=callback_context,
-            llm_response=llm_response
+            callback_context=callback_context, llm_response=llm_response
         )
 
         # 驗證 PII 被過濾
@@ -166,8 +159,7 @@ class TestPIIDetectionPlugin:
     async def test_before_model_callback_block_strategy(self):
         """測試 BLOCK 策略直接攔截"""
         plugin = PIIDetectionPlugin(
-            default_strategy=PIIHandlingStrategy.BLOCK,
-            check_input=True
+            default_strategy=PIIHandlingStrategy.BLOCK, check_input=True
         )
         plugin.pii_strategies["email"] = PIIHandlingStrategy.BLOCK
 
@@ -178,13 +170,10 @@ class TestPIIDetectionPlugin:
         callback_context.state = {}
 
         llm_request = Mock()
-        llm_request.contents = [
-            Mock(parts=[Mock(text="我的郵箱是 user@example.com")])
-        ]
+        llm_request.contents = [Mock(parts=[Mock(text="我的郵箱是 user@example.com")])]
 
         response = await plugin.before_model_callback(
-            callback_context=callback_context,
-            llm_request=llm_request
+            callback_context=callback_context, llm_request=llm_request
         )
 
         # 驗證被攔截

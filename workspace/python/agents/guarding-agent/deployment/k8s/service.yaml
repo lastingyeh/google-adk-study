@@ -1,0 +1,31 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Kubernetes 服務設定 (Service)
+# 定義如何暴露 guarding-agent 服務給外部流量
+apiVersion: v1
+kind: Service
+metadata:
+  name: guarding-agent # 服務名稱
+  namespace: guarding-agent # 命名空間
+  labels:
+    app: guarding-agent
+spec:
+  type: LoadBalancer # 服務類型：負載均衡器 (會取得外部 IP)
+  ports:
+    - port: 8080 # 服務對外公開的連接埠
+      targetPort: 8080 # 容器內部的目標連接埠
+      protocol: TCP
+  selector:
+    app: guarding-agent # 將流量轉發至具有此標籤的 Pod
