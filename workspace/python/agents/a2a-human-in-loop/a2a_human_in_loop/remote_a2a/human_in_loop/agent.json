@@ -1,0 +1,35 @@
+{
+  "capabilities": {},
+  "defaultInputModes": ["text/plain"],
+  "defaultOutputModes": ["application/json"],
+  "description": "處理員工費用報支請求的報支代理人。自動核准 $100 以下的金額，對於較大金額則需要透過人機協作 (Human-in-the-loop) 的長時間運行工具進行經理審批。",
+  "name": "reimbursement_agent",
+  "skills": [
+    {
+      "id": "automatic_reimbursement",
+      "name": "自動報支",
+      "description": "自動處理並核准 $100 以下的報支",
+      "tags": ["報支", "自動化", "財務"]
+    },
+    {
+      "id": "approval_workflow",
+      "name": "審批流程",
+      "description": "使用長時間運行工具對超過 $100 的報支請求經理審批",
+      "tags": ["審批", "流程", "人機協作"]
+    },
+    {
+      "id": "expense_processing",
+      "name": "費用處理",
+      "description": "處理員工費用申報並執行報支邏輯",
+      "tags": ["費用", "處理", "員工服務"]
+    }
+  ],
+  "url": "http://localhost:8001/a2a/human_in_loop",
+  "version": "1.0.0",
+  "_translation_summary": {
+    "核心概念": "定義報支代理人的中繼資料 (Metadata) 與技能 (Skills)。",
+    "關鍵技術": "使用 JSON 格式描述代理人的功能、輸入輸出模式及 API 終端點。",
+    "重要結論": "該檔案為 A2A (Agent-to-Agent) 協定中的代理人名片 (Agent Card)，供其他代理人識別其能力。",
+    "行動項目": "無。"
+  }
+}

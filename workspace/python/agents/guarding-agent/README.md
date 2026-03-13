@@ -11,10 +11,13 @@
    - 敏感資訊（PII）偵測和處理
    - 多種處理策略（遮蔽、掩碼、雜湊、攔截）
 
-2. **階段二：高風險操作人工審核**（🚧 計劃中）
-   - 工具風險等級分類
-   - 人工確認流程
-   - 審核決策追蹤
+2. **階段二：高風險操作人工審核**（✅ **已完成**）
+   - 工具風險等級分類（LOW/MEDIUM/HIGH/CRITICAL）
+   - 基於風險的自動確認策略
+   - 進階確認機制（結構化 payload）
+   - 審核請求追蹤和決策記錄
+   - ADK Resume 支援（審核後恢復執行）
+   - 審核 API 端點（REST API）
 
 3. **階段三：智能安全審核層**（🚧 計劃中）
    - 語意安全審核代理
@@ -188,6 +191,161 @@ pii_detection:
     logging:
       email: "redact"  # 完全遮蔽
 ```
+
+## 🔐 階段二功能詳細：人工審核系統
+
+### 核心組件
+
+#### 1. RiskToolRegistry（風險工具註冊表）
+
+**功能：**
+- ✅ 工具風險等級分類（LOW/MEDIUM/HIGH/CRITICAL）
+- ✅ 基於風險的自動確認策略
+- ✅ 條件確認函數（基於參數閾值）
+- ✅ 工具自動包裝（FunctionTool）
+
+**使用範例：**
+
+```python
+from guarding_agent.tools import RiskToolRegistry, RiskMetadata, RiskLevel
+
+# 建立註冊表
+registry = RiskToolRegistry()
+
+# 註冊工具風險配置
+registry.register('delete_user', RiskMetadata(
+    level=RiskLevel.HIGH,
+    description='刪除用戶帳號',
+    require_confirmation=True,
+    require_reason=True,
+    require_approval_from='manager',
+))
+
+# 自動包裝工具（添加確認邏輯）
+wrapped_tool = registry.wrap_tool(delete_user_func)
+
+# 在代理中使用
+agent = Agent(
+    tools=[wrapped_tool],
+    # ...
+)
+```
+
+**預設風險配置：**
+
+| 工具 | 風險等級 | 確認策略 |
+|------|---------|---------|
+| `search` | LOW | 無需確認 |
+| `get_user_info` | LOW | 無需確認 |
+| `update_profile` | MEDIUM | 欄位 > 3 需確認 |
+| `send_email` | MEDIUM | 收件人 > 5 需確認 |
+| `delete_user` | HIGH | 始終確認 |
+| `bulk_update` | HIGH | 始終確認 |
+| `execute_payment` | CRITICAL | 必須確認 |
+| `modify_system_config` | CRITICAL | 必須確認 |
+
+#### 2. ApprovalTrackingPlugin（審核追蹤插件）
+
+**功能：**
+- ✅ 自動追蹤審核請求
+- ✅ 記錄審核歷史和決策
+- ✅ 收集審核指標統計
+- ✅ Session State 持久化
+
+**Session State 結構：**
+
+```javascript
+{
+  "security:pending_approvals": [/* 待審核請求 */],
+  "security:approval_history": [/* 審核歷史 */],
+  "security:approval_metrics": {
+    "total_tool_calls": 10,
+    "pending_count": 1,
+    "approved_count": 7,
+    "rejected_count": 2,
+    "approval_rate": 70.0
+  }
+}
+```
+
+#### 3. 審核 API（REST API 端點）
+
+**端點：**
+
+```bash
+# 獲取待審核請求
+GET /approval/pending?session_id={session_id}
+
+# 提交審核決策
+POST /approval/decision
+{
+  "invocation_id": "inv-12345",
+  "session_id": "session-67890",
+  "approved": true,
+  "approver": "manager@example.com",
+  "reason": "核准理由"
+}
+
+# 獲取審核歷史
+GET /approval/history?session_id={session_id}&limit=10
+
+# 獲取審核指標
+GET /approval/metrics?session_id={session_id}
+```
+
+### 完整工作流程範例
+
+```python
+import asyncio
+from guarding_agent.agent import create_guarded_runner
+
+async def approval_workflow():
+    # 建立啟用審核追蹤的 Runner
+    runner = create_guarded_runner(
+        enable_approval_tracking=True,
+    )
+
+    # 步驟 1：發起需要審核的操作
+    print("發起刪除用戶請求...")
+    async for event in runner.run_async(
+        user_id="user@example.com",
+        session_id="session-123",
+        new_message="請刪除用戶 user456，原因：違反政策",
+    ):
+        if event.is_final_response():
+            print(f"回應：{event.content.parts[0].text}")
+
+    # 步驟 2：檢查待審核請求
+    session = await runner.session_service.get(
+        app_name="guarding_agent",
+        user_id="user@example.com",
+        session_id="session-123",
+    )
+    pending = session.state.get('security:pending_approvals', [])
+    print(f"待審核請求數：{len(pending)}")
+
+    # 步驟 3：透過 API 提交審核決策（由審核者執行）
+    # curl -X POST http://localhost:8000/approval/decision \
+    #   -H "Content-Type: application/json" \
+    #   -d '{"invocation_id": "...", "approved": true, ...}'
+
+asyncio.run(approval_workflow())
+```
+
+### 測試階段二功能
+
+```bash
+# 執行階段二測試
+pytest tests/test_phase2_approval.py -v
+
+# 執行範例程式
+python examples/phase2_approval_agent.py
+
+# 啟動 FastAPI 服務（包含審核 API）
+uvicorn guarding_agent.fast_api_app:app --reload --port 8000
+```
+
+**詳細文檔：** 請參閱 [docs/phase2-approval-system.md](docs/phase2-approval-system.md)
 
 ## 🧪 測試
 
@@ -371,4 +529,4 @@ MIT License
 
 **階段一實作完成日期：** 2026-03-05
 **當前版本：** v0.1.0
-**狀態：** ✅ 階段一完成 | 🚧 階段二開發中
+**狀態：** ✅ 階段一、二完成 | 🚧 階段三開發中

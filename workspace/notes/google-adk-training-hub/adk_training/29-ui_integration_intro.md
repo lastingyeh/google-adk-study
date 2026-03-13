@@ -1067,7 +1067,7 @@ flowchart TD
 
     H1["事件驅動（Pub/Sub）🚀<br/>（教學：34）"]
 
-    END(["END"])
+    
 ```
 
 ### 詳細比較 (Detailed Comparison)

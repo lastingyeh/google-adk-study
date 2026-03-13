@@ -1,5 +1,4 @@
 # Copyright 2025 Google LLC
-#
 # 根據 Apache License, Version 2.0 授權
 # 詳細授權條款請參閱 http://www.apache.org/licenses/LICENSE-2.0
 

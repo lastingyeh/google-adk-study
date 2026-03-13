@@ -4,14 +4,15 @@ version = "0.1.0"
 description = ""
 authors = [{ name = "Lasting Yeh", email = "lastingyeh@gmail.com" }]
 dependencies = [
-    "google-adk>=1.15.0,<2.0.0",
+    "google-adk>=1.26.0,<2.0.0",
     "opentelemetry-instrumentation-google-genai>=0.1.0,<1.0.0",
     "gcsfs>=2024.11.0",
     "google-cloud-logging>=3.12.0,<4.0.0",
     "google-cloud-aiplatform[evaluation]>=1.130.0",
     "fastapi>=0.115.8,<1.0.0",
-    "uvicorn~=0.34.0",
+    "uvicorn~=0.35.0",
     "asyncpg>=0.30.0,<1.0.0",
+    "ag-ui-adk>=0.5.1",
 ]
 requires-python = ">=3.10,<3.14"
 
@@ -25,7 +26,7 @@ dev = [
 
 [project.optional-dependencies]
 jupyter = ["jupyter>=1.0.0,<2.0.0"]
-eval = ["google-adk[eval]>=1.15.0,<2.0.0"]
+eval = ["google-adk[eval]>=1.26.0,<2.0.0"]
 lint = ["ruff>=0.4.6,<1.0.0", "ty>=0.0.1a0", "codespell>=2.2.0,<3.0.0"]
 
 [tool.ruff]

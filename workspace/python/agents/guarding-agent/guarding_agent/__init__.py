@@ -24,4 +24,4 @@ from . import plugins
 from .agent import root_agent
 
 # 定義模組導出清單
-__all__ = ["plugins", "root_agent"]
+__all__ = [plugins, root_agent]

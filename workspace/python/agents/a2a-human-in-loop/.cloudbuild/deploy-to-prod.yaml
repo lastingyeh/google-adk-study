@@ -1,0 +1,67 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+steps:
+  # Extract version from pyproject.toml
+  - name: "gcr.io/cloud-builders/gcloud-slim"
+    id: extract-version
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        VERSION=$(awk -F'"' '/^version = / {print $$2}' pyproject.toml || echo '0.0.0')
+        echo "$${VERSION}" > /workspace/agent_version.txt
+  # Build and Push
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME:$SHORT_SHA",
+        "--build-arg",
+        "COMMIT_SHA=$COMMIT_SHA",
+        "--build-arg",
+        "AGENT_VERSION=$(cat /workspace/agent_version.txt || echo '0.0.0')",
+        ".",
+      ]
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "$_REGION-docker.pkg.dev/$PROJECT_ID/$_ARTIFACT_REGISTRY_REPO_NAME/$_CONTAINER_NAME:$SHORT_SHA",
+      ]
+
+  # Deploy to Production GKE
+  - name: "gcr.io/cloud-builders/gcloud"
+    id: trigger-deployment
+    entrypoint: /bin/bash
+    args:
+      - "-c"
+      - |
+        gcloud container clusters get-credentials ${_GKE_CLUSTER_NAME} --region ${_REGION} --project ${_PROD_PROJECT_ID}
+        kubectl create namespace a2a-human-in-loop --dry-run=client -o yaml | kubectl apply -f -
+        kubectl apply -f deployment/k8s/
+        kubectl set image deployment/a2a-human-in-loop a2a-human-in-loop=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_ARTIFACT_REGISTRY_REPO_NAME}/${_CONTAINER_NAME}:$SHORT_SHA -n a2a-human-in-loop
+        EXTERNAL_IP=$(kubectl get svc a2a-human-in-loop -n a2a-human-in-loop -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+        [ -n "$EXTERNAL_IP" ] && kubectl set env deployment/a2a-human-in-loop APP_URL=http://$EXTERNAL_IP:8080 -n a2a-human-in-loop
+        kubectl rollout status deployment/a2a-human-in-loop -n a2a-human-in-loop --timeout=300s
+
+substitutions:
+  _PROD_PROJECT_ID: YOUR_PROD_PROJECT_ID
+  _REGION: us-central1
+
+logsBucket: gs://${PROJECT_ID}-a2a-human-in-loop-logs/build-logs
+options:
+  substitutionOption: ALLOW_LOOSE
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET

@@ -27,12 +27,17 @@ from urllib.parse import quote
 
 import google.auth
 from fastapi import FastAPI
-from google.adk.cli.fast_api import get_fast_api_app
+from ag_ui_adk import ADKAgent, add_adk_fastapi_endpoint
+from google.adk.sessions import DatabaseSessionService
+# from google.adk.cli.fast_api import get_fast_api_app
 from google.cloud import logging as google_cloud_logging
 
 # 匯入內部工具
 from guarding_agent.app_utils.telemetry import setup_telemetry
 from guarding_agent.app_utils.typing import Feedback
+
+# 匯入 root_agent 模組以確保其在應用程式啟動時被正確載入
+from .agent import adk_app
 
 # 初始化遙測系統
 setup_telemetry()
@@ -62,8 +67,10 @@ db_name = os.environ.get("DB_NAME", "postgres")
 db_pass = os.environ.get("DB_PASS")
 instance_connection_name = os.environ.get("INSTANCE_CONNECTION_NAME")
 
+session_service = None
+
 # 建立資料庫連線字串
-session_service_uri = None
+# session_service_uri = None
 if instance_connection_name and db_pass:
     # 使用 Unix Socket 連接 Cloud SQL
     # 對使用者名稱和密碼進行 URL 編碼以處理特殊字元
@@ -77,21 +84,32 @@ if instance_connection_name and db_pass:
         f"/{db_name}"
         f"?host=/cloudsql/{encoded_instance}"
     )
+    session_service = DatabaseSessionService(db_url=session_service_uri)
 
 # 設定 Artifact 服務 URI (Google Cloud Storage)
 artifact_service_uri = f"gs://{logs_bucket_name}" if logs_bucket_name else None
 
-# 使用 Google ADK 建立 FastAPI 應用程式
-app: FastAPI = get_fast_api_app(
-    agents_dir=AGENT_DIR,
-    web=True,
-    artifact_service_uri=artifact_service_uri,
-    allow_origins=allow_origins,
-    session_service_uri=session_service_uri,
-    otel_to_cloud=True,
+adk_agent = ADKAgent.from_app(
+    app=adk_app,
+    user_id="default_user",
+    session_service=session_service,
+    use_in_memory_services=True,
+    session_timeout_seconds=3600,
 )
-app.title = "guarding-agent"
-app.description = "與 guarding-agent 代理互動的 API"
+
+app = FastAPI(title="guarding-agent", description="與 guarding-agent 代理互動的 API")
+
+add_adk_fastapi_endpoint(app, adk_agent, path="/")
+
+# 使用 Google ADK 建立 FastAPI 應用程式
+# app: FastAPI = get_fast_api_app(
+#     agents_dir=AGENT_DIR,
+#     web=True,
+#     artifact_service_uri=artifact_service_uri,
+#     allow_origins=allow_origins,
+#     session_service_uri=session_service_uri,
+#     otel_to_cloud=True,
+# )
 
 
 @app.post("/feedback")

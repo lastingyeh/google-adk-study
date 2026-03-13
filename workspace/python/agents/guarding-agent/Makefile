@@ -54,6 +54,46 @@ debug-playground:
 	@echo "==============================================================================="
 	uv run --with debugpy python -m debugpy --listen 5678 --wait-for-client -m google.adk.cli web . --port $(or $(PORT),8501) --reload_agents --extra_plugins "guarding_agent.plugins.ContentFilterPlugin" --extra_plugins "guarding_agent.plugins.PIIDetectionPlugin"
 
+# 模擬已核准的確認回應
+# make simulate-approved URL=http://localhost:8501 ID=adk-bd4bed56-72ab-4908-bdaf-ff0fd9372ca7 SESSION_ID=35dfa6aa-fc7f-4c4d-b25d-2659bcf9cb31
+# 用法: make simulate-approved URL=http://localhost:8000 ID=adk-xxx SESSION_ID=xxx
+simulate-approved:
+	@if [ -z "$(URL)" ]; then echo "❌ 錯誤: 需要 URL 參數。用法: make simulate-approved URL=http://localhost:8000 ID=xxx SESSION_ID=xxx"; exit 1; fi
+	@if [ -z "$(ID)" ]; then echo "❌ 錯誤: 需要 ID 參數。用法: make simulate-approved URL=http://localhost:8000 ID=xxx SESSION_ID=xxx"; exit 1; fi
+	@if [ -z "$(SESSION_ID)" ]; then echo "❌ 錯誤: 需要 SESSION_ID 參數。用法: make simulate-approved URL=http://localhost:8000 ID=xxx SESSION_ID=xxx"; exit 1; fi
+	@echo "==============================================================================="
+	@echo "| 📤 發送已核准的確認回應...                                                  |"
+	@echo "| 🌐 URL: $(URL)"
+	@echo "| 🆔 ID: $(ID)"
+	@echo "| 📋 Session ID: $(SESSION_ID)"
+	@echo "==============================================================================="
+	@curl -X POST $(URL)/run_sse \
+		-H "Content-Type: application/json" \
+		-d '{ \
+			"app_name": "guarding_agent", \
+			"user_id": "default_user", \
+			"session_id": "$(SESSION_ID)", \
+			"new_message": { \
+				"parts": [ \
+					{ \
+						"function_response": { \
+							"id": "$(ID)", \
+							"name": "adk_request_confirmation", \
+							"response": { \
+								"confirmed": true, \
+								"payload": { \
+									"approved": "True", \
+									"approver": "admin", \
+									"transaction_id": "tx-001" \
+								} \
+							} \
+						} \
+					} \
+				], \
+				"role": "user" \
+			} \
+		}'
+
 # ==============================================================================
 # 後端部署目標
 # ==============================================================================

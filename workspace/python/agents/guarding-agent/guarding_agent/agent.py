@@ -1,47 +1,22 @@
-"""
-AI 代理防護系統 - 主代理定義 (Main Agent Definition)
-
-階段一實作：靜態過濾機制 (Static Filtering Implementation)
-- ContentFilterPlugin: 關鍵字過濾 (Keyword Filtering)
-- PIIDetectionPlugin: 敏感資訊偵測 (PII Detection)
-
-架構：
-- 使用插件 (Plugin) 系統實現全域防護
-- 插件在執行器 (Runner) 層級註冊，應用於所有代理
-
-### 翻譯內容
-此模組定義了防護系統的主代理 `root_agent`，並提供了建立受保護執行器 `create_guarded_runner` 的功能。
-
-### 重點摘要
-- **核心概念**：在執行器層級注入安全插件，為 AI 代理提供即時防護。
-- **關鍵技術**：Google ADK `Agent` 與 `InMemoryRunner`、自定義安全插件（ContentFilter, PII Detection）。
-- **重要結論**：透過將安全邏輯與業務代理分離，可以更靈活地管理安全政策，而不影響代理本身的指令。
-- **行動項目**：使用 `create_guarded_runner()` 封裝代理以啟用防護功能。
-
-### 系統流程
-```mermaid
-graph TD
-    User([使用者輸入]) --> Runner[InMemoryRunner]
-    subgraph Guarding_System [防護系統]
-        Runner --> CF[ContentFilterPlugin]
-        CF --> PII[PIIDetectionPlugin]
-    end
-    PII --> Agent[GuardingAgent]
-    Agent --> Response([安全回應])
-
-    style Guarding_System fill:#f9f,stroke:#333,stroke-width:2px
-```
-"""
-
 import logging
 from pathlib import Path
+from typing import Any
+from google.adk.apps import ResumabilityConfig
 
 # 匯入 Google ADK 相關元件
 from google.adk.agents import Agent
 from google.adk.runners import InMemoryRunner
+from google.adk.tools.tool_context import ToolContext
+from google.adk.tools.function_tool import FunctionTool
+from google.adk.tools.long_running_tool import LongRunningFunctionTool
+from google.genai import types
 
 # 匯入自定義插件
 from .plugins import ContentFilterPlugin, PIIDetectionPlugin
+
+# 匯入風險工具系統
+from .tools.risk_tool_registry import get_global_registry
+from .tools import wrapped_tools, execute_payment, send_email
 
 # 設定日誌記錄器
 logger = logging.getLogger(__name__)
@@ -54,34 +29,97 @@ logger = logging.getLogger(__name__)
 CONFIG_DIR = Path(__file__).parent.parent / "config"
 SECURITY_CONFIG = CONFIG_DIR / "security_config.yaml"
 
+# ============================================================================
+# 工具註冊與包裝 (Tool Registration and Wrapping)
+# ============================================================================
 
-# Mock tool implementation
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city."""
-    return {"status": "success", "city": city, "time": "10:30 AM"}
+# 獲取全局風險工具註冊表
+risk_registry = get_global_registry()
+
+# 包裝所有範例工具
+# 低風險工具（無需確認）
+search_tool = risk_registry.wrap_tool(wrapped_tools.search, "search")
+get_user_info_tool = risk_registry.wrap_tool(
+    wrapped_tools.get_user_info, "get_user_info"
+)
+
+# 中等風險工具（條件確認）
+update_profile_tool = risk_registry.wrap_tool(
+    wrapped_tools.update_profile, "update_profile"
+)
+send_email_tool = risk_registry.wrap_tool(wrapped_tools.send_email, "send_email")
+
+# 高風險工具（始終需要確認）
+delete_user_tool = risk_registry.wrap_tool(wrapped_tools.delete_user, "delete_user")
+bulk_update_tool = risk_registry.wrap_tool(wrapped_tools.bulk_update, "bulk_update")
+
+# 關鍵工具（必須確認並記錄）
+execute_payment_tool = risk_registry.wrap_tool(
+    wrapped_tools.execute_payment, "execute_payment"
+)
+modify_system_config_tool = risk_registry.wrap_tool(
+    wrapped_tools.modify_system_config, "modify_system_config"
+)
+
+
+async def confirmation_threshold(recipients: int, tool_context: ToolContext):
+    recipients = tool_context.state["recipients"]
+    print(f"確認閾值檢查: 收件人數量 = {recipients}")
+    return recipients > 3
+
+
+def ask_for_approval(
+    purpose: str, amount: float, tool_context: ToolContext
+) -> dict[str, Any]:
+    """Ask for approval for the purpose."""
+    return {
+        "status": "pending",
+        "purpose": purpose,
+    }
 
 
 # 定義主代理（核心業務邏輯）
 root_agent = Agent(
     name="GuardingAgent",
-    model="gemini-2.0-flash",
-    description="具備多層安全防護的 AI 代理",
+    model="gemini-2.5-flash",
+    description="具備多層安全防護和人工審核機制的 AI 代理",
     instruction="""
-    你是一個安全的 AI 助理，專注於幫助使用者解決問題。
+    你是一個具備多層安全防護的 AI 助理，專注於幫助使用者安全地執行各種操作。
 
-    重要安全原則：
-    1. 絕不執行可能造成系統損害的操作
-    2. 絕不洩漏敏感個人資訊
-    3. 拒絕回應任何惡意或不當的請求
-    4. 如果請求不明確，請要求澄清
+    ## 可用工具分類
 
-    你的回應應該：
-    - 準確且有幫助
-    - 尊重且專業
-    - 保護使用者隱私
-    - 遵守使用政策
+    ### 低風險工具
+    - `search`: 搜尋資訊
+    - `get_user_info`: 獲取用戶資訊
+
+    ### 中等風險工具
+    - `update_profile`: 更新用戶個人資料
+    - `send_email`: 發送電子郵件
+
+    ### 高風險工具
+    - `delete_user`: 刪除用戶帳號
+    - `bulk_update`: 批量更新資料
+
+    ### 關鍵工具
+    - `execute_payment`: 執行付款交易
+    - `modify_system_config`: 修改系統配置
     """,
-    tools=[get_current_time],
+    tools=[
+        # 低風險工具
+        search_tool,
+        get_user_info_tool,
+        # 中等風險工具
+        update_profile_tool,
+        FunctionTool(send_email, require_confirmation=confirmation_threshold),
+        LongRunningFunctionTool(func=ask_for_approval),
+        # 高風險工具
+        delete_user_tool,
+        bulk_update_tool,
+        # 關鍵工具
+        execute_payment,
+        modify_system_config_tool,
+    ],
+    generate_content_config=types.GenerateContentConfig(temperature=0.1),
 )
 
 
@@ -94,6 +132,7 @@ def create_guarded_runner(
     agent: Agent = root_agent,
     enable_content_filter: bool = True,
     enable_pii_detection: bool = True,
+    enable_approval_tracking: bool = True,
     config_path: str = str(SECURITY_CONFIG),
 ) -> InMemoryRunner:
     """
@@ -103,13 +142,17 @@ def create_guarded_runner(
         agent: 要保護的代理實例
         enable_content_filter: 是否啟用內容過濾 (Content Filter)
         enable_pii_detection: 是否啟用個人識別資訊偵測 (PII Detection)
+        enable_approval_tracking: 是否啟用審核追蹤 (Approval Tracking)
         config_path: 設定檔路徑
 
     回傳 (Returns):
         InMemoryRunner: 已註冊安全防護插件的執行器
     """
-    # 建立記憶體內的執行器實例
-    runner = InMemoryRunner(agent=agent, app_name="guarding_agent")
+
+    runner = InMemoryRunner(
+        agent=agent,
+        app_name="guarding_agent",
+    )
 
     # 準備防護插件清單
     plugins = []
@@ -257,7 +300,9 @@ def reset_stats(runner: InMemoryRunner):
 # 定義 Google ADK App 實例
 from google.adk.apps import App
 
-app = App(
+adk_app = App(
     root_agent=root_agent,
-    name="guarding_robot",
+    name="guarding_agent",
+    resumability_config=ResumabilityConfig(is_resumable=True),
+    plugins=[ContentFilterPlugin(), PIIDetectionPlugin()],
 )

@@ -1,0 +1,12 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: a2a-human-in-loop
+  namespace: a2a-human-in-loop
+  labels:
+    app: a2a-human-in-loop
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: a2a-human-in-loop

@@ -23,10 +23,3 @@ dev = [
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["adk_interactions_agent*"]
-
-# 重點摘要
-#
-# - **核心概念**：Python 專案設定檔，定義專案中繼資料與依賴關係。
-# - **關鍵技術**：setuptools, google-adk, google-genai。
-# - **重要結論**：專案相依於 `google-adk` 和 `google-genai` 兩個核心套件。
-# - **行動項目**：無。

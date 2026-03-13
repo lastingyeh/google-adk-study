@@ -1,0 +1,108 @@
+# 風險工具配置
+
+# 此配置檔案定義各工具的風險等級和審核策略
+# 可根據實際業務需求調整
+
+tools:
+  # ========== 低風險工具（無需確認）==========
+  search:
+    level: low
+    description: '搜尋資訊（唯讀操作）'
+    require_confirmation: false
+
+  get_user_info:
+    level: low
+    description: '獲取用戶資訊（唯讀）'
+    require_confirmation: false
+
+  # ========== 中等風險工具（條件確認）==========
+  update_profile:
+    level: medium
+    description: '更新用戶個人資料'
+    require_confirmation: false # 使用條件確認
+    max_auto_approve_threshold:
+      fields: 3 # 最多修改 3 個欄位自動核准
+
+  send_email:
+    level: medium
+    description: '發送電子郵件'
+    require_confirmation: false
+    max_auto_approve_threshold:
+      recipients: 5 # 最多 5 個收件人自動發送
+
+  # ========== 高風險工具（始終確認）==========
+  delete_user:
+    level: high
+    description: '刪除用戶帳號'
+    require_confirmation: true
+    require_reason: true
+    require_approval_from: 'manager' # 需要主管審核
+
+  bulk_update:
+    level: high
+    description: '批量更新資料'
+    require_confirmation: true
+    require_reason: true
+    require_approval_from: 'manager'
+
+  # ========== 關鍵工具（必須確認並記錄）==========
+  execute_payment:
+    level: critical
+    description: '執行付款交易'
+    require_confirmation: true
+    require_reason: true
+    require_approval_from: 'admin' # 需要管理員審核
+
+  modify_system_config:
+    level: critical
+    description: '修改系統配置'
+    require_confirmation: true
+    require_reason: true
+    require_approval_from: 'admin'
+
+# 審核策略配置
+approval_policies:
+  # 審核超時時間（分鐘）
+  timeout_minutes:
+    high: 30 # 高風險操作 30 分鐘
+    critical: 15 # 關鍵操作 15 分鐘（更緊急）
+
+  # 超時後的處理策略
+  timeout_action:
+    high: 'auto_reject' # 高風險：自動拒絕
+    critical: 'notify_escalate' # 關鍵：通知並升級給更高權限審核者
+
+  # 審核者角色映射
+  approver_roles:
+    manager:
+      - 'manager001'
+      - 'manager002'
+    admin:
+      - 'admin001'
+      - 'admin002'
+
+# 通知配置
+notifications:
+  # 當有新的待審核請求時通知
+  on_new_approval:
+    enabled: true
+    channels:
+      - email
+      - slack
+
+  # 審核決策後通知請求者
+  on_decision:
+    enabled: true
+    channels:
+      - email
+
+# 審計配置
+audit:
+  # 記錄所有審核決策
+  log_all_decisions: true
+
+  # 記錄審核者的 IP 和時間
+  log_approver_details: true
+
+  # 保留審計日誌的天數
+  retention_days: 90
