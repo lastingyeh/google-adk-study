@@ -6,7 +6,7 @@
 
 [`ADK 支援`: `Python v0.1.0` | `TypeScript v0.2.0` | `Go v0.1.0` | `Java v0.2.0`]
 
-`google_search` 工具允許代理使用 Google 搜尋進行網頁搜尋。`google_search` 工具僅與 Gemini 2 模型相容。有關該工具的進一步詳細資訊，請參閱 [瞭解 Google 搜尋 grounding](../../grounding/google_search_grounding.md)。
+`google_search` 工具允許代理使用 Google 搜尋進行網頁搜尋。`google_search` 工具僅與 Gemini 2 模型相容。有關該工具的進一步詳細資訊，請參閱 [瞭解 Google 搜尋 grounding](../../grounding/grounding/google_search_grounding.md)。
 
 > [!WARNING] 使用 google_search 工具時的額外要求
 當您使用 Google 搜尋 grouding，並在回應中收到搜尋建議時，您必須在實際產品和應用程式中顯示搜尋建議。
@@ -14,7 +14,7 @@
 
 > [!WARNING] 警告：每個代理限制使用單一工具
 此工具在代理實例中只能***單獨***使用。
-有關此限制和解決方法的更多資訊，請參閱 [ADK 工具的限制](../../tools-for-agents/limitations.md#每個代理程式僅限一個工具限制)。
+有關此限制和解決方法的更多資訊，請參閱 [ADK 工具的限制](../../custom-tools/limitations.md#每個代理一個工具的限制)。
 
 <details>
 <summary>範例說明</summary>

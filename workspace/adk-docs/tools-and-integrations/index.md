@@ -50,17 +50,17 @@
 | [Pinecone](integrations/pinecone.md) | 儲存資料、執行語義搜尋及重新排名結果 |
 | [Postman](integrations/postman.md) | 管理 API 集合、工作區及產生用戶端程式碼 |
 | [Pub/Sub Tools](integrations/pubsub.md) | 發佈、提取及確認來自 Google Cloud Pub/Sub 的訊息 |
-| [Qdrant](https://google.github.io/adk-docs/integrations/qdrant/) | 使用語義向量搜尋儲存和擷取資訊 |
-| [Reflect and Retry Plugin](https://google.github.io/adk-docs/integrations/reflect-and-retry/) | 自動重試失敗的工具呼叫 |
-| [Restate](https://google.github.io/adk-docs/integrations/restate/) | 具有耐久工作階段和人工核准功能的恢復力 agent 執行及協調 |
-| [Spanner Tools](https://google.github.io/adk-docs/integrations/spanner/) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
-| [StackOne](https://google.github.io/adk-docs/integrations/stackone/) | 將 agents 連接到 200+ SaaS 提供者 |
-| [Stripe](https://google.github.io/adk-docs/integrations/stripe/) | 管理付款、客戶、訂閱及發票 |
-| [Supermetrics](https://google.github.io/adk-docs/integrations/supermetrics/) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
-| [Vertex AI RAG Engine](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
-| [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
-| [W&B Weave](https://google.github.io/adk-docs/integrations/weave/) | 記錄、視覺化及分析模型呼叫和 agent 效能 |
-| [Windsor.ai](https://google.github.io/adk-docs/integrations/windsor-ai/) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
+| [Qdrant](integrations/qdrant.md) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Reflect and Retry Plugin](integrations/reflect-and-retry.md) | 自動重試失敗的工具呼叫 |
+| [Restate](integrations/restate.md) | 具有耐久工作階段和人工核准功能的恢復力 agent 執行及協調 |
+| [Spanner Tools](integrations/spanner.md) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
+| [StackOne](integrations/stackone.md) | 將 agents 連接到 200+ SaaS 提供者 |
+| [Stripe](integrations/stripe.md) | 管理付款、客戶、訂閱及發票 |
+| [Supermetrics](integrations/supermetrics.md) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
+| [Vertex AI RAG Engine](integrations/vertex-ai-rag-engine.md) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
+| [Vertex AI Search](integrations/vertex-ai-search.md) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
+| [W&B Weave](integrations/weave.md) | 記錄、視覺化及分析模型呼叫和 agent 效能 |
+| [Windsor.ai](integrations/windsor-ai.md) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
 
 ---
 
@@ -83,7 +83,7 @@
 | [Apigee API Hub](integrations/apigee-api-hub.md) | 將 Apigee API Hub 中任何已記錄的 API 轉換為工具 |
 | [Application Integration](integrations/application-integration.md) | 使用整合連接器將 agents 連結至企業應用程式 |
 | [n8n](integrations/n8n.md) | 觸發自動化工作流程、連接應用程式及處理資料 |
-| [StackOne](https://google.github.io/adk-docs/integrations/stackone/) | 將 agents 連接到 200+ SaaS 提供者 |
+| [StackOne](integrations/stackone.md) | 將 agents 連接到 200+ SaaS 提供者 |
 
 ### 資料
 
@@ -97,11 +97,11 @@
 | [MCP Toolbox for Databases](integrations/mcp-toolbox-for-databases.md) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [MongoDB](integrations/mongodb.md) | 查詢集合、管理資料庫及分析結構描述 |
 | [Pinecone](integrations/pinecone.md) | 儲存資料、執行語義搜尋及重新排名結果 |
-| [Qdrant](https://google.github.io/adk-docs/integrations/qdrant/) | 使用語義向量搜尋儲存和擷取資訊 |
-| [Spanner Tools](https://google.github.io/adk-docs/integrations/spanner/) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
-| [Supermetrics](https://google.github.io/adk-docs/integrations/supermetrics/) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
-| [Vertex AI RAG Engine](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
-| [Windsor.ai](https://google.github.io/adk-docs/integrations/windsor-ai/) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
+| [Qdrant](integrations/qdrant.md) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Spanner Tools](integrations/spanner.md) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
+| [Supermetrics](integrations/supermetrics.md) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
+| [Vertex AI RAG Engine](integrations/vertex-ai-rag-engine.md) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
+| [Windsor.ai](integrations/windsor-ai.md) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
 
 ### Google
 
@@ -123,10 +123,10 @@
 | [Google Search](integrations/google-search.md) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
 | [MCP Toolbox for Databases](integrations/mcp-toolbox-for-databases.md) | 將 30+ 個不同的資料來源連接到您的 agents |
 | [Pub/Sub Tools](integrations/pubsub.md) | 發佈、提取及確認來自 Google Cloud Pub/Sub 的訊息 |
-| [Reflect and Retry Plugin](https://google.github.io/adk-docs/integrations/reflect-and-retry/) | 自動重試失敗的工具呼叫 |
-| [Spanner Tools](https://google.github.io/adk-docs/integrations/spanner/) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
-| [Vertex AI RAG Engine](https://google.github.io/adk-docs/integrations/vertex-ai-rag-engine/)) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
-| [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/)) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
+| [Reflect and Retry Plugin](integrations/reflect-and-retry.md) | 自動重試失敗的工具呼叫 |
+| [Spanner Tools](integrations/spanner.md) | 與 Spanner 互動以擷取資料、搜尋及執行 SQL |
+| [Vertex AI RAG Engine](integrations/vertex-ai-rag-engine.md)) | 使用 Vertex AI RAG Engine 進行私人資料擷取 |
+| [Vertex AI Search](integrations/vertex-ai-search.md)) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
 
 ### MCP
 
@@ -151,10 +151,10 @@
 | [Paypal](integrations/paypal.md) | 管理付款、傳送發票並處理訂閱 |
 | [Pinecone](integrations/pinecone.md) | 儲存資料、執行語義搜尋及重新排名結果 |
 | [Postman](integrations/postman.md) | 管理 API 集合、工作區及產生用戶端程式碼 |
-| [Qdrant](https://google.github.io/adk-docs/integrations/qdrant/) | 使用語義向量搜尋儲存和擷取資訊 |
-| [Stripe](https://google.github.io/adk-docs/integrations/stripe/) | 管理付款、客戶、訂閱及發票 |
-| [Supermetrics](https://google.github.io/adk-docs/integrations/supermetrics/) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
-| [Windsor.ai](https://google.github.io/adk-docs/integrations/windsor-ai/) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
+| [Qdrant](integrations/qdrant.md) | 使用語義向量搜尋儲存和擷取資訊 |
+| [Stripe](integrations/stripe.md) | 管理付款、客戶、訂閱及發票 |
+| [Supermetrics](integrations/supermetrics.md) | 使用和分析來自 325+ 個平台的即時行銷、廣告及 CRM 資料 |
+| [Windsor.ai](integrations/windsor-ai.md) | 查詢並分析來自 325+ 個平台的行銷、銷售及客戶資料 |
 
 ### 可觀測性
 
@@ -168,11 +168,11 @@
 | [MLflow](integrations/mlflow.md) | 擷取 agent 執行、工具呼叫及模型要求的 OpenTelemetry 追蹤 |
 | [Monocle](integrations/monocle.md) | LLM 應用程式的開源可觀測性、追蹤及偵錯 |
 | [Phoenix](integrations/phoenix.md) | LLM 應用程式的開源、自我託管的可觀測性、追蹤及評估 |
-| [W&B Weave](https://google.github.io/adk-docs/integrations/weave/) | 記錄、視覺化及分析模型呼叫和 agent 效能 |
+| [W&B Weave](integrations/weave.md) | 記錄、視覺化及分析模型呼叫和 agent 效能 |
 
 ### 搜尋
 
 | 工具名稱 | 說明 |
 |---------|------|
 | [Google Search](integrations/google-search.md) | 使用 Google Search 搭配 Gemini 執行網路搜尋 |
-| [Vertex AI Search](https://google.github.io/adk-docs/integrations/vertex-ai-search/) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |
+| [Vertex AI Search](integrations/vertex-ai-search.md) | 在 Vertex AI Search 中搜尋您的私人設定資料存放區 |

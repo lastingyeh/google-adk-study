@@ -1,16 +1,16 @@
 # ADK 的 Vertex AI Search 工具
 
-> 🔔 `更新日期：2026-01-26`
+> 🔔 `更新日期：2026-03-09`
 >
-> 🔗 `資料來源`：https://google.github.io/adk-docs/tools/google-cloud/vertex-ai-search/
+> 🔗 `資料來源`：https://google.github.io/adk-docs/integrations/vertex-ai-search/
 
 [`ADK 支援`: `Python v0.1.0`]
 
-`vertex_ai_search_tool` 使用 Google Cloud Vertex AI Search，讓代理程式（agent）能夠在您私有的、已配置的資料儲存庫（例如內部文件、公司政策、知識庫）中進行搜尋。這個內建工具需要您在配置期間提供特定的資料儲存庫 ID。有關該工具的進一步細節，請參閱 [瞭解 Vertex AI Search 落地 (grounding)](/adk-docs/grounding/vertex_ai_search_grounding/)。
+`vertex_ai_search_tool` 使用 Google Cloud Vertex AI Search，讓代理程式（agent）能夠在您私有的、已配置的資料儲存庫（例如內部文件、公司政策、知識庫）中進行搜尋。這個內建工具需要您在配置期間提供特定的資料儲存庫 ID。有關該工具的進一步細節，請參閱 [瞭解 Vertex AI Search 落地 (grounding)](../../grounding/grounding/vertex_ai_search_grounding.md)。
 
 > [!WARNING] 警告：每個代理程式僅限單一工具
 此工具在代理程式實例中只能***單獨使用***。
-有關此限制及其解決辦法的更多資訊，請參閱 [ADK 工具的限制](../limitations.md#每個代理程式僅限一個工具限制)。
+有關此限制及其解決辦法的更多資訊，請參閱 [ADK 工具的限制](../../custom-tools/limitations.md#每個代理一個工具的限制)。
 
 ```py
 import asyncio

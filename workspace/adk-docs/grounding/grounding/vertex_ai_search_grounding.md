@@ -6,7 +6,7 @@
 >
 > 🔗 `資料來源`：https://google.github.io/adk-docs/grounding/vertex_ai_search_grounding/
 
-[Vertex AI Search](../tools-for-agents/google-cloud/vertex-ai-search.md) 是代理程式開發套件 (ADK) 的強大工具，它使 AI 代理程式能夠存取來自您的私人企業文件和數據庫的信息。通過將您的代理程式連接到已索引的企業內容，您可以為用戶提供基於您組織知識庫的答案。
+[Vertex AI Search](../tools-and-integrations/integrations/vertex-ai-search.md) 是代理程式開發套件 (ADK) 的強大工具，它使 AI 代理程式能夠存取來自您的私人企業文件和數據庫的信息。通過將您的代理程式連接到已索引的企業內容，您可以為用戶提供基於您組織知識庫的答案。
 
 此功能對於需要來自內部文檔、政策、研究論文或任何已在您的 [Vertex AI Search](https://cloud.google.com/enterprise-search) 資料儲存中索引的專有內容的企業特定查詢特別有價值。當您的代理程式確定需要來自您知識庫的信息時，它會自動搜索您的索引文檔，並將結果納入其 回應中，並附上適當的引用。
 

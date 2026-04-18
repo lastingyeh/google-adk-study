@@ -552,7 +552,7 @@ LlmAgent agent =
 
 程式碼執行是一個具有額外安全意義的特殊工具：必須使用沙盒化來防止模型生成的程式碼損害本地環境，從而可能導致安全性問題。
 
-Google 和 ADK 提供了多種安全執行程式碼的選項。[Vertex Gemini Enterprise API 程式碼執行功能](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/code-execution-api) 使代理能夠透過啟用 tool_execution 工具來利用伺服器端的沙盒化程式碼執行。對於執行數據分析的程式碼，您可以使用 ADK 中的 [程式碼執行器 (Code Executor)](../tools-for-agents/gemini-api/code-execution.md) 工具來呼叫 [Vertex 程式碼解釋器 (Code Interpreter) 擴充功能](https://cloud.google.com/vertex-ai/generative-ai/docs/extensions/code-interpreter)。
+Google 和 ADK 提供了多種安全執行程式碼的選項。[Vertex Gemini Enterprise API 程式碼執行功能](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/code-execution-api) 使代理能夠透過啟用 tool_execution 工具來利用伺服器端的沙盒化程式碼執行。對於執行數據分析的程式碼，您可以使用 ADK 中的 [程式碼執行器 (Code Executor)](../tools-and-integrations/integrations/code-execution.md) 工具來呼叫 [Vertex 程式碼解釋器 (Code Interpreter) 擴充功能](https://cloud.google.com/vertex-ai/generative-ai/docs/extensions/code-interpreter)。
 
 如果這些選項都不能滿足您的需求，您可以使用 ADK 提供的構建塊構建自己的程式碼執行器。我們建議建立密閉的執行環境：不允許網路連接和 API 呼叫，以避免不受控制的數據洩露；並在執行過程中完全清理數據，以避免跨使用者的洩露疑慮。
 
