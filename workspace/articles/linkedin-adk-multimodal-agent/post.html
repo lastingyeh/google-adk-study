@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinkedIn Post — 多模態 AI 代理學習心得</title>
+    <style>
+      * { box-sizing: border-box; }
+
+      :root {
+        --bg: #f3f2ef;
+        --panel: #ffffff;
+        --text: #1d2226;
+        --muted: #666;
+        --line: #e0dfdc;
+        --blue: #0a66c2;
+        --blue-soft: #dce8f8;
+        --green: #057642;
+        --green-soft: #dcf5e7;
+        --orange: #b45309;
+        --orange-soft: #fef3c7;
+        --radius: 12px;
+        --shadow: 0 2px 8px rgba(0,0,0,0.08);
+      }
+
+      body {
+        margin: 0;
+        font-family: -apple-system, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        padding: 32px 16px 60px;
+        min-height: 100vh;
+      }
+
+      .post-wrap {
+        width: 100%;
+        max-width: 680px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      /* ── Card ───────────────────────────────── */
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        margin-bottom: 0;
+      }
+
+      /* ── Author header ───────────────────────── */
+      .author-bar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px 0;
+      }
+
+      .avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0a66c2 0%, #0d8fd9 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 800;
+        font-size: 20px;
+        flex-shrink: 0;
+      }
+
+      .author-info .name {
+        font-weight: 700;
+        font-size: 15px;
+        color: var(--text);
+      }
+
+      .author-info .meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+        line-height: 1.4;
+      }
+
+      /* ── Post body ───────────────────────────── */
+      .post-body {
+        padding: 14px 20px 16px;
+        font-size: 14.5px;
+        line-height: 1.7;
+        color: var(--text);
+        white-space: pre-wrap;
+      }
+
+      .post-body p { margin: 0 0 10px; }
+      .post-body p:last-child { margin-bottom: 0; }
+
+      .label {
+        display: inline-block;
+        background: var(--blue-soft);
+        color: var(--blue);
+        border-radius: 6px;
+        padding: 1px 9px;
+        font-size: 12px;
+        font-weight: 800;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+      .label.green { background: var(--green-soft); color: var(--green); }
+      .label.orange { background: var(--orange-soft); color: var(--orange); }
+      .label.gray { background: #f0f0f0; color: #444; }
+
+      .section-sep {
+        border: none;
+        border-top: 1px dashed var(--line);
+        margin: 14px 0;
+      }
+
+      .section-head {
+        font-weight: 800;
+        font-size: 15px;
+        margin: 0 0 6px;
+        color: var(--text);
+      }
+
+      .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-left: 4px;
+        margin: 8px 0 12px;
+      }
+
+      .timeline-item {
+        display: flex;
+        gap: 12px;
+        position: relative;
+      }
+
+      .tl-left {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 28px;
+        flex-shrink: 0;
+      }
+
+      .tl-dot {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--blue);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: 800;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .tl-dot.green { background: var(--green); }
+
+      .tl-line {
+        width: 2px;
+        flex: 1;
+        background: var(--line);
+        min-height: 16px;
+      }
+
+      .tl-content {
+        padding-bottom: 12px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333;
+        flex: 1;
+      }
+
+      .tl-content strong { color: var(--text); }
+
+      /* ── Code block ──────────────────────────── */
+      .code-block {
+        background: #1e2838;
+        color: #a8d8a8;
+        border-radius: 8px;
+        padding: 14px 16px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 12.5px;
+        line-height: 1.65;
+        margin: 10px 0;
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .code-comment { color: #6a9955; }
+      .code-key { color: #9cdcfe; }
+      .code-val { color: #ce9178; }
+      .code-ok { color: #4ec9b0; }
+
+      /* ── Comparison pills row ────────────────── */
+      .pill-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 10px 0;
+      }
+
+      .pill {
+        border-radius: 999px;
+        padding: 5px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        border: 1px solid var(--line);
+      }
+
+      .pill.bad { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+      .pill.ok  { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+      .pill.good{ background: var(--green-soft); color: var(--green); border-color: #a7f3d0; }
+
+      /* ── Image block ─────────────────────────── */
+      .image-block {
+        margin: 0;
+        border-top: 1px solid var(--line);
+        position: relative;
+        background: #f8fafc;
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .image-block img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+      }
+
+      .image-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, transparent 100%);
+        color: #fff;
+        font-size: 12px;
+        padding: 24px 16px 10px;
+        font-weight: 600;
+      }
+
+      .image-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        color: #90a4b7;
+        width: 100%;
+        height: 280px;
+      }
+      .image-placeholder .icon { font-size: 44px; }
+      .image-placeholder .hint { font-size: 13px; font-weight: 600; }
+      .image-placeholder .sub  { font-size: 11px; color: #b0bec5; }
+
+      /* ── Tags ────────────────────────────────── */
+      .tags-block {
+        padding: 0 20px 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+
+      .tag {
+        font-size: 13px;
+        color: var(--blue);
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .tag:hover { text-decoration: underline; }
+
+      /* ── Reactions bar ───────────────────────── */
+      .reactions-bar {
+        padding: 10px 20px;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .reactions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .r-emoji { font-size: 16px; }
+
+      /* ── Links block ─────────────────────────── */
+      .links-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        margin-top: 12px;
+      }
+
+      .links-head {
+        padding: 14px 20px 8px;
+        font-weight: 800;
+        font-size: 15px;
+        border-bottom: 1px solid var(--line);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .links-list {
+        padding: 10px 20px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .link-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--text);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 13px;
+        transition: background 0.15s;
+      }
+
+      .link-item:hover { background: #f5f8fd; }
+
+      .link-favicon {
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        background: var(--blue-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .link-info .title {
+        font-size: 13.5px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.4;
+      }
+
+      .link-info .desc {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+        line-height: 1.4;
+      }
+
+      .link-info .url {
+        font-size: 11px;
+        color: #90a0b0;
+        margin-top: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="post-wrap">
+
+      <!-- ── Main Post Card ───────────────────── -->
+      <div class="card">
+
+        <!-- Author -->
+        <div class="author-bar">
+          <div class="avatar">CY</div>
+          <div class="author-info">
+            <div class="name">Chris Yeh</div>
+            <div class="meta">AI Engineering · Google ADK · Gemini<br>2026 · 3 分鐘閱讀</div>
+          </div>
+        </div>
+
+        <!-- Post Text -->
+        <div class="post-body">
+
+<p>📸 你有沒有想過，當使用者在對話裡傳一張照片，AI 代理能自動「看懂」、「整理」並「存進資料庫」，還能同步告訴你「已完成」？</p>
+
+<p>這週在研究 Google Codelab「Survivor Network」的第 9 步驟——多模態管道（Multimodal Pipeline），讓我重新思考了一件事：</p>
+
+<p><strong>為什麼我們要用代理工作流程，而不是傳統的批次流程或事件導向架構？</strong></p>
+
+<p>用 5W1H 來整理這次的學習心得 👇</p>
+
+<hr class="section-sep">
+
+<p class="section-head">🔍 What — 這在做什麼？</p>
+
+<p>系統能接收使用者即時上傳的 <strong>圖片、影片、文字</strong>，透過 AI 代理完成三件事：</p>
+
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="tl-left">
+      <div class="tl-dot">1</div>
+      <div class="tl-line"></div>
+    </div>
+    <div class="tl-content"><strong>upload_media</strong>｜將本機檔案上傳至 Google Cloud Storage</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-left">
+      <div class="tl-dot">2</div>
+      <div class="tl-line"></div>
+    </div>
+    <div class="tl-content"><strong>extract_from_media</strong>｜Gemini 視覺分析，萃取人員、資源、位置等結構化實體</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-left">
+      <div class="tl-dot green">3</div>
+      <div class="tl-line"></div>
+    </div>
+    <div class="tl-content"><strong>save_to_spanner</strong>｜將實體與關係寫入 Spanner Graph 資料庫，並確認完成</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-left">
+      <div class="tl-dot green">✓</div>
+    </div>
+    <div class="tl-content"><strong>Agent 回報</strong>｜「我幫你找到 3 位倖存者與 2 項資源，已成功儲存。」</div>
+  </div>
+</div>
+
+<hr class="section-sep">
+
+<p class="section-head">🎯 Why — 為什麼這樣設計？</p>
+
+<p>現場的倖存者資料是非結構化的：一張醫療包照片、一段語音備忘、一則手寫筆記。<br>問題是：<strong>「水在哪裡？」</strong>這個查詢需要能搜尋這些多媒體裡的結構化資訊。</p>
+
+<p>傳統做法的致命弱點：</p>
+
+<div class="pill-row">
+  <span class="pill bad">❌ 批次流程｜一個檔案壞掉，整個流程癱瘓</span>
+  <span class="pill ok">⚠️ 事件導向｜5 個以上服務、狀態分散、偵錯噩夢</span>
+  <span class="pill good">✅ 代理流程｜即時回報、動態判斷、情境感知</span>
+</div>
+
+<hr class="section-sep">
+
+<p class="section-head">🧑‍💻 Who — 由誰來協調？</p>
+
+<p><label class="label">Google ADK</label> 的 <strong>SequentialAgent</strong> 是這一切的指揮中樞。<br>
+它把 4 個專職子代理串聯成一條有意識的流水線：上傳 → 擷取 → 儲存 → 摘要。<br>
+每個環節都能 <strong>回報進度、判斷異常、調整策略</strong>，而不是沉默地失敗。</p>
+
+<hr class="section-sep">
+
+<p class="section-head">🗺️ Where — 在哪裡運作？</p>
+
+<p>整套流程部署在 <strong>Google Cloud</strong> 上：</p>
+<p>
+  <label class="label gray">GCS</label> 儲存原始媒體　
+  <label class="label">Gemini</label> 多模態分析　
+  <label class="label gray">Spanner Graph</label> 圖資料庫
+</p>
+<p>重點是：這不是把多個服務拼湊起來，而是 <strong>由單一代理統一協調</strong>，從使用者的一句話到資料入庫，都發生在同一個對話上下文裡。</p>
+
+<hr class="section-sep">
+
+<p class="section-head">⏱️ When — 這個架構什麼時候適合用？</p>
+
+<p>不是所有場景都需要代理。但當你的需求是：</p>
+<p>
+  <label class="label green">✔ 需要即時回饋</label>
+  <label class="label green">✔ 流程可能有異常</label>
+  <label class="label green">✔ 使用者意圖不固定</label>
+  <label class="label green">✔ 狀態需要跨步驟維護</label>
+</p>
+<p>那代理工作流程就值得認真考慮。</p>
+
+<hr class="section-sep">
+
+<p class="section-head">⚙️ How — 代理怎麼做到的？</p>
+
+<p>關鍵在工具層（Tooling Layer）的三個設計原則：</p>
+
+<div class="code-block"><span class="code-comment"># 代理循序管道（簡化概念示意）</span>
+<span class="code-key">Agent</span>: <span class="code-val">"我先幫你上傳檔案..."</span>
+<span class="code-key">Tool </span>: upload_media → <span class="code-ok">Success ✅</span>
+<span class="code-key">Agent</span>: <span class="code-val">"正在擷取實體..."</span>
+<span class="code-key">Tool </span>: extract_from_media → <span class="code-ok">找到 3 位倖存者、2 項資源 ✅</span>
+<span class="code-key">Agent</span>: <span class="code-val">"正在儲存進資料庫..."</span>
+<span class="code-key">Tool </span>: save_to_spanner → <span class="code-ok">儲存為 broadcast #456 ✅</span>
+<span class="code-key">Agent</span>: <span class="code-val">"完成！共找到 3 位倖存者與 2 項資源，</span>
+         <span class="code-val">是否要重新上傳圖片 2？"</span></div>
+
+<p>
+  <label class="label">多模態輸入</label> 文字提示 + 圖片物件一起丟給 Gemini<br>
+  <label class="label">結構化輸出</label> <code>response_mime_type="application/json"</code> 確保 LLM 回傳有效 JSON<br>
+  <label class="label">服務抽象化</label> GCSService 封裝細節，代理只說「上傳」，不需知道 bucket 怎麼運作
+</p>
+
+<hr class="section-sep">
+
+<p class="section-head">💡 學習心得</p>
+
+<p>這張比較圖（見下方圖片）是我最後整理思路的關鍵：<br>
+批次流程的問題不是「不夠強大」，而是<strong>缺乏韌性</strong>；<br>
+事件導向的問題不是「不夠擴展」，而是<strong>狀態太分散、維運太複雜</strong>。</p>
+
+<p>代理工作流程不是萬靈丹，但它解決了一個核心問題：<br>
+<strong>「流程跑完」和「讓人知道跑完了、還能問為什麼」之間，有一道鴻溝。</strong><br>
+SequentialAgent 填補的，正是這道鴻溝。</p>
+
+<p>你對代理工作流程有什麼看法？歡迎留言交流 👇</p>
+
+        </div>
+
+        <!-- Image Block -->
+        <div class="image-block">
+          <img src="flow.png" alt="代理工作流程 vs 傳統方法比較圖"
+               onerror="this.style.display='none';document.getElementById('img-placeholder').style.display='flex';" />
+          <div id="img-placeholder" class="image-placeholder" style="display:none;">
+            <div class="icon">🖼️</div>
+            <div class="hint">代理工作流程 vs 傳統方法比較圖</div>
+            <div class="sub">flow.png · 請確認圖片檔案存在於同目錄</div>
+          </div>
+          <div class="image-caption">圖：批次管道 / 事件導向 / 代理工作流程三方比較（由 flow.html 生成）</div>
+        </div>
+
+        <!-- Tags -->
+        <div class="tags-block">
+          <span class="tag">#GoogleADK</span>
+          <span class="tag">#AgenticAI</span>
+          <span class="tag">#MultimodalAI</span>
+          <span class="tag">#GeminiAPI</span>
+          <span class="tag">#SequentialAgent</span>
+          <span class="tag">#GoogleCloud</span>
+          <span class="tag">#GraphRAG</span>
+          <span class="tag">#AIEngineering</span>
+          <span class="tag">#LLMOps</span>
+          <span class="tag">#BuildWithAI</span>
+          <span class="tag">#生成式AI</span>
+          <span class="tag">#AI代理</span>
+          <span class="tag">#軟體工程師</span>
+        </div>
+
+        <!-- Reactions -->
+        <div class="reactions-bar">
+          <div class="reactions">
+            <span class="r-emoji">👍</span>
+            <span class="r-emoji">💡</span>
+            <span class="r-emoji">🔥</span>
+            <span> · 讚好 · 留言 · 轉發</span>
+          </div>
+          <div>chris yeh · 2026</div>
+        </div>
+      </div>
+      <!-- ── End Main Post Card ──────────────── -->
+
+
+      <!-- ── Related Links Card ─────────────── -->
+      <div class="links-card">
+        <div class="links-head">
+          🔗 相關連結
+        </div>
+        <div class="links-list">
+
+          <a class="link-item"
+             href="https://codelabs.developers.google.com/codelabs/survivor-network/instructions?hl=zh-tw#8"
+             target="_blank" rel="noopener">
+            <div class="link-favicon">🧪</div>
+            <div class="link-info">
+              <div class="title">Google Codelab：Survivor Network — Step 9 Multimodal Pipeline</div>
+              <div class="desc">多模態管道工具層詳細說明，包含 upload_media、extract_from_media、save_to_spanner 的原始碼與解說</div>
+              <div class="url">codelabs.developers.google.com · Step #8</div>
+            </div>
+          </a>
+
+          <a class="link-item"
+             href="https://codelabs.developers.google.com/codelabs/survivor-network/instructions?hl=zh-tw#9"
+             target="_blank" rel="noopener">
+            <div class="link-favicon">🤖</div>
+            <div class="link-info">
+              <div class="title">Google Codelab：Survivor Network — Step 10 Agent Layer</div>
+              <div class="desc">代理層詳細說明，SequentialAgent 如何把 4 個子代理串成完整的多模態處理流水線</div>
+              <div class="url">codelabs.developers.google.com · Step #9</div>
+            </div>
+          </a>
+
+          <a class="link-item"
+             href="https://codelabs.developers.google.com/codelabs/survivor-network/instructions?hl=zh-tw#0"
+             target="_blank" rel="noopener">
+            <div class="link-favicon">📖</div>
+            <div class="link-info">
+              <div class="title">Google Codelab：使用 Graph RAG、ADK 和 Memory Bank 建構多模態 AI 代理（完整版）</div>
+              <div class="desc">從 Spanner Graph 設定、Graph RAG 混合搜尋、多模態管道到 Memory Bank 的完整學習路徑</div>
+              <div class="url">codelabs.developers.google.com · Survivor Network</div>
+            </div>
+          </a>
+
+          <a class="link-item"
+             href="https://google.github.io/adk-docs/"
+             target="_blank" rel="noopener">
+            <div class="link-favicon">📚</div>
+            <div class="link-info">
+              <div class="title">Google ADK 官方文件</div>
+              <div class="desc">Agent Development Kit — SequentialAgent、工具定義、Session 管理等完整 API 參考</div>
+              <div class="url">google.github.io/adk-docs</div>
+            </div>
+          </a>
+
+          <a class="link-item"
+             href="flow.html"
+             target="_blank" rel="noopener">
+            <div class="link-favicon">📊</div>
+            <div class="link-info">
+              <div class="title">互動比較圖：代理工作流程 vs 傳統方法</div>
+              <div class="desc">批次管道 / 事件導向 / 代理工作流程三方比較的完整視覺化資訊圖（本地 HTML）</div>
+              <div class="url">flow.html · 本地檔案</div>
+            </div>
+          </a>
+
+        </div>
+      </div>
+      <!-- ── End Related Links Card ─────────── -->
+
+    </div>
+  </body>
+</html>

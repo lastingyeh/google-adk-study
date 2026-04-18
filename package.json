@@ -30,6 +30,8 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.19.27",
     "@types/xml2js": "^0.4.14",
+    "puppeteer": "^24.40.0",
+    "puppeteer-core": "^24.40.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

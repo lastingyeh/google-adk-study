@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>代理工作流程 vs 傳統方法</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #f4f7fb;
+        --panel: #ffffff;
+        --text: #172033;
+        --muted: #5f6b85;
+        --line: #d9e2f0;
+        --blue: #2f6fed;
+        --blue-soft: #eaf1ff;
+        --green: #1e9b62;
+        --green-soft: #e9fbf3;
+        --orange: #d97706;
+        --orange-soft: #fff4e8;
+        --red: #d14343;
+        --shadow: 0 10px 30px rgba(25, 46, 89, 0.08);
+        --radius: 22px;
+      }
+
+      body {
+        margin: 0;
+        font-family:
+          'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        background: #dfe7f3;
+        color: var(--text);
+      }
+
+      .slide {
+        max-width: 1920px;
+        margin: 0 auto;
+        background:
+          radial-gradient(
+            circle at top right,
+            #eef4ff 0%,
+            #f8fbff 28%,
+            #f4f7fb 60%
+          ),
+          linear-gradient(135deg, #f7faff 0%, #f1f5fb 100%);
+        padding: 48px 58px 42px;
+        position: relative;
+      }
+
+      .topbar {
+        display: grid;
+        grid-template-columns: 1.35fr 0.95fr;
+        gap: 24px;
+        margin-bottom: 24px;
+        align-items: start;
+      }
+
+      .hero {
+        background: rgba(255, 255, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.9);
+        box-shadow: var(--shadow);
+        border-radius: 28px;
+        padding: 30px 34px;
+        backdrop-filter: blur(8px);
+      }
+
+      .eyebrow {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue);
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 44px;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
+      }
+
+      .hero p {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+
+      .summary-box {
+        background: linear-gradient(180deg, #1e3f8f 0%, #20499f 100%);
+        color: #fff;
+        border-radius: 28px;
+        padding: 28px 30px;
+        box-shadow: var(--shadow);
+        min-height: 100%;
+      }
+
+      .summary-box h2 {
+        margin: 0 0 14px;
+        font-size: 28px;
+        line-height: 1.3;
+      }
+
+      .summary-box p {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.92);
+      }
+
+      .flow-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        margin-bottom: 22px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid rgba(17, 24, 39, 0.06);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 22px 22px 20px;
+        min-height: 462px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card.batch {
+        border-top: 7px solid var(--orange);
+      }
+
+      .card.event {
+        border-top: 7px solid var(--blue);
+      }
+
+      .card.agent {
+        border-top: 7px solid var(--green);
+      }
+
+      .card-head {
+        margin-bottom: 14px;
+      }
+
+      .card-title {
+        margin: 0 0 8px;
+        font-size: 30px;
+        line-height: 1.25;
+        font-weight: 800;
+      }
+
+      .card-subtitle {
+        margin: 0;
+        font-size: 18px;
+        line-height: 1.55;
+        color: var(--muted);
+        min-height: 56px;
+      }
+
+      .steps {
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+        margin: 18px 0 18px;
+        flex-wrap: nowrap;
+      }
+
+      .step {
+        flex: 1;
+        min-width: 0;
+        border-radius: 16px;
+        padding: 14px 12px;
+        font-size: 16px;
+        line-height: 1.45;
+        font-weight: 700;
+        text-align: center;
+        border: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .batch .step {
+        background: var(--orange-soft);
+      }
+
+      .event .step {
+        background: var(--blue-soft);
+      }
+
+      .agent .step {
+        background: var(--green-soft);
+      }
+
+      .arrow {
+        flex: 0 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #90a0bf;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .bullet-box {
+        margin-top: 2px;
+        padding: 16px 16px 14px;
+        border-radius: 18px;
+        background: #f8fafc;
+        border: 1px solid #e8eef8;
+      }
+
+      .bullet-box h3 {
+        margin: 0 0 10px;
+        font-size: 18px;
+      }
+
+      .bullet-box ul {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      .bullet-box li {
+        margin-bottom: 8px;
+        font-size: 16px;
+        line-height: 1.5;
+        color: #39455d;
+      }
+
+      .bubble-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .bubble {
+        background: #f3f8f6;
+        color: #246d4d;
+        border: 1px solid #cfe8dc;
+        border-radius: 999px;
+        padding: 8px 14px;
+        font-size: 14px;
+        line-height: 1.35;
+        font-weight: 700;
+      }
+
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: 1.45fr 0.95fr;
+        gap: 22px;
+      }
+
+      .table-card,
+      .takeaway-card {
+        background: var(--panel);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid rgba(17, 24, 39, 0.06);
+        padding: 22px 24px;
+      }
+
+      .section-title {
+        margin: 0 0 14px;
+        font-size: 28px;
+        line-height: 1.3;
+        font-weight: 800;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        font-size: 16px;
+      }
+
+      th,
+      td {
+        border: 1px solid #dce5f2;
+        padding: 12px 12px;
+        vertical-align: top;
+        line-height: 1.45;
+      }
+
+      th {
+        background: #edf3ff;
+        font-size: 16px;
+        text-align: left;
+        font-weight: 800;
+      }
+
+      td:first-child {
+        width: 18%;
+        font-weight: 800;
+        background: #f8fbff;
+      }
+
+      .takeaway-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      }
+
+      .takeaway-list {
+        margin: 0;
+        padding-left: 22px;
+      }
+
+      .takeaway-list li {
+        margin-bottom: 12px;
+        font-size: 19px;
+        line-height: 1.6;
+        color: #344159;
+      }
+
+      .quote {
+        margin-top: 10px;
+        padding: 18px 20px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #edf4ff 0%, #f5faff 100%);
+        border: 1px solid #dbe8ff;
+        font-size: 22px;
+        line-height: 1.6;
+        font-weight: 800;
+        color: #214ca0;
+      }
+
+      .footer-note {
+        display: block;
+        text-align: right;
+        margin-top: 16px;
+        font-size: 14px;
+        color: #7a869f;
+        letter-spacing: 0.3px;
+      }
+
+      /* ── Enhancements ─────────────────────────────── */
+
+      .step-num {
+        display: block;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+        opacity: 0.55;
+      }
+
+      .card-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        font-size: 20px;
+        margin-right: 10px;
+        flex-shrink: 0;
+      }
+      .batch .card-tag {
+        background: var(--orange-soft);
+      }
+      .event .card-tag {
+        background: var(--blue-soft);
+      }
+      .agent .card-tag {
+        background: var(--green-soft);
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+      }
+
+      .bullet-box h3 {
+        display: flex;
+        align-items: center;
+      }
+      .bullet-box h3::before {
+        content: '';
+        display: inline-block;
+        width: 4px;
+        height: 18px;
+        border-radius: 2px;
+        margin-right: 8px;
+        flex-shrink: 0;
+      }
+      .batch .bullet-box h3::before {
+        background: var(--orange);
+      }
+      .event .bullet-box h3::before {
+        background: var(--blue);
+      }
+      .agent .bullet-box h3::before {
+        background: var(--green);
+      }
+
+      .badge-rec {
+        display: inline-block;
+        background: var(--green);
+        color: #fff;
+        border-radius: 999px;
+        padding: 3px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        margin-left: 6px;
+        vertical-align: middle;
+      }
+
+      th.col-batch {
+        background: #fffaf2;
+        color: #a85800;
+      }
+      th.col-event {
+        background: #f0f5ff;
+        color: #1a4fc0;
+      }
+      th.col-agent {
+        background: #f0fdf7;
+        color: #147048;
+      }
+
+      table tbody tr td:last-child {
+        background: #f4fdf8;
+        color: #155a38;
+      }
+      table tbody tr td:first-child {
+        background: #f8fbff;
+      }
+
+      .tag-ow,
+      .tag-bl,
+      .tag-gr {
+        display: inline-block;
+        border-radius: 8px;
+        padding: 2px 10px;
+        font-weight: 800;
+        margin-right: 6px;
+        font-size: 17px;
+      }
+      .tag-ow {
+        background: var(--orange-soft);
+        color: var(--orange);
+      }
+      .tag-bl {
+        background: var(--blue-soft);
+        color: var(--blue);
+      }
+      .tag-gr {
+        background: var(--green-soft);
+        color: var(--green);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slide">
+      <section class="topbar">
+        <div class="hero">
+          <div class="eyebrow">Agentic Workflow Comparison</div>
+          <h1>為什麼要選擇代理工作流程，而非傳統方法？</h1>
+          <p>
+            當需求不只是把流程跑完，而是還要能回報進度、解釋狀態、處理異常並理解使用者意圖時，
+            代理工作流程會比批次管道與事件導向架構更適合。
+          </p>
+        </div>
+
+        <div class="summary-box">
+          <h2>核心觀點</h2>
+          <p>
+            批次流程重視簡單，事件導向重視擴展，而代理工作流程則把
+            <strong>工具執行、狀態管理、錯誤處理與使用者互動</strong>
+            整合在同一條工作流中，讓流程不只自動化，更具備可理解與可調整能力。
+          </p>
+        </div>
+      </section>
+
+      <section class="flow-grid">
+        <article class="card batch">
+          <div class="card-head">
+            <h2 class="card-title">
+              <span class="card-tag">📦</span>批次資料管道
+            </h2>
+            <p class="card-subtitle">
+              流程最簡單，但只要一個步驟失敗，整體流程就可能中斷。
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step"><span class="step-num">01</span>讀取檔案清單</div>
+            <div class="arrow">→</div>
+            <div class="step">
+              <span class="step-num">02</span>上傳至雲端儲存
+            </div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">03</span>抽取內容</div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">04</span>寫入資料庫</div>
+          </div>
+
+          <div class="bullet-box">
+            <h3>主要問題</h3>
+            <ul>
+              <li>檔案損毀或上傳失敗時，整體流程容易直接中斷。</li>
+              <li>抽取結果異常時，缺乏彈性判斷與補救機制。</li>
+              <li>即使結果為空，也可能繼續寫入資料庫造成浪費。</li>
+              <li>使用者看不到進度，只能等待背景腳本執行結束。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card event">
+          <div class="card-head">
+            <h2 class="card-title">
+              <span class="card-tag">⚡</span>事件導向架構
+            </h2>
+            <p class="card-subtitle">
+              具備雲端擴展能力，但服務分散、狀態難追、互動體驗較弱。
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step"><span class="step-num">01</span>上傳到 GCS</div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">02</span>事件觸發</div>
+            <div class="arrow">→</div>
+            <div class="step">
+              <span class="step-num">03</span>Cloud Function
+            </div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">04</span>抽取 / 存檔</div>
+          </div>
+
+          <div class="bullet-box">
+            <h3>主要問題</h3>
+            <ul>
+              <li>常需整合 GCS、Eventarc、Functions、Pub/Sub 等多個服務。</li>
+              <li>狀態分散在不同事件與元件之間，追蹤不直觀。</li>
+              <li>偵錯時需要跨服務查詢 log，維運成本較高。</li>
+              <li>若要回報處理完成，還需額外設計輪詢或 WebSocket。</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="card agent">
+          <div class="card-head">
+            <h2 class="card-title">
+              <span class="card-tag">🤖</span>代理工作流程
+            </h2>
+            <p class="card-subtitle">
+              由代理統一協調流程，能理解情境、即時回報，並動態調整下一步。
+            </p>
+          </div>
+
+          <div class="steps">
+            <div class="step"><span class="step-num">01</span>理解需求</div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">02</span>上傳檔案</div>
+            <div class="arrow">→</div>
+            <div class="step"><span class="step-num">03</span>抽取資訊</div>
+            <div class="arrow">→</div>
+            <div class="step">
+              <span class="step-num">04</span>驗證 / 存檔 / 回報
+            </div>
+          </div>
+
+          <div class="bullet-box">
+            <h3>核心優勢</h3>
+            <ul>
+              <li>代理可在每一步即時說明目前進度與接下來要做的事。</li>
+              <li>若結果異常，可主動停止、重試、跳過或請使用者補充資訊。</li>
+              <li>流程狀態集中，不必在多個服務之間拼接上下文。</li>
+              <li>可根據使用者意圖與情境，決定更合理的下一步。</li>
+            </ul>
+          </div>
+
+          <div class="bubble-row">
+            <span class="bubble">「我先幫你上傳檔案」</span>
+            <span class="bubble">「現在開始抽取內容」</span>
+            <span class="bubble">「結果已成功保存」</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="table-card">
+          <h2 class="section-title">三種方法比較</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>比較面向</th>
+                <th class="col-batch">批次資料管道</th>
+                <th class="col-event">事件導向架構</th>
+                <th class="col-agent">
+                  代理工作流程 <span class="badge-rec">推薦</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>複雜度</td>
+                <td>低，通常一支腳本即可完成</td>
+                <td>高，需整合多個雲端服務</td>
+                <td>低到中，集中於單一代理流程</td>
+              </tr>
+              <tr>
+                <td>狀態管理</td>
+                <td>依賴程式內部變數</td>
+                <td>狀態分散、事件解耦</td>
+                <td>由代理統一理解與維護</td>
+              </tr>
+              <tr>
+                <td>錯誤處理</td>
+                <td>容易當機或直接跳出</td>
+                <td>多半只留在分散式 log 中</td>
+                <td>可即時回報並調整策略</td>
+              </tr>
+              <tr>
+                <td>使用者回饋</td>
+                <td>幾乎沒有</td>
+                <td>需額外補通知機制</td>
+                <td>回饋直接存在於對話中</td>
+              </tr>
+              <tr>
+                <td>適應能力</td>
+                <td>固定流程，彈性低</td>
+                <td>函式明確但僵硬</td>
+                <td>可依情境與意圖動態調整</td>
+              </tr>
+              <tr>
+                <td>情境感知</td>
+                <td>沒有</td>
+                <td>幾乎沒有</td>
+                <td>完整，可理解任務背景</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="takeaway-card">
+          <div>
+            <h2 class="section-title">結論整理</h2>
+            <ul class="takeaway-list">
+              <li>
+                <span class="tag-ow">批次流程</span
+                >適合簡單、固定、低風險任務，但缺乏韌性。
+              </li>
+              <li>
+                <span class="tag-bl">事件導向架構</span
+                >適合高流量與雲端擴展，但工程與維運負擔較高。
+              </li>
+              <li>
+                <span class="tag-gr">代理工作流程</span
+                >適合需要互動、解釋、判斷與應變的處理場景。
+              </li>
+            </ul>
+          </div>
+
+          <div class="quote">
+            當需求不只是「把流程跑完」，而是還要「能回報、能判斷、能調整」時，
+            代理工作流程會是更好的選擇。
+          </div>
+        </aside>
+      </section>
+
+      <div class="footer-note">
+        chris yeh 生成整理 · 2026 · Powered by Google ADK &amp; Gemini
+      </div>
+    </div>
+  </body>
+</html>

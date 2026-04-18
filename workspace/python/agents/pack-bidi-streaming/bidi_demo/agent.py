@@ -25,10 +25,10 @@ import os
 import google.auth
 
 # 獲取預設的 Google Cloud 憑證與專案 ID
-_, project_id = google.auth.default()
-os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
-os.environ["GOOGLE_CLOUD_LOCATION"] = "global"
-os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
+# _, project_id = google.auth.default()
+# os.environ["GOOGLE_CLOUD_PROJECT"] = project_id
+# os.environ["GOOGLE_CLOUD_LOCATION"] = os.getenv("GOOGLE_CLOUD_LOCATION", "us-central1")
+# os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "True"
 
 
 def get_weather(query: str) -> str:

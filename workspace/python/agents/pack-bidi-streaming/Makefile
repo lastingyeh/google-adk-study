@@ -32,6 +32,18 @@ playground:
 local-backend:
 	uv run uvicorn bidi_demo.fast_api_app:app --host localhost --port 8000 --reload
 
+# 先確認 8000 埠口使用情況，再終止占用程序
+kill:
+	@echo "確認 localhost:8000 使用情況..."
+	@lsof -nP -iTCP:8000 || true
+	@PORT_PIDS=$$(lsof -tiTCP:8000 -sTCP:LISTEN); \
+	if [ -z "$$PORT_PIDS" ]; then \
+		echo "port 8000 目前未被占用"; \
+	else \
+		echo "刪除 port 8000 上的監聽程序: $$PORT_PIDS"; \
+		kill -9 $$PORT_PIDS; \
+	fi
+
 # 啟動具有 debug 模式的本地後端伺服器
 # 用法：make debug-backend [PORT=8000] - 以 debug 模式啟動後端，可指定埠號
 debug-backend:
