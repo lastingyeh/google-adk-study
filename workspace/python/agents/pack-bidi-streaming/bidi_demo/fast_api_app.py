@@ -1,24 +1,14 @@
-# Copyright 2026 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 import asyncio
 import base64
 import json
 import logging
 import os
-import warnings
+import socket
+from functools import lru_cache
 from pathlib import Path
+from urllib.parse import urlsplit, urlunsplit
+import warnings
 
 import google.auth
 from dotenv import load_dotenv
@@ -54,11 +44,6 @@ logger = logging.getLogger(__name__)
 # 設定遙測功能
 setup_telemetry()
 
-# 獲取預設憑證與專案 ID
-_, project_id = google.auth.default()
-logging_client = google_cloud_logging.Client()
-gcloud_logger = logging_client.logger(__name__)
-
 # 抑制 Pydantic 序列化警告
 warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
 
@@ -78,47 +63,140 @@ app.description = "與 pack-bidi-streaming 代理互動的 API"
 static_dir = Path(__file__).parent / "static"
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
-# Agent Engine 會話配置
-# 檢查是否應使用記憶體內會話進行測試 (針對 E2E 測試設定 USE_IN_MEMORY_SESSION=true)
-use_in_memory_session = os.environ.get("USE_IN_MEMORY_SESSION", "").lower() in (
-    "true",
-    "1",
-    "yes",
-)
 
-if use_in_memory_session:
-    # 用於本地測試的記憶體內會話
-    session_service = InMemorySessionService()
-else:
-    # 使用環境變數設定代理名稱，預設為專案名稱
-    default_agent_name = "pack-bidi-streaming"
-    agent_name = os.environ.get("AGENT_ENGINE_SESSION_NAME", default_agent_name)
+def _is_truthy(value: str | None) -> bool:
+    return (value or "").lower() in ("true", "1", "yes")
 
-    # 檢查是否已存在同名的代理
-    existing_agents = list(agent_engines.list(filter=f"display_name={agent_name}"))
 
-    if existing_agents:
-        # 使用現有代理
-        agent_engine = existing_agents[0]
-    else:
-        # 如果不存在則建立新代理
-        agent_engine = agent_engines.create(display_name=agent_name)
+def _get_session_backend() -> str:
+    session_backend = os.environ.get("SESSION_BACKEND")
+    if session_backend:
+        return session_backend.lower()
 
-    session_service_uri_str = f"agentengine://{agent_engine.resource_name}"
+    if _is_truthy(os.environ.get("USE_IN_MEMORY_SESSION")):
+        return "in_memory"
 
-    if session_service_uri_str.startswith("agentengine://"):
-        # Extract the resource name (e.g., projects/123/locations/us-central1/reasoningEngines/my-engine)
-        agent_engine_resource_name = session_service_uri_str[len("agentengine://") :]
-        session_service = VertexAiSessionService(
+    return "agent_engine"
+
+
+def _get_project_id() -> str | None:
+    configured_project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    if configured_project_id:
+        return configured_project_id
+
+    try:
+        _, detected_project_id = google.auth.default()
+        return detected_project_id
+    except Exception:
+        return None
+
+
+@lru_cache(maxsize=1)
+def _get_gcloud_logger():
+    project_id = _get_project_id()
+    if not project_id:
+        logger.info("未設定 GOOGLE_CLOUD_PROJECT，feedback 將僅記錄到本地日誌")
+        return None
+
+    try:
+        logging_client = google_cloud_logging.Client(project=project_id)
+        return logging_client.logger(__name__)
+    except Exception as exc:
+        logger.warning("初始化 Google Cloud Logging 失敗，改用本地日誌: %s", exc)
+        return None
+
+
+def _get_database_session_kwargs() -> dict[str, int | bool]:
+    kwargs: dict[str, int | bool] = {"pool_pre_ping": True}
+    int_env_map = {
+        "pool_size": "SESSION_DB_POOL_SIZE",
+        "max_overflow": "SESSION_DB_MAX_OVERFLOW",
+        "pool_timeout": "SESSION_DB_POOL_TIMEOUT",
+        "pool_recycle": "SESSION_DB_POOL_RECYCLE",
+    }
+
+    for key, env_name in int_env_map.items():
+        value = os.environ.get(env_name)
+        if value:
+            kwargs[key] = int(value)
+
+    return kwargs
+
+
+def _normalize_session_service_uri(session_service_uri: str) -> str:
+    parsed_uri = urlsplit(session_service_uri)
+    if parsed_uri.hostname != "postgres":
+        return session_service_uri
+
+    try:
+        socket.getaddrinfo(parsed_uri.hostname, parsed_uri.port or 5432)
+        return session_service_uri
+    except socket.gaierror:
+        auth = ""
+        if parsed_uri.username:
+            auth = parsed_uri.username
+            if parsed_uri.password:
+                auth = f"{auth}:{parsed_uri.password}"
+            auth = f"{auth}@"
+
+        port = f":{parsed_uri.port}" if parsed_uri.port else ""
+        normalized_uri = urlunsplit(
+            parsed_uri._replace(netloc=f"{auth}localhost{port}")
+        )
+        logger.info(
+            "SESSION_SERVICE_URI 使用 Docker 主機名 postgres，但目前環境無法解析；改用 localhost: %s",
+            normalized_uri,
+        )
+        return normalized_uri
+
+
+def create_session_service():
+    session_backend = _get_session_backend()
+    logger.info("初始化 SessionService，backend=%s", session_backend)
+
+    if session_backend == "in_memory":
+        return InMemorySessionService()
+
+    if session_backend == "postgres":
+        session_service_uri = os.environ.get("SESSION_SERVICE_URI") or os.environ.get(
+            "SESSION_DB_URL"
+        )
+        if not session_service_uri:
+            raise ValueError(
+                "SESSION_SERVICE_URI 未設定，postgres backend 需要資料庫連線字串"
+            )
+        session_service_uri = _normalize_session_service_uri(session_service_uri)
+        return DatabaseSessionService(
+            db_url=session_service_uri,
+            **_get_database_session_kwargs(),
+        )
+
+    if session_backend == "agent_engine":
+        project_id = _get_project_id()
+        if not project_id:
+            raise ValueError(
+                "agent_engine backend 需要 GOOGLE_CLOUD_PROJECT 或有效的 ADC 憑證"
+            )
+
+        default_agent_name = "pack-bidi-streaming"
+        agent_name = os.environ.get("AGENT_ENGINE_SESSION_NAME", default_agent_name)
+        existing_agents = list(agent_engines.list(filter=f"display_name={agent_name}"))
+
+        if existing_agents:
+            agent_engine = existing_agents[0]
+        else:
+            agent_engine = agent_engines.create(display_name=agent_name)
+
+        return VertexAiSessionService(
             project=project_id,
             location=os.environ.get("GOOGLE_CLOUD_LOCATION", "global"),
-            agent_engine_id=agent_engine_resource_name.split("/")[-1],
+            agent_engine_id=agent_engine.resource_name.split("/")[-1],
         )
-    else:
-        # Assuming a database URI for other cases
-        session_service = DatabaseSessionService(
-            session_service_uri=session_service_uri_str
-        )
+
+    raise ValueError("SESSION_BACKEND 僅支援 in_memory、postgres、agent_engine")
+
+
+session_service = create_session_service()
 
 
 # 定義執行器 (Runner)
@@ -145,7 +223,11 @@ def collect_feedback(feedback: Feedback) -> dict[str, str]:
     傳回值:
         成功訊息
     """
-    gcloud_logger.log_struct(feedback.model_dump(), severity="INFO")
+    gcloud_logger = _get_gcloud_logger()
+    if gcloud_logger is not None:
+        gcloud_logger.log_struct(feedback.model_dump(), severity="INFO")
+    else:
+        logger.info("feedback=%s", feedback.model_dump())
     return {"status": "success"}
 
 
@@ -333,4 +415,4 @@ async def websocket_endpoint(
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", "8000")))

@@ -32,6 +32,10 @@ playground:
 local-backend:
 	uv run uvicorn bidi_demo.fast_api_app:app --host localhost --port 8000 --reload
 
+# 啟動 docker-compose 中的 PostgreSQL 資料庫
+postgres:
+	docker compose up -d postgres
+
 # 先確認 8000 埠口使用情況，再終止占用程序
 kill:
 	@echo "確認 localhost:8000 使用情況..."

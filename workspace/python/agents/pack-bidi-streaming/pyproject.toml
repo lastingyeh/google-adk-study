@@ -15,6 +15,7 @@ dependencies = [
     "fastapi~=0.115.8",                                         # FastAPI Web 框架
     "uvicorn~=0.34.0",                                          # Uvicorn ASGI 伺服器
     "asyncpg>=0.30.0,<1.0.0",                                   # PostgreSQL 非同步驅動
+    "greenlet>=3.1.1,<4.0.0",                                   # SQLAlchemy async 需要的協程橋接
 ]
 # Python 版本需求
 requires-python = ">=3.10,<3.14"

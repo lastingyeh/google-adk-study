@@ -4,9 +4,17 @@
 測試 pack-bidi-streaming 專案的所有模組是否能成功匯入。
 """
 
+import importlib
+import os
+import sys
+
 
 class TestImports:
     """測試所有模組是否能成功匯入。"""
+
+    def _reload_fastapi_app(self):
+        sys.modules.pop("bidi_demo.fast_api_app", None)
+        return importlib.import_module("bidi_demo.fast_api_app")
 
     def test_import_agent_module(self):
         """測試 Agent 模組是否能被匯入。"""
@@ -42,14 +50,23 @@ class TestImports:
 
     def test_import_fastapi_app(self):
         """測試 FastAPI app 是否能被匯入。"""
-        # 設定測試環境變數以使用記憶體內會話
-        import os
+        os.environ["SESSION_BACKEND"] = "in_memory"
 
-        os.environ["USE_IN_MEMORY_SESSION"] = "true"
+        module = self._reload_fastapi_app()
 
-        from bidi_demo.fast_api_app import app
+        assert module.app is not None
 
-        assert app is not None
+    def test_import_fastapi_app_with_postgres_backend(self):
+        """測試 postgres backend 在無 ADC 時仍可匯入 app。"""
+        os.environ["SESSION_BACKEND"] = "postgres"
+        os.environ["SESSION_SERVICE_URI"] = (
+            "postgresql+asyncpg://app:app@postgres:5432/adk_sessions"
+        )
+        os.environ.pop("GOOGLE_CLOUD_PROJECT", None)
+
+        module = self._reload_fastapi_app()
+
+        assert module.app is not None
 
     def test_import_app_utils_telemetry(self):
         """測試遙測工具模組是否能被匯入。"""
