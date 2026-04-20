@@ -1,4 +1,3 @@
-
 import asyncio
 import base64
 import json
@@ -288,6 +287,10 @@ async def websocket_endpoint(
                 types.ProactivityConfig(proactive_audio=True) if proactivity else None
             ),
             enable_affective_dialog=affective_dialog if affective_dialog else None,
+            context_window_compression=types.ContextWindowCompressionConfig(
+                trigger_tokens=100000,
+                sliding_window=types.SlidingWindow(target_tokens=80000),
+            ),
         )
         logger.debug(
             f"檢測到原生音訊模型: {model_name}, "
